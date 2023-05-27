@@ -1,0 +1,18 @@
+[user]
+	email = peterszarvas94@gmail.com
+	name = "Szarvas Péter"
+
+[core]
+	editor = nvim
+
+[alias]
+	st = status
+	cm = commit
+	lg = log --decorate --graph --oneline
+	br = branch
+	bd = branch --delete
+	ch = checkout
+	cb = checkout --branch
+
+	[init]
+	defaultBranch = main
