@@ -1,20 +1,25 @@
-if vim.loader then vim.loader.enable() end -- enable vim.loader early if available
+--set vim options
+require('options')
 
-for _, source in ipairs {
-  "astronvim.bootstrap",
-  "astronvim.options",
-  "astronvim.lazy",
-  "astronvim.autocmds",
-  "astronvim.mappings",
-} do
-  local status_ok, fault = pcall(require, source)
-  if not status_ok then vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault) end
+-- Install package manager
+-- https://github.com/folke/lazy.nvim
+-- `:help lazy.nvim.txt` for more info
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system {
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
+    lazypath,
+  }
 end
+vim.opt.rtp:prepend(lazypath)
+require('lazy').setup('plugins', {})
 
-if astronvim.default_colorscheme then
-  if not pcall(vim.cmd.colorscheme, astronvim.default_colorscheme) then
-    require("astronvim.utils").notify("Error setting up colorscheme: " .. astronvim.default_colorscheme, "error")
-  end
-end
+-- set keymaps after plugins are loaded
+require('keymaps')
 
-require("astronvim.utils").conditional_func(astronvim.user_opts("polish", nil, false), true)
+-- The line beneath this is called `modeline`. See `:help modeline`
+-- vim: ts=2 sts=2 sw=2 et
