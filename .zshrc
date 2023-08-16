@@ -23,3 +23,10 @@ fi
 bindkey -s '^F' 'tmux-sessionizer\n'
 
 alias v="nvim"
+
+# Turso
+export PATH="/home/peti/.turso:$PATH"
+
+export BROWSER=brave
+export EDITOR='nvim'
+export VISUAL='nvim'

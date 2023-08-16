@@ -1,3 +1,3 @@
 #!/bin/bash
 
-microsoft-edge-stable https://calendar.google.com/
+brave https://calendar.google.com/

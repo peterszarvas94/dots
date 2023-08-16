@@ -7,8 +7,9 @@ font pango:FiraCode NF 10
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
+exec --no-startup-id setxkbmap -layout us 
 exec_always --no-startup-id nitrogen --restore
-exec_always --no-startup-id picom -b
+# exec_always --no-startup-id picom -b
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec_always --no-startup-id ~/.config/i3/arrange-monitors.sh
 
@@ -33,19 +34,19 @@ client.urgent           #990000 #990000 #ffffff #990000
 client.placeholder      #000000 #000000 #ffffff #000000
 
 # monitors
-set $big HDMI-A-0
-set $small eDP
-
-workspace 1 output $big
-workspace 2 output $big
-workspace 3 output $big
-workspace 4 output $big
-workspace 5 output $big
-workspace 6 output $small
-workspace 7 output $small
-workspace 8 output $small
-workspace 9 output $small
-workspace 10 output $small
+# set $big HDMI-A-0
+# set $small eDP
+#
+# workspace 1 output $big
+# workspace 2 output $big
+# workspace 3 output $big
+# workspace 4 output $big
+# workspace 5 output $big
+# workspace 6 output $small
+# workspace 7 output $small
+# workspace 8 output $small
+# workspace 9 output $small
+# workspace 10 output $small
 
 ###
 ### HOTKEYS

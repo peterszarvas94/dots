@@ -217,16 +217,16 @@ mason_lspconfig.setup_handlers {
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
+-- local luasnip = require 'luasnip'
+-- require('luasnip.loaders.from_vscode').lazy_load()
+-- luasnip.config.setup {}
 
 cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
+  -- snippet = {
+  --   expand = function(args)
+  --     luasnip.lsp_expand(args.body)
+  --   end,
+  -- },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -237,31 +237,39 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
+    -- ['<Tab>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_next_item()
+    --   elseif luasnip.expand_or_locally_jumpable() then
+    --     luasnip.expand_or_jump()
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'i', 's' }),
+    -- ['<S-Tab>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_prev_item()
+    --   elseif luasnip.locally_jumpable(-1) then
+    --     luasnip.jump(-1)
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'i', 's' }),
   },
   sources = {
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    -- { name = 'luasnip' },
   },
 }
 
 vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { desc = '[T]oggle nvim [t]ree', silent = true })
 vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[T]erminal [o]pen', silent = true })
 vim.keymap.set('t', '<C-e>', '<C-\\><C-n>', { desc = 'Escape terminal mode', silent = true })
+vim.keymap.set('n', '<leader>bd', ':bd!<CR>', { desc = '[B]uffer [D]elete', silent = true })
+vim.keymap.set('n', '<leader>f', ':Format<CR>', { desc = '[F]ormat', silent = true })
+
+-- harpoon
+vim.keymap.set('n', '<leader>ht', ':lua require("harpoon.ui").toggle_quick_menu()<CR>',
+  { desc = '[H]arpoon [T]oggle', silent = true })
+vim.keymap.set('n', '<leader>ha', ':lua require("harpoon.mark").add_file()<CR>',
+  { desc = '[H]arpoon [A]dd', silent = true })

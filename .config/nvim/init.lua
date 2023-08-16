@@ -1,4 +1,4 @@
---set vim options
+--set up vim options
 require('options')
 
 -- Install package manager
@@ -16,7 +16,12 @@ if not vim.loop.fs_stat(lazypath) then
   }
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- load in plugins
 require('lazy').setup('plugins', {})
+
+-- load colorscheme
+require('onedark').load()
 
 -- set keymaps after plugins are loaded
 require('keymaps')

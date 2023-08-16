@@ -8,8 +8,32 @@ return {
       view = {
         hide_root_folder = false,
       },
-      filters = {
-        dotfiles = false,
+      git = {
+        ignore = false
+      },
+      renderer = {
+        icons = {
+          webdev_colors = true,
+          git_placement = "after",
+          show = {
+            file = true,
+            folder = true,
+            folder_arrow = false,
+            git = true,
+            modified = true,
+          },
+          glyphs = {
+            git = {
+              unstaged = "✗",
+              staged = "✓",
+              unmerged = "",
+              renamed = "➜",
+              untracked = "",
+              deleted = "",
+              ignored = "◌",
+            },
+          },
+        },
       },
     }) -- END_DEFAULT_OPTS
   end
