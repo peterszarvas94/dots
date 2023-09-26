@@ -1,5 +1,1 @@
-Xcursor.theme: custom-theme
-Xcursor.size: 12
-
-! place this in: '~/', then run:
-! xrdb -merge ~/.Xresources
+/home/peti/.Xresources
