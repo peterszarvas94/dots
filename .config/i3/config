@@ -6,10 +6,8 @@ set $mod Mod4
 font pango:FiraCode NF 10
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-# exec --no-startup-id nm-applet
 exec --no-startup-id setxkbmap -layout us 
-exec_always --no-startup-id nitrogen --restore
-# exec_always --no-startup-id picom -b
+exec_always --no-startup-id feh --bg-fill ~/projects/dots/background/bing_wallpaper_MWDolomites_1920x1080.jpg --bg-fill ~/projects/dots/background/city-1679690962777-4742.jpg
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec_always --no-startup-id ~/.config/i3/arrange-monitors.sh
 
