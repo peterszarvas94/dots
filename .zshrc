@@ -28,3 +28,4 @@ export GOPATH="$HOME/go"
 export BROWSER=brave
 export EDITOR='nvim'
 export VISUAL='nvim'
+export TERM='xterm-256color'
