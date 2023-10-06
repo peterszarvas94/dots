@@ -20,7 +20,7 @@ floating_modifier $mod
 
 # styles
 default_border pixel 1
-default_floating_border pixel 1
+default_floating_border pixel 0
 gaps inner 5
 gaps top 30
 
@@ -73,7 +73,7 @@ bindsym $mod+p exec pavucontrol
 bindsym $mod+n exec nautilus
 bindsym $mod+s exec ~/.config/rofi/powermenu.sh
 bindsym $mod+space exec ~/.config/polybar/switch-layouts.sh
-bindsym $mod+d exec "rofi -modi drun,run -show drun"
+bindsym $mod+d exec "rofi -show drun"
 
 bindsym Print exec --no-startup-id gscreenshot -s -f ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png
 bindsym $mod+Return exec alacritty
