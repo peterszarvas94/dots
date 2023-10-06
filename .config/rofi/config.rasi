@@ -2,12 +2,10 @@ configuration {
   display-drun: "apps";
   display-window: "windows";
   display-emoji: "emoji";
-  drun-display-format: "{icon} {name}";
+  drun-display-format: "{name}";
   font: "FiraCode Nerd Font 10";
   font-emoji: "Noto Emoji 10";
   modi: "window,run,drun,emoji";
-  show-icon: true;
-  icon-theme: "Papirus";
 }
 
 @theme "/dev/null"
@@ -30,7 +28,7 @@ window {
 }
 
 element {
-  padding: 8 8;
+  padding: 12;
   background-color: @bg;
   text-color: @fg;
 }
@@ -44,11 +42,6 @@ element-text {
   background-color: transparent;
   text-color: inherit;
   vertical-align: 0.5;
-}
-
-element-icon {
-  size: 14;
-  background-color: @bg;
 }
 
 entry {
@@ -81,7 +74,7 @@ prompt {
   text-color: @fg;
   border-color: @fg;
   border: 0 1 0 0;
-  padding: 12 8 12 8;
+  padding: 12;
 }
 
 /* vim: ft=sass
