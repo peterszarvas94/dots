@@ -19,32 +19,42 @@ require('telescope').setup {
         ['<C-d>'] = false,
       },
     },
+    file_ignore_patterns = { 'node_modules', '.git' },
+  },
+  pickers = {
+    live_grep = {
+      additional_args = function(_)
+        return { '--hidden' }
+      end,
+    },
+    find_files = {
+      hidden = true,
+    },
   },
 }
 
 pcall(require('telescope').load_extension, 'fzf')
 
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
+vim.keymap.set('n', '<leader>sr', require('telescope.builtin').oldfiles, { desc = '[S]earch [R]ecently opened files' })
+vim.keymap.set('n', '<leader>sc', function()
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
     previewer = false,
   })
-end, { desc = '[/] Fuzzily search in current buffer' })
+end, { desc = '[S]earch [C]urrent file' })
 
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sl', require('telescope.builtin').live_grep, { desc = '[S]earch by [L]ivegrep' })
+vim.keymap.set('n', '<leader>sg', require('telescope.builtin').git_files, { desc = '[S]earch [G]it' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, { desc = '[S]earch [B]uffers' })
 
+---@diagnostic disable-next-line missing-fields
 require('nvim-treesitter.configs').setup {
   modules = { 'go', 'lua', 'tsx', 'typescript' },
-
   auto_install = true,
-
   highlight = { enable = true },
   indent = { enable = true },
   incremental_selection = {
@@ -109,7 +119,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 local on_attach = function(_, bufnr)
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[n]ame' })
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[C]ode [A]ction' })
+  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[C]ode [A]cchtion' })
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[G]oto [D]efinition' })
   vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
   vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
@@ -146,7 +156,25 @@ mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
-      on_attach = on_attach,
+      on_attach = function()
+        on_attach()
+        require('which-key').register {
+          ['<leader>'] = {
+            c = {
+              name = '[C]ode',
+            },
+            d = {
+              name = '[D]ocument',
+            },
+            r = {
+              name = '[R]e',
+            },
+            w = {
+              name = '[W]orkspace',
+            },
+          },
+        }
+      end,
       settings = servers[server_name],
     }
   end,
@@ -157,6 +185,7 @@ local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
+---@diagnostic disable-next-line missing-fields
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -169,7 +198,7 @@ cmp.setup {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
-    ['<C-CR>'] = cmp.mapping.confirm {
+    ['<C-a>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
@@ -182,9 +211,12 @@ cmp.setup {
 
 vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[t]erminal [o]pen', silent = true })
 vim.keymap.set('t', '<c-e>', '<c-\\><c-n>', { desc = 'escape terminal mode', silent = true })
-vim.keymap.set('n', '<leader>bd', ':bd!<cr>', { desc = '[b]uffer [d]elete', silent = true })
-vim.keymap.set('n', '<leader>ht', ':lua require("harpoon.ui").toggle_quick_menu()<cr>', { desc = '[h]arpoon [t]oggle', silent = true })
-vim.keymap.set('n', '<leader>ha', ':lua require("harpoon.mark").add_file()<cr>', { desc = '[h]arpoon [a]dd', silent = true })
+vim.keymap.set('n', '<leader>bd', ':bd!<cr>', { desc = '[B]uffer [D]elete', silent = true })
+vim.keymap.set('n', '<leader>ht', require('harpoon.ui').toggle_quick_menu, { desc = '[H]arpoon [T]oggle window', silent = true })
+vim.keymap.set('n', '<leader>ha', require('harpoon.mark').add_file, { desc = '[H]arpoon [A]dd', silent = true })
+vim.keymap.set('n', '<leader>hn', require('harpoon.ui').nav_next, { desc = '[H]arpoon [N]ext', silent = true })
+vim.keymap.set('n', '<leader>hp', require('harpoon.ui').nav_prev, { desc = '[H]arpoon [P]revious', silent = true })
+
 vim.keymap.set('n', '<leader>x', ':Explore<cr>', { desc = 'E[x]plorer', silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
   require('conform').format {
@@ -193,3 +225,4 @@ vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
     timeout_ms = 500,
   }
 end, { desc = '[F]ormat' })
+vim.keymap.set('n', '<leader>u', ':UndotreeToggle<cr>', { desc = '[U]ndootree' })
