@@ -25,7 +25,7 @@ gaps inner 5
 gaps top 30
 
 # colors                border  backgr. text    indicator
-client.focused          #1a1b26 #c0caf5 #ffffff #1a1b26
+client.focused          #1a1b26 #c0caf5 #ffffff #c0caf5
 client.focused_inactive #1a1b26 #1a1b26 #ffffff #1a1b26
 client.unfocused        #1a1b26 #1a1b26 #ffffff #1a1b26
 client.urgent           #990000 #990000 #ffffff #990000
