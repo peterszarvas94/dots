@@ -23,9 +23,17 @@ export PATH="/home/peti/.turso:$PATH"
 
 # Go
 export GOPATH="$HOME/go"
+export PATH=$GOPATH/bin:$PATH
 
 # Environment
 export BROWSER=brave
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'
+
+# bun completions
+[ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
