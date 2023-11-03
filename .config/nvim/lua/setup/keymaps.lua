@@ -124,13 +124,17 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
   vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
   vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { buffer = bufnr, desc = 'Type [D]efinition' })
-  vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, { buffer = bufnr, desc = '[D]ocument [S]ymbols' })
-  vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, { buffer = bufnr, desc = '[W]orkspace [S]ymbols' })
+  vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols,
+    { buffer = bufnr, desc = '[D]ocument [S]ymbols' })
+  vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols,
+    { buffer = bufnr, desc = '[W]orkspace [S]ymbols' })
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = bufnr, desc = '[G]oto [D]eclaration' })
-  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, { buffer = bufnr, desc = '[W]orkspace [A]dd Folder' })
-  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, { buffer = bufnr, desc = '[W]orkspace [R]emove Folder' })
+  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder,
+    { buffer = bufnr, desc = '[W]orkspace [A]dd Folder' })
+  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder,
+    { buffer = bufnr, desc = '[W]orkspace [R]emove Folder' })
   vim.keymap.set('n', '<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
@@ -208,21 +212,37 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
+-- terminal
 vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[t]erminal [o]pen', silent = true })
-vim.keymap.set('t', '<c-e>', '<c-\\><c-n>', { desc = 'escape terminal mode', silent = true })
+vim.keymap.set('t', '<c-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
+
+-- buffer
 vim.keymap.set('n', '<leader>bd', ':bd!<cr>', { desc = '[B]uffer [D]elete', silent = true })
-vim.keymap.set('n', '<leader>ht', require('harpoon.ui').toggle_quick_menu, { desc = '[H]arpoon [T]oggle window', silent = true })
+
+-- harpoon
+vim.keymap.set('n', '<leader>ht', require('harpoon.ui').toggle_quick_menu,
+  { desc = '[H]arpoon [T]oggle window', silent = true })
 vim.keymap.set('n', '<leader>ha', require('harpoon.mark').add_file, { desc = '[H]arpoon [A]dd', silent = true })
 vim.keymap.set('n', '<leader>hn', require('harpoon.ui').nav_next, { desc = '[H]arpoon [N]ext', silent = true })
 vim.keymap.set('n', '<leader>hp', require('harpoon.ui').nav_prev, { desc = '[H]arpoon [P]revious', silent = true })
 
+-- explorer
 vim.keymap.set('n', '<leader>x', ':Explore<cr>', { desc = 'E[x]plorer', silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
-  require('conform').format {
-    lsp_fallback = true,
-    async = false,
-    timeout_ms = 500,
-  }
-end, { desc = '[F]ormat' })
+
+-- undotree
 vim.keymap.set('n', '<leader>u', ':UndotreeToggle<cr>', { desc = '[U]ndootree' })
+
+-- format with lsp
+local function format_with_lsp()
+  vim.lsp.buf.format()
+end
+
+vim.keymap.set({ 'n', 'v' }, '<leader>f', format_with_lsp, { desc = '[F]ormat' })
+
+-- format with prettier
+local function formatWithPrettier()
+  local current_file = vim.fn.expand('%')
+  vim.fn.system('prettier --plugin=prettier-plugin-tailwindcss --write ' .. current_file)
+  vim.cmd('e!')
+end
+vim.keymap.set({ 'n' }, '<leader>p', formatWithPrettier, { desc = '[P]rettier', noremap = true, silent = true })
