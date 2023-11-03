@@ -13,16 +13,13 @@ return {
         typescriptreact = { 'prettier' },
         css = { 'prettier' },
         html = { 'prettier' },
+        svg = { 'prettier' },
         json = { 'prettier' },
         yaml = { 'prettier' },
         markdown = { 'prettier' },
         lua = { 'stylua' },
       },
-      format_on_save = {
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 500,
-      },
+      format_on_save = false,
     }
   end,
 }

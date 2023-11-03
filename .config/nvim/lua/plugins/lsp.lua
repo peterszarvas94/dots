@@ -19,7 +19,10 @@ return {
         'html', -- html language server
         'cssls', -- css language server
         'tailwindcss', -- tailwindcss language server
-        -- "gopls", -- go language server
+        'gopls', -- go language server
+        'bashls', -- bash language server
+        'lua_ls', -- lua language server
+        'jsonls', -- json language server
       },
       automatic_installation = true, -- not the same as ensure_installed
     }
@@ -28,7 +31,7 @@ return {
       ensure_installed = {
         'prettier', -- prettier formatter
         'stylua', -- lua formatter
-        'eslint_d', -- eslint language server
+        -- 'eslint_d', -- eslint language server
       },
     }
   end,
