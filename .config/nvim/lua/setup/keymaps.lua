@@ -240,9 +240,20 @@ end
 vim.keymap.set({ 'n', 'v' }, '<leader>f', format_with_lsp, { desc = '[F]ormat' })
 
 -- format with prettier
+-- local function formatWithPrettier()
+--   local current_file = vim.fn.expand('%')
+--   vim.cmd('w!')
+--   vim.fn.system('prettier --plugin=prettier-plugin-tailwindcss --write ' .. current_file)
+--   vim.cmd('e!')
+-- end
+
 local function formatWithPrettier()
-  local current_file = vim.fn.expand('%')
-  vim.fn.system('prettier --plugin=prettier-plugin-tailwindcss --write ' .. current_file)
-  vim.cmd('e!')
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
+  local fake_filename = 'fake.' .. filetype
+  local prettier_cmd = 'run-prettier --stdin-filepath ' .. fake_filename
+  local output = vim.fn.system(prettier_cmd, table.concat(lines, '\n'))
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(output, '\n'))
 end
+
 vim.keymap.set({ 'n' }, '<leader>p', formatWithPrettier, { desc = '[P]rettier', noremap = true, silent = true })
