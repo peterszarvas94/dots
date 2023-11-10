@@ -1,3 +1,3 @@
 #!/bin/bash
 
-brave https://calendar.google.com/
+google-chrome-stable https://calendar.google.com/
