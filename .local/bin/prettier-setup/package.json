@@ -8,10 +8,15 @@
   "devDependencies": {
     "prettier": "^3.0.3",
     "prettier-plugin-go-template": "^0.0.15",
+    "prettier-plugin-sql": "^0.16.0",
     "prettier-plugin-tailwindcss": "^0.5.6"
   },
   "prettier": {
-    "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-go-template"],
+    "plugins": [
+      "prettier-plugin-tailwindcss",
+      "prettier-plugin-go-template",
+      "prettier-plugin-sql"
+    ],
     "overrides": [
       {
         "files": "*.svg",
@@ -23,6 +28,12 @@
         "files": ["*.html"],
         "options": {
           "parser": "go-template"
+        }
+      },
+      {
+        "files": ["*.sql"],
+        "options": {
+          "parser": "sql"
         }
       }
     ],

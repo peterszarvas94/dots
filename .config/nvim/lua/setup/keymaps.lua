@@ -247,6 +247,9 @@ vim.keymap.set({ 'n', 'v' }, '<leader>f', format_with_lsp, { desc = '[F]ormat' }
 --   vim.cmd('e!')
 -- end
 
+
+
+
 local function formatWithPrettier()
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
   local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
@@ -257,3 +260,11 @@ local function formatWithPrettier()
 end
 
 vim.keymap.set({ 'n' }, '<leader>p', formatWithPrettier, { desc = '[P]rettier', noremap = true, silent = true })
+
+-- keep selection after indent
+vim.keymap.set({ 'v' }, '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })
+vim.keymap.set({ 'v' }, '>', '>gv', { desc = 'Indent right', noremap = true, silent = true })
+
+-- move selected lines vertically (with correct indentation)
+vim.keymap.set({ 'v' }, 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
+vim.keymap.set({ 'v' }, 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
