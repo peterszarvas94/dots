@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <port>"
+    exit 1
+fi
+
+port=$1
+
+# Get the process IDs associated with the specified port
+pids=$(lsof -ti :$port)
+
+
+if [ -z "$pids" ]; then
+    echo "No processes found on port $port."
+    exit 1
+fi
+
+# Print the processes about to be killed
+for pid in $pids; do
+    echo "Killing process $pid on port $port"
+done
+
+# Kill the processes
+kill -9 $pids
+
+echo "All processes killed."
