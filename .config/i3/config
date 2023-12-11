@@ -59,8 +59,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # to work, run command first: chmod o+w /sys/class/backlight/[device name]/brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10 && $refresh_i3status
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10 && $refresh_i3status
+bindsym XF86MonBrightnessDown exec ~/.local/bin/light -10 && $refresh_i3status
+bindsym XF86MonBrightnessUp exec ~/.local/bin/light 10 && $refresh_i3status
 
 # win + .
 bindcode $mod+60 exec rofi -modi emoji -show emoji -kb-custom-1 Ctrl+C

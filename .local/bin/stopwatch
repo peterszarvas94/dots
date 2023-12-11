@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Function to format seconds as HH:MM:SS
+format_time() {
+    local seconds=$1
+    printf "%02d:%02d:%02d\n" $((seconds/3600)) $((seconds%3600/60)) $((seconds%60))
+}
+
+# Function to display the stopwatch
+stopwatch() {
+    local start_time=$(date +%s)
+    local elapsed_time=0
+
+    echo "Stopwatch started. Press Ctrl+C to stop."
+
+    while true; do
+        sleep 1
+        elapsed_time=$(( $(date +%s) - start_time ))
+        printf "\r%s" "$(format_time $elapsed_time)"
+    done
+}
+
+# Start the stopwatch
+stopwatch

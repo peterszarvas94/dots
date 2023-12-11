@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Set the path to your backlight directory
+backlight_dir="/sys/class/backlight/amdgpu_bl2"
+
+# Get the current brightness value
+current_brightness=$(cat "$backlight_dir/brightness")
+
+# Check if an argument is provided
+if [ $# -eq 0 ]; then
+    echo $current_brightness
+    exit 1
+fi
+
+increment=$1
+
+# Calculate the new brightness (increase by 10, you can adjust as needed)
+new_brightness=$((current_brightness + increment))
+
+# Set the new brightness
+echo "$new_brightness" | tee "$backlight_dir/brightness" > /dev/null
