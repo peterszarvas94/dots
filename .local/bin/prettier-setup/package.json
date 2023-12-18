@@ -19,19 +19,19 @@
     ],
     "overrides": [
       {
-        "files": "*.svg",
+        "files": "[*.svg, *.templ]",
         "options": {
           "parser": "html"
         }
       },
       {
-        "files": ["*.html"],
+        "files": "*.html",
         "options": {
           "parser": "go-template"
         }
       },
       {
-        "files": ["*.sql"],
+        "files": "*.sql",
         "options": {
           "parser": "sql"
         }
