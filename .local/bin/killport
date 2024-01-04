@@ -13,7 +13,7 @@ pids=$(lsof -ti :$port)
 
 if [ -z "$pids" ]; then
     echo "No processes found on port $port."
-    exit 1
+    exit 0
 fi
 
 # Print the processes about to be killed

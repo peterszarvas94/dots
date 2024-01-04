@@ -221,6 +221,7 @@ vim.keymap.set('n', '<leader>bd', ':bd!<cr>', { desc = '[B]uffer [D]elete', sile
 
 -- harpoon
 local harpoon = require('harpoon')
+---@diagnostic disable-next-line
 harpoon:setup()
 
 -- open harpoon window

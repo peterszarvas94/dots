@@ -77,6 +77,7 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+---@diagnostic disable-next-line
 parser_config.templ = {
   install_info = {
     url = "https://github.com/vrischmann/tree-sitter-templ",
@@ -84,3 +85,6 @@ parser_config.templ = {
   },
   filetype = "templ",
 }
+
+local lspconfig = require 'lspconfig'
+lspconfig.htmx.setup{}
