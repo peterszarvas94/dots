@@ -22,6 +22,7 @@ alias v="nvim"
 export PATH="/home/peti/.turso:$PATH"
 
 # Go
+export PATH=$PATH:/usr/local/go/bin
 export GOPATH="$HOME/go"
 export PATH=$GOPATH/bin:$PATH
 

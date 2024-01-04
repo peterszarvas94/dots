@@ -220,11 +220,35 @@ vim.keymap.set('t', '<c-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', sil
 vim.keymap.set('n', '<leader>bd', ':bd!<cr>', { desc = '[B]uffer [D]elete', silent = true })
 
 -- harpoon
-vim.keymap.set('n', '<leader>ht', require('harpoon.ui').toggle_quick_menu,
-  { desc = '[H]arpoon [T]oggle window', silent = true })
-vim.keymap.set('n', '<leader>ha', require('harpoon.mark').add_file, { desc = '[H]arpoon [A]dd', silent = true })
-vim.keymap.set('n', '<leader>hn', require('harpoon.ui').nav_next, { desc = '[H]arpoon [N]ext', silent = true })
-vim.keymap.set('n', '<leader>hp', require('harpoon.ui').nav_prev, { desc = '[H]arpoon [P]revious', silent = true })
+local harpoon = require('harpoon')
+harpoon:setup()
+
+-- open harpoon window
+vim.keymap.set('n', '<leader>ht',
+  function()
+    harpoon.ui:toggle_quick_menu(harpoon:list())
+  end,
+  { desc = '[H]arpoon [T]oggle window', silent = true }
+)
+-- add current file to harpoon
+vim.keymap.set('n', '<leader>ha',
+  function()
+    harpoon:list():append()
+  end,
+  { desc = '[H]arpoon [A]dd', silent = true }
+)
+vim.keymap.set('n', '<leader>hn',
+  function()
+    harpoon:list():next()
+  end,
+  {desc = '[H]arpoon [N]ext', silent = true }
+)
+vim.keymap.set('n', '<leader>hp',
+  function()
+    harpoon:list():prev()
+  end,
+  {desc = '[H]arpoon [P]revious', silent = true }
+)
 
 -- explorer
 vim.keymap.set('n', '<leader>x', ':Explore<cr>', { desc = 'E[x]plorer', silent = true })
