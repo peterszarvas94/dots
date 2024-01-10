@@ -19,7 +19,13 @@
     ],
     "overrides": [
       {
-        "files": "[*.svg, *.templ]",
+        "files": "*.svg",
+        "options": {
+          "parser": "html"
+        }
+      },
+      {
+        "files": "*.templ",
         "options": {
           "parser": "html"
         }
@@ -34,6 +40,12 @@
         "files": "*.sql",
         "options": {
           "parser": "sql"
+        }
+      },
+      {
+        "files": ["*.ts", "*.tsx", "*.typescript", "*.typescriptreact"],
+        "options": {
+          "parser": "typescript"
         }
       }
     ],

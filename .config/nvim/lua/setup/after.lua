@@ -87,4 +87,34 @@ parser_config.templ = {
 }
 
 local lspconfig = require 'lspconfig'
-lspconfig.htmx.setup{}
+lspconfig.htmx.setup{
+  filetypes = { "html", "templ" },
+}
+lspconfig.tailwindcss.setup{
+  filetypes = { "html", "templ" },
+  init_options = {
+    userLanguages = {
+      templ = "html",
+    },
+  },
+}
+
+-- :SetTab to set tab width 2, shiftwidth 2, expandtab
+function SetTab()
+  vim.cmd('set tabstop=2 | set shiftwidth=2 | set expandtab')
+end
+
+-- set colorcolumn color
+function SetColorColumn()
+  vim.cmd('highlight ColorColumn ctermbg=0 guibg=#414868')
+end
+
+vim.cmd([[
+  autocmd FileType * lua SetTab()
+  autocmd FileType * lua SetColorColumn()
+]])
+
+-- :GitPush git push command
+vim.cmd([[
+  command! GP !git push
+]])

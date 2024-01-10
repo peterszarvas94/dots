@@ -277,7 +277,9 @@ vim.keymap.set({ 'n', 'v' }, '<leader>f', format_with_lsp, { desc = '[F]ormat' }
 
 local function formatWithPrettier()
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
+  local filetype = vim.bo.filetype
+  print(filetype)
+  -- local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
   local fake_filename = 'fake.' .. filetype
   local prettier_cmd = 'run-prettier --stdin-filepath ' .. fake_filename
   local output = vim.fn.system(prettier_cmd, table.concat(lines, '\n'))
