@@ -87,10 +87,10 @@ parser_config.templ = {
 }
 
 local lspconfig = require 'lspconfig'
-lspconfig.htmx.setup{
+lspconfig.htmx.setup {
   filetypes = { "html", "templ" },
 }
-lspconfig.tailwindcss.setup{
+lspconfig.tailwindcss.setup {
   filetypes = { "html", "templ" },
   init_options = {
     userLanguages = {
@@ -100,9 +100,19 @@ lspconfig.tailwindcss.setup{
 }
 
 -- :SetTab to set tab width 2, shiftwidth 2, expandtab
+-- replace tabs with two spaces
 function SetTab()
   vim.cmd('set tabstop=2 | set shiftwidth=2 | set expandtab')
+  vim.cmd([[ %s/\t/  /ge | update ]])
 end
+
+-- vim.cmd([[
+--   autocmd FileType * lua SetTab()
+-- ]])
+
+vim.cmd([[
+  command! SetTab lua SetTab()
+]])
 
 -- set colorcolumn color
 function SetColorColumn()
@@ -110,7 +120,6 @@ function SetColorColumn()
 end
 
 vim.cmd([[
-  autocmd FileType * lua SetTab()
   autocmd FileType * lua SetColorColumn()
 ]])
 

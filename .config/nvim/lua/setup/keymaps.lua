@@ -250,6 +250,54 @@ vim.keymap.set('n', '<leader>hp',
   end,
   {desc = '[H]arpoon [P]revious', silent = true }
 )
+vim.keymap.set('n', '<leader>h1',
+  function()
+    harpoon:list():select(1)
+  end,
+  {desc = '[H]arpoon select [1]', silent = true }
+)
+vim.keymap.set('n', '<leader>h2',
+  function()
+    harpoon:list():select(2)
+  end,
+  {desc = '[H]arpoon select [2]', silent = true }
+)
+vim.keymap.set('n', '<leader>h3',
+  function()
+    harpoon:list():select(3)
+  end,
+  {desc = '[H]arpoon select [3]', silent = true }
+)
+vim.keymap.set('n', '<leader>h4',
+  function()
+    harpoon:list():select(4)
+  end,
+  {desc = '[H]arpoon select [4]', silent = true }
+)
+vim.keymap.set('n', '<leader>h5',
+  function()
+    harpoon:list():select(5)
+  end,
+  {desc = '[H]arpoon select [5]', silent = true }
+)
+vim.keymap.set('n', '<leader>h6',
+  function()
+    harpoon:list():select(6)
+  end,
+  {desc = '[H]arpoon select [6]', silent = true }
+)
+vim.keymap.set('n', '<leader>h7',
+  function()
+    harpoon:list():select(7)
+  end,
+  {desc = '[H]arpoon select [7]', silent = true }
+)
+vim.keymap.set('n', '<leader>h8',
+  function()
+    harpoon:list():select(8)
+  end,
+  {desc = '[H]arpoon select [8]', silent = true }
+)
 
 -- explorer
 vim.keymap.set('n', '<leader>x', ':Explore<cr>', { desc = 'E[x]plorer', silent = true })
@@ -264,17 +312,6 @@ end
 
 vim.keymap.set({ 'n', 'v' }, '<leader>f', format_with_lsp, { desc = '[F]ormat' })
 
--- format with prettier
--- local function formatWithPrettier()
---   local current_file = vim.fn.expand('%')
---   vim.cmd('w!')
---   vim.fn.system('prettier --plugin=prettier-plugin-tailwindcss --write ' .. current_file)
---   vim.cmd('e!')
--- end
-
-
-
-
 local function formatWithPrettier()
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
   local filetype = vim.bo.filetype
@@ -283,7 +320,11 @@ local function formatWithPrettier()
   local fake_filename = 'fake.' .. filetype
   local prettier_cmd = 'run-prettier --stdin-filepath ' .. fake_filename
   local output = vim.fn.system(prettier_cmd, table.concat(lines, '\n'))
-  vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(output, '\n'))
+  if output == nil then
+    return
+  else
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(output, '\n'))
+  end
 end
 
 vim.keymap.set({ 'n' }, '<leader>p', formatWithPrettier, { desc = '[P]rettier', noremap = true, silent = true })
