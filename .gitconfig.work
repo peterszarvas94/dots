@@ -4,8 +4,8 @@
 
 [core]
 	editor = nvim
-  filemode = false
-  autoclrf = true
+	filemode = false
+	autoclrf = true
 
 [alias]
 	st = status
