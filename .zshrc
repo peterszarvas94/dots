@@ -8,8 +8,12 @@ source $ZSH/oh-my-zsh.sh
 export PATH="$HOME/.local/bin:$PATH"
 
 # github ssh
+# firs run: eval $(keychain --eval --agents ssh)
 if [[ -o interactive ]]; then
-    eval "$(keychain --eval --agents ssh --quiet --inherit any --quick ~/.ssh/github)"
+    # eval "$(keychain --eval --agents ssh --quiet --inherit any --quick ~/.ssh/github)"
+    # eval "$(keychain --eval --agents ssh --quiet --inherit any --quick ~/.ssh/gitlab)"
+    eval "$(ssh-agent -s)" > /dev/null
+    ssh-add ~/.ssh/github > /dev/null 2>&1
 fi
 
 # Control+F to open tmux-sessionizer
@@ -38,3 +42,7 @@ export TERM='xterm-256color'
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
