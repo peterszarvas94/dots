@@ -1,9 +1,11 @@
 [user]
-	email = contact@peterszarvas.hu
+	email = peter.szarvas.external@eviden.com
 	name = "Szarvas Péter"
 
 [core]
 	editor = nvim
+  filemode = false
+  autoclrf = true
 
 [alias]
 	st = status
