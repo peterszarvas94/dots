@@ -51,6 +51,7 @@ require('colorizer').setup({
 vim.filetype.add({
   extension = {
     templ = "templ",
+    astro = "astro",
   },
 })
 
@@ -98,21 +99,30 @@ lspconfig.tailwindcss.setup {
     },
   },
 }
+lspconfig.astro.setup {
+  filetypes = { "astro" },
+}
 
--- :SetTab to set tab width 2, shiftwidth 2, expandtab
--- replace tabs with two spaces
-function SetTab()
+-- set spaces as tabs
+function Spaces()
   vim.cmd('set tabstop=2 | set shiftwidth=2 | set expandtab')
   vim.cmd([[ %s/\t/  /ge | update ]])
 end
 
--- vim.cmd([[
---   autocmd FileType * lua SetTab()
--- ]])
+vim.cmd([[
+  command! Spaces lua Spaces()
+]])
+
+-- set tabs as tabs
+function Tabs()
+  vim.cmd('set tabstop=2 | set shiftwidth=2 | set noexpandtab')
+  vim.cmd([[ %s/  /\t/ge | update ]])
+end
 
 vim.cmd([[
-  command! SetTab lua SetTab()
+  command! Tabs lua Tabs()
 ]])
+
 
 -- set colorcolumn color
 function SetColorColumn()

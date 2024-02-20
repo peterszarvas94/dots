@@ -336,3 +336,6 @@ vim.keymap.set({ 'v' }, '>', '>gv', { desc = 'Indent right', noremap = true, sil
 -- move selected lines vertically (with correct indentation)
 vim.keymap.set({ 'v' }, 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
 vim.keymap.set({ 'v' }, 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
+
+local zenmode = require('zen-mode')
+vim.keymap.set('n', '<leader>z', zenmode.toggle, { desc = '[Z]en mode' })
