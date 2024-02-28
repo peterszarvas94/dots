@@ -3,7 +3,7 @@
 # install packages
 sudo apt update -y
 sudo apt upgrade -y 
-sudo apt isntall -y git
+sudo apt install -y git
 sudo apt install -y build-essential 
 sudo apt install -y unzip 
 sudo apt install -y fzf 
