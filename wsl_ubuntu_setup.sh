@@ -74,12 +74,11 @@ ln -s ~/projects/dots/.local/bin/tmux-sessionizer ~/.local/bin/tmux-sessionizer
 # ssh
 mkdir -p ~/.ssh
 cd ~/.ssh
+ln -s ~/projects/dots/.ssh/known_hosts ~/.ssh/known_hosts
 echo "github" | ssh-keygen -t ed25519 -C "contact@peterszarvas.hu"
 cat ~/.ssh/github.pub | xclip -selection clipboard
-alias chrome="/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe"
-chrome https://github.com/settings/ssh/new
-# cmd.exe /c start chrome https://github.com/settings/ssh/new
-ln -s ~/projects/dots/.ssh/known_hosts ~/.ssh/known_hosts
+cd /mnt/c/Program\ Files/Google/Chrome/Application
+./chrome.exe https://github.com/settings/ssh/new
 
 # nvm, node, npm
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -95,7 +94,6 @@ sudo apt install -y zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
 rm -rf ~/.zshrc
 ln -s ~/projects/dots/.zshrc ~/.zshrc
-# echo "\nalias chrome=\"/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe\"" >> ~/.zshrc
-sudo chsh -s $(which zsh)
+sudo chsh -s /bin/zsh
 sudo rm -rf ~/Downloads/*
 exec zsh
