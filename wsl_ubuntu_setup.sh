@@ -18,7 +18,11 @@ cd ~/Downloads
 wget https://github.com/Kitware/CMake/releases/download/v3.29.0-rc2/cmake-3.29.0-rc2-linux-x86_64.tar.gz
 tar xzvf cmake-3.29.0-rc2-linux-x86_64.tar.gz
 sudo mv ~/Downloads/cmake-3.29.0-rc2-linux-x86_64 /usr/lib/
-for file in /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/*; do sudo ln -s "$file" /usr/bin; done
+sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/ccmake /usr/bin
+sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/cmake /usr/bin
+sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/cmake-gui /usr/bin
+sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/cpack /usr/bin
+sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/ctest /usr/bin
 rm -rf ~/Downloads/*
 
 # go
@@ -75,6 +79,8 @@ mkdir -p ~/.ssh
 cd ~/.ssh
 echo "github" | ssh-keygen -t ed25519 -C "contact@peterszarvas.hu"
 cat ~/.ssh/github.pub | xclip -selection clipboard
+alias chrome="/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe"
+chrome https://github.com/settings/ssh/new
 # cmd.exe /c start chrome https://github.com/settings/ssh/new
 ln -s ~/projects/dots/.ssh/known_hosts ~/.ssh/known_hosts
 
@@ -92,5 +98,6 @@ sudo apt install -y zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
 rm -rf ~/.zshrc
 ln -s ~/projects/dots/.zshrc ~/.zshrc
+# echo "\nalias chrome=\"/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe\"" >> ~/.zshrc
 sudo chsh -s $(which zsh)
 exec zsh
