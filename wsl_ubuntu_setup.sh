@@ -8,7 +8,7 @@ sudo apt install build-essential
 sudo apt install unzip 
 sudo apt install fzf 
 sudo apt install ripgrep
-sudo api install xclip
+sudo apt install xclip
 
 # hide welcome message
 sudo touch /root/.hushlogin
