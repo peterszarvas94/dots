@@ -1,6 +1,6 @@
 [user]
 	email = peter.szarvas.external@eviden.com
-	name = "Szarvas Péter"
+	name = "Péter Szarvas"
 
 [core]
 	editor = nvim
