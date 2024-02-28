@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # install packages
-sudo apt update
-sudo apt upgrade
-sudo apt git 
-sudo apt install build-essential 
-sudo apt install unzip 
-sudo apt install fzf 
-sudo apt install ripgrep
-sudo apt install xclip
+sudo apt update -y
+sudo apt upgrade -y 
+sudo apt isntall -y git
+sudo apt install -y build-essential 
+sudo apt install -y unzip 
+sudo apt install -y fzf 
+sudo apt install -y ripgrep
+sudo apt install -y xclip
 
 # hide welcome message
 sudo touch /root/.hushlogin
@@ -37,7 +37,7 @@ cd ~/projects/dots
 git remote remove origin
 git remote add origin git@github.com:peterszarvas94/dots.git
 
-# set up neovim
+# neovim
 mkdir -p ~/Downloads
 cd ~/Downloads
 wget https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz
@@ -75,7 +75,8 @@ mkdir -p ~/.ssh
 cd ~/.ssh
 echo "github" | ssh-keygen -t ed25519 -C "contact@peterszarvas.hu"
 cat ~/.ssh/github.pub | xclip -selection clipboard
-cmd.exe /c start chrome https://github.com/settings/ssh/new
+# cmd.exe /c start chrome https://github.com/settings/ssh/new
+ln -s ~/projects/dots/.ssh/known_hosts ~/.ssh/known_hosts
 
 # nvm, node, npm
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -85,9 +86,10 @@ nvm install node
 # tailwind cli
 npm i -g tailwindcss
 
-# set up zsh
+# zsh
 cd ~
 sudo apt install zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-rm ~/.zshrc
+rm ~/.zshrsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
+rm -rf ~/.zshrc
 ln -s ~/projects/dots/.zshrc ~/.zshrc
+chsh -s $(which zsh)
