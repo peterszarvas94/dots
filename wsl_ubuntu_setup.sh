@@ -93,3 +93,4 @@ rm ~/.zshrsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/
 rm -rf ~/.zshrc
 ln -s ~/projects/dots/.zshrc ~/.zshrc
 chsh -s $(which zsh)
+zsh
