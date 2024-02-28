@@ -89,7 +89,7 @@ npm i -g tailwindcss
 # zsh
 cd ~
 sudo apt install zsh
-rm ~/.zshrsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
 rm -rf ~/.zshrc
 ln -s ~/projects/dots/.zshrc ~/.zshrc
 chsh -s $(which zsh)
