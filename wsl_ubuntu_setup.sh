@@ -58,7 +58,7 @@ rm -rf ~/.gitignore
 ln -s ~/projects/dots/.gitignore ~/.gitignore
 
 # tmux
-sudo apt install tmux
+sudo apt install -y tmux
 rm -rf ~/.tmux.conf
 ln -s ~/projects/dots/.tmux.conf ~/.tmux.conf
 
@@ -88,9 +88,9 @@ npm i -g tailwindcss
 
 # zsh
 cd ~
-sudo apt install zsh
+sudo apt install -y zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
 rm -rf ~/.zshrc
 ln -s ~/projects/dots/.zshrc ~/.zshrc
-chsh -s $(which zsh)
-zsh
+sudo chsh -s $(which zsh)
+exec zsh
