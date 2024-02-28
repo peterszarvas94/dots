@@ -14,6 +14,7 @@ sudo apt install -y xclip
 sudo touch /root/.hushlogin
 
 # cmake
+mkdir -p ~/Downloads
 cd ~/Downloads
 wget https://github.com/Kitware/CMake/releases/download/v3.29.0-rc2/cmake-3.29.0-rc2-linux-x86_64.tar.gz
 tar xzvf cmake-3.29.0-rc2-linux-x86_64.tar.gz
@@ -23,7 +24,6 @@ sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/cmake /usr/bin
 sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/cmake-gui /usr/bin
 sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/cpack /usr/bin
 sudo ln -s /usr/lib/cmake-3.29.0-rc2-linux-x86_64/bin/ctest /usr/bin
-rm -rf ~/Downloads/*
 
 # go
 cd ~/Downloads
@@ -31,7 +31,6 @@ wget https://golang.org/dl/go1.22.0.linux-amd64.tar.gz
 tar xzvf go1.22.0.linux-amd64.tar.gz
 sudo mv ~/Downloads/go /usr/lib
 sudo ln -s /usr/lib/go/bin/go /usr/bin
-rm -rf ~/Downloads/*
 
 # clone dots
 mkdir ~/projects
@@ -42,13 +41,11 @@ git remote remove origin
 git remote add origin git@github.com:peterszarvas94/dots.git
 
 # neovim
-mkdir -p ~/Downloads
 cd ~/Downloads
 wget https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz
 tar xzvf nvim-linux64.tar.gz
 sudo mv ~/Downloads/nvim-linux64 /usr/lib/
 sudo ln -s /usr/lib/nvim-linux64/bin/nvim /usr/bin/nvim
-rm -rf ~/Downloads/*
 mkdir -p ~/.config
 ln -s ~/projects/dots/.config/nvim ~/.config/nvim
 
@@ -100,4 +97,5 @@ rm -rf ~/.zshrc
 ln -s ~/projects/dots/.zshrc ~/.zshrc
 # echo "\nalias chrome=\"/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe\"" >> ~/.zshrc
 sudo chsh -s $(which zsh)
+sudo rm -rf ~/Downloads/*
 exec zsh
