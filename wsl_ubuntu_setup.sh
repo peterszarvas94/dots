@@ -94,6 +94,6 @@ sudo apt install -y zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
 rm -rf ~/.zshrc
 ln -s ~/projects/dots/.zshrc ~/.zshrc
-sudo chsh -s /bin/zsh
+sudo chsh -s /bin/zsh peti
 sudo rm -rf ~/Downloads/*
 exec zsh
