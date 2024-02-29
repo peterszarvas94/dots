@@ -98,5 +98,6 @@ sudo chsh -s /bin/zsh peti
 sudo rm -rf ~/Downloads/*
 echo "" >> ~/.zshrc
 echo "# alias chrome on windows" >> ~/.zshrc
-echo "alias chrome=\"/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe\"" >> ~/.zshrc
+stat "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe" &>/dev/null && echo "alias chrome=\"/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe\"" >> ~/.zshrc
+stat "/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" &>/dev/null && echo "alias chrome=\"/mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application/chrome.exe\"" >> ~/.zshrc
 exec zsh
