@@ -12,9 +12,9 @@
 	cm = commit
 	lg = log --decorate --graph --oneline
 	br = branch
-	bd = branch --delete
+	bd = branch -D
 	ch = checkout
-	cb = checkout --branch
+	cb = checkout -b
 
 [init]
 	defaultBranch = main
