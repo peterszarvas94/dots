@@ -9,7 +9,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id setxkbmap -layout us 
 exec_always --no-startup-id feh --bg-fill ~/projects/dots/background/bing_wallpaper_MWDolomites_1920x1080.jpg --bg-fill ~/projects/dots/background/city-1679690962777-4742.jpg
 exec --no-startup-id ~/.config/polybar/launch.sh
-exec_always --no-startup-id ~/.config/i3/arrange-monitors.sh
+# exec_always --no-startup-id ~/.config/i3/arrange-monitors.sh
 
 ###
 ### WORKSPACES
@@ -74,6 +74,7 @@ bindsym $mod+n exec nautilus
 bindsym $mod+s exec ~/.config/rofi/powermenu.sh
 bindsym $mod+space exec ~/.config/polybar/switch-layouts.sh
 bindsym $mod+d exec "rofi -show drun"
+bindsym $mod+m exec ~/.config/i3/arrange-monitors.sh
 
 bindsym Print exec --no-startup-id gscreenshot -s -f ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png
 bindsym $mod+Return exec alacritty
