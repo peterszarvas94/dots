@@ -13,8 +13,12 @@
 	lg = log --decorate --graph --oneline
 	br = branch
 	bd = branch -D
+  bm = branch -M
 	ch = checkout
 	cb = checkout -b
 
 [init]
 	defaultBranch = main
+
+[credential]
+	helper = store
