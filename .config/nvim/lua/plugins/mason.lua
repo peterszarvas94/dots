@@ -35,22 +35,6 @@ return {
       },
     }
 
-    local lspconfig = require 'lspconfig'
-    lspconfig.htmx.setup {
-      filetypes = { 'html', 'templ' },
-    }
-    lspconfig.tailwindcss.setup {
-      filetypes = { 'html', 'templ' },
-      init_options = {
-        userLanguages = {
-          templ = 'html',
-        },
-      },
-    }
-    lspconfig.astro.setup {
-      filetypes = { 'astro' },
-    }
-
     local on_attach = function(_, bufnr)
       vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[n]ame' })
       vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[C]ode [A]ction' })
@@ -69,6 +53,38 @@ return {
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
       end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
     end
+
+    local lspconfig = require 'lspconfig'
+
+    lspconfig.htmx.setup {
+      filetypes = { 'html', 'templ' },
+    }
+
+    lspconfig.tailwindcss.setup {
+      filetypes = { 'html', 'templ' },
+      init_options = {
+        userLanguages = {
+          templ = 'html',
+        },
+      },
+    }
+
+    lspconfig.astro.setup {
+      filetypes = { 'astro' },
+    }
+
+    local function organize_imports()
+      local params = {
+        command = '_typescript.organizeImports',
+        arguments = { vim.api.nvim_buf_get_name(0) },
+        title = '',
+      }
+      vim.lsp.buf.execute_command(params)
+    end
+
+    vim.api.nvim_create_user_command('OrganizeImports', function()
+      organize_imports()
+    end, {})
 
     mason_lspconfig.setup_handlers {
       function(server_name)
@@ -102,7 +118,7 @@ return {
       ensure_installed = {
         'prettier', -- prettier formatter
         'stylua', -- lua formatter
-        'eslint_d', -- eslint language server
+        -- 'eslint_d', -- eslint language server
       },
     }
   end,

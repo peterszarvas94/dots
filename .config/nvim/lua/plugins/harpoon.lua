@@ -13,7 +13,7 @@ return {
     end, { desc = '[H]arpoon [T]oggle window', silent = true })
     -- add current file to harpoon
     vim.keymap.set('n', '<leader>ha', function()
-      harpoon:list():append()
+      harpoon:list():add()
     end, { desc = '[H]arpoon [A]dd', silent = true })
     vim.keymap.set('n', '<leader>hn', function()
       harpoon:list():next()
