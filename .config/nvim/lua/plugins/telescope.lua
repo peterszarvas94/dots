@@ -41,6 +41,6 @@ return {
     vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch [B]uffers' })
     vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-    vim.keymap.set('n', '<leader>sk', builtin.highlights, { desc = '[S]earch [K]eymaps' })
+    vim.keymap.set('n', '<leader>si', builtin.highlights, { desc = '[S]earch H[i]ghlights' })
   end,
 }

@@ -37,9 +37,10 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 -- organize imports
 vim.keymap.set('n', '<leader>o', ':OrganizeImports<cr>', { desc = '[O]rganize Iports', silent = true })
 
+
 -- quickfix list
-vim.keymap.set('n', '<C-a>', '<cmd>cprevious<cr>', { desc = 'Previous item in quickfix list', silent = true })
-vim.keymap.set('n', '<C-s>', '<cmd>cnext<cr>', { desc = 'Next item in quickfix list', silent = true })
+vim.keymap.set('n', '<C-[>', '<cmd>cprevious<cr>', { desc = 'Previous item in quickfix list', silent = true })
+vim.keymap.set('n', '<C-]>', '<cmd>cnext<cr>', { desc = 'Next item in quickfix list', silent = true })
 
 -- nvimtree
 vim.keymap.set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = 'E[x]plorer toggle - Nvimtree', silent = true })
