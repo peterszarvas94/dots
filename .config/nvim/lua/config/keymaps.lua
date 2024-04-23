@@ -43,4 +43,4 @@ vim.keymap.set('n', '<C-[>', '<cmd>cprevious<cr>', { desc = 'Previous item in qu
 vim.keymap.set('n', '<C-]>', '<cmd>cnext<cr>', { desc = 'Next item in quickfix list', silent = true })
 
 -- nvimtree
-vim.keymap.set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = 'E[x]plorer toggle - Nvimtree', silent = true })
+vim.keymap.set('n', '<leader>x', ':NvimTreeFindFileToggle<CR>', { desc = 'E[x]plorer toggle - Nvimtree', silent = true })

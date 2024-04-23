@@ -33,11 +33,11 @@ return {
     disable_netrw = false,
     git = {
       show_on_dirs = true,
-      show_on_open_dirs = false,
+      show_on_open_dirs = true,
     },
     diagnostics = {
       show_on_dirs = true,
-      show_on_open_dirs = false,
+      show_on_open_dirs = true,
     },
     actions = {
       open_file = {
