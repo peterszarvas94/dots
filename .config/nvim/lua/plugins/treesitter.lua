@@ -6,8 +6,8 @@ return {
   },
   build = ':TSUpdate',
   config = function()
+    ---@diagnostic disable-next-line
     require('nvim-treesitter.configs').setup {
-      ---@diagnostic disable-next-line
       ensure_installed = {
         'go',
         'javascript',

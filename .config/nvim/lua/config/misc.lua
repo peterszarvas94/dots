@@ -47,3 +47,10 @@ vim.cmd [[
 vim.cmd [[
   command! GP !git push
 ]]
+
+vim.cmd 'highlight NvimTreeNormal guibg=none'
+vim.cmd 'highlight TreesitterContext guibg=none'
+-- vim.cmd 'highlight TreesitterContextSeparator guifg=#f9e2af'
+vim.cmd 'highlight TreesitterContextLineNumber guibg=#f9e2af'
+-- vim.cmd 'highlight TreesitterContextLineNumberBottom guifg=#f9e2af gui=underline'
+vim.cmd 'highlight TreesitterContextBottom gui=none'
