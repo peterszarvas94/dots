@@ -17,6 +17,7 @@ program = "/bin/zsh"
 
 [window]
 opacity = 1
+decorations = "none"
 
 [window.padding]
 x = 10
