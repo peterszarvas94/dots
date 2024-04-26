@@ -7,6 +7,9 @@ return {
   config = function()
     require('which-key').register {
       ['<leader>'] = {
+        g = {
+          name = '[G]it',
+        },
         s = {
           name = '[S]earch',
         },
@@ -17,7 +20,7 @@ return {
           name = '[H]arpoon',
         },
         t = {
-          name = '[T]erminal',
+          name = '[T]ab'
         },
       },
     }

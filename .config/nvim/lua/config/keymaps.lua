@@ -48,3 +48,47 @@ vim.keymap.set('n', '<leader>x', ':NvimTreeFindFileToggle<CR>', { desc = 'E[x]pl
 vim.keymap.set('n', '[c', function()
   require('treesitter-context').go_to_context(vim.v.count1)
 end, { desc = 'Previous to [C]ontext', silent = true })
+
+-- neogit
+vim.keymap.set('n', '<leader>gn', ':Neogit<CR>', { desc = '[G]it - [N]eogit', silent = true })
+
+-- fugitive
+vim.keymap.set('n', '<leader>gf', ':tab Git<CR>', { desc = '[G]it - [F]ugitive', silent = true })
+
+-- tabs
+vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew', silent = true })
+
+function Goto_tab(tab_index)
+  -- Check if the tab exists
+  local total_tabs = vim.fn.tabpagenr '$'
+  if tab_index > 0 and tab_index <= total_tabs then
+    vim.cmd('tabnext ' .. tab_index)
+  else
+    print 'Tab not found!'
+    vim.defer_fn(function()
+      vim.cmd 'echo ""' -- Clear the message
+    end, 1000)
+  end
+end
+
+vim.keymap.set('n', '<leader>1', ':lua Goto_tab(1)<CR>', { desc = 'Tab [1]', silent = true })
+vim.keymap.set('n', '<leader>2', ':lua Goto_tab(2)<CR>', { desc = 'Tab [2]', silent = true })
+vim.keymap.set('n', '<leader>3', ':lua Goto_tab(3)<CR>', { desc = 'Tab [3]', silent = true })
+vim.keymap.set('n', '<leader>4', ':lua Goto_tab(4)<CR>', { desc = 'Tab [4]', silent = true })
+vim.keymap.set('n', '<leader>5', ':lua Goto_tab(5)<CR>', { desc = 'Tab [5]', silent = true })
+vim.keymap.set('n', '<leader>6', ':lua Goto_tab(6)<CR>', { desc = 'Tab [6]', silent = true })
+vim.keymap.set('n', '<leader>7', ':lua Goto_tab(7)<CR>', { desc = 'Tab [7]', silent = true })
+vim.keymap.set('n', '<leader>8', ':lua Goto_tab(8)<CR>', { desc = 'Tab [8]', silent = true })
+vim.keymap.set('n', '<leader>9', ':lua Goto_tab(9)<CR>', { desc = 'Tab [9]', silent = true })
+vim.keymap.set('n', '<leader>0', ':lua Goto_tab(10)<CR>', { desc = 'Tab [10]', silent = true })
+
+-- Set tabline to display only the file name
+
+-- Define a function to prompt for input and run the command
+function RenameTab()
+  local input = vim.fn.input 'New tabname: '
+  vim.cmd(':LualineRenameTab ' .. input)
+end
+
+-- Set the keymap to trigger the function with the 'w' key
+vim.keymap.set('n', '<leader>tr', ':lua RenameTab()<CR>', { desc = '[T]ab [R]ename', silent = true })

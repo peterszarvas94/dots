@@ -20,6 +20,9 @@ bindkey -s '^F' 'tmux-sessionizer\n'
 # neovim
 alias v="nvim"
 
+# tmux
+alias ta="tmux a"
+
 # turso
 export PATH="/home/peti/.turso:$PATH"
 

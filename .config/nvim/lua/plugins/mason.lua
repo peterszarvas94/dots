@@ -14,7 +14,7 @@ return {
       ensure_installed = {
         'tsserver', -- typescript language server
         'cssls', -- css language server
-        'tailwindcss', -- tailwindcss language server
+        -- 'tailwindcss', -- tailwindcss language server
         'gopls', -- go language server
         'bashls', -- bash language server
         'lua_ls', -- lua language server
