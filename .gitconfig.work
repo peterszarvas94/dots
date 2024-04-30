@@ -10,6 +10,7 @@
 [alias]
 	st = status
 	cm = commit
+	ca = commit --amend
 	lg = log --decorate --graph --oneline
 	br = branch
 	bd = branch -D

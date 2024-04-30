@@ -92,3 +92,6 @@ end
 
 -- Set the keymap to trigger the function with the 'w' key
 vim.keymap.set('n', '<leader>tr', ':lua RenameTab()<CR>', { desc = '[T]ab [R]ename', silent = true })
+
+-- colorizer
+vim.keymap.set('n', '<leader>ct', ':ColorizerToggle<CR>', { desc = '[C]olorizer [T]oggle', silent = true })

@@ -7,6 +7,9 @@ return {
   config = function()
     require('which-key').register {
       ['<leader>'] = {
+        c = {
+          name = '[C]ode / [C]olorizer',
+        },
         g = {
           name = '[G]it',
         },
