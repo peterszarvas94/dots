@@ -13,6 +13,7 @@ return { -- Autoformat
         javascript = { 'prettier' },
         javascriptreact = { 'prettier' },
         json = { 'prettier' },
+        markdown = { 'prettier' },
         -- html = { { 'prettierd', "prettier" } },
         -- css = { { 'prettierd', "prettier" } },
       },

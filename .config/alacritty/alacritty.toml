@@ -9,7 +9,11 @@ TERM = "xterm-256color"
 size = 16.0
 
 [font.normal]
-family = "FiraCode Nerd Font"
+# family = "GeistMono Nerd Font Mono"
+# family = "JetBrainsMono Nerd Font Mono"
+# family = "MesloLGL Nerd Font Mono"
+# family = "CaskaydiaCove Nerd Font"
+family = "FiraCode Nerd Font Mono"
 style = "Light"
 
 [shell]

@@ -25,6 +25,9 @@ return {
         t = {
           name = '[T]ab'
         },
+        m = {
+          name = '[M]arkdown'
+        },
       },
     }
   end,
