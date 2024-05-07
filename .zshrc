@@ -53,3 +53,12 @@ export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+alias dd="cd ~/projects/gems-backend-platform && docker compose down"
+alias du="cd ~/projects/gems-backend-platform && docker compose up -d"
+alias bb="cd ~/projects/gems-backend-platform && npm run build"
+alias bi="cd ~/projects/gems-backend-platform/packages/database && npm run init-development"
+alias bs="cd ~/projects/gems-backend-platform/packages/app && npm run start"
+alias fb="cd ~/projects/gems-frontend-platform && npm run build"
+alias fd="cd ~/projects/gems-frontend-platform/packages/app-gems && npm run dev"
+alias fg="cd ~/projects/gems-frontend-platform/packages/apiclient && npm run generate"

@@ -95,3 +95,33 @@ vim.keymap.set('n', '<leader>tr', ':lua RenameTab()<CR>', { desc = '[T]ab [R]ena
 
 -- colorizer
 vim.keymap.set('n', '<leader>ct', ':ColorizerToggle<CR>', { desc = '[C]olorizer [T]oggle', silent = true })
+
+-- gd
+function JumpToDefinition()
+  local org_path = vim.api.nvim_buf_get_name(0) -- Get the current buffer's name
+
+  -- Navigate to the definition
+  vim.api.nvim_command 'normal gd'
+
+  -- Wait for the LSP server response
+  vim.wait(100, function() end)
+
+  local new_path = vim.api.nvim_buf_get_name(0) -- Get the new buffer's name after navigation
+  if not (org_path == new_path) then
+    -- If the buffer has changed, create a new tab for the original file
+    vim.api.nvim_command '0tabnew %'
+
+    -- Restore the cursor position
+    vim.api.nvim_command('b ' .. org_path)
+    vim.api.nvim_command 'normal `"'
+
+    -- Switch to the original tab
+    vim.api.nvim_command 'normal gt'
+  else
+    -- If the buffer hasn't changed, switch to the existing tab
+    vim.api.nvim_command 'normal gt'
+  end
+end
+
+-- Map the function to a key combination
+vim.keymap.set('n', '<Leader>td', ':lua JumpToDefinition()<CR>', { desc = '[T]ab - go to [D]efinition', silent = true })
