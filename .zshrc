@@ -14,18 +14,6 @@ if [[ -o interactive ]]; then
     ssh-add ~/.ssh/digitalocean > /dev/null 2>&1
 fi
 
-# control+f to open tmux-sessionizer
-bindkey -s '^F' 'tmux-sessionizer\n'
-
-# neovim
-alias v="nvim"
-
-# tmux
-alias ta="tmux a"
-
-# turso
-export PATH="/home/peti/.turso:$PATH"
-
 # go
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH="$HOME/go"
@@ -42,8 +30,6 @@ export TERM='xterm-256color'
 
 # bun completions
 [ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
-
-# bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
@@ -54,11 +40,26 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-alias dd="cd ~/projects/gems-backend-platform && docker compose down"
-alias du="cd ~/projects/gems-backend-platform && docker compose up -d"
+# turso
+export PATH="/home/peti/.turso:$PATH"
+
+# control+f to open tmux-sessionizer
+bindkey -s '^F' 'tmux-sessionizer\n'
+
+# neovim
+alias v="nvim"
+
+# tmux
+alias ta="tmux a"
+
+# gems backend 
+alias bd="cd ~/projects/gems-backend-platform && docker compose down"
+alias bu="cd ~/projects/gems-backend-platform && docker compose up -d"
 alias bb="cd ~/projects/gems-backend-platform && npm run build"
 alias bi="cd ~/projects/gems-backend-platform/packages/database && npm run init-development"
 alias bs="cd ~/projects/gems-backend-platform/packages/app && npm run start"
+
+# gems frontend
 alias fb="cd ~/projects/gems-frontend-platform && npm run build"
-alias fd="cd ~/projects/gems-frontend-platform/packages/app-gems && npm run dev"
 alias fg="cd ~/projects/gems-frontend-platform/packages/apiclient && npm run generate"
+alias fd="cd ~/projects/gems-frontend-platform/packages/app-gems && npm run dev"

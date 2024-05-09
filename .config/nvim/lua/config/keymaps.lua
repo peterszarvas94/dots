@@ -97,6 +97,17 @@ vim.keymap.set('n', '<leader>tr', ':lua RenameTab()<CR>', { desc = '[T]ab [R]ena
 vim.keymap.set('n', '<leader>ct', ':ColorizerToggle<CR>', { desc = '[C]olorizer [T]oggle', silent = true })
 
 -- gd
+-- local function is_file_open_in_tab(file_name)
+--   local tabpages = vim.api.nvim_list_tabpages()
+--   for _, tabpage in ipairs(tabpages) do
+--     local bufname = vim.api.nvim_buf_get_name(tabpage)
+--     if bufname == file_name then
+--       return true
+--     end
+--   end
+--   return false
+-- end
+
 function JumpToDefinition()
   local org_path = vim.api.nvim_buf_get_name(0) -- Get the current buffer's name
 
