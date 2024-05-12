@@ -50,13 +50,13 @@ vim.keymap.set('n', '[c', function()
 end, { desc = 'Previous to [C]ontext', silent = true })
 
 -- neogit
-vim.keymap.set('n', '<leader>gn', ':Neogit<CR>', { desc = '[G]it - [N]eogit', silent = true })
+vim.keymap.set('n', '<leader>g', ':Neogit<CR>', { desc = 'Neo[G]it', silent = true })
 
 -- fugitive
-vim.keymap.set('n', '<leader>gf', ':tab Git<CR>', { desc = '[G]it - [F]ugitive', silent = true })
+-- vim.keymap.set('n', '<leader>gf', ':tab Git<CR>', { desc = '[G]it - [F]ugitive', silent = true })
 
 -- lazygit
-vim.keymap.set('n', '<leader>gl', ':tab LazyGit<CR>', { desc = '[G]it - [L]azygit', silent = true })
+-- vim.keymap.set('n', '<leader>gl', ':tab LazyGit<CR>', { desc = '[G]it - [L]azygit', silent = true })
 
 -- tabs
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew', silent = true })

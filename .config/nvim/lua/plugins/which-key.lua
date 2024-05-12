@@ -10,9 +10,9 @@ return {
         c = {
           name = '[C]ode / [C]olorizer',
         },
-        g = {
-          name = '[G]it',
-        },
+        -- g = {
+        --   name = '[G]it',
+        -- },
         s = {
           name = '[S]earch',
         },
