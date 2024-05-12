@@ -11,10 +11,13 @@ size = 16.0
 [font.normal]
 # family = "GeistMono Nerd Font Mono"
 # family = "JetBrainsMono Nerd Font Mono"
-# family = "MesloLGL Nerd Font Mono"
+# style = "ExtraLight"
+# family = "MonoLisa Nerd Font Mono"
+# family = "SFMono Nerd Font Mono"
+family = "MesloLGS Nerd Font Mono"
 # family = "CaskaydiaCove Nerd Font"
-family = "FiraCode Nerd Font Mono"
-style = "Light"
+# family = "FiraCode Nerd Font Mono"
+# style = "Light"
 
 [shell]
 program = "/bin/zsh"
