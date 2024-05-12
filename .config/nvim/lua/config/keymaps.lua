@@ -55,6 +55,9 @@ vim.keymap.set('n', '<leader>gn', ':Neogit<CR>', { desc = '[G]it - [N]eogit', si
 -- fugitive
 vim.keymap.set('n', '<leader>gf', ':tab Git<CR>', { desc = '[G]it - [F]ugitive', silent = true })
 
+-- lazygit
+vim.keymap.set('n', '<leader>gl', ':tab LazyGit<CR>', { desc = '[G]it - [L]azygit', silent = true })
+
 -- tabs
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew', silent = true })
 
