@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Navigate to dotfiles directory
+cd ~/projects/dots
+
+# Check if a tmux session named "dots" exists
+if ! tmux has-session -t dots 2>/dev/null; then
+    # If session doesn't exist, create a new one with name "dots" and start neovim
+    tmux new-session -d -s dots 'nvim .'
+    tmux attach-session -t dots
+else
+    # If session exists, attach to it
+    tmux attach-session -t dots
+fi

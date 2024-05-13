@@ -28,7 +28,7 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'
 
-# bun completions
+# bun complcd ~/projects/dots && tmuxetions
 [ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
@@ -41,7 +41,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # turso
-export PATH="/home/peti/.turso:$PATH"
+export PATH="~/.turso:$PATH"
 
 # control+f to open tmux-sessionizer
 bindkey -s '^F' 'tmux-sessionizer\n'
@@ -66,3 +66,6 @@ alias fd="cd ~/projects/gems-frontend-platform/packages/app-gems && npm run dev"
 
 # lazygit
 alias lg="lazygit"
+
+# dots
+alias td="tmux-dots"

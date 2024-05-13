@@ -23,3 +23,6 @@
 
 [credential]
 	helper = store
+
+[merge]
+    tool = nvimdiff
