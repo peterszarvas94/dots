@@ -63,3 +63,6 @@ alias bs="cd ~/projects/gems-backend-platform/packages/app && npm run start"
 alias fb="cd ~/projects/gems-frontend-platform && npm run build"
 alias fg="cd ~/projects/gems-frontend-platform/packages/apiclient && npm run generate"
 alias fd="cd ~/projects/gems-frontend-platform/packages/app-gems && npm run dev"
+
+# lazygit
+alias lg="lazygit"

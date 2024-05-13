@@ -8,8 +8,8 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- terminal
--- vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[t]erminal [o]pen', silent = true })
--- vim.keymap.set('t', '<c-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
+vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[T]erminal [O]pen', silent = true })
+vim.keymap.set('t', '<c-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
 
 -- buffer
 vim.keymap.set('n', '<leader>bd', ':bd!<cr>', { desc = '[B]uffer [D]elete', silent = true })
@@ -74,16 +74,16 @@ function Goto_tab(tab_index)
   end
 end
 
-vim.keymap.set('n', '<leader>1', ':lua Goto_tab(1)<CR>', { desc = 'Tab [1]', silent = true })
-vim.keymap.set('n', '<leader>2', ':lua Goto_tab(2)<CR>', { desc = 'Tab [2]', silent = true })
-vim.keymap.set('n', '<leader>3', ':lua Goto_tab(3)<CR>', { desc = 'Tab [3]', silent = true })
-vim.keymap.set('n', '<leader>4', ':lua Goto_tab(4)<CR>', { desc = 'Tab [4]', silent = true })
-vim.keymap.set('n', '<leader>5', ':lua Goto_tab(5)<CR>', { desc = 'Tab [5]', silent = true })
-vim.keymap.set('n', '<leader>6', ':lua Goto_tab(6)<CR>', { desc = 'Tab [6]', silent = true })
-vim.keymap.set('n', '<leader>7', ':lua Goto_tab(7)<CR>', { desc = 'Tab [7]', silent = true })
-vim.keymap.set('n', '<leader>8', ':lua Goto_tab(8)<CR>', { desc = 'Tab [8]', silent = true })
-vim.keymap.set('n', '<leader>9', ':lua Goto_tab(9)<CR>', { desc = 'Tab [9]', silent = true })
-vim.keymap.set('n', '<leader>0', ':lua Goto_tab(10)<CR>', { desc = 'Tab [10]', silent = true })
+vim.keymap.set('n', '<leader>t1', ':lua Goto_tab(1)<CR>', { desc = 'Tab [1]', silent = true })
+vim.keymap.set('n', '<leader>t2', ':lua Goto_tab(2)<CR>', { desc = 'Tab [2]', silent = true })
+vim.keymap.set('n', '<leader>t3', ':lua Goto_tab(3)<CR>', { desc = 'Tab [3]', silent = true })
+vim.keymap.set('n', '<leader>t4', ':lua Goto_tab(4)<CR>', { desc = 'Tab [4]', silent = true })
+vim.keymap.set('n', '<leader>t5', ':lua Goto_tab(5)<CR>', { desc = 'Tab [5]', silent = true })
+vim.keymap.set('n', '<leader>t6', ':lua Goto_tab(6)<CR>', { desc = 'Tab [6]', silent = true })
+vim.keymap.set('n', '<leader>t7', ':lua Goto_tab(7)<CR>', { desc = 'Tab [7]', silent = true })
+vim.keymap.set('n', '<leader>t8', ':lua Goto_tab(8)<CR>', { desc = 'Tab [8]', silent = true })
+vim.keymap.set('n', '<leader>t9', ':lua Goto_tab(9)<CR>', { desc = 'Tab [9]', silent = true })
+vim.keymap.set('n', '<leader>t0', ':lua Goto_tab(10)<CR>', { desc = 'Tab [10]', silent = true })
 
 -- Set tabline to display only the file name
 
