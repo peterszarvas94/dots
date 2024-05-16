@@ -15,9 +15,10 @@ vim.o.shiftwidth = 2
 vim.o.expandtab = true
 vim.g.netrw_liststyle = 0
 vim.o.scrolloff = 8
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.inccommand = "split"
 
--- vim.o.ignorecase = true
--- vim.o.smartcase = true
 -- vim.o.breakindent = true
 -- vim.o.updatetime = 250
 -- vim.o.timeout = true

@@ -2,12 +2,17 @@ return {
   'nvim-lualine/lualine.nvim',
   dependencies = {
     'nvim-tree/nvim-web-devicons',
+    'AndreM222/copilot-lualine',
   },
   config = function()
     require('lualine').setup {
       options = {
         component_separators = { left = '', right = '' },
         section_separators = { left = '', right = '' },
+      },
+      sections = {
+        lualine_c = {},
+        lualine_x = { 'copilot', 'encoding', 'fileformat', 'filetype' },
       },
       tabline = {
         lualine_a = {
@@ -16,16 +21,13 @@ return {
             tab_max_length = vim.o.columns,
             max_length = vim.o.columns,
             use_mode_colors = true,
-            mode = 2,
+            mode = 1,
             path = 1,
             symbols = {
               modified = '',
             },
           },
         },
-      },
-      sections = {
-        lualine_c = {},
       },
     }
   end,
