@@ -20,5 +20,8 @@ stopwatch() {
     done
 }
 
+# Clear the screen
+clear
+
 # Start the stopwatch
 stopwatch

@@ -13,6 +13,8 @@ return {
       'nvim-telescope/telescope.nvim',
     },
     config = function()
+      local lspconfig = require 'lspconfig'
+
       local mason_lspconfig = require 'mason-lspconfig'
 
       mason_lspconfig.setup {
@@ -36,7 +38,24 @@ return {
           Lua = {
             workspace = { checkThirdParty = false },
             telemetry = { enable = false },
+            diagnostics = {
+              globals = { 'vim' },
+            },
           },
+        },
+        htmx = {
+          filetypes = { 'html', 'templ' },
+        },
+        tailwindcss = {
+          filetypes = { 'html', 'templ' },
+          init_options = {
+            userLanguages = {
+              templ = 'html',
+            },
+          },
+        },
+        astro = {
+          filetypes = { 'astro' },
         },
       }
 
@@ -58,25 +77,6 @@ return {
           print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
         end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
       end
-
-      local lspconfig = require 'lspconfig'
-
-      lspconfig.htmx.setup {
-        filetypes = { 'html', 'templ' },
-      }
-
-      lspconfig.tailwindcss.setup {
-        filetypes = { 'html', 'templ' },
-        init_options = {
-          userLanguages = {
-            templ = 'html',
-          },
-        },
-      }
-
-      lspconfig.astro.setup {
-        filetypes = { 'astro' },
-      }
 
       local function organize_imports()
         local params = {

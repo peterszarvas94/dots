@@ -1,5 +1,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.o.guicursor = "n-v-c:block"
 vim.o.hlsearch = false
 vim.o.number = true
 vim.o.relativenumber = true
