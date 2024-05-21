@@ -16,6 +16,9 @@ return {
 
     ---@diagnostic disable-next-line missing-fields
     cmp.setup {
+      completion = {
+        autocomplete = false,
+      },
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
@@ -28,7 +31,21 @@ return {
         ['<C-u>'] = cmp.mapping.select_prev_item { count = 10 },
         ['<C-k>'] = cmp.mapping.scroll_docs(-4),
         ['<C-j>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete {},
+        ['<C-Space>'] = cmp.mapping.complete {
+          config = {
+            sources = {
+              { name = 'nvim_lsp' },
+              { name = 'luasnip' },
+            },
+          },
+        },
+        ['<C-x>'] = cmp.mapping.complete {
+          config = {
+            sources = {
+              { name = 'copilot' },
+            },
+          },
+        },
         ['<C-y>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Insert,
           select = true,

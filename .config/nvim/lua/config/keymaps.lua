@@ -18,7 +18,11 @@ vim.keymap.set('n', '<leader>bd', ':bd!<cr>', { desc = '[B]uffer [D]elete', sile
 -- vim.keymap.set('n', '<leader>x', ':Explore<cr>', { desc = 'E[x]plorer', silent = true })
 
 -- undotree
-vim.keymap.set('n', '<leader>u', ':UndotreeToggle<cr>', { desc = '[U]ndootree' })
+local function openUndoTree() 
+  vim.cmd('UndotreeToggle')
+  vim.cmd('NvimTreeFindFileToggle')
+end
+vim.keymap.set('n', '<leader>u', openUndoTree, { desc = '[U]ndootree' })
 
 -- keep selection after indent
 vim.keymap.set({ 'v' }, '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })

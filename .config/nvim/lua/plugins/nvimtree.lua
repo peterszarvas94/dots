@@ -3,7 +3,7 @@ return {
   config = function()
     require('nvim-tree').setup {
       view = {
-        width = '100%',
+        width = '25%',
         relativenumber = true,
         number = true,
       },
@@ -42,11 +42,17 @@ return {
         show_on_dirs = true,
         show_on_open_dirs = true,
       },
-      actions = {
-        open_file = {
-          quit_on_open = true,
-        },
+      update_focused_file = {
+        enable = true,
+      },
+      modified = {
+        enable = true,
       },
     }
+
+    local api = require 'nvim-tree.api'
+    api.events.subscribe(api.events.Event.FileCreated, function(file)
+      vim.cmd('edit ' .. file.fname)
+    end)
   end,
 }

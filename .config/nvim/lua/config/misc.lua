@@ -34,20 +34,14 @@ vim.cmd [[
   command! Tabs lua Tabs()
 ]]
 
--- set colorcolumn color
-function SetColorColumn()
-  vim.cmd 'highlight ColorColumn ctermbg=0 guibg=#414868'
-end
-
-vim.cmd [[
-  autocmd FileType * lua SetColorColumn()
-]]
-
 -- :GitPush git push command
 vim.cmd [[
   command! GP !git push
 ]]
 
+vim.cmd 'highlight ColorColumn guibg=#1e1e2e'
+vim.cmd 'highlight Normal ctermfg=none guifg=none guibg=none'
+vim.cmd 'highlight NormalNC ctermfg=none guifg=none guibg=none'
 vim.cmd 'highlight NvimTreeNormal guibg=none'
 vim.cmd 'highlight TreesitterContext guibg=none'
 -- vim.cmd 'highlight TreesitterContextSeparator guifg=#f9e2af'
