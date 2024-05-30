@@ -17,7 +17,7 @@ return {
     ---@diagnostic disable-next-line missing-fields
     cmp.setup {
       completion = {
-        autocomplete = false,
+        -- autocomplete = false,
       },
       snippet = {
         expand = function(args)
@@ -32,20 +32,20 @@ return {
         ['<C-k>'] = cmp.mapping.scroll_docs(-4),
         ['<C-j>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete {
-          config = {
-            sources = {
-              { name = 'nvim_lsp' },
-              { name = 'luasnip' },
-            },
-          },
+          -- config = {
+          --   sources = {
+          --     { name = 'nvim_lsp' },
+          --     { name = 'luasnip' },
+          --   },
+          -- },
         },
-        ['<C-x>'] = cmp.mapping.complete {
-          config = {
-            sources = {
-              { name = 'copilot' },
-            },
-          },
-        },
+        -- ['<C-x>'] = cmp.mapping.complete {
+        --   config = {
+        --     sources = {
+        --       { name = 'copilot' },
+        --     },
+        --   },
+        -- },
         ['<C-y>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Insert,
           select = true,

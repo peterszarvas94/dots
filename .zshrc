@@ -66,6 +66,6 @@ alias fd="cd ~/projects/gems-frontend-platform/packages/app-gems && npm run dev"
 
 # lazygit
 alias lg="lazygit"
-
-# dots
 alias td="tmux-dots"
+alias cl="clear"
+alias gob="gobang"

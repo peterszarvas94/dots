@@ -15,7 +15,9 @@ return {
   -- },
 
   -- 'tpope/vim-fugitive',
-
+  {
+    'sindrets/diffview.nvim',
+  },
   {
     'NeogitOrg/neogit',
     dependencies = {

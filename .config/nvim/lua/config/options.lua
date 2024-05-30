@@ -9,7 +9,7 @@ vim.o.mouse = 'a'
 vim.o.clipboard = 'unnamedplus'
 vim.o.undofile = true
 vim.o.signcolumn = 'yes'
-vim.o.colorcolumn = '80'
+vim.o.colorcolumn = ''
 vim.o.termguicolors = true
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
@@ -19,6 +19,7 @@ vim.o.scrolloff = 8
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.inccommand = "split"
+vim.o.swapfile = false
 
 -- vim.o.breakindent = true
 -- vim.o.updatetime = 250

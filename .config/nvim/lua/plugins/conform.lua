@@ -14,8 +14,8 @@ return { -- Autoformat
         javascriptreact = { 'prettier' },
         json = { 'prettier' },
         markdown = { 'prettier' },
-        -- html = { { 'prettierd', "prettier" } },
-        -- css = { { 'prettierd', "prettier" } },
+        html = { 'prettier' },
+        css = { 'prettierd' },
       },
     }
 

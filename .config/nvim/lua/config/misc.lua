@@ -39,7 +39,7 @@ vim.cmd [[
   command! GP !git push
 ]]
 
-vim.cmd 'highlight ColorColumn guibg=#1e1e2e'
+-- vim.cmd 'highlight ColorColumn guibg=#1e1e2e'
 vim.cmd 'highlight Normal ctermfg=none guifg=none guibg=none'
 vim.cmd 'highlight NormalNC ctermfg=none guifg=none guibg=none'
 vim.cmd 'highlight NvimTreeNormal guibg=none'

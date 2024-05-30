@@ -1,0 +1,121 @@
+# sudo echo "{}" > /opt/homebrew/Caskroom/amethyst/0.21.1/Amethyst.app/Contents/Resources/default.amethyst
+
+layouts:
+  - fullscreen
+  - two-pane
+
+mod1:
+  - option
+  - control
+
+mod2:
+  - option
+  - shift
+  - control
+
+# Move to the next layout in the list.
+cycle-layout:
+  mod: mod1
+  key: space
+
+# Focus the next window in the list going counter-clockwise.
+focus-ccw:
+  mod: mod1
+  key: j
+
+# Focus the next window in the list going clockwise.
+focus-cw:
+  mod: mod1
+  key: k
+
+# Swap the position of the currently focused window with the next window in the list going counter-clockwise.
+swap-ccw:
+  mod: mod2
+  key: j
+
+# Swap the position of the currently focused window with the next window in the list going clockwise.
+swap-cw:
+  mod: mod2
+  key: k
+
+# Move the currently focused window to the n-th space; e.g., throw-space-3 will move the window to the 3rd space.
+throw-space-1:
+  mod: mod1
+  key: '1'
+
+throw-space-2:
+  mod: mod1
+  key: '2'
+
+throw-space-3:
+  mod: mod1
+  key: '3'
+
+throw-space-4:
+  mod: mod1
+  key: '4'
+
+throw-space-5:
+  mod: mod1
+  key: '5'
+
+throw-space-6:
+  mod: mod1
+  key: '6'
+
+throw-space-7:
+  mod: mod1
+  key: '7'
+
+throw-space-8:
+  mod: mod1
+  key: '8'
+
+throw-space-9:
+  mod: mod1
+  key: '9'
+
+throw-space-10:
+  mod: mod1
+  key: '0'
+
+throw-space-left:
+  mod: mod1
+  key: left
+
+throw-space-right:
+  mod: mod1
+  key: right
+
+# Toggle the floating state of the currently focused window; i.e., if it was floating make it tiled and if it was tiled make it floating.
+# toggle-float:
+#   mod: mod1
+#   key: t
+
+display-current-layout:
+  mod: mod1
+  key: i
+
+# toggle-tiling:
+#   mod: mod1
+#   key: t
+
+reevaluate-windows:
+  mod: mod1
+  key: z
+
+relaunch-amethyst:
+  mod: mod2
+  key: z
+
+float-small-windows: true
+focus-follows-mouse: false
+focus-follows-mouse: false
+enables-layout-hud-on-space-change: false
+
+floating: [
+  "com.apple.systempreferences", 
+  "com.riotgames.leagueoflegends",
+  "com.riotgames.RiotGames.RiotClient"
+]
+floating-is-blacklist: true
