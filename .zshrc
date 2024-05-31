@@ -51,6 +51,7 @@ alias v="nvim"
 
 # tmux
 alias ta="tmux a"
+alias tk="tmux kill-server"
 
 # gems backend 
 alias bd="cd ~/projects/gems-backend-platform && docker compose down"
