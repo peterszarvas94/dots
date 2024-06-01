@@ -20,6 +20,7 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.inccommand = "split"
 vim.o.swapfile = false
+vim.o.conceallevel = 2
 
 -- vim.o.breakindent = true
 -- vim.o.updatetime = 250

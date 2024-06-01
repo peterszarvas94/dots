@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/projects/go ~/projects -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$( (find ~/projects ~/projects/go -maxdepth 1 -mindepth 1 -type d ! -name go; echo ~/obsidian-remote) | fzf)
 fi
 
 if [[ -z $selected ]]; then
