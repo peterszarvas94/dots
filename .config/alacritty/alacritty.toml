@@ -96,8 +96,9 @@ family = "MesloLGS Nerd Font Mono"
 program = "/bin/zsh"
 
 [window]
-opacity = 0.93
+opacity = 1
 decorations = "none"
+option_as_alt = "Both"
 
 [window.padding]
 x = 10

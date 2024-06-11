@@ -8,25 +8,26 @@ return {
     require('which-key').register {
       ['<leader>'] = {
         c = {
-          name = '[C]ode / [C]olorizer',
+          name = '[C]...',
+          h = '[C]ange C[H]eckbox',  
         },
-        -- g = {
-        --   name = '[G]it',
-        -- },
+        b = {
+          name = '[O]bsidian',
+        },
         s = {
           name = '[S]earch',
         },
-        b = {
-          name = '[B]uffer',
-        },
+        -- b = {
+        --   name = '[B]uffer',
+        -- },
         h = {
           name = '[H]arpoon',
         },
         t = {
-          name = '[T]ab'
+          name = '[T]ab',
         },
         m = {
-          name = '[M]arkdown'
+          name = '[M]arkdown',
         },
       },
     }

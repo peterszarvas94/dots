@@ -1,69 +1,73 @@
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+local function keymap(mode, key, map, opts)
+  vim.keymap.set(mode, key, map, opts)
+end
 
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+keymap({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+keymap('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+keymap('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+keymap('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+keymap('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- terminal
-vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[T]erminal [O]pen', silent = true })
-vim.keymap.set('t', '<c-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
+keymap('n', '<leader>to', ':term<CR>', { desc = '[T]erminal [O]pen', silent = true })
+keymap('t', '<c-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
 
 -- buffer
-vim.keymap.set('n', '<leader>bd', ':bd!<cr>', { desc = '[B]uffer [D]elete', silent = true })
+-- keymap('n', '<leader>bd', ':bd!<cr>', { desc = '[B]uffer [D]elete', silent = true })
 
 -- explorer
--- vim.keymap.set('n', '<leader>x', ':Explore<cr>', { desc = 'E[x]plorer', silent = true })
+-- set('n', '<leader>x', ':Explore<cr>', { desc = 'E[x]plorer', silent = true })
 
 -- undotree
-local function openUndoTree() 
-  vim.cmd('UndotreeToggle')
-  vim.cmd('NvimTreeFindFileToggle')
+local function openUndoTree()
+  vim.cmd 'UndotreeToggle'
+  vim.cmd 'NvimTreeFindFileToggle'
 end
-vim.keymap.set('n', '<leader>u', openUndoTree, { desc = '[U]ndootree' })
+keymap('n', '<leader>u', openUndoTree, { desc = '[U]ndootree' })
 
 -- keep selection after indent
-vim.keymap.set({ 'v' }, '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })
-vim.keymap.set({ 'v' }, '>', '>gv', { desc = 'Indent right', noremap = true, silent = true })
+keymap({ 'v' }, '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })
+keymap({ 'v' }, '>', '>gv', { desc = 'Indent right', noremap = true, silent = true })
 
 -- move selected lines vertically (with correct indentation)
-vim.keymap.set({ 'v' }, 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
-vim.keymap.set({ 'v' }, 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
+keymap({ 'v' }, 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
+keymap({ 'v' }, 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
 
 -- disable arrow keys
-vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+keymap('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+keymap('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+keymap('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+keymap('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- organize imports
-vim.keymap.set('n', '<leader>o', ':OrganizeImports<cr>', { desc = '[O]rganize Iports', silent = true })
+keymap('n', '<leader>o', ':OrganizeImports<cr>', { desc = '[O]rganize Iports', silent = true })
 
 -- quickfix list
-vim.keymap.set('n', '<C-[>', '<cmd>cprevious<cr>', { desc = 'Previous item in quickfix list', silent = true })
-vim.keymap.set('n', '<C-]>', '<cmd>cnext<cr>', { desc = 'Next item in quickfix list', silent = true })
+keymap('n', '<C-[>', '<cmd>cprevious<cr>', { desc = 'Previous item in quickfix list', silent = true })
+keymap('n', '<C-]>', '<cmd>cnext<cr>', { desc = 'Next item in quickfix list', silent = true })
 
 -- nvimtree
-vim.keymap.set('n', '<leader>x', ':NvimTreeFindFileToggle<CR>', { desc = 'E[x]plorer toggle - Nvimtree', silent = true })
+keymap('n', '<leader>x', ':NvimTreeFindFileToggle<CR>', { desc = 'E[x]plorer toggle - Nvimtree', silent = true })
 
 -- treesitter context
-vim.keymap.set('n', '[c', function()
+keymap('n', '[c', function()
   require('treesitter-context').go_to_context(vim.v.count1)
 end, { desc = 'Previous to [C]ontext', silent = true })
 
 -- neogit
-vim.keymap.set('n', '<leader>g', ':Neogit<CR>', { desc = 'Neo[G]it', silent = true })
+keymap('n', '<leader>g', ':Neogit<CR>', { desc = 'Neo[G]it', silent = true })
 
 -- fugitive
--- vim.keymap.set('n', '<leader>gf', ':tab Git<CR>', { desc = '[G]it - [F]ugitive', silent = true })
+-- set('n', '<leader>gf', ':tab Git<CR>', { desc = '[G]it - [F]ugitive', silent = true })
 
 -- lazygit
--- vim.keymap.set('n', '<leader>gl', ':tab LazyGit<CR>', { desc = '[G]it - [L]azygit', silent = true })
+-- set('n', '<leader>gl', ':tab LazyGit<CR>', { desc = '[G]it - [L]azygit', silent = true })
 
 -- tabs
-vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew', silent = true })
+keymap('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew', silent = true })
 
 function Goto_tab(tab_index)
   -- Check if the tab exists
@@ -78,16 +82,16 @@ function Goto_tab(tab_index)
   end
 end
 
-vim.keymap.set('n', '<leader>t1', ':lua Goto_tab(1)<CR>', { desc = 'Tab [1]', silent = true })
-vim.keymap.set('n', '<leader>t2', ':lua Goto_tab(2)<CR>', { desc = 'Tab [2]', silent = true })
-vim.keymap.set('n', '<leader>t3', ':lua Goto_tab(3)<CR>', { desc = 'Tab [3]', silent = true })
-vim.keymap.set('n', '<leader>t4', ':lua Goto_tab(4)<CR>', { desc = 'Tab [4]', silent = true })
-vim.keymap.set('n', '<leader>t5', ':lua Goto_tab(5)<CR>', { desc = 'Tab [5]', silent = true })
-vim.keymap.set('n', '<leader>t6', ':lua Goto_tab(6)<CR>', { desc = 'Tab [6]', silent = true })
-vim.keymap.set('n', '<leader>t7', ':lua Goto_tab(7)<CR>', { desc = 'Tab [7]', silent = true })
-vim.keymap.set('n', '<leader>t8', ':lua Goto_tab(8)<CR>', { desc = 'Tab [8]', silent = true })
-vim.keymap.set('n', '<leader>t9', ':lua Goto_tab(9)<CR>', { desc = 'Tab [9]', silent = true })
-vim.keymap.set('n', '<leader>t0', ':lua Goto_tab(10)<CR>', { desc = 'Tab [10]', silent = true })
+keymap('n', '<leader>t1', ':lua Goto_tab(1)<CR>', { desc = 'Tab [1]', silent = true })
+keymap('n', '<leader>t2', ':lua Goto_tab(2)<CR>', { desc = 'Tab [2]', silent = true })
+keymap('n', '<leader>t3', ':lua Goto_tab(3)<CR>', { desc = 'Tab [3]', silent = true })
+keymap('n', '<leader>t4', ':lua Goto_tab(4)<CR>', { desc = 'Tab [4]', silent = true })
+keymap('n', '<leader>t5', ':lua Goto_tab(5)<CR>', { desc = 'Tab [5]', silent = true })
+keymap('n', '<leader>t6', ':lua Goto_tab(6)<CR>', { desc = 'Tab [6]', silent = true })
+keymap('n', '<leader>t7', ':lua Goto_tab(7)<CR>', { desc = 'Tab [7]', silent = true })
+keymap('n', '<leader>t8', ':lua Goto_tab(8)<CR>', { desc = 'Tab [8]', silent = true })
+keymap('n', '<leader>t9', ':lua Goto_tab(9)<CR>', { desc = 'Tab [9]', silent = true })
+keymap('n', '<leader>t0', ':lua Goto_tab(10)<CR>', { desc = 'Tab [10]', silent = true })
 
 -- Set tabline to display only the file name
 
@@ -98,10 +102,10 @@ function RenameTab()
 end
 
 -- Set the keymap to trigger the function with the 'w' key
-vim.keymap.set('n', '<leader>tr', ':lua RenameTab()<CR>', { desc = '[T]ab [R]ename', silent = true })
+keymap('n', '<leader>tr', ':lua RenameTab()<CR>', { desc = '[T]ab [R]ename', silent = true })
 
 -- colorizer
-vim.keymap.set('n', '<leader>ct', ':ColorizerToggle<CR>', { desc = '[C]olorizer [T]oggle', silent = true })
+keymap('n', '<leader>ct', ':ColorizerToggle<CR>', { desc = '[C]olorizer [T]oggle', silent = true })
 
 -- gd
 
@@ -132,4 +136,15 @@ function JumpToDefinition()
 end
 
 -- Map the function to a key combination
-vim.keymap.set('n', '<Leader>td', ':lua JumpToDefinition()<CR>', { desc = '[T]ab - go to [D]efinition', silent = true })
+keymap('n', '<leader>td', ':lua JumpToDefinition()<CR>', { desc = '[T]ab - go to [D]efinition', silent = true })
+
+-- Obsidian
+keymap('n', '<leader>bo', ':ObsidianOpen<CR>', { desc = '[O]bsidian [O]pen', silent = true })
+keymap('n', '<leader>bt', ':ObsidianToday<CR>', { desc = '[O]bsidian [T]oday', silent = true })
+keymap('n', '<leader>by', ':ObsidianYesterday<CR>', { desc = '[O]bsidian [Y]esterday', silent = true })
+
+-- split
+keymap('n', '<M-.>', '<C-w>5>', { desc = 'Resize split +5 vertically', silent = true })
+keymap('n', '<M-,>', '<C-w>5<', { desc = 'Resize split -5 vertically', silent = true })
+keymap('n', '<M-=>', '<C-w>+', { desc = 'Resize split +1 horizontally', silent = true })
+keymap('n', '<M-->', '<C-w>-', { desc = 'Resize split -1 horizontally', silent = true })
