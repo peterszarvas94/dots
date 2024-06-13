@@ -19,13 +19,14 @@ return {
 
       mason_lspconfig.setup {
         ensure_installed = {
-          'tsserver', -- typescript language server
-          'cssls', -- css language server
-          -- 'tailwindcss', -- tailwindcss language server
-          'gopls', -- go language server
-          'bashls', -- bash language server
-          'lua_ls', -- lua language server
-          'jsonls', -- json language server
+          'tsserver',
+          'cssls',
+          'tailwindcss',
+          'gopls',
+          'bashls',
+          'lua_ls',
+          'jsonls',
+          'yamlls',
         },
         automatic_installation = false, -- not the same as ensure_installed
       }

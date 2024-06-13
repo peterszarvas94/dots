@@ -16,6 +16,7 @@ return { -- Autoformat
         markdown = { 'prettier' },
         html = { 'prettier' },
         css = { 'prettierd' },
+        yaml = { 'prettier' },
       },
     }
 

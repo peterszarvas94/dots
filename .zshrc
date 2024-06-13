@@ -54,13 +54,13 @@ alias ta="tmux a"
 alias tk="tmux kill-server"
 
 # gems backend 
-alias bdd="cd ~/projects/gems-backend-platform && docker compose down"
-alias bdu="cd ~/projects/gems-backend-platform && docker compose up -d"
-alias bd="bdd && bdu"
-alias bb="cd ~/projects/gems-backend-platform && npm run build"
-alias bi="cd ~/projects/gems-backend-platform/packages/database && npm run init-development"
-alias bs="cd ~/projects/gems-backend-platform/packages/app && npm run start"
-alias ba="git pull && bb && bi && bs"
+alias bdown="cd ~/projects/gems-backend-platform && docker compose down"
+alias bup="cd ~/projects/gems-backend-platform && docker compose up -d"
+alias bd="bdown && bup"
+alias bbuild="cd ~/projects/gems-backend-platform && npm run build"
+alias binit="cd ~/projects/gems-backend-platform/packages/database && npm run init-development"
+alias bstart="cd ~/projects/gems-backend-platform/packages/app && npm run start"
+alias ba="bbuild && binit && bstart"
 
 # gems frontend
 alias fb="cd ~/projects/gems-frontend-platform && npm run build"
