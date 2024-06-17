@@ -139,12 +139,20 @@ end
 keymap('n', '<leader>td', ':lua JumpToDefinition()<CR>', { desc = '[T]ab - go to [D]efinition', silent = true })
 
 -- Obsidian
-keymap('n', '<leader>bo', ':ObsidianOpen<CR>', { desc = '[O]bsidian [O]pen', silent = true })
-keymap('n', '<leader>bt', ':ObsidianToday<CR>', { desc = '[O]bsidian [T]oday', silent = true })
-keymap('n', '<leader>by', ':ObsidianYesterday<CR>', { desc = '[O]bsidian [Y]esterday', silent = true })
+keymap('n', '<leader>bo', ':ObsidianOpen<CR>', { desc = 'O[b]sidian [O]pen', silent = true })
+keymap('n', '<leader>bt', ':ObsidianToday<CR>', { desc = 'O[b]sidian [T]oday', silent = true })
+keymap('n', '<leader>by', ':ObsidianYesterday<CR>', { desc = 'O[b]sidian [Y]esterday', silent = true })
+keymap('n', '<leader>bm', ':ObsidianTemplate<CR>', { desc = 'O[b]sidian te[M]plate', silent = true })
 
 -- split
 keymap('n', '<M-.>', '<C-w>5>', { desc = 'Resize split +5 vertically', silent = true })
 keymap('n', '<M-,>', '<C-w>5<', { desc = 'Resize split -5 vertically', silent = true })
 keymap('n', '<M-=>', '<C-w>+', { desc = 'Resize split +1 horizontally', silent = true })
 keymap('n', '<M-->', '<C-w>-', { desc = 'Resize split -1 horizontally', silent = true })
+
+-- eslint
+vim.api.nvim_create_user_command('Eslint', function()
+  vim.cmd '!eslint_d %'
+end, {})
+
+keymap('n', '<leader>l', ':Eslint<CR>', { desc = 'Es[L]int', silent = true })

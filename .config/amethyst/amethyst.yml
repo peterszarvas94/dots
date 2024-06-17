@@ -96,9 +96,9 @@ display-current-layout:
   mod: mod1
   key: i
 
-# toggle-tiling:
-#   mod: mod1
-#   key: t
+toggle-tiling:
+  mod: mod1
+  key: t
 
 reevaluate-windows:
   mod: mod1
