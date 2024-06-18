@@ -72,3 +72,6 @@ alias lg="lazygit"
 alias td="tmux-dots"
 alias cl="clear"
 alias gob="gobang"
+
+# fzf
+alias fc="fzf-checkout"

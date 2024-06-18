@@ -1,0 +1,6 @@
+[user]
+	email = peter.szarvas.external@eviden.com
+	name = "Péter Szarvas"
+
+[credential]
+	helper = store

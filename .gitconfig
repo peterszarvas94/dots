@@ -1,0 +1,27 @@
+[core]
+  editor = nvim
+  filemode = false
+  autoclrf = true
+
+[alias]
+  st = status
+  cm = commit
+  ca = commit --amend
+  lg = log --decorate --graph --oneline
+  br = branch
+  bd = branch -D
+  bm = branch -M
+  ch = checkout
+  cb = checkout -b
+
+[init]
+  defaultBranch = main
+
+[merge]
+  tool = nvimdiff
+
+[includeIf "gitdir:~/projects/"]
+  path = ~/projects/dots/gitconfig/.personal.gitconfig
+
+[includeIf "gitdir:~/work/"]
+  path = ~/projects/dots/gitconfig/.work.gitconfig
