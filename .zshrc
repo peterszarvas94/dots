@@ -54,18 +54,18 @@ alias ta="tmux a"
 alias tk="tmux kill-server"
 
 # gems backend 
-alias bdown="cd ~/projects/gems-backend-platform && docker compose down"
-alias bup="cd ~/projects/gems-backend-platform && docker compose up -d"
+alias bdown="cd ~/work/gems-backend-platform && docker compose down"
+alias bup="cd ~/work/gems-backend-platform && docker compose up -d"
 alias bd="bdown && bup"
-alias bbuild="cd ~/projects/gems-backend-platform && npm run build"
-alias binit="cd ~/projects/gems-backend-platform/packages/database && npm run init-development"
-alias bstart="cd ~/projects/gems-backend-platform/packages/app && npm run start"
+alias bbuild="cd ~/work/gems-backend-platform && npm run build"
+alias binit="cd ~/work/gems-backend-platform/packages/database && npm run init-development"
+alias bstart="cd ~/work/gems-backend-platform/packages/app && npm run start"
 alias ba="bbuild && binit && bstart"
 
 # gems frontend
-alias fb="cd ~/projects/gems-frontend-platform && npm run build"
-alias fg="cd ~/projects/gems-frontend-platform/packages/apiclient && npm run generate"
-alias fd="cd ~/projects/gems-frontend-platform/packages/app-gems && npm run dev"
+alias fb="cd ~/work/gems-frontend-platform && npm run build"
+alias fg="cd ~/work/gems-frontend-platform/packages/apiclient && npm run generate"
+alias fd="cd ~/work/gems-frontend-platform/packages/app-gems && npm run dev"
 
 # lazygit
 alias lg="lazygit"
