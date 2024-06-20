@@ -17,6 +17,7 @@ return { -- Autoformat
         html = { 'prettier' },
         css = { 'prettierd' },
         yaml = { 'prettier' },
+        go = { 'gopls' }
       },
     }
 

@@ -75,3 +75,6 @@ alias gob="gobang"
 
 # fzf
 alias fc="fzf-checkout"
+
+# bun completions
+[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"

@@ -58,13 +58,14 @@ keymap('n', '[c', function()
 end, { desc = 'Previous to [C]ontext', silent = true })
 
 -- neogit
-keymap('n', '<leader>g', ':Neogit<CR>', { desc = 'Neo[G]it', silent = true })
+-- keymap('n', '<leader>g', ':Neogit<CR>', { desc = 'Neo[G]it', silent = true })
 
 -- fugitive
--- set('n', '<leader>gf', ':tab Git<CR>', { desc = '[G]it - [F]ugitive', silent = true })
+keymap('n', '<leader>gg', ':Git<CR>', { desc = '[G]it', silent = true })
+keymap('n', '<leader>gd', ':Gvdiffsplit<CR>', { desc = '[G]it [D]iff', silent = true })
 
 -- lazygit
--- set('n', '<leader>gl', ':tab LazyGit<CR>', { desc = '[G]it - [L]azygit', silent = true })
+-- keymap('n', '<leader>gl', ':tab LazyGit<CR>', { desc = '[G]it - [L]azygit', silent = true })
 
 -- tabs
 keymap('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew', silent = true })
