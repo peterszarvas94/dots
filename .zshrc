@@ -1,8 +1,12 @@
-# zsh
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
-plugins=(git)
-source $ZSH/oh-my-zsh.sh
+# omz
+# export ZSH="$HOME/.oh-my-zsh"
+# ZSH_THEME="robbyrussell"
+# plugins=(git)
+# source $ZSH/oh-my-zsh.sh
+
+# ➜ 
+# starship
+eval "$(starship init zsh)"
 
 # scripts
 export PATH="$HOME/.local/bin:$PATH"
@@ -23,7 +27,7 @@ export PATH=$GOPATH/bin:$PATH
 export PATH=$PATH:/opt/homebrew/bin
 
 # environment
-export BROWSER='google-chrome-stable'
+# export BROWSER='arc'
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'
