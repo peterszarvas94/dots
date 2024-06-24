@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for ((i=0; i<=$(tput colors); i++)); do
+    echo -e "$(tput setaf $i)Color $i$(tput sgr0)"
+done

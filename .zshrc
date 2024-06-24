@@ -1,6 +1,11 @@
 # omz
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
+ZSH_THEME="peti"
+theme_file="$HOME/projects/dots/peti.zsh-theme"
+theme_dest="$HOME/.oh-my-zsh/themes/peti.zsh-theme"
+if [ ! -L "$theme_dest" ]; then
+    ln -s "$theme_file" "$theme_dest"
+fi
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
@@ -79,6 +84,3 @@ alias gob="gobang"
 alias fc="fzf-checkout"
 alias fd="fzf-diff"
 alias fs="fzf-stash"
-
-# starship
-# eval "$(starship init zsh)"
