@@ -1,7 +1,8 @@
 return {
-  -- 'davidgranstrom/nvim-markdown-preview',
+  -- 'MeanderingProgrammer/markdown.nvim',
+  -- -- name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
+  -- dependencies = { 'nvim-treesitter/nvim-treesitter' },
   -- config = function()
-  --   vim.g.nvim_markdown_preview_theme = 'solarized-dark'
-  --   vim.keymap.set('n', '<leader>mp', ':MarkdownPreview<cr>', { desc = '[M]arkdown [P]review', silent = true })
+  --   require('render-markdown').setup {}
   -- end,
 }

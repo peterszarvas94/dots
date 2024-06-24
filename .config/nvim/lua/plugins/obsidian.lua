@@ -27,12 +27,13 @@ return {
       date_format = '%Y-%m-%d',
       time_format = 'H:%M',
     },
-    disable_formatter = function()
-      if vim.loop.cwd() == vim.fn.expand '~/obsidian-remote' then
-        return true
-      else
-        return false
-      end
-    end,
+    disable_frontmatter = true,
+    -- disable_formatter = function()
+    --   if vim.loop.cwd() == vim.fn.expand '~/obsidian-remote' then
+    --     return true
+    --   else
+    --     return false
+    --   end
+    -- end,
   },
 }

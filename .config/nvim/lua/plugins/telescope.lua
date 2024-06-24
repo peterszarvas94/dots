@@ -3,6 +3,7 @@ return {
   branch = '0.1.x',
   dependencies = {
     'nvim-lua/plenary.nvim',
+    'nvim-telescope/telescope-symbols.nvim',
     {
       'nvim-telescope/telescope-fzf-native.nvim',
       build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
@@ -15,12 +16,13 @@ return {
       defaults = {
         file_ignore_patterns = { 'node_modules', '.git' },
         layout_strategy = 'vertical',
-        layout_config = {
-          vertical = {
-            prompt_position = 'top',
-          },
-          mirror = true,
-        },
+        -- layout_config = {
+        --   vertical = {
+        --     prompt_position = 'top',
+        --   },
+        --   mirror = true,
+        -- },
+        wrap_results = true
       },
       pickers = {
         live_grep = {
@@ -30,11 +32,14 @@ return {
         },
         find_files = {
           hidden = true,
+          no_ignore = true,
+          no_ignore_parent = true,
         },
       },
     }
 
     pcall(telescope.load_extension, 'fzf')
+
 
     local builtin = require 'telescope.builtin'
 
@@ -50,5 +55,6 @@ return {
     vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
     vim.keymap.set('n', '<leader>si', builtin.highlights, { desc = '[S]earch H[i]ghlights' })
     vim.keymap.set('n', '<leader>sg', builtin.git_bcommits, { desc = '[S]earch [G]it commits' })
+    vim.keymap.set('n', '<leader>se', builtin.symbols, { desc = '[S]earch [E]mojis' })
   end,
 }

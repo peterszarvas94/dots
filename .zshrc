@@ -1,12 +1,8 @@
 # omz
-# export ZSH="$HOME/.oh-my-zsh"
-# ZSH_THEME="robbyrussell"
-# plugins=(git)
-# source $ZSH/oh-my-zsh.sh
-
-# ➜ 
-# starship
-eval "$(starship init zsh)"
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="robbyrussell"
+plugins=(git)
+source $ZSH/oh-my-zsh.sh
 
 # scripts
 export PATH="$HOME/.local/bin:$PATH"
@@ -26,14 +22,16 @@ export PATH=$GOPATH/bin:$PATH
 # brew
 export PATH=$PATH:/opt/homebrew/bin
 
+
 # environment
 # export BROWSER='arc'
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'
 
-# bun complcd ~/projects/dots && tmuxetions
-[ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
+# bun completions
+# [ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
+[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
@@ -60,16 +58,16 @@ alias tk="tmux kill-server"
 # gems backend 
 alias bdown="cd ~/work/gems-backend-platform && docker compose down"
 alias bup="cd ~/work/gems-backend-platform && docker compose up -d"
-alias bd="bdown && bup"
+alias bdok="bdown && bup"
 alias bbuild="cd ~/work/gems-backend-platform && npm run build"
 alias binit="cd ~/work/gems-backend-platform/packages/database && npm run init-development"
 alias bstart="cd ~/work/gems-backend-platform/packages/app && npm run start"
-alias ba="bbuild && binit && bstart"
+alias ball="bbuild && binit && bstart"
 
 # gems frontend
-alias fb="cd ~/work/gems-frontend-platform && npm run build"
-alias fg="cd ~/work/gems-frontend-platform/packages/apiclient && npm run generate"
-alias fd="cd ~/work/gems-frontend-platform/packages/app-gems && npm run dev"
+alias fbuild="cd ~/work/gems-frontend-platform && npm run build"
+alias fgen="cd ~/work/gems-frontend-platform/packages/apiclient && npm run generate"
+alias fdev="cd ~/work/gems-frontend-platform/packages/app-gems && npm run dev"
 
 # lazygit
 alias lg="lazygit"
@@ -79,6 +77,8 @@ alias gob="gobang"
 
 # fzf
 alias fc="fzf-checkout"
+alias fd="fzf-diff"
+alias fs="fzf-stash"
 
-# bun completions
-[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
+# starship
+# eval "$(starship init zsh)"
