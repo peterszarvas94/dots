@@ -1,11 +1,8 @@
 # omz
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="peti"
-theme_file="$HOME/projects/dots/peti.zsh-theme"
-theme_dest="$HOME/.oh-my-zsh/themes/peti.zsh-theme"
-if [ ! -L "$theme_dest" ]; then
-    ln -s "$theme_file" "$theme_dest"
-fi
+
+# fzf tab completion
 # git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
 plugins=(git fzf-tab)
 source $ZSH/oh-my-zsh.sh
