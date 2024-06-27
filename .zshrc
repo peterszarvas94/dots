@@ -6,8 +6,15 @@ theme_dest="$HOME/.oh-my-zsh/themes/peti.zsh-theme"
 if [ ! -L "$theme_dest" ]; then
     ln -s "$theme_file" "$theme_dest"
 fi
-plugins=(git)
+# git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+plugins=(git fzf-tab)
 source $ZSH/oh-my-zsh.sh
+
+#fzf theme
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+--color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
 
 # scripts
 export PATH="$HOME/.local/bin:$PATH"
@@ -27,6 +34,7 @@ export PATH=$GOPATH/bin:$PATH
 # brew
 export PATH=$PATH:/opt/homebrew/bin
 
+# source <(fzf --zsh)
 
 # environment
 # export BROWSER='arc'
