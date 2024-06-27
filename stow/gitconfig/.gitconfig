@@ -21,7 +21,7 @@
   tool = nvimdiff
 
 [includeIf "gitdir:~/projects/"]
-  path = ~/projects/dots/gitconfig/.personal.gitconfig
+  path = ~/projects/dots/git_personas/.personal.gitconfig
 
 [includeIf "gitdir:~/work/"]
-  path = ~/projects/dots/gitconfig/.work.gitconfig
+  path = ~/projects/dots/git_personas/.work.gitconfig
