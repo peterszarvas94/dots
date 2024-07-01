@@ -28,6 +28,7 @@ return {
       time_format = 'H:%M',
     },
     disable_frontmatter = true,
+    ui = { enable = false },
     -- disable_formatter = function()
     --   if vim.loop.cwd() == vim.fn.expand '~/obsidian-remote' then
     --     return true
