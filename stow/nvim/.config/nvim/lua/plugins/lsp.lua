@@ -52,6 +52,7 @@ return {
           init_options = {
             userLanguages = {
               templ = 'html',
+              html = 'html',
             },
           },
         },

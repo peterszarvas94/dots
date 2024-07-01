@@ -89,3 +89,5 @@ alias gob="gobang"
 alias fc="fzf-checkout"
 alias fd="fzf-diff"
 alias fs="fzf-stash"
+
+alias ke="killall eslint_d"
