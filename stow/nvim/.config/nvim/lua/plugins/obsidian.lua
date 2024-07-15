@@ -23,7 +23,7 @@ return {
       template = 'daily.md',
     },
     templates = {
-      folder = '4 - templates',
+      folder = 'templates',
       date_format = '%Y-%m-%d',
       time_format = 'H:%M',
     },

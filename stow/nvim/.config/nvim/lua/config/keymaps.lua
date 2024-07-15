@@ -141,8 +141,8 @@ keymap('n', '<leader>td', ':lua JumpToDefinition()<CR>', { desc = '[T]ab - go to
 
 -- Obsidian
 keymap('n', '<leader>bo', ':ObsidianOpen<CR>', { desc = 'O[b]sidian [O]pen', silent = true })
-keymap('n', '<leader>bt', ':ObsidianToday<CR>', { desc = 'O[b]sidian [T]oday', silent = true })
-keymap('n', '<leader>by', ':ObsidianYesterday<CR>', { desc = 'O[b]sidian [Y]esterday', silent = true })
+-- keymap('n', '<leader>bt', ':ObsidianToday<CR>', { desc = 'O[b]sidian [T]oday', silent = true })
+-- keymap('n', '<leader>by', ':ObsidianYesterday<CR>', { desc = 'O[b]sidian [Y]esterday', silent = true })
 keymap('n', '<leader>bm', ':ObsidianTemplate<CR>', { desc = 'O[b]sidian te[M]plate', silent = true })
 
 -- split

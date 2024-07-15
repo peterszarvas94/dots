@@ -11,7 +11,7 @@ return {
         section_separators = { left = '', right = '' },
       },
       sections = {
-        lualine_c = {},
+        -- lualine_c = {},
         lualine_x = { 'copilot', 'encoding', 'fileformat', 'filetype' },
       },
       tabline = {
