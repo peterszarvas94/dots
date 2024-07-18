@@ -99,18 +99,10 @@ return {
             capabilities = capabilities,
             on_attach = function()
               on_attach()
-              require('which-key').register {
-                ['<leader>'] = {
-                  d = {
-                    name = '[D]ocument',
-                  },
-                  r = {
-                    name = '[R]e',
-                  },
-                  w = {
-                    name = '[W]orkspace',
-                  },
-                },
+              require('which-key').add {
+                { '<leader>d', group = '[D]ocument' },
+                { '<leader>r', group = '[R]e' },
+                { '<leader>w', group = '[W]orkspace' },
               }
             end,
             settings = servers[server_name],
@@ -124,7 +116,7 @@ return {
         underline = false,
         virtual_text = false,
         -- Enable virtual text, override spacing to 4
-        virtual_text = {spacing = 4},
+        virtual_text = { spacing = 4 },
         -- Use a function to dynamically turn signs off
         -- and on, using buffer local variables
         signs = true,

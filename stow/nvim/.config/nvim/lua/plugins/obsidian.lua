@@ -18,17 +18,18 @@ return {
       },
     },
     daily_notes = {
-      folder = '0 - daily',
-      date_format = '%Y/%m/%Y-%m-%d',
-      template = 'daily.md',
+      folder = '.daily',
     },
     templates = {
       folder = 'templates',
       date_format = '%Y-%m-%d',
-      time_format = 'H:%M',
+      time_forma = 'H:%M',
     },
     disable_frontmatter = true,
     ui = { enable = false },
+    attachments = {
+      img_folder = 'images',
+    },
     -- disable_formatter = function()
     --   if vim.loop.cwd() == vim.fn.expand '~/obsidian-remote' then
     --     return true

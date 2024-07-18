@@ -1,35 +1,21 @@
 return {
   'folke/which-key.nvim',
+  dependencies = {
+    'nvim-tree/nvim-web-devicons',
+  },
   init = function()
     vim.o.timeout = true
     vim.o.timeoutlen = 300
   end,
   config = function()
-    require('which-key').register {
-      ['<leader>'] = {
-        c = {
-          name = '[C]...',
-          h = '[C]ange C[H]eckbox',  
-        },
-        b = {
-          name = '[O]bsidian',
-        },
-        s = {
-          name = '[S]earch',
-        },
-        -- b = {
-        --   name = '[B]uffer',
-        -- },
-        h = {
-          name = '[H]arpoon',
-        },
-        t = {
-          name = '[T]ab',
-        },
-        m = {
-          name = '[M]arkdown',
-        },
-      },
+    require('which-key').add {
+      { '<leader>b', group = '[O]bsidian' },
+      { '<leader>c', group = '[C]...' },
+      { '<leader>ch', desc = '[C]ange C[H]eckbox' },
+      { '<leader>g', group = '[G]it' },
+      { '<leader>h', group = '[H]arpoon' },
+      { '<leader>s', group = '[S]earch' },
+      { '<leader>t', group = '[T]ab' },
     }
   end,
 }

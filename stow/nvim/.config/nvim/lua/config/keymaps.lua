@@ -157,3 +157,12 @@ vim.api.nvim_create_user_command('Eslint', function()
 end, {})
 
 keymap('n', '<leader>l', ':Eslint<CR>', { desc = 'Es[L]int', silent = true })
+
+-- copy buffer
+keymap('n', '<leader>y', 'ggVGy', { desc = '[Y]ank buffer', silent = true })
+
+-- conceal level
+keymap('n', '<leader>c0', ':set conceallevel=0<CR>', { desc = '[C]onceal [L]evel 0', silent = true })
+keymap('n', '<leader>c1', ':set conceallevel=1<CR>', { desc = '[C]onceal [L]evel 1', silent = true })
+keymap('n', '<leader>c2', ':set conceallevel=2<CR>', { desc = '[C]onceal [L]evel 2', silent = true })
+keymap('n', '<leader>c3', ':set conceallevel=3<CR>', { desc = '[C]onceal [L]evel 3', silent = true })
