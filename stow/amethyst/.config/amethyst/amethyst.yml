@@ -118,5 +118,6 @@ floating:
     "com.riotgames.leagueoflegends",
     "com.riotgames.LeagueofLegends.LeagueClientUx",
     "com.riotgames.RiotGames.RiotClient",
+    "com.apple.clock",
   ]
 floating-is-blacklist: true

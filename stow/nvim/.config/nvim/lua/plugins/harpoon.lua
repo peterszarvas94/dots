@@ -31,13 +31,13 @@ return {
       toggle_telescope(harpoon:list())
     end, { desc = '[H]arpoon tele[S]cope', silent = true })
 
-    vim.keymap.set('n', '<leader>ht', function()
+    vim.keymap.set('n', '<leader>w', function()
       harpoon.ui:toggle_quick_menu(harpoon:list())
-    end, { desc = '[H]arpoon [T]oggle window', silent = true })
+    end, { desc = 'Harpoon toggle [W]indow', silent = true })
 
-    vim.keymap.set('n', '<leader>ha', function()
+    vim.keymap.set('n', '<leader>a', function()
       harpoon:list():add()
-    end, { desc = '[H]arpoon [A]dd', silent = true })
+    end, { desc = 'Harpoon [A]dd', silent = true })
 
     vim.keymap.set('n', '<leader>hn', function()
       harpoon:list():next()
