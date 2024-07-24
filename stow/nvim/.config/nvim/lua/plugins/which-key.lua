@@ -16,6 +16,7 @@ return {
       { '<leader>h', group = '[H]arpoon' },
       { '<leader>s', group = '[S]earch' },
       { '<leader>t', group = '[T]ab' },
+      { '<leader>d', group = '[D]iagnostics' },
     }
   end,
 }

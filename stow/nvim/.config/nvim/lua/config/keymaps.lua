@@ -166,3 +166,23 @@ keymap('n', '<leader>c0', ':set conceallevel=0<CR>', { desc = '[C]onceal [L]evel
 keymap('n', '<leader>c1', ':set conceallevel=1<CR>', { desc = '[C]onceal [L]evel 1', silent = true })
 keymap('n', '<leader>c2', ':set conceallevel=2<CR>', { desc = '[C]onceal [L]evel 2', silent = true })
 keymap('n', '<leader>c3', ':set conceallevel=3<CR>', { desc = '[C]onceal [L]evel 3', silent = true })
+
+-- Function to toggle diagnostics
+local diagnostics_active = true
+
+function _G.toggle_diagnostics()
+  diagnostics_active = not diagnostics_active
+  if diagnostics_active then
+    vim.diagnostic.enable()
+    print 'Diagnostics enabled'
+  else
+    vim.diagnostic.disable()
+    print 'Diagnostics disabled'
+  end
+end
+
+-- Create a command for toggling diagnostics
+vim.api.nvim_create_user_command('ToggleDiagnostics', 'lua _G.toggle_diagnostics()', {})
+
+-- Optional: Bind to a key (e.g., <leader>d)
+keymap('n', '<leader>dt', ':ToggleDiagnostics<CR>', { desc = '[D]iagnostics [T]oggle', silent = true })

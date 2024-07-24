@@ -1,10 +1,14 @@
-# omz
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="peti"
 
-# fzf tab completion
 # git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
-plugins=(git fzf-tab)
+# git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+
+# List of plugins to load
+plugins=(git fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+
+# Source oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
 #fzf theme

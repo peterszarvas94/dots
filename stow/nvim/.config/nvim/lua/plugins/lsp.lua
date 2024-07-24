@@ -21,7 +21,7 @@ return {
         ensure_installed = {
           'tsserver',
           'cssls',
-          'tailwindcss',
+          -- 'tailwindcss',
           'gopls',
           'bashls',
           'lua_ls',
