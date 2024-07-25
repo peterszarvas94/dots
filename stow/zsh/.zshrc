@@ -17,6 +17,8 @@ export FZF_DEFAULT_OPTS=" \
 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
 --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
 
+export NODE_OPTIONS="--max-old-space-size=4096"
+
 # scripts
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -68,6 +70,7 @@ alias v="nvim"
 # tmux
 alias ta="tmux a"
 alias tk="tmux kill-server"
+alias tn="tmux-new"
 
 # gems backend 
 alias bdown="cd ~/work/gems-backend-platform && docker compose down"
@@ -97,3 +100,13 @@ alias fd="fzf-diff"
 alias fs="fzf-stash"
 
 alias ke="killall eslint_d"
+
+alias ga="git add"
+alias gcm="git commit"
+alias gca="git commit --amend"
+alias gb="git branch"
+alias gch="git checkout"
+alias gcb="git checkout -b"
+alias gps="git push"
+alias gpl="git pull"
+alias gd="git diff"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Use the provided directory or default to the current directory
+dir=${1:-$(pwd)}
+
+# Get the base name of the directory
+session_name=$(basename "$dir")
+
+# Start a new tmux session with the directory and session name
+tmux new-session -c "$dir" -s "$session_name"

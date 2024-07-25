@@ -152,11 +152,11 @@ keymap('n', '<M-=>', '<C-w>+', { desc = 'Resize split +1 horizontally', silent =
 keymap('n', '<M-->', '<C-w>-', { desc = 'Resize split -1 horizontally', silent = true })
 
 -- eslint
-vim.api.nvim_create_user_command('Eslint', function()
-  vim.cmd '!eslint_d %'
-end, {})
+-- vim.api.nvim_create_user_command('Eslint', function()
+--   vim.cmd '!eslint_d %'
+-- end, {})
 
-keymap('n', '<leader>l', ':Eslint<CR>', { desc = 'Es[L]int', silent = true })
+-- keymap('n', '<leader>l', ':Eslint<CR>', { desc = 'Es[L]int', silent = true })
 
 -- copy buffer
 keymap('n', '<leader>y', 'ggVGy', { desc = '[Y]ank buffer', silent = true })
