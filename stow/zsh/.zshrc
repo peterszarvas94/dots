@@ -6,7 +6,7 @@ ZSH_THEME="peti"
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 
 # List of plugins to load
-plugins=(git fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git fzf-tab zsh-autosuggestions)
 
 # Source oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -110,3 +110,4 @@ alias gcb="git checkout -b"
 alias gps="git push"
 alias gpl="git pull"
 alias gd="git diff"
+alias glg="git log --decorate --graph --oneline"

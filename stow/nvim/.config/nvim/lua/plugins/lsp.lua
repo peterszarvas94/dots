@@ -97,8 +97,11 @@ return {
         function(server_name)
           lspconfig[server_name].setup {
             capabilities = capabilities,
-            on_attach = function()
-              on_attach()
+            on_attach = function(client, bufnr)
+              -- if server_name == 'eslint' then
+              --   client.handlers['textDocument/codeAction'] = function() end
+              -- end
+              on_attach(client, bufnr)
               -- require('which-key').add {
               --   { '<leader>d', group = '[D]ocument' },
               --   { '<leader>r', group = '[R]e' },
@@ -110,15 +113,13 @@ return {
         end,
       }
 
-      -- diagnostics
-      vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        -- Disable underline, it's very annoying
+      vim.diagnostic.config {
         underline = false,
-        -- virtual_text = false,
-        -- Enable virtual text, override spacing to 4
+      }
+
+      vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+        underline = false,
         virtual_text = { spacing = 2 },
-        -- Use a function to dynamically turn signs off
-        -- and on, using buffer local variables
         signs = true,
         update_in_insert = false,
       })

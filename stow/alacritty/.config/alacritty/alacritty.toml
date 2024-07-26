@@ -80,6 +80,7 @@ TERM = "xterm-256color"
 
 [font]
 size = 16.0
+offset.y = 1
 
 [font.normal]
 # family = "GeistMono Nerd Font Mono"
