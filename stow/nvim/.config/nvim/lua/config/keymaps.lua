@@ -3,6 +3,8 @@ local function set(mode, key, map, opts)
 end
 
 set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+-- j->gj, k->gk
 set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
@@ -17,17 +19,18 @@ set('t', '<c-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true 
 
 -- explorer -> replaced with nvimtree
 -- set('n', '<leader>x', ':Explore<cr>', { desc = 'E[x]plorer', silent = true })
+set('n', '<leader>x', ':NvimTreeFindFileToggle<CR>', { desc = 'E[x]plorer', silent = true })
 
 -- undotree
 set('n', '<leader>u', ':UndotreeToggle<CR>', { desc = '[U]ndootree' })
 
 -- keep selection after indent
-set({ 'v' }, '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })
-set({ 'v' }, '>', '>gv', { desc = 'Indent right', noremap = true, silent = true })
+set('v', '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })
+set('v', '>', '>gv', { desc = 'Indent right', noremap = true, silent = true })
 
 -- move selected lines vertically (with correct indentation)
-set({ 'v' }, 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
-set({ 'v' }, 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
+set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
+set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
 
 -- disable arrow keys
 set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -41,9 +44,6 @@ set('n', '<leader>o', ':OrganizeImports<cr>', { desc = '[O]rganize Iports', sile
 -- quickfix list
 set('n', '<C-[>', '<cmd>cprevious<cr>', { desc = 'Previous item in quickfix list', silent = true })
 set('n', '<C-]>', '<cmd>cnext<cr>', { desc = 'Next item in quickfix list', silent = true })
-
--- nvimtree
-set('n', '<leader>x', ':NvimTreeFindFileToggle<CR>', { desc = 'E[x]plorer toggle - Nvimtree', silent = true })
 
 -- treesitter context
 set('n', '[c', function()
