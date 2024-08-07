@@ -63,7 +63,7 @@ return {
 
       local on_attach = function(_, bufnr)
         vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[n]ame' })
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[C]ode [A]ction' })
+        vim.keymap.set('n', '<leader>i', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[I]mport, Code Actions' })
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[G]oto [D]efinition' })
         vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
         vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
@@ -80,7 +80,7 @@ return {
         -- end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
       end
 
-      local function organize_imports()
+     local function organize_imports()
         local params = {
           command = '_typescript.organizeImports',
           arguments = { vim.api.nvim_buf_get_name(0) },
@@ -95,18 +95,16 @@ return {
 
       mason_lspconfig.setup_handlers {
         function(server_name)
+          local custom_capabilities = capabilities
+          if server_name == 'eslint' then
+            custom_capabilities = vim.lsp.protocol.make_client_capabilities()
+            custom_capabilities.textDocument.codeAction = false
+          end
+
           lspconfig[server_name].setup {
-            capabilities = capabilities,
+            capabilities = custom_capabilities,
             on_attach = function(client, bufnr)
-              -- if server_name == 'eslint' then
-              --   client.handlers['textDocument/codeAction'] = function() end
-              -- end
               on_attach(client, bufnr)
-              -- require('which-key').add {
-              --   { '<leader>d', group = '[D]ocument' },
-              --   { '<leader>r', group = '[R]e' },
-              --   { '<leader>w', group = '[W]orkspace' },
-              -- }
             end,
             settings = servers[server_name],
           }

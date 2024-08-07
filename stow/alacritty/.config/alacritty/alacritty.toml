@@ -79,7 +79,7 @@ color = "#f5e0dc"
 TERM = "xterm-256color"
 
 [font]
-size = 16.0
+size = 15.0
 offset.y = 1
 
 [font.normal]

@@ -6,7 +6,7 @@ ZSH_THEME="peti"
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 
 # List of plugins to load
-plugins=(git fzf-tab zsh-autosuggestions)
+plugins=(git fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 
 # Source oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -47,7 +47,7 @@ export TERM='xterm-256color'
 
 # bun completions
 # [ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
-[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
+[ -s "/Userds/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
@@ -64,6 +64,12 @@ export PATH="~/.turso:$PATH"
 # control+f to open tmux-sessionizer
 bindkey -s '^F' 'tmux-sessionizer\n'
 
+# vi mode
+bindkey -v
+export KEYTIMEOUT=1
+# for bash:
+# set -o vi
+
 # neovim
 alias v="nvim"
 
@@ -71,6 +77,22 @@ alias v="nvim"
 alias ta="tmux a"
 alias tk="tmux kill-server"
 alias tn="tmux-new"
+
+get_tmux_start_path() {
+    session_start_path=$(tmux display-message -p -t $(tmux display-message -p '#S'):0.0 "#{pane_start_path}")
+    if [ -z "$session_start_path" ]; then
+        session_start_path=$(tmux display-message -p -t $(tmux display-message -p '#S'):0.0 "#{pane_current_path}")
+    fi
+    echo "$session_start_path"
+}
+
+ct() {
+    cd "$(get_tmux_start_path)"
+}
+
+vt() {
+    nvim "$(get_tmux_start_path)"
+}
 
 # gems backend 
 alias bdown="cd ~/work/gems-backend-platform && docker compose down"
@@ -87,6 +109,7 @@ alias ball="bbuild && binit && bstart"
 alias fbuild="cd ~/work/gems-frontend-platform && npm run build"
 alias fgen="cd ~/work/gems-frontend-platform/packages/apiclient && npm run generate"
 alias fdev="cd ~/work/gems-frontend-platform/packages/app-gems && npm run dev"
+alias fpre="cd ~/work/gems-frontend-platform/packages/app-gems && npm run preview"
 
 # lazygit
 alias lg="lazygit"
@@ -111,3 +134,4 @@ alias gps="git push"
 alias gpl="git pull"
 alias gd="git diff"
 alias glg="git log --decorate --graph --oneline"
+alias gwt="git worktree"

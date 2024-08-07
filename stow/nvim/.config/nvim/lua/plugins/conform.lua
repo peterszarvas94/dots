@@ -15,6 +15,7 @@ return { -- Autoformat
         json = { 'prettier' },
         markdown = { 'prettier' },
         html = { 'prettier' },
+        templ= { 'templ' },
         css = { 'prettier' },
         yml = { 'prettier' },
         go = { 'gopls' }

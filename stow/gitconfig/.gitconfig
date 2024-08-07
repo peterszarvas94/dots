@@ -13,6 +13,7 @@
   bm = branch -M
   ch = checkout
   cb = checkout -b
+  wt = worktree
 
 [init]
   defaultBranch = main
