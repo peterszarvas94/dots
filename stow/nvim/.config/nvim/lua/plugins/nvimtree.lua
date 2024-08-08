@@ -1,6 +1,13 @@
 return {
   'nvim-tree/nvim-tree.lua',
   config = function()
+    local api = require 'nvim-tree.api'
+
+    local function my_on_attach(bufnr)
+      api.config.mappings.default_on_attach(bufnr)
+      vim.keymap.del('n', '<C-E>', { buffer = bufnr })
+    end
+
     require('nvim-tree').setup {
       view = {
         width = 50,
@@ -58,9 +65,9 @@ return {
         custom = {},
         exclude = {},
       },
+      on_attach = my_on_attach,
     }
 
-    local api = require 'nvim-tree.api'
     api.events.subscribe(api.events.Event.FileCreated, function(file)
       vim.cmd('edit ' .. file.fname)
     end)

@@ -33,8 +33,3 @@ end
 vim.cmd [[
   command! Tabs lua Tabs()
 ]]
-
--- :GitPush git push command
-vim.cmd [[
-  command! GP !git push
-]]

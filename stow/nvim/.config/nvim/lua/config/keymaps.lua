@@ -53,6 +53,7 @@ end, { desc = 'Previous to [C]ontext', silent = true })
 -- fugitive
 set('n', '<leader>gg', ':Git<CR>', { desc = '[G]it', silent = true })
 set('n', '<leader>gd', ':Gvdiffsplit<CR>', { desc = '[G]it [D]iff', silent = true })
+set('n', '<leader>gp', ':!git push<CR>', { desc = '[G]it [P]ush', silent = true })
 
 -- tabs
 set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew', silent = true })
@@ -136,3 +137,25 @@ end
 -- Create a command for toggling diagnostics
 vim.api.nvim_create_user_command('ToggleDiagnostics', 'lua _G.toggle_diagnostics()', {})
 set('n', '<leader>dt', ':ToggleDiagnostics<CR>', { desc = '[D]iagnostics [T]oggle', silent = true })
+
+local presenter_state = false
+
+function TogglePresenter()
+  if presenter_state then
+    -- Set cursor to line in insert mode, block in other modes
+    vim.o.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
+    -- Set absolute line numbers
+    vim.wo.number = true
+    vim.wo.relativenumber = false
+  else
+    -- Block cursor for every mode
+    vim.o.guicursor = 'n-v-c:block,i-ci-ve:block,r-cr:block,o:block'
+    -- Set relative line numbers
+    vim.wo.number = true
+    vim.wo.relativenumber = true
+  end
+  presenter_state = not presenter_state
+end
+
+-- turn on presenter view
+set('n', '<leader>tp', ':lua TogglePresenter()<CR>', { desc = '[T]oggle [P]resenter', silent = true })

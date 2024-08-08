@@ -61,8 +61,8 @@ export NVM_DIR="$HOME/.nvm"
 # turso
 export PATH="~/.turso:$PATH"
 
-# control+f to open tmux-sessionizer
-bindkey -s '^F' 'tmux-sessionizer\n'
+# tmux-sessionizer
+alias tf="tmux-sessionizer"
 
 # vi mode
 bindkey -v
