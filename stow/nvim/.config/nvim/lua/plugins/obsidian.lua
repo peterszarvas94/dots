@@ -30,6 +30,10 @@ return {
     attachments = {
       img_folder = 'images',
     },
+    completion = {
+      nvim_cmp = true,
+      min_chars = 2,
+    },
     -- disable_formatter = function()
     --   if vim.loop.cwd() == vim.fn.expand '~/obsidian-remote' then
     --     return true

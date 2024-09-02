@@ -1,0 +1,3 @@
+#!/bin/bash
+
+FRONTEND_FOLDER="$HOME/work/gems-frontend-platform" && cd "$FRONTEND_FOLDER/packages/apiclient" && curl http://backend.localtest.me:3011/api/docs-json | npx prettier --parser json > "openapi.json" && npm run generate

@@ -62,17 +62,17 @@ return {
       }
 
       local on_attach = function(_, bufnr)
-        vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[n]ame' })
-        vim.keymap.set('n', '<leader>i', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[I]mport, Code Actions' })
+        vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]ename' })
+        vim.keymap.set('n', '<leader>i', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[I]mport / Code Actions' })
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[G]oto [D]efinition' })
         vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
         vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
-        vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { buffer = bufnr, desc = 'Type [D]efinition' })
+        -- vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { buffer = bufnr, desc = 'Type [D]efinition' })
         -- vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, { buffer = bufnr, desc = '[D]ocument [S]ymbols' })
         -- vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, { buffer = bufnr, desc = '[W]orkspace [S]ymbols' })
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = bufnr, desc = '[G]oto [D]eclaration' })
+        -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = bufnr, desc = '[G]oto [D]eclaration' })
         -- vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, { buffer = bufnr, desc = '[W]orkspace [A]dd Folder' })
         -- vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, { buffer = bufnr, desc = '[W]orkspace [R]emove Folder' })
         -- vim.keymap.set('n', '<leader>wl', function()
@@ -80,18 +80,18 @@ return {
         -- end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
       end
 
-     local function organize_imports()
-        local params = {
-          command = '_typescript.organizeImports',
-          arguments = { vim.api.nvim_buf_get_name(0) },
-          title = '',
-        }
-        vim.lsp.buf.execute_command(params)
-      end
+      local ts_on_attach = function(_, bufnr)
+        vim.keymap.set('n', '<leader>oi', function()
+          local params = {
+            command = '_typescript.organizeImports',
+            arguments = { vim.api.nvim_buf_get_name(0) },
+            title = '',
+          }
+          vim.lsp.buf.execute_command(params)
+        end, { buffer = bufnr, desc = '[O]rganize imports' })
 
-      vim.api.nvim_create_user_command('OrganizeImports', function()
-        organize_imports()
-      end, {})
+        on_attach(_, bufnr)
+      end
 
       mason_lspconfig.setup_handlers {
         function(server_name)
@@ -107,6 +107,27 @@ return {
               on_attach(client, bufnr)
             end,
             settings = servers[server_name],
+          }
+
+          lspconfig.tsserver.setup {
+            capabilities = custom_capabilities,
+            on_attach = function(client, bufnr)
+              ts_on_attach(client, bufnr)
+            end,
+          }
+
+          lspconfig.gopls.setup {
+            capabilities = custom_capabilities,
+            on_attach = function(client, bufnr)
+              vim.g.gofmt_command = 'goimport'
+              vim.api.nvim_create_autocmd('BufWritePre', {
+                pattern = '*.go',
+                callback = function()
+                  vim.cmd 'silent! lua vim.lsp.buf.format({ async = false })'
+                end,
+              })
+              on_attach(client, bufnr)
+            end,
           }
         end,
       }

@@ -62,7 +62,7 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="~/.turso:$PATH"
 
 # tmux-sessionizer
-alias tf="tmux-sessionizer"
+alias ts="tmux-sessionizer"
 
 # vi mode
 bindkey -v
@@ -107,7 +107,7 @@ alias ball="bbuild && binit && bstart"
 
 # gems frontend
 alias fbuild="cd ~/work/gems-frontend-platform && npm run build"
-alias fgen="cd ~/work/gems-frontend-platform/packages/apiclient && npm run generate"
+alias fgen="openapi"
 alias fdev="cd ~/work/gems-frontend-platform/packages/app-gems && npm run dev"
 alias fpre="cd ~/work/gems-frontend-platform/packages/app-gems && npm run preview"
 
@@ -135,3 +135,6 @@ alias gpl="git pull"
 alias gd="git diff"
 alias glg="git log --decorate --graph --oneline"
 alias gwt="git worktree"
+
+# ftp
+alias ftp="termscp"

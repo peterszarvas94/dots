@@ -9,13 +9,12 @@ return {
   end,
   config = function()
     require('which-key').add {
-      { '<leader>b', group = '[O]bsidian' },
-      { '<leader>c', group = '[C]...' },
-      { '<leader>ch', desc = '[C]ange C[H]eckbox' },
+      { '<leader>o', group = '[O]bsitian / [O]rganize' },
+      { '<leader>l', group = 'Conceal [L]evel' },
       { '<leader>g', group = '[G]it' },
       { '<leader>h', group = '[H]arpoon' },
       { '<leader>s', group = '[S]earch' },
-      { '<leader>t', group = '[T]ab' },
+      { '<leader>t', group = '[T]ab / [T]erminal' },
       { '<leader>d', group = '[D]iagnostics' },
     }
   end,

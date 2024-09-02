@@ -1,29 +1,34 @@
 #!/usr/bin/env bash
 
-if [[ $# -eq 1 ]]; then
-    selected=$1
-else
-    selected=$( (find ~/work ~/projects ~/projects/go -maxdepth 1 -mindepth 1 -type d ! -name go; echo ~/obsidian-remote) | fzf)
-fi
+# Based on ThePrimeagen's tmux-sessionizer
 
-if [[ -z $selected ]]; then
-    exit 0
-fi
+# Select dirs
+parent_dirs=(~/work ~/projects ~/projects/go)
 
+select_directory() {
+    find "${parent_dirs[@]}" -maxdepth 1 -mindepth 1 -type d ! -name go
+    echo ~/obsidian-remote
+}
+
+selected="${1:-$(select_directory | fzf)}"
+
+[[ -z $selected ]] && exit 0
+
+# Convert the directory name to a tmux-safe session name
 selected_name=$(basename "$selected" | tr . _)
-tmux_running=$(pgrep tmux)
 
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $selected_name -c $selected
+# Check if tmux is running
+if [[ -z $TMUX ]] && ! pgrep tmux > /dev/null; then
+    tmux new-session -s "$selected_name" -c "$selected"
     exit 0
 fi
 
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    tmux new-session -ds $selected_name -c $selected
-fi
+# Create a new session if it doesn't exist
+tmux has-session -t="$selected_name" 2>/dev/null || tmux new-session -ds "$selected_name" -c "$selected"
 
+# Attach or switch to the session
 if [[ -z $TMUX ]]; then
-    tmux attach -t $selected_name
+    tmux attach -t "$selected_name"
 else
-    tmux switch-client -t $selected_name
+    tmux switch-client -t "$selected_name"
 fi
