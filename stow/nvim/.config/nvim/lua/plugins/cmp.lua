@@ -50,7 +50,7 @@ return {
       },
       sources = {
         { name = 'nvim_lsp', priority = 1 },
-        { name = 'copilot', priority = 2 },
+        -- { name = 'copilot', priority = 2 },
         -- { name = 'luasnip', prioryty = 2 }
       },
       formatting = {
@@ -68,7 +68,7 @@ return {
             -- ...
             return vim_item
           end,
-          symbol_map = { Copilot = '' },
+          -- symbol_map = { Copilot = '' },
         },
       },
     }

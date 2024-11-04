@@ -3,6 +3,10 @@ return { -- Autoformat
   config = function()
     local conform = require 'conform'
     conform.setup {
+      format_on_save = {
+        lsp_format = 'fallback',
+        timeout_ms = 500,
+      },
       notify_on_error = true,
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -15,10 +19,10 @@ return { -- Autoformat
         json = { 'prettier' },
         markdown = { 'prettier' },
         html = { 'prettier' },
-        templ= { 'templ' },
+        templ = { 'templ' },
         css = { 'prettier' },
         yml = { 'prettier' },
-        go = { 'gopls' }
+        go = { 'goimports' },
       },
     }
 

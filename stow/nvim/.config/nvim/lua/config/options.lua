@@ -27,3 +27,12 @@ vim.o.swapfile = false
 -- vim.o.timeout = true
 -- vim.o.timeoutlen = 300
 -- vim.o.completeopt = 'menuone,noselect'
+
+-- neovide
+if vim.g.neovide then
+  vim.g.neovide_cursor_animation_length = 0.03
+  vim.g.neovide_cursor_trail_size = 0.03
+  vim.o.guifont = 'MesloLGS Nerd Font Mono'
+end
+
+-- hello who are thou? i am peter

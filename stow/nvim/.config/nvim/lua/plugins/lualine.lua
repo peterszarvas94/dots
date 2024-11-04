@@ -2,7 +2,7 @@ return {
   'nvim-lualine/lualine.nvim',
   dependencies = {
     'nvim-tree/nvim-web-devicons',
-    'AndreM222/copilot-lualine',
+    -- 'AndreM222/copilot-lualine',
   },
   config = function()
     require('lualine').setup {
@@ -12,7 +12,7 @@ return {
       },
       sections = {
         -- lualine_c = {},
-        lualine_x = { 'copilot', 'encoding', 'fileformat', 'filetype' },
+        lualine_x = { --[[ 'copilot', ]] 'encoding', 'fileformat', 'filetype' },
       },
       tabline = {
         lualine_a = {

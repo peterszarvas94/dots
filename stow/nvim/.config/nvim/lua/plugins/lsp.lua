@@ -19,7 +19,7 @@ return {
 
       mason_lspconfig.setup {
         ensure_installed = {
-          'tsserver',
+          'ts_ls',
           'cssls',
           -- 'tailwindcss',
           'gopls',
@@ -109,7 +109,7 @@ return {
             settings = servers[server_name],
           }
 
-          lspconfig.tsserver.setup {
+          lspconfig.ts_ls.setup {
             capabilities = custom_capabilities,
             on_attach = function(client, bufnr)
               ts_on_attach(client, bufnr)
@@ -141,6 +141,10 @@ return {
         virtual_text = { spacing = 2 },
         signs = true,
         update_in_insert = false,
+      })
+
+      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = 'rounded', -- You can use "single", "double", "rounded", "solid", or "shadow"
       })
     end,
   },

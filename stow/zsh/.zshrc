@@ -86,10 +86,12 @@ get_tmux_start_path() {
     echo "$session_start_path"
 }
 
+# cd tmux start path
 ct() {
     cd "$(get_tmux_start_path)"
 }
 
+# nvim tmux start path
 vt() {
     nvim "$(get_tmux_start_path)"
 }
@@ -107,7 +109,7 @@ alias ball="bbuild && binit && bstart"
 
 # gems frontend
 alias fbuild="cd ~/work/gems-frontend-platform && npm run build"
-alias fgen="openapi"
+alias fgen="api && objecttypes"
 alias fdev="cd ~/work/gems-frontend-platform/packages/app-gems && npm run dev"
 alias fpre="cd ~/work/gems-frontend-platform/packages/app-gems && npm run preview"
 
@@ -124,17 +126,9 @@ alias fs="fzf-stash"
 
 alias ke="killall eslint_d"
 
-alias ga="git add"
-alias gcm="git commit"
-alias gca="git commit --amend"
-alias gb="git branch"
-alias gch="git checkout"
-alias gcb="git checkout -b"
-alias gps="git push"
-alias gpl="git pull"
-alias gd="git diff"
-alias glg="git log --decorate --graph --oneline"
-alias gwt="git worktree"
-
 # ftp
 alias ftp="termscp"
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/szarvaspeter/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

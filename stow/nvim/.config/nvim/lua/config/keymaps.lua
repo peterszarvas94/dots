@@ -112,3 +112,7 @@ vim.api.nvim_create_user_command('RelOff', relOff, {})
 
 set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = 'NvimTree e[X]plorer', silent = true })
 set('n', '<leader>u', ':UndotreeToggle<CR>', { desc = '[U]ndooTree', silent = true })
+
+set('n', '<leader>ms', ':GithubPreviewStart<CR>', { desc = '[M]arkdown [S]tart', silent = true })
+set('n', '<leader>mp', ':GithubPreviewStop<CR>', { desc = '[M]arkdown sto[P]', silent = true })
+set('n', '<leader>mt', ':GithubPreviewToggle<CR>', { desc = '[M]arkdown [T]oggle', silent = true })
