@@ -1,3 +1,7 @@
 [user]
   email = contact@peterszarvas.hu
   name = "Péter Szarvas"
+  # signingkey = ...
+
+[commit]
+  gpgSign = true
