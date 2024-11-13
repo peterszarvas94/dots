@@ -19,6 +19,10 @@ return {
       completion = {
         -- autocomplete = false,
       },
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      },
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
@@ -41,8 +45,7 @@ return {
         },
         ['<C-k>'] = cmp.mapping.scroll_docs(-4),
         ['<C-j>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete {
-        },
+        ['<C-Space>'] = cmp.mapping.complete {},
         ['<C-y>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior,
           select = true,

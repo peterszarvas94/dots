@@ -2,7 +2,11 @@ return {
   {
     'williamboman/mason.nvim',
     config = function()
-      require('mason').setup()
+      require('mason').setup {
+        ui = {
+          border = 'rounded',
+        },
+      }
     end,
   },
   {
@@ -80,19 +84,6 @@ return {
         -- end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
       end
 
-      local ts_on_attach = function(_, bufnr)
-        vim.keymap.set('n', '<leader>oi', function()
-          local params = {
-            command = '_typescript.organizeImports',
-            arguments = { vim.api.nvim_buf_get_name(0) },
-            title = '',
-          }
-          vim.lsp.buf.execute_command(params)
-        end, { buffer = bufnr, desc = '[O]rganize imports' })
-
-        on_attach(_, bufnr)
-      end
-
       mason_lspconfig.setup_handlers {
         function(server_name)
           local custom_capabilities = capabilities
@@ -110,9 +101,22 @@ return {
           }
 
           lspconfig.ts_ls.setup {
+            commands = {
+              OrganizeImports = {
+                function()
+                  local params = {
+                    command = '_typescript.organizeImports',
+                    arguments = { vim.api.nvim_buf_get_name(0) },
+                    title = 'Organize Imports',
+                  }
+                  vim.lsp.buf.execute_command(params)
+                end,
+              },
+            },
             capabilities = custom_capabilities,
-            on_attach = function(client, bufnr)
-              ts_on_attach(client, bufnr)
+            on_attach = function(_, bufnr)
+              vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = '[O]rganize [I]mports' })
+              on_attach(_, bufnr)
             end,
           }
 

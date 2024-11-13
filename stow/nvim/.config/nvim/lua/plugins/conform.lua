@@ -3,25 +3,22 @@ return { -- Autoformat
   config = function()
     local conform = require 'conform'
     conform.setup {
-      format_on_save = {
-        lsp_format = 'fallback',
-        timeout_ms = 500,
-      },
+      format_on_save = false,
       notify_on_error = true,
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
-        typescript = { 'prettier' },
-        typescriptreact = { 'prettier' },
-        javascript = { 'prettier' },
-        javascriptreact = { 'prettier' },
-        json = { 'prettier' },
-        markdown = { 'prettier' },
-        html = { 'prettier' },
+        typescript = { 'prettierd' },
+        typescriptreact = { 'prettierd' },
+        javascript = { 'prettierd' },
+        javascriptreact = { 'prettierd' },
+        json = { 'prettierd' },
+        markdown = { 'prettierd' },
+        html = { 'prettierd' },
         templ = { 'templ' },
-        css = { 'prettier' },
-        yml = { 'prettier' },
+        css = { 'prettierd' },
+        yml = { 'prettierd' },
         go = { 'goimports' },
       },
     }
@@ -35,9 +32,45 @@ return { -- Autoformat
           ['end'] = { args.line2, end_line:len() },
         }
       end
-      conform.format { async = true, lsp_fallback = true, range = range }
+      conform.format { async = false, lsp_fallback = true, range = range }
     end, { range = true })
 
     vim.keymap.set('n', '<leader>f', '<cmd>Format<cr>', { desc = '[F]ormat', silent = true })
+
+    -- Format on save
+    local format_in_progress = false
+
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
+      callback = function()
+        if format_in_progress then
+          return
+        end
+        format_in_progress = true
+
+        vim.cmd 'OrganizeImports'
+
+        vim.defer_fn(function()
+          vim.cmd 'Format'
+          vim.schedule(function()
+            vim.cmd 'write'
+            format_in_progress = false
+          end)
+        end, 200)
+        return true -- Cancel the original write
+      end,
+    })
+
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      pattern = { '*' },
+      callback = function()
+        if format_in_progress then
+          return
+        end
+        format_in_progress = true
+
+        vim.cmd 'Format'
+      end,
+    })
   end,
 }
