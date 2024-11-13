@@ -3,7 +3,6 @@ return { -- Autoformat
   config = function()
     local conform = require 'conform'
     conform.setup {
-      format_on_save = false,
       notify_on_error = true,
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -41,27 +40,6 @@ return { -- Autoformat
     local format_in_progress = false
 
     vim.api.nvim_create_autocmd('BufWritePre', {
-      pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
-      callback = function()
-        if format_in_progress then
-          return
-        end
-        format_in_progress = true
-
-        vim.cmd 'OrganizeImports'
-
-        vim.defer_fn(function()
-          vim.cmd 'Format'
-          vim.schedule(function()
-            vim.cmd 'write'
-            format_in_progress = false
-          end)
-        end, 200)
-        return true -- Cancel the original write
-      end,
-    })
-
-    vim.api.nvim_create_autocmd('BufWritePre', {
       pattern = { '*' },
       callback = function()
         if format_in_progress then
@@ -69,7 +47,20 @@ return { -- Autoformat
         end
         format_in_progress = true
 
-        vim.cmd 'Format'
+        local filetype = vim.bo.filetype
+        if filetype == 'typescript' or filetype == 'typescriptreact' or filetype == 'javascript' or filetype == 'javascriptreact' then
+          vim.cmd 'OrganizeImports'
+          vim.defer_fn(function()
+            vim.cmd 'Format'
+            vim.schedule(function()
+              vim.cmd 'write'
+              format_in_progress = false
+            end)
+          end, 200)
+        else
+          vim.cmd 'Format'
+          format_in_progress = false
+        end
       end,
     })
   end,
