@@ -1,0 +1,40 @@
+[
+	{
+		"context": "FileFinder",
+		"bindings": {
+			"cmd-p": "menu::SelectPrev",
+			"cmd-n": "menu::SelectNext"
+		}
+	},
+	{
+		"context": "vim_mode == normal",
+		"bindings": {
+			"j": ["vim::Down", { "displayLines": true }],
+			"k": ["vim::Up", { "displayLines": true }],
+			"space i": "editor::ToggleCodeActions",
+			"space s r": "tab_switcher::Toggle",
+			"ctrl-c": ["vim::SwitchMode", "Normal"],
+			"space s f": "file_finder::Toggle"
+		}
+	},
+	{
+    "context": "BufferSearchBar",
+    "bindings": {
+      "ctrl-c": "buffer_search::Dismiss"
+    }
+	},
+	{
+		"context": "Editor && showing_completions",
+    "bindings": {
+      "ctrl-y": "editor::ConfirmCompletion"
+    }
+	},
+	{
+		"context": "TabSwitcher",
+		"bindings": {
+			"k": "menu::SelectPrev",
+			"j": "menu::SelectNext",
+			"x": "tab_switcher::CloseSelectedItem"
+		}
+	}
+]

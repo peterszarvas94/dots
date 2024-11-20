@@ -1,0 +1,99 @@
+{
+	"vim_mode": true,
+	"ui_font_size": 16,
+	"buffer_font_size": 14,
+	"theme": {
+		"mode": "system",
+		"light": "Catppuccin Latte",
+		"dark": "Catppuccin Mocha"
+	},
+	"buffer_font_family": "MesloLGS Nerd Font Mono",
+	"relative_line_numbers": true,
+	"soft_wrap": "editor_width",
+	"hard_tabs": true,
+	"tab_size": 2,
+	"line_height": "standard",
+	"toolbar": {
+		"breadcrumbs": true,
+		"quick_actions": false,
+		"selections_menu": false
+	},
+	"telemetry": {
+		"diagnostics": false,
+		"metrics": false
+	},
+	"gutter": {
+		"code_actions": false
+	},
+	"collaboration_panel": {
+		"button": false
+	},
+	"outline_panel": {
+		"button": false
+	},
+	"indent_guides": {
+		"enabled": true
+	},
+	"git": {
+		"inline_blame": {
+			"enabled": false
+		}
+	},
+	"project_panel": {
+		"indent_size": 10
+	},
+	"tab_bar": {
+		"show": false
+	},
+	"show_inline_completions": false,
+	"features": {
+		"inline_completion_provider": "none"
+	},
+	"chat_panel": {
+		"button": false
+	},
+	"assistant": {
+		"version": "2",
+		"enabled": false,
+		"button": false
+	},
+	"format_on_save": "on",
+	"languages": {
+		"TypeScript": {
+			"code_actions_on_format": {
+				"source.organizeImports": true
+			},
+			"formatter": "prettier"
+		},
+		"TSX": {
+			"code_actions_on_format": {
+				"source.organizeImports": true
+			},
+			"formatter": "prettier"
+		},
+		"JavaScript": {
+			"code_actions_on_format": {
+				"source.organizeImports": true
+			},
+			"formatter": "prettier"
+		},
+		"JSX": {
+			"code_actions_on_format": {
+				"source.organizeImports": true
+			},
+			"formatter": "prettier"
+		},
+		"Go": {
+			"code_actions_on_format": {
+				"source.organizeImports": true
+			},
+			"formatter": "language_server"
+		},
+		"JSON": {
+			"formatter": "prettier"
+		},
+		"JSONC": {
+			"formatter": "prettier"
+		}
+	}
+}

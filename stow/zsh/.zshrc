@@ -5,6 +5,9 @@ ZSH_THEME="peti"
 # git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 
+autoload -U compinit
+compinit -i
+
 # List of plugins to load
 plugins=(git fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 

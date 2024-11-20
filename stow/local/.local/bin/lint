@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Basic colors for errors only
+RED='\033[0;31m'
+NC='\033[0m'
+
+# Show usage
+show_usage() {
+    echo "Usage: $0 [-s|--staged]"
+    echo "Options:"
+    echo "  -s, --staged    Check only staged files"
+    exit 1
+}
+
+# Parse arguments
+CHECK_STAGED=false
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -s|--staged) CHECK_STAGED=true ;;
+        *) show_usage ;;
+    esac
+    shift
+done
+
+# Check dependencies
+if ! command -v eslint_d &> /dev/null; then
+    echo -e "${RED}Error: eslint_d is not installed${NC}"
+    exit 1
+fi
+
+if [ ! -f ".eslintrc.cjs" ]; then
+    echo -e "${RED}Error: .eslintrc.cjs not found${NC}"
+    exit 1
+fi
+
+# Get files to check
+if [ "$CHECK_STAGED" = true ]; then
+    files=$(git diff --cached --name-only)
+else
+    files=$(git diff --name-only)
+fi
+
+[ -z "$files" ] && echo "No files to check" && exit 0
+
+# Initialize counters and array for failed files
+total=0
+errors=0
+failed_files=()
+
+# Check files
+while IFS= read -r file; do
+    # Skip non-JS/TS files
+    [[ "$file" =~ \.(js|jsx|ts|tsx)$ ]] || continue
+    [ ! -f "$file" ] && continue
+
+    ((total++))
+    echo "Checking: $file"
+    
+    if ! eslint_d --config .eslintrc.cjs "$file"; then
+        ((errors++))
+        failed_files+=("$file")
+    fi
+done <<< "$files"
+
+# Print summary
+echo
+echo "Files checked: $total"
+
+# Print list of failed files if any
+if [ ${#failed_files[@]} -ne 0 ]; then
+    echo -e "\nFiles with issues:"
+    printf '%s\n' "${failed_files[@]}"
+    exit 1
+else
+  echo -e "\nNo issued found"
+fi
+
+exit 0

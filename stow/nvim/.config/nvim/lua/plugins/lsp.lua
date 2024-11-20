@@ -84,12 +84,6 @@ return {
         -- end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
       end
 
-      -- only ts server functionnality
-      local ts_on_attach = function(_, bufnr)
-        vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = '[O]rganize [I]mports' })
-        on_attach(_, bufnr)
-      end
-
       mason_lspconfig.setup_handlers {
         function(server_name)
           local custom_capabilities = capabilities
@@ -98,6 +92,7 @@ return {
             custom_capabilities.textDocument.codeAction = false
           end
 
+          -- default
           lspconfig[server_name].setup {
             capabilities = custom_capabilities,
             on_attach = function(client, bufnr)
@@ -121,9 +116,19 @@ return {
             },
             capabilities = custom_capabilities,
             on_attach = function(client, bufnr)
-              ts_on_attach(client, bufnr)
+              vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = '[O]rganize [I]mports' })
+
+              -- TODO: fix this
+              -- vim.api.nvim_create_autocmd('BufWritePre', {
+              --   pattern = { '*.js', '*.ts', '*.jsx', '*.tsx' },
+              --   callback = function()
+              --     vim.cmd 'OrganizeImports'
+              --   end,
+              -- })
+              on_attach(client, bufnr)
             end,
           }
+
           lspconfig.gopls.setup {
             capabilities = custom_capabilities,
             on_attach = function(client, bufnr)

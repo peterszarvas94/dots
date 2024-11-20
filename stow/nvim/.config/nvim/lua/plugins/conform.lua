@@ -4,6 +4,10 @@ return { -- Autoformat
     local conform = require 'conform'
     conform.setup {
       notify_on_error = true,
+      format_on_save = {
+        lsp_format = 'fallback',
+        timeout_ms = 500,
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
@@ -35,33 +39,5 @@ return { -- Autoformat
     end, { range = true })
 
     vim.keymap.set('n', '<leader>f', '<cmd>Format<cr>', { desc = '[F]ormat', silent = true })
-
-    -- Format on save
-    local format_in_progress = false
-
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      pattern = { '*' },
-      callback = function()
-        if format_in_progress then
-          return
-        end
-        format_in_progress = true
-
-        local filetype = vim.bo.filetype
-        if filetype == 'typescript' or filetype == 'typescriptreact' or filetype == 'javascript' or filetype == 'javascriptreact' then
-          vim.cmd 'OrganizeImports'
-          vim.defer_fn(function()
-            vim.cmd 'Format'
-            vim.schedule(function()
-              vim.cmd 'write'
-              format_in_progress = false
-            end)
-          end, 200)
-        else
-          vim.cmd 'Format'
-          format_in_progress = false
-        end
-      end,
-    })
   end,
 }
