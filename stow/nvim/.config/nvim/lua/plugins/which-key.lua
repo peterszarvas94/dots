@@ -17,6 +17,8 @@ return {
       { '<leader>t', group = '[T]ab / [T]erminal' },
       { '<leader>d', group = '[D]iagnostics' },
       { '<leader>m', group = '[M]arkdown' },
+      { '<leader><leader>', group = 'Source' },
+      { '<leader>r', group = '[R]e' },
     }
   end,
 }

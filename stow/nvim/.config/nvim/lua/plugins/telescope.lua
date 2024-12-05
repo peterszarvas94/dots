@@ -36,11 +36,19 @@ return {
           additional_args = function(_)
             return { '--hidden' }
           end,
+          -- on_input_filter_cb = function(prompt)
+          --   -- AND operator for live_grep like how fzf handles spaces with wildcards in rg
+          --   return { prompt = prompt:gsub('%s', '.*') }
+          -- end,
         },
         find_files = {
           hidden = true,
-          no_ignore = true,
-          no_ignore_parent = true,
+          no_ignore = false,
+          no_ignore_parent = false,
+          -- on_input_filter_cb = function(prompt)
+          --   -- AND operator for live_grep like how fzf handles spaces with wildcards in rg
+          --   return { prompt = prompt:gsub('%s', '.*') }
+          -- end,
         },
       },
       {

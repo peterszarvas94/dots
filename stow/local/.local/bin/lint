@@ -72,7 +72,7 @@ if [ ${#failed_files[@]} -ne 0 ]; then
     printf '%s\n' "${failed_files[@]}"
     exit 1
 else
-  echo -e "\nNo issued found"
+  echo -e "\nNo errors found"
 fi
 
 exit 0

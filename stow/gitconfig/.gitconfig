@@ -23,6 +23,8 @@
 
 [includeIf "gitdir:~/projects/"]
   path = ~/projects/dots/git_personas/personal/.gitconfig
+
+[includeIf "gitdir:~/projects/"]
   path = ~/projects/dots/git_personas/personal/.gitSign
 
 [includeIf "gitdir:~/work/"]
