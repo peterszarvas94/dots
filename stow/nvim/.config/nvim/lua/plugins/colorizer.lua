@@ -16,5 +16,12 @@ return {
       virtualtext = '■',
       always_update = false,
     }
+
+    vim.api.nvim_create_autocmd('BufReadPost', {
+      pattern = '*',
+      callback = function()
+        vim.cmd 'ColorizerDetachFromBuffer'
+      end,
+    })
   end,
 }

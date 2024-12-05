@@ -8,7 +8,14 @@ return {
     vim.o.timeoutlen = 300
   end,
   config = function()
-    require('which-key').add {
+    local wk = require 'which-key'
+    wk.setup {
+      triggers = {
+        { '<auto>', mode = '' },
+      },
+      border = 'rounded',
+    }
+    wk.add {
       { '<leader>o', group = '[O]bsitian / [O]rganize' },
       { '<leader>l', group = 'Conceal [L]evel' },
       { '<leader>g', group = '[G]it' },

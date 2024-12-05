@@ -25,7 +25,7 @@ vim.o.swapfile = false
 -- vim.o.breakindent = true
 -- vim.o.updatetime = 250
 -- vim.o.timeout = true
--- vim.o.timeoutlen = 300
+vim.o.timeoutlen = 1000
 -- vim.o.completeopt = 'menuone,noselect'
 
 -- neovide

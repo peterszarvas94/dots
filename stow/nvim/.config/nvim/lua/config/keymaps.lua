@@ -98,15 +98,6 @@ end
 vim.api.nvim_create_user_command('ToggleDiagnostics', 'lua _G.toggle_diagnostics()', {})
 vim.keymap.set('n', '<leader>dt', ':ToggleDiagnostics<CR>', { desc = '[D]iagnostics [T]oggle', silent = true })
 
--- Define the function that moves the current window to the left
-local function relOn()
-  vim.o.relativenumber = true
-end
-
-local function relOff()
-  vim.o.relativenumber = false
-end
-
 vim.api.nvim_create_user_command('RelOn', function()
   vim.o.relativenumber = true
 end, {})
@@ -118,8 +109,13 @@ vim.keymap.set('n', '<leader>ro', ':RelOn<CR>', { desc = '[R]elative numbers [O]
 vim.keymap.set('n', '<leader>rf', ':RelOff<CR>', { desc = '[R]elative numbers o[F]f', silent = true })
 
 vim.keymap.set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = 'NvimTree e[X]plorer', silent = true })
+vim.keymap.set('n', '<leader>n', ':NvimTreeFindFile<CR>', { desc = 'NvimTreeFindFile', silent = true })
 vim.keymap.set('n', '<leader>u', ':UndotreeToggle<CR>', { desc = '[U]ndooTree', silent = true })
 
 vim.keymap.set('n', '<leader>ms', ':GithubPreviewStart<CR>', { desc = '[M]arkdown [S]tart', silent = true })
 vim.keymap.set('n', '<leader>mp', ':GithubPreviewStop<CR>', { desc = '[M]arkdown sto[P]', silent = true })
 vim.keymap.set('n', '<leader>mt', ':GithubPreviewToggle<CR>', { desc = '[M]arkdown [T]oggle', silent = true })
+
+vim.keymap.set('n', '<leader>k', ':WhichKey<CR>', { desc = 'Which[K]ey', silent = true })
+
+vim.keymap.set('n', '<leader>c', ':ColorizerToggle<CR>', { desc = '[C]olorizer Toggle', silent = true })
