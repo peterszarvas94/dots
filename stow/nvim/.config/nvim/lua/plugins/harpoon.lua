@@ -4,8 +4,12 @@ return {
   dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
   config = function()
     local harpoon = require 'harpoon'
-    ---@diagnostic disable-next-line
-
+    local toggle_opts = {
+      border = 'rounded',
+      title_pos = 'center',
+      ui_width_ratio = 0.40,
+      title = ' Harpoon ',
+    }
     harpoon:setup()
 
     local conf = require('telescope.config').values
@@ -32,7 +36,7 @@ return {
     end, { desc = '[H]arpoon tele[S]cope', silent = true })
 
     vim.keymap.set('n', '<leader>w', function()
-      harpoon.ui:toggle_quick_menu(harpoon:list())
+      harpoon.ui:toggle_quick_menu(harpoon:list(), toggle_opts)
     end, { desc = 'Harpoon toggle [W]indow', silent = true })
 
     vim.keymap.set('n', '<leader>a', function()
