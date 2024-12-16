@@ -13,27 +13,11 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       'williamboman/mason-lspconfig.nvim',
-      'folke/which-key.nvim',
       'nvim-telescope/telescope.nvim',
     },
     config = function()
       local lspconfig = require 'lspconfig'
-
       local mason_lspconfig = require 'mason-lspconfig'
-
-      mason_lspconfig.setup {
-        ensure_installed = {
-          'ts_ls',
-          'cssls',
-          -- 'tailwindcss',
-          'gopls',
-          'bashls',
-          'lua_ls',
-          'jsonls',
-          'yamlls',
-        },
-        automatic_installation = false, -- not the same as ensure_installed
-      }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -67,7 +51,7 @@ return {
 
       local on_attach = function(_, bufnr)
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[N]ame' })
-        vim.keymap.set('n', '<leader>i', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[I]mport / Code actions' })
+        -- vim.keymap.set('n', '<leader>i', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[I]mport / Code actions' })
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[G]oto [D]efinition' })
         vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
         vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
@@ -83,6 +67,20 @@ return {
         --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
         -- end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
       end
+
+      mason_lspconfig.setup {
+        ensure_installed = {
+          'ts_ls',
+          'cssls',
+          -- 'tailwindcss',
+          'gopls',
+          'bashls',
+          'lua_ls',
+          'jsonls',
+          'yamlls',
+        },
+        automatic_installation = false, -- not the same as ensure_installed
+      }
 
       mason_lspconfig.setup_handlers {
         function(server_name)

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+
+if [ -z "$1" ]; then
+    echo "Usage: git-tag <tag> <(optional) --delete|-d> "
+    exit 1
+fi
+
+case "$2" in
+    -d|--delete)
+      git tag --delete $1
+      git push --delete origin $1
+      ;;
+    *)
+      git tag $1
+      git push --tags
+      ;;
+esac

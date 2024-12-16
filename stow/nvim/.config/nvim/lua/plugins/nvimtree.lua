@@ -13,15 +13,15 @@ return {
         width = 50,
         relativenumber = true,
         number = true,
-        float = {
-          enable = true,
-          quit_on_focus_loss = true,
-          open_win_config = {
-            width = 55,
-            height = vim.api.nvim_win_get_height(0) - 3,
-            col = vim.api.nvim_win_get_width(0) - 30,
-          },
-        },
+        -- float = {
+        --   enable = true,
+        --   quit_on_focus_loss = true,
+        --   open_win_config = {
+        --     width = 55,
+        --     height = vim.api.nvim_win_get_height(0) - 3,
+        --     col = vim.api.nvim_win_get_width(0) - 30,
+        --   },
+        -- },
       },
       renderer = {
         icons = {

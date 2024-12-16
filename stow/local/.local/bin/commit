@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Get the current branch name
+branch_name=$(git branch --show-current)
+
+# Extract the type (e.g., 'fix'), ticket ID (e.g., 'GEMSU-3283'), and description
+commit_type=$(echo "$branch_name" | cut -d'/' -f1)
+ticket_id=$(echo "$branch_name" | cut -d'/' -f2 | cut -d'-' -f1-2)
+description=$(echo "$branch_name" | cut -d'/' -f2- | sed "s/$ticket_id-//" | sed 's/-/ /g')
+
+# Format the commit message
+commit_message="$commit_type($ticket_id): $description"
+
+# Run git commit
+git commit -m "$commit_message"

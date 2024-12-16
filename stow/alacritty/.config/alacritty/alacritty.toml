@@ -93,7 +93,7 @@ family = "MesloLGL Nerd Font Mono"
 # family = "FiraCode Nerd Font Mono"
 # style = "Light"
 
-[shell]
+[terminal.shell]
 program = "/bin/zsh"
 
 [window]
@@ -104,3 +104,5 @@ option_as_alt = "Both"
 [window.padding]
 x = 10
 y = 10
+
+[terminal]

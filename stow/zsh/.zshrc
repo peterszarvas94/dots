@@ -1,3 +1,6 @@
+DISABLE_UPDATE_PROMPT=true
+DISABLE_AUTO_UPDATE=false
+
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="peti"
 
@@ -23,7 +26,7 @@ export FZF_DEFAULT_OPTS=" \
 export NODE_OPTIONS="--max-old-space-size=4096"
 
 # scripts
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin:$PATH"
 
 # github ssh
 if [[ -o interactive ]]; then
@@ -99,6 +102,11 @@ vt() {
     nvim "$(get_tmux_start_path)"
 }
 
+vd() {
+    cd "$(get_tmux_start_path)" && v
+}
+
+
 # gems backend 
 alias bdown="cd ~/work/gems-backend-platform && docker compose down"
 alias bup="cd ~/work/gems-backend-platform && docker compose up -d"
@@ -134,6 +142,10 @@ alias ftp="termscp"
 
 # zed
 alias zed="open -a /Applications/Zed.app -n"
+
+# git
+alias gpo="push-origin"
+alias gcm="commit"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/szarvaspeter/.rd/bin:$PATH"

@@ -28,6 +28,12 @@ vim.o.swapfile = false
 vim.o.timeoutlen = 1000
 -- vim.o.completeopt = 'menuone,noselect'
 
+vim.diagnostic.config {
+  float = {
+    border = 'rounded', -- This creates a rounder border
+  },
+}
+
 -- neovide
 if vim.g.neovide then
   vim.g.neovide_cursor_animation_length = 0.03
