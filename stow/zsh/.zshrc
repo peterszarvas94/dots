@@ -147,6 +147,9 @@ alias zed="open -a /Applications/Zed.app -n"
 alias gpo="push-origin"
 alias gcm="commit"
 
+# nvim
+alias cn="cd ~/.config/nvim"
+
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/szarvaspeter/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

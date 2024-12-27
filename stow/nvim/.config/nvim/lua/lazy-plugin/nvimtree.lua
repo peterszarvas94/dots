@@ -74,6 +74,13 @@ return {
         custom = {},
         exclude = {},
       },
+      actions = {
+        file_popup = {
+          open_win_config = {
+            border = 'rounded',
+          },
+        },
+      },
       on_attach = my_on_attach,
     }
 

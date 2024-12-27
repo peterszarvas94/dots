@@ -18,8 +18,9 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setqflist, { desc = 'Open diagno
 
 -- terminal
 vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[T]erminal [O]pen', silent = true })
-vim.keymap.set('n', '<leader>tf', ':FloatingTerm<CR>', { desc = '[T]erminal [O]pen', silent = true })
-vim.keymap.set('n', '<leader>tt', ':tabnew | term<CR>', { desc = '[T]erminal [T]ab', silent = true })
+vim.keymap.set('n', '<leader>ts', ':TerminalSmall<CR>', { desc = '[T]erminal [O]pen', silent = true })
+vim.keymap.set('n', '<leader>tf', ':TerminalFloat<CR>', { desc = '[T]erminal [F]loat', silent = true })
+vim.keymap.set('n', '<leader>tt', ':TerminalTab<CR>', { desc = '[T]erminal [T]ab', silent = true })
 vim.keymap.set('t', '<C-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
 
 -- tabs
@@ -100,3 +101,34 @@ vim.keymap.set('n', '<C-w>f', ':FocusFloatingWIndow<CR>', { noremap = true, sile
 
 -- find and replace in quickfix list
 vim.keymap.set('n', '<C-f>', ':FindAndReplaceInQuickfix<CR>', { desc = '[F]ind and replace', silent = true })
+
+-- lsp
+function SetKeymapsOnAttach(bufnr)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[N]ame' })
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[G]oto [D]efinition' })
+  vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
+  vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
+end
+
+function SetTsKeymap(bufnr)
+  vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = '[O]rganize [I]mports' })
+end
+
+vim.keymap.set('n', '<leader>i', function()
+  require('actions-preview').code_actions()
+end, { desc = 'Code actions / [I]mports', silent = true })
+
+-- harpoon
+vim.keymap.set('n', '<leader>hs', ':HarpoonTelescope<CR>', { desc = '[H]arpoon tele[S]cope', silent = true })
+vim.keymap.set('n', '<leader>w', ':HarpoonToggle<CR>', { desc = 'Harpoon toggle [W]indow', silent = true })
+vim.keymap.set('n', '<leader>a', ':HarpoonAdd<CR>', { desc = 'Harpoon [A]dd', silent = true })
+vim.keymap.set('n', '<leader>hn', ':HarpoonNext<CR>', { desc = '[H]arpoon [N]ext', silent = true })
+vim.keymap.set('n', '<leader>hp', ':HarpoonPrevious<CR>', { desc = '[H]arpoon [P]revious', silent = true })
+for i = 1, 8 do
+  vim.keymap.set('n', string.format('<leader>%d', i), string.format(':HarpoonSelect %d<CR>', i), { desc = string.format('Harpoon [%d]', i), silent = true })
+end
+
+-- format
+vim.keymap.set('n', '<leader>f', ':Format<cr>', { desc = '[F]ormat', silent = true })

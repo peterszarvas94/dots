@@ -50,22 +50,7 @@ return {
       }
 
       local on_attach = function(_, bufnr)
-        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[N]ame' })
-        -- vim.keymap.set('n', '<leader>i', vim.lsp.buf.code_action, { buffer = bufnr, desc = '[I]mport / Code actions' })
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[G]oto [D]efinition' })
-        vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
-        vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
-        -- vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { buffer = bufnr, desc = 'Type [D]efinition' })
-        -- vim.keymap.set('n', '<leader>ds', require('telescope.builtin').lsp_document_symbols, { buffer = bufnr, desc = '[D]ocument [S]ymbols' })
-        -- vim.keymap.set('n', '<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, { buffer = bufnr, desc = '[W]orkspace [S]ymbols' })
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
-        -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = bufnr, desc = '[G]oto [D]eclaration' })
-        -- vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, { buffer = bufnr, desc = '[W]orkspace [A]dd Folder' })
-        -- vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, { buffer = bufnr, desc = '[W]orkspace [R]emove Folder' })
-        -- vim.keymap.set('n', '<leader>wl', function()
-        --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        -- end, { buffer = bufnr, desc = '[W]orkspace [L]ist Folders' })
+        SetKeymapsOnAttach(bufnr)
       end
 
       mason_lspconfig.setup {
@@ -114,15 +99,7 @@ return {
             },
             capabilities = custom_capabilities,
             on_attach = function(client, bufnr)
-              vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = '[O]rganize [I]mports' })
-
-              -- TODO: fix this
-              -- vim.api.nvim_create_autocmd('BufWritePre', {
-              --   pattern = { '*.js', '*.ts', '*.jsx', '*.tsx' },
-              --   callback = function()
-              --     vim.cmd 'OrganizeImports'
-              --   end,
-              -- })
+              SetTsKeymap(bufnr)
               on_attach(client, bufnr)
             end,
           }

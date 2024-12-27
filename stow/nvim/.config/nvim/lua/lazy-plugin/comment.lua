@@ -15,11 +15,4 @@ return {
       }
     end,
   },
-  -- This one is for the built-in comments, but those do not have such block commenting as above:
-  -- {
-  --   'folke/ts-comments.nvim',
-  --   opts = {},
-  --   event = 'VeryLazy',
-  --   enabled = vim.fn.has 'nvim-0.10.0' == 1,
-  -- },
 }
