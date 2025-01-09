@@ -70,8 +70,8 @@ vim.keymap.set('n', '<leader>v', 'ggVG', { desc = '[V]isual select buffer', sile
 vim.keymap.set('n', '<leader>p', 'ggVGp', { desc = '[P]aste to buffer', silent = true })
 
 -- conceal level
-vim.keymap.set('n', '<leader>l0', ':set conceallevel=0<CR>', { desc = 'Conceal [L]evel 0', silent = true })
-vim.keymap.set('n', '<leader>l2', ':set conceallevel=2<CR>', { desc = 'Conceal [L]evel 2', silent = true })
+-- vim.keymap.set('n', '<leader>l0', ':set conceallevel=0<CR>', { desc = 'Conceal [L]evel 0', silent = true })
+-- vim.keymap.set('n', '<leader>l2', ':set conceallevel=2<CR>', { desc = 'Conceal [L]evel 2', silent = true })
 
 -- toggle diagnostics
 vim.keymap.set('n', '<leader>dt', ':ToggleDiagnostics<CR>', { desc = '[D]iagnostics [T]oggle', silent = true })
@@ -81,9 +81,8 @@ vim.keymap.set('n', '<leader>ro', ':RelOn<CR>', { desc = '[R]elative numbers [O]
 vim.keymap.set('n', '<leader>rf', ':RelOff<CR>', { desc = '[R]elative numbers o[F]f', silent = true })
 
 -- nvimtree
-vim.keymap.set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = 'NvimTree e[X]plorer', silent = true })
-vim.keymap.set('n', '<leader>n', ':NvimTreeFindFile<CR>', { desc = 'NvimTreeFindFile', silent = true })
-vim.keymap.set('n', '<leader>u', ':UndotreeToggle<CR>', { desc = '[U]ndooTree', silent = true })
+vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>', { desc = '[N]vimTree [T]oggle', silent = true })
+vim.keymap.set('n', '<leader>nf', ':NvimTreeFindFile<CR>', { desc = '[N]vimTree [F]ind file', silent = true })
 
 -- markdown
 vim.keymap.set('n', '<leader>ms', ':GithubPreviewStart<CR>', { desc = '[M]arkdown [S]tart', silent = true })
@@ -132,3 +131,8 @@ end
 
 -- format
 vim.keymap.set('n', '<leader>f', ':Format<cr>', { desc = '[F]ormat', silent = true })
+
+-- marks
+vim.keymap.set('n', '<leader>dm', function()
+  require('marks').delete_line()
+end, { desc = '[D]eleme [M]ark on line', silent = true })

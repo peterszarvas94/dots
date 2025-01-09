@@ -56,6 +56,7 @@ return {
       vim.keymap.set('n', '<leader>ss', builtin.git_stash, { desc = '[S]earch [S]tash' })
       vim.keymap.set('n', '<leader>se', builtin.symbols, { desc = '[S]earch [E]mojis' })
       vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
+      vim.keymap.set('n', '<leader>su', builtin.buffers, { desc = '[S]earch b[U]ffers' })
     end,
   },
   {

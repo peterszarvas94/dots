@@ -17,6 +17,7 @@ return {
       { '<leader>g', group = '[G]it' },
       { '<leader>h', group = '[H]arpoon' },
       { '<leader>s', group = '[S]earch' },
+      { '<leader>n', group = '[N]vimTree' },
       { '<leader>t', group = '[T]ab / [T]erminal' },
       { '<leader>d', group = '[D]iagnostics' },
       { '<leader>m', group = '[M]arkdown' },
