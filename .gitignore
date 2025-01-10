@@ -1,6 +1,6 @@
 .DS_Store
-stow/local/.local/bin/objecttypes
-stow/local/.local/bin/objecttypes.mjs
-stow/local/.local/bin/api
-stow/local/.local/bin/api.mjs
-git_personas/personal/.gitSign
+stow/bin/.local/bin/objecttypes
+stow/bin/.local/bin/objecttypes.mjs
+stow/bin/.local/bin/api
+stow/bin/.local/bin/api.mjs
+resources/git/personal/.gitSign
