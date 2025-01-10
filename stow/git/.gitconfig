@@ -22,7 +22,7 @@
   tool = nvimdiff
 
 [mergetool "nvimdiff"]
-  cmd = nvim -d "$LOCAL" "$REMOTE" "$MERGED" -c 'wincmd l' -c 'wincmd J'
+  cmd = nvim -d "$LOCAL" "$REMOTE" "$MERGED" -c 'wincmd l' -c 'wincmd l' -c 'wincmd K'
   trustExitCode = false
 
 [includeIf "gitdir:~/projects/"]
