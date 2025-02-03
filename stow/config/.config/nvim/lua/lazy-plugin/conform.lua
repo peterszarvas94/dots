@@ -21,6 +21,7 @@ return { -- Autoformat
         css = { 'prettierd' },
         yml = { 'prettierd' },
         go = { 'goimports' },
+        c = { 'clang-format' },
       },
     }
   end,

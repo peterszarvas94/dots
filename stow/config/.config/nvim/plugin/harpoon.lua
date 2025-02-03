@@ -2,8 +2,9 @@ local harpoon = require 'harpoon'
 local toggle_opts = {
   border = 'rounded',
   title_pos = 'center',
-  ui_width_ratio = 0.40,
+  ui_width_ratio = 0.6,
   title = ' Harpoon ',
+  height_in_lines = 12,
 }
 
 local conf = require('telescope.config').values

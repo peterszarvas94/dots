@@ -18,7 +18,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setqflist, { desc = 'Open diagno
 
 -- terminal
 vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[T]erminal [O]pen', silent = true })
-vim.keymap.set('n', '<leader>ts', ':TerminalSmall<CR>', { desc = '[T]erminal [O]pen', silent = true })
+vim.keymap.set('n', '<leader>ts', ':TerminalSmall<CR>', { desc = '[T]erminal [S]mall', silent = true })
 vim.keymap.set('n', '<leader>tf', ':TerminalFloat<CR>', { desc = '[T]erminal [F]loat', silent = true })
 vim.keymap.set('n', '<leader>tt', ':TerminalTab<CR>', { desc = '[T]erminal [T]ab', silent = true })
 vim.keymap.set('t', '<C-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
@@ -26,6 +26,9 @@ vim.keymap.set('t', '<C-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', sil
 -- tabs
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = '[T]ab [N]ew', silent = true })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = '[T]ab [C]lose', silent = true })
+
+-- tmux
+vim.keymap.set('n', '<leader>tm', ':Telescope tmux sessions<CR>', { desc = '[T][m]ux sessions', silent = true })
 
 -- keep selection after indent
 vim.keymap.set('v', '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })
@@ -81,8 +84,8 @@ vim.keymap.set('n', '<leader>ro', ':RelOn<CR>', { desc = '[R]elative numbers [O]
 vim.keymap.set('n', '<leader>rf', ':RelOff<CR>', { desc = '[R]elative numbers o[F]f', silent = true })
 
 -- nvimtree
-vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>', { desc = '[N]vimTree [T]oggle', silent = true })
-vim.keymap.set('n', '<leader>nf', ':NvimTreeFindFile<CR>', { desc = '[N]vimTree [F]ind file', silent = true })
+vim.keymap.set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = '[N]vimTree [T]oggle', silent = true })
+vim.keymap.set('n', '<leader>n', ':NvimTreeFindFile<CR>', { desc = '[N]vimTree [F]ind file', silent = true })
 
 -- markdown
 vim.keymap.set('n', '<leader>ms', ':GithubPreviewStart<CR>', { desc = '[M]arkdown [S]tart', silent = true })
@@ -96,10 +99,10 @@ vim.keymap.set('n', '<leader>k', ':WhichKey<CR>', { desc = 'Which[K]ey', silent 
 vim.keymap.set('n', '<leader>c', ':ColorizerToggle<CR>', { desc = '[C]olorizer Toggle', silent = true })
 
 -- focus floating window
-vim.keymap.set('n', '<C-w>f', ':FocusFloatingWIndow<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-w>f', ':FocusFloatingWindow<CR>', { noremap = true, silent = true })
 
 -- find and replace in quickfix list
-vim.keymap.set('n', '<C-f>', ':FindAndReplaceInQuickfix<CR>', { desc = '[F]ind and replace', silent = true })
+vim.keymap.set('n', '<M-f>', ':FindAndReplaceInQuickfix<CR>', { desc = '[F]ind and replace', silent = true })
 
 -- lsp
 function SetKeymapsOnAttach(bufnr)

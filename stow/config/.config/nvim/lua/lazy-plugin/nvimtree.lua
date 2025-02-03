@@ -10,12 +10,14 @@ return {
 
     require('nvim-tree').setup {
       view = {
-        width = 50,
+        width = {
+          min = 50,
+        },
         relativenumber = true,
         number = true,
         float = {
           enable = true,
-          quit_on_focus_loss = true,
+          quit_on_focus_loss = false,
           open_win_config = {
             width = 55,
             height = vim.api.nvim_win_get_height(0) - 3,
