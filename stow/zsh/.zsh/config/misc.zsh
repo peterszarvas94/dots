@@ -3,14 +3,6 @@ export NODE_OPTIONS="--max-old-space-size=4096"
 # scripts
 export PATH="$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin:$PATH"
 
-# github ssh
-if [[ -o interactive ]]; then
-    eval "$(ssh-agent -s)" > /dev/null
-    ssh-add ~/.ssh/github > /dev/null 2>&1
-    ssh-add ~/.ssh/digitalocean > /dev/null 2>&1
-    ssh-add ~/.ssh/linode > /dev/null 2>&1
-fi
-
 # go
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH="$HOME/go"

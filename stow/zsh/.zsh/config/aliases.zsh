@@ -60,6 +60,8 @@ alias fc="fzf-checkout"
 alias fd="fzf-diff"
 alias fs="fzf-stash"
 
+alias la="ls -la"
+
 alias ke="killall eslint_d"
 
 # ftp
