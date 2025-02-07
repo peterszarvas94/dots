@@ -131,7 +131,7 @@ automatically-unhide-macos-hidden-apps = false
     # ctrl-c = 'workspace C'
     # ctrl-d = 'workspace D'
     # ctrl-e = 'workspace E'
-    ctrl-f = 'workspace F'
+    # ctrl-f = 'workspace F'
     # ctrl-g = 'workspace G'
     # ctrl-i = 'workspace I'
     # ctrl-m = 'workspace M'
@@ -141,7 +141,7 @@ automatically-unhide-macos-hidden-apps = false
     # ctrl-q = 'workspace Q'
     # ctrl-r = 'workspace R'
     # ctrl-s = 'workspace S'
-    ctrl-t = 'workspace T'
+    # ctrl-t = 'workspace T'
     # ctrl-u = 'workspace U'
     # ctrl-v = 'workspace V'
     # ctrl-w = 'workspace W'
@@ -165,7 +165,7 @@ automatically-unhide-macos-hidden-apps = false
     # ctrl-shift-c = 'move-node-to-workspace C'
     # ctrl-shift-d = 'move-node-to-workspace D'
     # ctrl-shift-e = 'move-node-to-workspace E'
-    ctrl-shift-f = 'move-node-to-workspace F'
+    # ctrl-shift-f = 'move-node-to-workspace F'
     # ctrl-shift-g = 'move-node-to-workspace G'
     # ctrl-shift-i = 'move-node-to-workspace I'
     # ctrl-shift-m = 'move-node-to-workspace M'
@@ -175,7 +175,7 @@ automatically-unhide-macos-hidden-apps = false
     # ctrl-shift-q = 'move-node-to-workspace Q'
     # ctrl-shift-r = 'move-node-to-workspace R'
     # ctrl-shift-s = 'move-node-to-workspace S'
-    ctrl-shift-t = 'move-node-to-workspace T'
+    # ctrl-shift-t = 'move-node-to-workspace T'
     # ctrl-shift-u = 'move-node-to-workspace U'
     # ctrl-shift-v = 'move-node-to-workspace V'
     # ctrl-shift-w = 'move-node-to-workspace W'
@@ -211,23 +211,26 @@ automatically-unhide-macos-hidden-apps = false
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
 
-[[on-window-detected]]
-    if.app-id = 'org.alacritty'
-    run = [
-        'layout floating',
-        'move-node-to-workspace T'
-    ]
+# [[on-window-detected]]
+#     if.app-id = 'org.alacritty'
+#     run = [
+#         'layout floating',
+#         'move-node-to-workspace T'
+#     ]
 
-[[on-window-detected]]
-    if.app-id = 'com.apple.finder'
-    run = [
-        'layout floating',
-        'move-node-to-workspace F'
-    ]
+# [[on-window-detected]]
+#     if.app-id = 'com.apple.finder'
+#     run = [
+#         'layout floating',
+#         'move-node-to-workspace F'
+#     ]
 
 [[on-window-detected]]
     if.app-id = 'com.microsoft.teams2'
     run = [
         'layout floating',
-        'move-node-to-workspace 11'
+        'move-node-to-workspace 10'
     ]
+
+[workspace-to-monitor-force-assignment]
+    10 = '^built-in retina display$'

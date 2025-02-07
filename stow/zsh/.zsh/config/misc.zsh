@@ -1,15 +1,3 @@
-autoload -U compinit
-# compinit -i
-compinit
-
-source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
-source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/plugins/zsh-systax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/config/cursor.zsh
-source ~/.zsh/config/aliases.zsh
-source ~/.zsh/config/prompt_style.zsh
-source ~/.zsh/config/fzf-theme.zsh
-
 export NODE_OPTIONS="--max-old-space-size=4096"
 
 # scripts
@@ -30,8 +18,6 @@ export PATH=$GOPATH/bin:$PATH
 
 # brew
 export PATH=$PATH:/opt/homebrew/bin
-
-# source <(fzf --zsh)
 
 # environment
 # export BROWSER='arc'
@@ -56,6 +42,3 @@ export NVM_DIR="$HOME/.nvm"
 
 # turso
 export PATH="~/.turso:$PATH"
-
-bindkey ^R history-incremental-search-backward 
-bindkey ^S history-incremental-search-forward

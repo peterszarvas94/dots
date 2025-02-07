@@ -3,4 +3,5 @@ stow/bin/.local/bin/objecttypes
 stow/bin/.local/bin/objecttypes.mjs
 stow/bin/.local/bin/api
 stow/bin/.local/bin/api.mjs
+stow/ssh/.ssh/config
 resources/git/personal/.gitSign

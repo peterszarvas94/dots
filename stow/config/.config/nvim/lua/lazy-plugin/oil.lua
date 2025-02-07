@@ -51,9 +51,13 @@ return {
           if not dir then
             return is_dotfile
           end
+          local is_gitdir = name == '.git' or name == '.github'
           -- dotfiles are considered hidden unless tracked
-          if is_dotfile then
-            return not git_status[dir].tracked[name]
+          -- if is_dotfile then
+          --   return not git_status[dir].tracked[name]
+          -- else
+          if is_gitdir then
+            return true
           else
             -- Check if file is gitignored
             return git_status[dir].ignored[name]
