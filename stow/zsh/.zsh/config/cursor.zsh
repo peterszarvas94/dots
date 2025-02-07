@@ -1,9 +1,3 @@
-# Enable vi mode
-bindkey -v
-export KEYTIMEOUT=1
-# for bash:
-# set -o vi
-
 # Change cursor shape for different vi modes
 function zle-keymap-select {
   if [[ ${KEYMAP} == vicmd ]] ||

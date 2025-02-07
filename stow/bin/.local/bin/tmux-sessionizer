@@ -17,18 +17,12 @@ selected="${1:-$(select_directory | fzf)}"
 # Convert the directory name to a tmux-safe session name
 selected_name=$(basename "$selected" | tr . _)
 
-# Check if tmux is running
-if [[ -z $TMUX ]] && ! pgrep tmux > /dev/null; then
-    tmux new-session -s "$selected_name" -c "$selected"
-    exit 0
-fi
-
-# Create a new session if it doesn't exist
-tmux has-session -t="$selected_name" 2>/dev/null || tmux new-session -ds "$selected_name" -c "$selected"
-
-# Attach or switch to the session
+# -A: attach or create
 if [[ -z $TMUX ]]; then
-    tmux attach -t "$selected_name"
+    # Not in a tmux session, create/attach to one
+    tmux new-session -A -s "$selected_name" -c "$selected"
 else
+    # Already in tmux, just switch to the session, no nesting
+    tmux new-session -A -d -s "$selected_name" -c "$selected" 2>/dev/null
     tmux switch-client -t "$selected_name"
 fi

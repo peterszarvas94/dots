@@ -1,10 +1,8 @@
-# tmux-sessionizer
-alias ts="tmux-sessionizer"
-
 # neovim
 alias v="nvim"
 
 # tmux
+alias ts="tmux-sessionizer"
 alias ta="tmux a"
 alias tk="tmux kill-server"
 alias tn="tmux-new"
