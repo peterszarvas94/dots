@@ -4,4 +4,5 @@ stow/bin/.local/bin/objecttypes.mjs
 stow/bin/.local/bin/api
 stow/bin/.local/bin/api.mjs
 stow/ssh/.ssh/config
+stow/config/.config/karabiner/automatic_backups/
 resources/git/personal/.gitSign
