@@ -22,8 +22,15 @@ cursor-text = #1e1e2e
 selection-background = #353749
 selection-foreground = #cdd6f4
 
-font-family = "MesloLGL Nerd Font Mono"
-font-size = 14
+# font-family = "MesloLGL Nerd Font Mono"
+font-size = 15
 font-thicken
+font-feature = -calt, -liga, -dlig
 cursor-style-blink = false
 shell-integration-features = no-cursor
+confirm-close-surface = false
+
+window-padding-x = 10
+window-padding-y = 10,0
+window-decoration = none
+adjust-cell-height = 2

@@ -35,15 +35,15 @@ return {
         htmx = {
           filetypes = { 'html', 'templ' },
         },
-        tailwindcss = {
-          filetypes = { 'html', 'templ' },
-          init_options = {
-            userLanguages = {
-              templ = 'html',
-              html = 'html',
-            },
-          },
-        },
+        -- tailwindcss = {
+        --   filetypes = { 'html', 'templ' },
+        --   init_options = {
+        --     userLanguages = {
+        --       templ = 'html',
+        --       html = 'html',
+        --     },
+        --   },
+        -- },
         astro = {
           filetypes = { 'astro' },
         },

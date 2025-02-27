@@ -40,6 +40,9 @@ local git_status = new_git_status()
 
 return {
   'stevearc/oil.nvim',
+  dependencies = {
+    'nvim-tree/nvim-web-devicons',
+  },
   config = function()
     require('oil').setup {
       view_options = {

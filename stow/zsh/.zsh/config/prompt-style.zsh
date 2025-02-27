@@ -20,5 +20,5 @@ function git_branch_name() {
 }
 
 setopt PROMPT_SUBST
-PROMPT='%F{yellow}%~%f %F{blue}$(git_branch_name)%f
+PROMPT='%B%F{yellow}%~%b%f %F{blue}$(git_branch_name)%f
 '

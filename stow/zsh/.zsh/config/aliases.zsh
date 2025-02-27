@@ -72,6 +72,10 @@ alias zed="open -a /Applications/Zed.app -n"
 alias gpo="push-origin"
 alias gcm="commit"
 alias gst="git status"
+alias gd="git diff"
+alias gr="git rebase"
+alias gpf="git push --force-with-lease"
+alias gfpa="git fetch --prune --all"
 
 # nvim
 alias cn="cd ~/.config/nvim"

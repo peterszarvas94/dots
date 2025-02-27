@@ -20,7 +20,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 0
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -191,6 +191,8 @@ automatically-unhide-macos-hidden-apps = false
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
     alt-shift-semicolon = 'mode service'
 
+    cmd-enter = 'exec-and-forget open -n /Applications/Ghostty.app'
+
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
@@ -211,25 +213,31 @@ automatically-unhide-macos-hidden-apps = false
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
 
-# [[on-window-detected]]
-#     if.app-id = 'org.alacritty'
-#     run = [
-#         'layout floating',
-#         'move-node-to-workspace T'
-#     ]
+[[on-window-detected]]
+    if.app-id = 'com.apple.systempreferences'
+    run = [
+        'layout floating',
+        'move-node-to-workspace 9'
+    ]
 
-# [[on-window-detected]]
-#     if.app-id = 'com.apple.finder'
-#     run = [
-#         'layout floating',
-#         'move-node-to-workspace F'
-#     ]
+[[on-window-detected]]
+    if.app-id = 'com.apple.finder'
+    run = [
+        # 'layout accordion',
+        'move-node-to-workspace 8'
+    ]
 
 [[on-window-detected]]
     if.app-id = 'com.microsoft.teams2'
     run = [
-        'layout floating',
+        # 'layout accordion',
         'move-node-to-workspace 10'
+    ]
+
+[[on-window-detected]]
+    if.app-id = 'com.mitchellh.ghostty'
+    run = [
+        'move-node-to-workspace 7'
     ]
 
 [workspace-to-monitor-force-assignment]

@@ -41,12 +41,21 @@ return {
       vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = '[S]earch [R]ecently opened files' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>sn', function()
-        builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N] files' })
+        builtin.find_files {
+          cwd = vim.fn.stdpath 'config',
+        }
+      end, { desc = '[S]earch [N]vim files' })
+
+      vim.keymap.set('n', '<leader>sd', function()
+        builtin.find_files {
+          cwd = vim.fn.expand '~' .. '/projects/dots/',
+        }
+      end, { desc = '[S]earch [D]otfiles' })
+
       vim.keymap.set('n', '<leader>sl', builtin.live_grep, { desc = '[S]earch by [L]ivegrep' })
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch dia[G]nostics' })
+      -- vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch dia[G]nostics' })
       vim.keymap.set('n', '<leader>sc', builtin.current_buffer_fuzzy_find, { desc = '[S]earch [C]urrent buffer' })
       vim.keymap.set('n', '<leader>so', function()
         local word = vim.fn.expand '<cword>'
