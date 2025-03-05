@@ -62,6 +62,8 @@ alias la="ls -la"
 
 alias ke="killall eslint_d"
 
+alias kp="killport"
+
 # ftp
 alias ftp="termscp"
 
@@ -76,6 +78,7 @@ alias gd="git diff"
 alias gr="git rebase"
 alias gpf="git push --force-with-lease"
 alias gfpa="git fetch --prune --all"
+alias gsc="git switch -c"
 
 # nvim
 alias cn="cd ~/.config/nvim"

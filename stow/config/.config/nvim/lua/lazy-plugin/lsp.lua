@@ -141,7 +141,7 @@ return {
     config = function()
       require('mason-tool-installer').setup {
         ensure_installed = {
-          'prettier', -- prettier formatter
+          'prettierd', -- prettier formatter
           'stylua', -- lua formatter
           -- 'eslint_d', -- eslint language server
         },

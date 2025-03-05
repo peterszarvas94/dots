@@ -240,5 +240,11 @@ automatically-unhide-macos-hidden-apps = false
         'move-node-to-workspace 7'
     ]
 
+[[on-window-detected]]
+    if.app-id = 'com.apple.QuickTimePlayerX'
+    run = [
+        'layout floating'
+    ]
+
 [workspace-to-monitor-force-assignment]
     10 = '^built-in retina display$'

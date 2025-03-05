@@ -23,13 +23,18 @@ selection-background = #353749
 selection-foreground = #cdd6f4
 
 # font-family = "MesloLGL Nerd Font Mono"
-font-size = 15
+
+# for videos:
+# font-size = 25
+font-size = 15 
 font-thicken
 font-feature = -calt, -liga, -dlig
 cursor-style-blink = false
 shell-integration-features = no-cursor
 confirm-close-surface = false
 
+# for videos
+# window-padding-x = 10,0
 window-padding-x = 10
 window-padding-y = 10,0
 window-decoration = none
