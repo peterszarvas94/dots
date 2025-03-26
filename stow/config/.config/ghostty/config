@@ -36,6 +36,7 @@ confirm-close-surface = false
 # for videos
 # window-padding-x = 10,0
 window-padding-x = 10
-window-padding-y = 10,0
-window-decoration = none
+window-padding-y = 0,0
+# window-decoration = none
+macos-titlebar-style = tabs 
 adjust-cell-height = 2

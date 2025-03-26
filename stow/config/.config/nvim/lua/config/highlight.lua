@@ -1,25 +1,16 @@
--- vim.cmd 'highlight ColorColumn guibg=#1e1e2e'
-
-vim.cmd 'highlight Normal ctermfg=none guifg=none guibg=none'
-vim.cmd 'highlight NormalNC ctermfg=none guifg=none guibg=none'
-
-vim.cmd 'highlight NvimTreeNormal guibg=none'
-vim.cmd 'highlight NvimTreeWinSeparator guifg=#7f849c guibg=none'
-
-vim.cmd 'highlight TreesitterContext guibg=none'
--- vim.cmd 'highlight TreesitterContextSeparator guifg=#f9e2af'
-vim.cmd 'highlight TreesitterContextLineNumber guibg=#f9e2af'
--- vim.cmd 'highlight TreesitterContextLineNumberBottom guifg=#f9e2af gui=underline'
-vim.cmd 'highlight TreesitterContextBottom gui=none'
-
-vim.cmd 'highlight CursorLineNr guifg=#b4befe'
-
-vim.cmd 'highlight LineNr guifg=#7f849c'
-
-vim.cmd 'highlight WinSeparator guifg=#7f849c guibg=none'
-
-vim.cmd 'highlight NormalFloat guibg=#1e1e2eh'
-
--- vim.cmd 'highlight WhichKeyBorder	guibg=#89b4fa guifg=#89b4fa'
---
--- vim.cmd 'highlight FloatBorder guibg=none'
+-- vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#1e1e2e" })
+vim.api.nvim_set_hl(0, 'Normal', { ctermfg = 'none', fg = 'none', bg = 'none' })
+vim.api.nvim_set_hl(0, 'NormalNC', { ctermfg = 'none', fg = 'none', bg = 'none' })
+vim.api.nvim_set_hl(0, 'NvimTreeNormal', { bg = 'none' })
+vim.api.nvim_set_hl(0, 'NvimTreeWinSeparator', { fg = '#7f849c', bg = 'none' })
+vim.api.nvim_set_hl(0, 'TreesitterContext', { bg = 'none' })
+-- vim.api.nvim_set_hl(0, "TreesitterContextSeparator", { fg = "#f9e2af" })
+vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { bg = '#f9e2af', fg = '#1e1e2e' })
+-- vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { fg = "#f9e2af", gui = "underline" })
+vim.api.nvim_set_hl(0, 'TreesitterContextBottom', {})
+vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#b4befe' })
+vim.api.nvim_set_hl(0, 'LineNr', { fg = '#7f849c' })
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = '#7f849c', bg = 'none' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#1e1e2e' })
+-- vim.api.nvim_set_hl(0, "WhichKeyBorder", { bg = "#89b4fa", fg = "#89b4fa" })
+-- vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })

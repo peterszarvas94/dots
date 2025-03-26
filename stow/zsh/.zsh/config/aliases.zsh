@@ -79,6 +79,7 @@ alias gr="git rebase"
 alias gpf="git push --force-with-lease"
 alias gfpa="git fetch --prune --all"
 alias gsc="git switch -c"
+alias gp="git pull"
 
 # nvim
 alias cn="cd ~/.config/nvim"

@@ -2,7 +2,7 @@ local harpoon = require 'harpoon'
 local toggle_opts = {
   border = 'rounded',
   title_pos = 'center',
-  ui_width_ratio = 0.6,
+  ui_width_ratio = 0.8,
   title = ' Harpoon ',
   height_in_lines = 12,
 }

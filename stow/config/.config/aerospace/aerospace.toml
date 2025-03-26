@@ -230,7 +230,7 @@ automatically-unhide-macos-hidden-apps = false
 [[on-window-detected]]
     if.app-id = 'com.microsoft.teams2'
     run = [
-        # 'layout accordion',
+        'layout floating',
         'move-node-to-workspace 10'
     ]
 
