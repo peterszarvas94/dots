@@ -120,20 +120,32 @@ return {
         end,
       }
 
-      vim.diagnostic.config {
-        underline = false,
-      }
-
-      vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        underline = false,
-        virtual_text = { spacing = 2 },
-        signs = true,
-        update_in_insert = false,
-      })
-
       vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = 'rounded', -- You can use "single", "double", "rounded", "solid", or "shadow"
+        border = 'rounded',
       })
+
+      vim.diagnostic.config {
+        float = {
+          border = 'rounded',
+        },
+        underline = {
+          severity = {
+            min = vim.diagnostic.severity.HINT,
+          },
+        },
+        virtual_text = {
+          current_line = true,
+          prefix = function(diagnostic)
+            local symbols = {
+              [vim.diagnostic.severity.ERROR] = 'E',
+              [vim.diagnostic.severity.WARN] = 'W',
+              [vim.diagnostic.severity.INFO] = 'I',
+              [vim.diagnostic.severity.HINT] = 'H',
+            }
+            return symbols[diagnostic.severity]
+          end,
+        },
+      }
     end,
   },
   {

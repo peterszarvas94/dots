@@ -57,6 +57,7 @@ alias gob="gobang"
 alias fc="fzf-checkout"
 alias fd="fzf-diff"
 alias fs="fzf-stash"
+alias ff='nvim "$(find . -type f | fzf)"'
 
 alias la="ls -la"
 
@@ -83,3 +84,4 @@ alias gp="git pull"
 
 # nvim
 alias cn="cd ~/.config/nvim"
+alias nn="tmux-nvim"

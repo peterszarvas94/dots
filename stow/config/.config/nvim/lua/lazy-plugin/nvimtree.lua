@@ -16,7 +16,7 @@ return {
         relativenumber = true,
         number = true,
         float = {
-          enable = true,
+          enable = false,
           quit_on_focus_loss = false,
           open_win_config = {
             width = 55,

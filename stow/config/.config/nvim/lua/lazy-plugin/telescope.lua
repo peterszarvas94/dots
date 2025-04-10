@@ -16,6 +16,7 @@ return {
 
       telescope.setup {
         defaults = {
+          border = false,
           file_ignore_patterns = { 'node_modules', '.git' },
           layout_strategy = 'vertical',
           wrap_results = true,

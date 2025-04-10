@@ -28,12 +28,7 @@ vim.o.swapfile = false
 -- vim.o.timeout = true
 vim.o.timeoutlen = 1000
 -- vim.o.completeopt = 'menuone,noselect'
-
-vim.diagnostic.config {
-  float = {
-    border = 'rounded', -- This creates a rounder border
-  },
-}
+vim.o.winborder = 'rounded'
 
 -- neovide
 if vim.g.neovide then

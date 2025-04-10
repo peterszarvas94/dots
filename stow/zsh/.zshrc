@@ -5,6 +5,7 @@ compinit
 source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/plugins/zsh-systax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/config/env.public.zsh
 source ~/.zsh/config/env.zsh
 source ~/.zsh/config/cursor.zsh
 source ~/.zsh/config/keybinds.zsh

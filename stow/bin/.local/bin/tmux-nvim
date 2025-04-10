@@ -1,0 +1,11 @@
+#!/bin/bash
+
+selected=~/projects/dots/stow/config/.config/nvim/
+selected_name=nvim
+
+if [[ -z $TMUX ]]; then
+  tmux new-session -A -s "$selected_name" -c "$selected"
+else
+  tmux new-session -A -d -s "$selected_name" -c "$selected" 2>/dev/null
+  tmux switch-client -t "$selected_name"
+fi
