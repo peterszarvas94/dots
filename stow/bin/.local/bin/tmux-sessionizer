@@ -10,19 +10,21 @@ select_directory() {
     echo ~/obsidian-remote
 }
 
-selected="${1:-$(select_directory | fzf)}"
+path="${1:-$(select_directory | fzf)}"
 
-[[ -z $selected ]] && exit 0
+[[ -z $path ]] && exit 0
 
 # Convert the directory name to a tmux-safe session name
-selected_name=$(basename "$selected" | tr . _)
+session_name=$(basename "$path" | tr . _)
 
-# -A: attach or create
 if [[ -z $TMUX ]]; then
     # Not in a tmux session, create/attach to one
-    tmux new-session -A -s "$selected_name" -c "$selected"
+    # -A: attach or create
+    tmux new-session -A -s "$session_name" -c "$path"
 else
-    # Already in tmux, just switch to the session, no nesting
-    tmux new-session -A -d -s "$selected_name" -c "$selected" 2>/dev/null
-    tmux switch-client -t "$selected_name"
+    # Already in tmux session
+    if ! tmux has-session -t="$SESSION_NAME" 2>/dev/null; then
+        tmux new-session -d -s "$session_name" -c "$path" 2>/dev/null
+    fi
+    tmux switch-client -t "$session_name"
 fi

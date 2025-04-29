@@ -16,7 +16,7 @@ return {
 
       telescope.setup {
         defaults = {
-          border = false,
+          border = true,
           file_ignore_patterns = { 'node_modules', '.git' },
           layout_strategy = 'vertical',
           wrap_results = true,
@@ -68,6 +68,19 @@ return {
       vim.keymap.set('n', '<leader>se', builtin.symbols, { desc = '[S]earch [E]mojis' })
       vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
       vim.keymap.set('n', '<leader>su', builtin.buffers, { desc = '[S]earch b[U]ffers' })
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TelescopeFindPre',
+        callback = function()
+          vim.opt_local.winborder = 'none'
+          vim.api.nvim_create_autocmd('WinLeave', {
+            once = true,
+            callback = function()
+              vim.opt_local.winborder = 'rounded'
+            end,
+          })
+        end,
+      })
     end,
   },
   {

@@ -3,7 +3,7 @@ alias v="nvim"
 
 # tmux
 alias ts="tmux-sessionizer"
-alias ta="tmux a"
+alias ta="tmux-attach"
 alias tk="tmux kill-server"
 alias tn="tmux-new"
 
@@ -39,6 +39,7 @@ alias bgen="cd ~/work/gems-backend-platform/packages/database && npm run generat
 alias bmig="cd ~/work/gems-backend-platform/packages/database && npm run migrate"
 alias binit="cd ~/work/gems-backend-platform/packages/database && npm run init-development"
 alias bstart="cd ~/work/gems-backend-platform/packages/app && npm run start"
+alias bdebug="cd ~/work/gems-backend-platform/packages/app && npm run start:debug"
 alias ball="bbuild && binit && bstart"
 
 # gems frontend

@@ -46,7 +46,7 @@ return {
         ['<C-k>'] = cmp.mapping.scroll_docs(-4),
         ['<C-j>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete {},
-        ['<C-y>'] = cmp.mapping.confirm {
+        ['<C-a>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior,
           select = true,
         },

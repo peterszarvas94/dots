@@ -65,11 +65,9 @@ throw-space-right:
   mod: mod1
   key: h 
 
+mouse-follows-focus: true
 
 relaunch-amethyst:
   mod: mod1
   key: z
 
-focus-follows-mouse: false
-enables-layout-hud-on-space-change: false
-hide-menu-bar-icon: false

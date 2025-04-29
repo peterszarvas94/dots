@@ -9,7 +9,7 @@ vim.o.cursorline = true
 vim.o.mouse = 'a'
 vim.o.clipboard = 'unnamedplus'
 vim.o.undofile = true
-vim.o.signcolumn = 'no'
+vim.o.signcolumn = 'yes'
 vim.o.colorcolumn = ''
 vim.o.termguicolors = true
 vim.o.tabstop = 4
@@ -36,3 +36,7 @@ if vim.g.neovide then
   vim.g.neovide_cursor_trail_size = 0.03
   vim.o.guifont = 'MesloLGS Nerd Font Mono'
 end
+
+vim.cmd.colorscheme 'default'
+-- vim.opt.background = 'light'
+vim.opt.background = 'dark'

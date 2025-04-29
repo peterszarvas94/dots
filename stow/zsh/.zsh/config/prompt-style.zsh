@@ -19,6 +19,12 @@ function git_branch_name() {
   fi
 }
 
+# nvim default dark mode
 setopt PROMPT_SUBST
-PROMPT='%B%F{yellow}%~%b%f %F{blue}$(git_branch_name)%f
+PROMPT='%B%F{#FCE094}%~%b%f %F{#A6DBFF}$(git_branch_name)%f
 '
+
+# nvim default light mode
+# setopt PROMPT_SUBST
+# PROMPT='%B%F{#765d00}%~%b%f %F{#005574}$(git_branch_name)%f
+# '

@@ -1,3 +1,78 @@
 return {
-  'mfussenegger/nvim-dap',
+  -- 'mfussenegger/nvim-dap',
+  -- dependencies = {
+  --   'rcarriga/nvim-dap-ui',
+  --   'nvim-neotest/nvim-nio',
+  --   'leoluz/nvim-dap-go',
+  --   'mxsdev/nvim-dap-vscode-js',
+  --   {
+  --     'microsoft/vscode-js-debug',
+  --     lazy = true,
+  --     build = 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out',
+  --   },
+  -- },
+  -- config = function()
+  --   local dap, dapui = require 'dap', require 'dapui'
+  --   dapui.setup()
+  --
+  --   dap.listeners.before.attach.dapui_config = function()
+  --     dapui.open()
+  --   end
+  --   dap.listeners.before.launch.dapui_config = function()
+  --     dapui.open()
+  --   end
+  --   dap.listeners.before.event_terminated.dapui_config = function()
+  --     dapui.close()
+  --   end
+  --   dap.listeners.before.event_exited.dapui_config = function()
+  --     dapui.close()
+  --   end
+  --
+  --   vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = 'DAP: Toggle breakpoint', silent = true })
+  --   vim.keymap.set('n', '<leader>dc', dap.continue, { desc = 'DAP: Continue', silent = true })
+  --   vim.keymap.set('n', '<leader>dx', dap.terminate, { desc = 'DAP: Terminate', silent = true })
+  --   vim.keymap.set('n', '<leader>du', dapui.toggle, { desc = 'DAP: Toggle ui', silent = true })
+  --   vim.keymap.set('n', '<leader>dv', function()
+  --     dapui.open()
+  --   end, { desc = 'DAP: Open Variables', silent = true })
+  --   vim.keymap.set('n', '<leader>dw', function()
+  --     dapui.eval()
+  --   end, { desc = 'DAP: Inspect Variable', silent = true })
+  --
+  --   require('dap-go').setup()
+  --
+  --   require('dap-vscode-js').setup {
+  --     debugger_path = vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug',
+  --     adapters = { 'pwa-node' },
+  --   }
+  --
+  --   -- Define adapter for pwa-node
+  --   dap.adapters['pwa-node'] = {
+  --     type = 'server',
+  --     host = 'localhost',
+  --     port = 9229,
+  --     executable = {
+  --       command = 'node',
+  --       args = {
+  --         vim.fn.stdpath 'data' .. '/js-debug/src/dapDebugServer.js',
+  --         '9229',
+  --       },
+  --     },
+  --   }
+  --
+  --   for _, lang in ipairs { 'javascript', 'typescript' } do
+  --     dap.configurations[lang] = {
+  --       {
+  --         type = 'pwa-node',
+  --         request = 'attach',
+  --         name = 'Attach to NestJS',
+  --         port = 9229,
+  --         cwd = vim.fn.getcwd(),
+  --         protocol = 'inspector',
+  --         restart = true,
+  --         stopOnEntry = false,
+  --       },
+  --     }
+  --   end
+  -- end,
 }

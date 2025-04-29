@@ -35,6 +35,9 @@ return {
         htmx = {
           filetypes = { 'html', 'templ' },
         },
+        cssls = {
+          filetypes = { 'css', 'html', 'templ' },
+        },
         -- tailwindcss = {
         --   filetypes = { 'html', 'templ' },
         --   init_options = {
@@ -72,7 +75,7 @@ return {
           local custom_capabilities = capabilities
           if server_name == 'eslint' then
             custom_capabilities = vim.lsp.protocol.make_client_capabilities()
-            custom_capabilities.textDocument.codeAction = false
+            custom_capabilities.textDocument.codeAction = nil
           end
 
           -- default

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [[ -z $TMUX ]]; then
+    tmux attach
+else
+    echo "You are already in tmux"
+fi
