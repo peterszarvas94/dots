@@ -20,6 +20,7 @@ vim.g.netrw_liststyle = 0
 vim.o.scrolloff = 8
 vim.o.inccommand = 'split'
 vim.o.swapfile = false
+vim.o.wrap = true
 -- vim.o.ignorecase = false
 -- vim.o.smartcase = false
 -- vim.o.conceallevel = 2

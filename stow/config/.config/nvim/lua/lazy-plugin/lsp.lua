@@ -38,15 +38,15 @@ return {
         cssls = {
           filetypes = { 'css', 'html', 'templ' },
         },
-        -- tailwindcss = {
-        --   filetypes = { 'html', 'templ' },
-        --   init_options = {
-        --     userLanguages = {
-        --       templ = 'html',
-        --       html = 'html',
-        --     },
-        --   },
-        -- },
+        tailwindcss = {
+          filetypes = { 'html', 'templ' },
+          init_options = {
+            userLanguages = {
+              templ = 'html',
+              html = 'html',
+            },
+          },
+        },
         astro = {
           filetypes = { 'astro' },
         },
@@ -128,6 +128,7 @@ return {
       })
 
       vim.diagnostic.config {
+        signs = false,
         float = {
           border = 'rounded',
         },

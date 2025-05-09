@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Load scripting addition for yabai (required for many features)
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
+# Global settings
+yabai -m config layout bsp
+yabai -m config window_placement second_child
+
+yabai -m rule --add app=".*" layer=normal
+
+# Rules for specific apps to not be managed by yabai
+yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^System Settings$" manage=off
+yabai -m rule --add app="^Calculator$" manage=off
+yabai -m rule --add app="^QuickTime Player$" manage=off
+yabai -m rule --add app="^Finder$"  manage=off

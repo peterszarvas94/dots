@@ -22,8 +22,18 @@
   tool = nvimdiff
 
 [mergetool "nvimdiff"]
-  cmd = nvim -d "$LOCAL" "$REMOTE" "$MERGED" -c 'wincmd l' -c 'wincmd l' -c 'wincmd K'
+  cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" \
+    -c 'set wrap' -c 'wincmd w' \
+    -c 'set wrap' -c 'wincmd J' -c 'wincmd w' -c 'wincmd w' \
+    -c 'set wrap' -c 'wincmd w' \
+    -c 'set wrap'
   trustExitCode = false
+
+[difftool]
+  tool = nvimdiff
+
+[difftool "nvimdiff"]
+  cmd = nvim -d "$LOCAL" "$REMOTE" -c 'set wrap' -c 'wincmd w' -c 'set wrap'
 
 [includeIf "gitdir:~/projects/"]
   path = ~/projects/dots/resources/git/personal/.gitconfig
