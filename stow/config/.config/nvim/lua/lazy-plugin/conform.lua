@@ -22,6 +22,7 @@ return { -- Autoformat
         yml = { 'prettierd' },
         go = { 'goimports' },
         c = { 'clang-format' },
+        xml = { 'xmlformatter' },
       },
     }
   end,

@@ -1,94 +1,95 @@
-# catpuccin mocha
+# https://github.com/nshern/neovim-default-colorscheme-extras/blob/main/extras/alacritty/nvim-dark.toml
 [colors.primary]
-background = "#1e1e2e"
-foreground = "#cdd6f4"
-dim_foreground = "#7f849c"
-bright_foreground = "#cdd6f4"
+background = "#14161b"
+foreground = "#E0E2EA"
+dim_foreground = "#C4C6CD"
+bright_foreground = "#E0E2EA"
 
 [colors.cursor]
-text = "#1e1e2e"
-cursor = "#f5e0dc"
+text = "#14161b"
+cursor = "#E0E2EA"
 
 [colors.vi_mode_cursor]
-text = "#1e1e2e"
-cursor = "#b4befe"
+text = "#14161b"
+cursor = "#E0E2EA"
 
 [colors.search.matches]
-foreground = "#1e1e2e"
-background = "#a6adc8"
+foreground = "#14161b"
+background = "#4f5258"
 
 [colors.search.focused_match]
-foreground = "#1e1e2e"
-background = "#a6e3a1"
+foreground = "#14161b"
+background = "#7EDFDE"
 
 [colors.footer_bar]
-foreground = "#1e1e2e"
-background = "#a6adc8"
+foreground = "#14161b"
+background = "#7EDFDE"
 
 [colors.hints.start]
-foreground = "#1e1e2e"
-background = "#f9e2af"
+foreground = "#14161b"
+background = "#E5ADB9"
 
 [colors.hints.end]
-foreground = "#1e1e2e"
-background = "#a6adc8"
+foreground = "#14161b"
+background = "#7EDFDE"
 
 [colors.selection]
-text = "#1e1e2e"
-background = "#f5e0dc"
+text = "#E0E2EA"
+background = "#4f5258"
 
 [colors.normal]
-black = "#45475a"
-red = "#f38ba8"
-green = "#a6e3a1"
-yellow = "#f9e2af"
-blue = "#89b4fa"
-magenta = "#f5c2e7"
-cyan = "#94e2d5"
-white = "#bac2de"
+black = "#2c2e33"
+red = "#E5ADB9"
+green = "#A2DFC0"
+yellow = "#E3CA85"
+blue = "#95C5E5"
+magenta = "#E5B6E6"
+cyan = "#7EDFDE"
+white = "#C4C6CD"
 
 [colors.bright]
-black = "#585b70"
-red = "#f38ba8"
-green = "#a6e3a1"
-yellow = "#f9e2af"
-blue = "#89b4fa"
-magenta = "#f5c2e7"
-cyan = "#94e2d5"
-white = "#a6adc8"
+black = "#4f5258"
+red = "#FFC0B9"
+green = "#B4F6C0"
+yellow = "#FCE094"
+blue = "#A6DBFF"
+magenta = "#FFCAFF"
+cyan = "#8CF8F7"
+white = "#9b9ea4"
 
 [colors.dim]
-black = "#45475a"
-red = "#f38ba8"
-green = "#a6e3a1"
-yellow = "#f9e2af"
-blue = "#89b4fa"
-magenta = "#f5c2e7"
-cyan = "#94e2d5"
-white = "#bac2de"
+black = "#2c2e33"
+red = "#E5ADB9"
+green = "#A2DFC0"
+yellow = "#E3CA85"
+blue = "#95C5E5"
+magenta = "#E5B6E6"
+cyan = "#7EDFDE"
+white = "#C4C6CD"
 
 [[colors.indexed_colors]]
 index = 16
-color = "#fab387"
+color = "#7EDFDE"
 
 [[colors.indexed_colors]]
 index = 17
-color = "#f5e0dc"
+color = "#4f5258"
 
 [env]
 TERM = "xterm-256color"
 
 [font]
-size = 13
-offset.y = 1
+size = 15
+offset.y = 3
+
 
 [font.normal]
 # family = "GeistMono Nerd Font Mono"
-# family = "JetBrainsMono Nerd Font Mono"
+family = "JetBrainsMono Nerd Font Mono"
 # style = "ExtraLight"
 # family = "MonoLisa Nerd Font Mono"
 # family = "SFMono Nerd Font Mono"
-family = "MesloLGL Nerd Font Mono"
+# family = "MesloLGL Nerd Font Mono"
 # family = "CaskaydiaCove Nerd Font"
 # family = "FiraCode Nerd Font Mono"
 # style = "Light"
@@ -98,7 +99,7 @@ program = "/bin/zsh"
 
 [window]
 opacity = 1
-decorations = "full"
+decorations = "buttonless"
 option_as_alt = "Both"
 
 [window.padding]

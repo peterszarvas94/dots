@@ -1,10 +1,22 @@
+M = {}
+
+-- lsp
+function M.setKeymapsOnAttach(bufnr)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[N]ame' })
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[G]oto [D]efinition' })
+  vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
+  vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
+end
+
 -- unbind space
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- source
-vim.keymap.set('n', '<Space><Space>f', ':source %<CR>', { desc = 'Source [F]ile', silent = true })
-vim.keymap.set('n', '<Space><Space>l', ':.lua<CR><CR>', { desc = 'Source [L]ine(s)', silent = true })
-vim.keymap.set('v', '<Space><Space>l', ':lua<CR><CR>', { desc = 'Source [L]ine(s)', silent = true })
+vim.keymap.set('n', '<leader><leader>f', ':source %<CR>', { desc = 'Source [F]ile', silent = true })
+vim.keymap.set('n', '<leader><leader>l', ':.lua<CR><CR>', { desc = 'Source [L]ine(s)', silent = true })
+vim.keymap.set('v', '<leader><leader>l', ':lua<CR><CR>', { desc = 'Source [L]ine(s)', silent = true })
 
 -- j->gj, k->gk
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -104,16 +116,6 @@ vim.keymap.set('n', '<C-w>f', ':FocusFloatingWindow<CR>', { noremap = true, sile
 -- find and replace in quickfix list
 vim.keymap.set('n', '<M-f>', ':FindAndReplaceInQuickfix<CR>', { desc = '[F]ind and replace', silent = true })
 
--- lsp
-function SetKeymapsOnAttach(bufnr)
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = '[R]e[N]ame' })
-  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = '[G]oto [D]efinition' })
-  vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = '[G]oto [R]eferences' })
-  vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = '[G]oto [I]mplementation' })
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
-end
-
 function SetTsKeymap(bufnr)
   vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = '[O]rganize [I]mports' })
 end
@@ -139,3 +141,5 @@ vim.keymap.set('n', '<leader>f', ':Format<cr>', { desc = '[F]ormat', silent = tr
 vim.keymap.set('n', '<leader>dm', function()
   require('marks').delete_line()
 end, { desc = '[D]eleme [M]ark on line', silent = true })
+
+return M

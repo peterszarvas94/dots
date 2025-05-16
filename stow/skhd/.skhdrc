@@ -50,4 +50,4 @@ shift + ctrl + alt - 2 : yabai -m window --display 2; yabai -m display --focus 2
 alt - r : yabai -m space --rotate 90
 
 # Toggle window between tiled and floating
-alt - t : yabai -m window --toggle float; yabai -m window --focus recent
+ctrl - alt - t : yabai -m window --toggle float; yabai -m window --focus recent

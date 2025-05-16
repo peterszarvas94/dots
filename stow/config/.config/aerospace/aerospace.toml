@@ -7,6 +7,10 @@ automatically-unhide-macos-hidden-apps = true
     preset = 'qwerty'
 
 [mode.main.binding]
+    ctrl-minus = 'resize height -50'
+    ctrl-equal = 'resize height +50'
+    ctrl-period= 'resize width -50'
+    ctrl-comma= 'resize width +50'
     cmd-semicolon = 'focus --dfs-index 1'
 
     ctrl-1 = 'workspace 1'
@@ -31,14 +35,55 @@ automatically-unhide-macos-hidden-apps = true
     ctrl-shift-9 = 'move-node-to-workspace 9'
     ctrl-shift-0 = 'move-node-to-workspace 10'
 
-    ctrl-shift-semicolon = 'mode service'
+    cmd-shift-semicolon = 'mode service'
 
-    cmd-enter = 'exec-and-forget open -n /Applications/Ghostty.app'
+    ctrl-shift-h = 'move left'
+    ctrl-shift-j = 'move down'
+    ctrl-shift-k = 'move up'
+    ctrl-shift-l = 'move right'
+
+    ctrl-alt-h = 'focus left'
+    ctrl-alt-j = 'focus down'
+    ctrl-alt-k = 'focus up'
+    ctrl-alt-l = 'focus right'
+
+    cmd-alt-h = 'join-with left'
+    cmd-alt-j = 'join-with down'
+    cmd-alt-k = 'join-with up'
+    cmd-alt-l = 'join-with right'
+
+    # cmd-enter = 'exec-and-forget open -n /Applications/Ghostty.app'
 
 [mode.service.binding]
     esc = ['reload-config', 'mode main']
 
+# [[on-window-detected]]
+#     if.app-id = 'com.apple.systempreferences'
+#     if.app-name-regex-substring = 'settings'
+#     if.window-title-regex-substring = 'substring'
+#     if.workspace = 'workspace-name'
+#     if.during-aerospace-startup = true
+#     check-further-callbacks = true
+#     run = ['layout floating', 'move-node-to-workspace S']  # The callback itself
+
 [[on-window-detected]]
+    if.app-name-regex-substring = 'Settings'
+    run = [ "layout floating" ]
+
+[[on-window-detected]]
+    if.window-title-regex-substring = 'Teams'
+    run = [ "layout floating" ]
+
+[[on-window-detected]]
+    if.window-title-regex-substring = 'Calculator'
+    run = [ "layout floating" ]
+
+[[on-window-detected]]
+    if.app-name-regex-substring = 'Finder'
+    run = [ "layout floating" ]
+
+[[on-window-detected]]
+    if.app-name-regex-substring = 'Preview'
     run = [ "layout floating" ]
 
 [workspace-to-monitor-force-assignment]

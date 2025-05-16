@@ -31,7 +31,7 @@ bindkey -M vicmd '^N' down-line-or-history
 bindkey -M vicmd '^P' up-line-or-history
 
 # tmux-sessionizer
-bindkey -s '^F' 'ts\n'
+# bindkey -s '^F' 'ts\n'
 
 zle -N reload-zsh
-bindkey -s '^Z' 'zsh\n'
+# bindkey -s '^Z' 'zsh\n'
