@@ -10,7 +10,7 @@ select_directory() {
     echo ~/obsidian-remote
 }
 
-path="${1:-$(select_directory | fzf)}"
+path="${1:-$(select_directory | fzf --prompt='Select a directory: ')}"
 
 [[ -z $path ]] && exit 0
 

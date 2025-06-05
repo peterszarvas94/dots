@@ -6,6 +6,14 @@ automatically-unhide-macos-hidden-apps = true
 [key-mapping]
     preset = 'qwerty'
 
+[gaps]
+    inner.horizontal = 10
+    inner.vertical =   10
+    outer.left =       10
+    outer.bottom =     10
+    outer.top =        10
+    outer.right =      10
+
 [mode.main.binding]
     ctrl-minus = 'resize height -50'
     ctrl-equal = 'resize height +50'
@@ -56,6 +64,7 @@ automatically-unhide-macos-hidden-apps = true
 
 [mode.service.binding]
     esc = ['reload-config', 'mode main']
+    f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
 
 # [[on-window-detected]]
 #     if.app-id = 'com.apple.systempreferences'
@@ -84,6 +93,14 @@ automatically-unhide-macos-hidden-apps = true
 
 [[on-window-detected]]
     if.app-name-regex-substring = 'Preview'
+    run = [ "layout floating" ]
+
+[[on-window-detected]]
+    if.app-name-regex-substring = 'DBeaver'
+    run = [ "layout floating" ]
+
+[[on-window-detected]]
+    if.app-name-regex-substring = 'Google Chrome'
     run = [ "layout floating" ]
 
 [workspace-to-monitor-force-assignment]

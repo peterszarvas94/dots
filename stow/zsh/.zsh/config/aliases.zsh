@@ -1,4 +1,4 @@
-# neovim
+# neovimalias
 alias v="nvim"
 
 # tmux
@@ -82,6 +82,9 @@ alias gpf="git push --force-with-lease"
 alias gfpa="git fetch --prune --all"
 alias gsc="git switch -c"
 alias gp="git pull"
+alias gs="git-switch"
+alias gca="git commit --amend"
+alias glg="git log --decorate --graph --oneline"
 
 # nvim
 alias cn="cd ~/.config/nvim"

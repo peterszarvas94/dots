@@ -1,0 +1,7 @@
+#!/bin/bash
+
+read -p "Enter prefix: " prefix
+read -p "Enter number: " number
+read -p "Enter branch: " branch
+
+git switch -c "${prefix}/GEMSU-${number}-${branch}"

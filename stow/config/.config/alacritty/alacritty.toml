@@ -1,4 +1,35 @@
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 15
+offset.y = 3
+
+[font.normal]
+# family = "GeistMono Nerd Font Mono"
+family = "JetBrainsMono Nerd Font Mono"
+# style = "ExtraLight"
+# family = "MonoLisa Nerd Font Mono"
+# family = "SFMono Nerd Font Mono"
+# family = "MesloLGL Nerd Font Mono"
+# family = "CaskaydiaCove Nerd Font"
+# family = "FiraCode Nerd Font Mono"
+# style = "Light"
+
+[terminal.shell]
+program = "/bin/zsh"
+
+[window]
+opacity = 0.95
+decorations = "None"
+option_as_alt = "Both"
+
+[window.padding]
+x = 0
+y = 0
+
 # https://github.com/nshern/neovim-default-colorscheme-extras/blob/main/extras/alacritty/nvim-dark.toml
+# TODO: PR to https://github.com/alacritty/alacritty-theme/
 [colors.primary]
 background = "#14161b"
 foreground = "#E0E2EA"
@@ -75,35 +106,3 @@ color = "#7EDFDE"
 index = 17
 color = "#4f5258"
 
-[env]
-TERM = "xterm-256color"
-
-[font]
-size = 15
-offset.y = 3
-
-
-[font.normal]
-# family = "GeistMono Nerd Font Mono"
-family = "JetBrainsMono Nerd Font Mono"
-# style = "ExtraLight"
-# family = "MonoLisa Nerd Font Mono"
-# family = "SFMono Nerd Font Mono"
-# family = "MesloLGL Nerd Font Mono"
-# family = "CaskaydiaCove Nerd Font"
-# family = "FiraCode Nerd Font Mono"
-# style = "Light"
-
-[terminal.shell]
-program = "/bin/zsh"
-
-[window]
-opacity = 1
-decorations = "buttonless"
-option_as_alt = "Both"
-
-[window.padding]
-x = 10
-y = 10
-
-[terminal]
