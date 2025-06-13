@@ -44,9 +44,10 @@ alias ball="bbuild && binit && bstart"
 
 # gems frontend
 alias fbuild="cd ~/work/gems-frontend-platform && npm run build"
-alias fgen="api && objecttypes"
 alias fdev="cd ~/work/gems-frontend-platform/packages/app-gems && npm run dev"
 alias fpre="cd ~/work/gems-frontend-platform/packages/app-gems && npm run preview"
+alias genapi="cd ~/work/gems-frontend-platform && npm run generate:api"
+alias genobject="cd ~/work/gems-frontend-platform && npm run generate:object"
 
 # lazygit
 alias lg="lazygit"

@@ -7,12 +7,12 @@ automatically-unhide-macos-hidden-apps = true
     preset = 'qwerty'
 
 [gaps]
-    inner.horizontal = 10
-    inner.vertical =   10
-    outer.left =       10
-    outer.bottom =     10
-    outer.top =        10
-    outer.right =      10
+    inner.horizontal = 8
+    inner.vertical =   8
+    outer.left =       8
+    outer.bottom =     8
+    outer.top =        8
+    outer.right =      8
 
 [mode.main.binding]
     ctrl-minus = 'resize height -50'

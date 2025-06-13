@@ -20,13 +20,14 @@ family = "JetBrainsMono Nerd Font Mono"
 program = "/bin/zsh"
 
 [window]
-opacity = 0.95
+opacity = 0.93
+# opacity = 1
 decorations = "None"
 option_as_alt = "Both"
 
 [window.padding]
-x = 0
-y = 0
+x = 10
+y = 10
 
 # https://github.com/nshern/neovim-default-colorscheme-extras/blob/main/extras/alacritty/nvim-dark.toml
 # TODO: PR to https://github.com/alacritty/alacritty-theme/
