@@ -4,3 +4,5 @@ vim.filetype.add {
     astro = 'astro',
   },
 }
+
+vim.cmd.colorscheme 'catppuccin'

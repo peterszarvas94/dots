@@ -6,6 +6,7 @@ return {
     local function my_on_attach(bufnr)
       api.config.mappings.default_on_attach(bufnr)
       vim.keymap.del('n', '<C-E>', { buffer = bufnr })
+      vim.cmd 'ColorizerDetachFromBuffer'
     end
 
     require('nvim-tree').setup {
@@ -60,9 +61,9 @@ return {
         show_on_dirs = true,
         show_on_open_dirs = true,
       },
-      -- update_focused_file = {
-      --   enable = true,
-      -- },
+      update_focused_file = {
+        enable = true,
+      },
       modified = {
         enable = true,
       },
