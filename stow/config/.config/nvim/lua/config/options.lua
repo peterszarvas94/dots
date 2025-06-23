@@ -3,8 +3,13 @@ vim.g.maplocalleader = ' '
 vim.o.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
 -- vim.o.guicursor = 'n-v-c:block'
 vim.o.hlsearch = false
-vim.o.number = true
-vim.o.relativenumber = true
+
+vim.opt.nu = true
+vim.opt.relativenumber = true
+-- vim.opt.statuscolumn = "%{printf('%4d',v:relnum)} │ %{printf('%2d',v:lnum)} │ "
+-- vim.o.number = true
+-- vim.o.relativenumber = true
+
 vim.o.cursorline = true
 vim.o.mouse = 'a'
 vim.o.clipboard = 'unnamedplus'

@@ -21,7 +21,7 @@ vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { bg = 'none', fg = 'none' })
 -- vim.api.nvim_set_hl(0, 'LineNr', { fg = '#C4C6CD' })
 
 -- Set WinSeparator to have the NvimDarkGrey3 separator color
--- vim.api.nvim_set_hl(0, 'WinSeparator', { fg = '#7f849c', bg = 'none' })
+vim.api.nvim_set_hl(0, 'WinSeparator', { fg = '#1e1e2e', bg = '#1e1e2e' })
 
 vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'none' })

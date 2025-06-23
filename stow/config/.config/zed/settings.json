@@ -1,4 +1,5 @@
 {
+	"icon_theme": "Catppuccin Mocha",
 	"vim_mode": true,
 	"ui_font_size": 16,
 	"buffer_font_size": 13,
@@ -7,7 +8,7 @@
 		"light": "Catppuccin Latte",
 		"dark": "Catppuccin Mocha"
 	},
-	"buffer_font_family": "MesloLGS Nerd Font Mono",
+	"buffer_font_family": "JetBrainsMono Nerd Font",
 	"buffer_line_height": {
 		"custom": 1.8
 	},
@@ -53,20 +54,20 @@
 	"tab_bar": {
 		"show": false
 	},
-	"show_inline_completions": false,
+	"show_edit_predictions": false,
 	"features": {
-		"inline_completion_provider": "none"
+		"edit_prediction_provider": "none"
 	},
 	"chat_panel": {
-		"button": false
+		"button": "never"
 	},
-	"assistant": {
+	"agent": {
 		"version": "2",
 		"enabled": false,
 		"button": false
 	},
 	"scrollbar": {
-		"diagnostics": false,
+		"diagnostics": "none",
 		"git_diff": false,
 		"search_results": false,
 		"selected_symbol": false
@@ -75,7 +76,12 @@
 		"include_warnings": false
 	},
 	"format_on_save": "on",
-	"language_servers": ["typescript-language-server", "!eslint", "gopls", "..."],
+	"language_servers": [
+		"typescript-language-server",
+		"!eslint",
+		"gopls",
+		"..."
+	],
 	"languages": {
 		"TypeScript": {
 			"code_actions_on_format": {

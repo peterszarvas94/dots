@@ -98,8 +98,9 @@ vim.keymap.set('n', '<leader>p', 'ggVGp', { desc = '[P]aste to buffer', silent =
 vim.keymap.set('n', '<leader>dt', ':ToggleDiagnostics<CR>', { desc = '[D]iagnostics [T]oggle', silent = true })
 
 -- relative line numbers
-vim.keymap.set('n', '<leader>ro', ':RelOn<CR>', { desc = '[R]elative numbers [O]n', silent = true })
-vim.keymap.set('n', '<leader>rf', ':RelOff<CR>', { desc = '[R]elative numbers o[F]f', silent = true })
+vim.keymap.set('n', '<leader>ro', ':RelativeNumbersOn<CR>', { desc = '[R]elative numbers [O]n', silent = true })
+vim.keymap.set('n', '<leader>rf', ':RelativeNumbersOff<CR>', { desc = '[R]elative numbers o[F]f', silent = true })
+vim.keymap.set('n', '<leader>rt', ':RelativeNumbersToggle<CR>', { desc = '[R]elative numbers [T]oggle', silent = true })
 
 -- nvimtree
 vim.keymap.set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = '[N]vimTree [T]oggle', silent = true })

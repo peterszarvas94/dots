@@ -75,5 +75,21 @@ return {
         },
       },
     }
+
+    --     local snippet = luasnip.snippet
+    --
+    --     local js = {
+    --       snippet(
+    --         'console.log',
+    --         'console.log snippet',
+    --         [[
+    -- console.log("$1", $1)
+    -- ]]
+    --       ),
+    --     }
+    --     luasnip.snippets = {
+    --       javascript = js,
+    --       typescript = js,
+    --     }
   end,
 }

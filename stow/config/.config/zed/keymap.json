@@ -2,24 +2,24 @@
 	{
 		"context": "FileFinder",
 		"bindings": {
-			"cmd-p": "menu::SelectPrev",
+			"cmd-p": "menu::SelectPrevious",
 			"cmd-n": "menu::SelectNext"
 		}
 	},
 	{
 		"context": "Editor && vim_mode == normal",
 		"bindings": {
-			"ctrl-c": ["vim::SwitchMode", "Normal"],
-			"j": ["vim::Down", { "displayLines": true }],
-			"k": ["vim::Up", { "displayLines": true }],
+			"ctrl-c": "vim::SwitchToNormalMode",
+			"j": ["vim::Down", { "display_lines": true }],
+			"k": ["vim::Up", { "display_lines": true }],
 			"space i": "editor::ToggleCodeActions",
 			"space s r": "tab_switcher::Toggle",
 			"space s f": "file_finder::Toggle",
 			"space t r": "editor::ToggleRelativeLineNumbers",
 			"space r": "editor::Rename",
 			"space f": "editor::Format",
-			"space g b": "editor::ToggleGitBlame",
-			"space g d": "editor::ToggleHunkDiff"
+			"space g b": "git::Blame",
+			"space g d": "editor::ToggleSelectedDiffHunks"
 		}
 	},
 	{
@@ -37,7 +37,7 @@
 	{
 		"context": "TabSwitcher",
 		"bindings": {
-			"k": "menu::SelectPrev",
+			"k": "menu::SelectPrevious",
 			"j": "menu::SelectNext",
 			"x": "tab_switcher::CloseSelectedItem"
 		}

@@ -34,3 +34,5 @@ export NVM_DIR="$HOME/.nvm"
 
 # turso
 export PATH="~/.turso:$PATH"
+
+export XDG_CONFIG_HOME="$HOME/.config"
