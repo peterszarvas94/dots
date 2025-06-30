@@ -89,6 +89,7 @@ vim.keymap.set('n', '<M-->', '<C-w>-', { desc = 'Resize split -1 horizontally', 
 vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = '[Y]ank buffer', silent = true })
 vim.keymap.set('n', '<leader>v', 'ggVG', { desc = '[V]isual select buffer', silent = true })
 vim.keymap.set('n', '<leader>p', 'ggVGp', { desc = '[P]aste to buffer', silent = true })
+vim.keymap.set('n', '<leader>bo', ':BufOnly<CR>', { desc = '[B]uffers close, keep [O]nly this', silent = true })
 
 -- conceal level
 -- vim.keymap.set('n', '<leader>l0', ':set conceallevel=0<CR>', { desc = 'Conceal [L]evel 0', silent = true })

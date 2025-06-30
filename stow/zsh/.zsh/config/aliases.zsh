@@ -39,6 +39,7 @@ alias bgen="cd ~/work/gems-backend-platform/packages/database && npm run generat
 alias bmig="cd ~/work/gems-backend-platform/packages/database && npm run migrate"
 alias binit="cd ~/work/gems-backend-platform/packages/database && npm run init-development"
 alias bstart="cd ~/work/gems-backend-platform/packages/app && npm run start"
+alias bdev="cd ~/work/gems-backend-platform/packages/app && npm run start:dev"
 alias bdebug="cd ~/work/gems-backend-platform/packages/app && npm run start:debug"
 alias ball="bbuild && binit && bstart"
 

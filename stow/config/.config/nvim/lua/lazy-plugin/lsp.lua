@@ -116,6 +116,7 @@ return {
           'lua_ls',
           'jsonls',
           'yamlls',
+          'tailwindcss',
         },
         automatic_installation = false, -- not the same as ensure_installed
       }
