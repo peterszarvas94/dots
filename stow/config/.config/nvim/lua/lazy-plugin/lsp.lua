@@ -12,101 +12,10 @@ return {
     end,
   },
   {
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      'williamboman/mason-lspconfig.nvim',
-      'nvim-telescope/telescope.nvim',
-    },
+    'williamboman/mason-lspconfig.nvim',
+    dependencies = { 'williamboman/mason.nvim' },
     config = function()
-      local lspconfig = require 'lspconfig'
-      local mason_lspconfig = require 'mason-lspconfig'
-
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-      local on_attach = function(_, bufnr)
-        keymaps.setKeymapsOnAttach(bufnr)
-      end
-
-      local servers = {
-        eslint = {
-          autostart = false,
-          capabilities = (function()
-            local c = vim.lsp.protocol.make_client_capabilities()
-            c.textDocument.codeAction = nil
-            return c
-          end)(),
-        },
-        lua_ls = {
-          settings = {
-            Lua = {
-              workspace = { checkThirdParty = false },
-              telemetry = { enable = false },
-              diagnostics = {
-                globals = { 'vim' },
-              },
-            },
-          },
-        },
-        htmx = {
-          settings = {
-            filetypes = { 'html', 'templ' },
-          },
-        },
-        cssls = {
-          settings = {
-            filetypes = { 'css', 'html', 'templ' },
-          },
-        },
-        tailwindcss = {
-          settings = {
-            filetypes = { 'html', 'templ' },
-            init_options = {
-              userLanguages = {
-                templ = 'html',
-                html = 'html',
-              },
-            },
-          },
-        },
-        astro = {
-          settings = {
-            filetypes = { 'astro' },
-          },
-        },
-        ts_ls = {
-          commands = {
-            OrganizeImports = {
-              function()
-                local params = {
-                  command = '_typescript.organizeImports',
-                  arguments = { vim.api.nvim_buf_get_name(0) },
-                  title = 'Organize Imports',
-                }
-                vim.lsp.buf.execute_command(params)
-              end,
-            },
-          },
-          on_attach = function(client, bufnr)
-            SetTsKeymap(bufnr)
-            on_attach(client, bufnr)
-          end,
-        },
-        gopls = {
-          on_attach = function(client, bufnr)
-            vim.g.gofmt_command = 'goimport'
-            vim.api.nvim_create_autocmd('BufWritePre', {
-              pattern = '*.go',
-              callback = function()
-                vim.cmd 'silent! lua vim.lsp.buf.format({ async = false })'
-              end,
-            })
-            on_attach(client, bufnr)
-          end,
-        },
-      }
-
-      mason_lspconfig.setup {
+      require('mason-lspconfig').setup {
         ensure_installed = {
           'ts_ls',
           'cssls',
@@ -118,21 +27,122 @@ return {
           'yamlls',
           'tailwindcss',
         },
-        automatic_installation = false, -- not the same as ensure_installed
+        automatic_installation = false,
+      }
+    end,
+  },
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason-lspconfig.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+      local on_attach = function(_, bufnr)
+        keymaps.setKeymapsOnAttach(bufnr)
+      end
+
+      -- Server configurations
+      vim.lsp.config.lua_ls = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          Lua = {
+            workspace = { checkThirdParty = false },
+            telemetry = { enable = false },
+            diagnostics = {
+              globals = { 'vim' },
+            },
+          },
+        },
       }
 
-      mason_lspconfig.setup_handlers {
-        function(server_name)
-          local config = servers[server_name] or {}
+      vim.lsp.config.ts_ls = {
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          -- Create OrganizeImports command for this buffer
+          vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
+            local params = {
+              command = '_typescript.organizeImports',
+              arguments = { vim.api.nvim_buf_get_name(0) },
+              title = 'Organize Imports',
+            }
+            -- vim.lsp.buf.execute_command(params)
+            client:exec_cmd(params)
+          end, { desc = 'Organize Imports' })
 
-          lspconfig[server_name].setup {
-            autostart = config.autostart ~= false,
-            capabilities = config.capabilities or capabilities,
-            on_attach = config.on_attach or on_attach,
-            settings = config.settings,
-            commands = config.commands,
-          }
+          keymaps.setTsKeymap(bufnr)
+          on_attach(client, bufnr)
         end,
+      }
+
+      vim.lsp.config.gopls = {
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          vim.g.gofmt_command = 'goimport'
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            pattern = '*.go',
+            callback = function()
+              vim.cmd 'silent! lua vim.lsp.buf.format({ async = false })'
+            end,
+          })
+          on_attach(client, bufnr)
+        end,
+      }
+
+      vim.lsp.config.eslint = {
+        -- autostart = false,
+        capabilities = (function()
+          local c = vim.lsp.protocol.make_client_capabilities()
+          c.textDocument.codeAction = nil
+          return c
+        end)(),
+        on_attach = on_attach,
+      }
+
+      vim.lsp.config.cssls = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+
+      vim.lsp.config.tailwindcss = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        init_options = {
+          userLanguages = {
+            templ = 'html',
+            html = 'html',
+          },
+        },
+      }
+
+      vim.lsp.config.htmx = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        filetypes = { 'html', 'templ' },
+      }
+
+      vim.lsp.config.astro = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+
+      vim.lsp.config.bashls = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+
+      vim.lsp.config.jsonls = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }
+
+      vim.lsp.config.yamlls = {
+        capabilities = capabilities,
+        on_attach = on_attach,
       }
 
       vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {

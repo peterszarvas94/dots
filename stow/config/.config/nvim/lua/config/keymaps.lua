@@ -10,6 +10,46 @@ M.setKeymapsOnAttach = function(bufnr)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
 end
 
+-- ts_ls
+M.setTsKeymap = function(bufnr)
+  vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = '[O]rganize [I]mports' })
+end
+
+-- telescope
+M.setTelescopeKeymaps = function(builtin)
+  vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = '[S]earch [R]ecently opened files' })
+  vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+  vim.keymap.set('n', '<leader>sn', function()
+    builtin.find_files {
+      cwd = vim.fn.stdpath 'config',
+    }
+  end, { desc = '[S]earch [N]vim files' })
+
+  vim.keymap.set('n', '<leader>sd', function()
+    builtin.find_files {
+      cwd = vim.fn.expand '~' .. '/projects/dots/',
+    }
+  end, { desc = '[S]earch [D]otfiles' })
+
+  vim.keymap.set('n', '<leader>sl', builtin.live_grep, { desc = '[S]earch by [L]ivegrep' })
+  vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+  vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+  -- vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch dia[G]nostics' })
+  vim.keymap.set('n', '<leader>sc', builtin.current_buffer_fuzzy_find, { desc = '[S]earch [C]urrent buffer' })
+  vim.keymap.set('n', '<leader>so', function()
+    local word = vim.fn.expand '<cword>'
+    builtin.current_buffer_fuzzy_find { default_text = word }
+  end, { silent = true, desc = '[S]earch w[O]rd in current buffer' })
+  vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
+  vim.keymap.set('n', '<leader>sg', builtin.git_commits, { desc = '[S]earch [C]ommits' })
+  vim.keymap.set('n', '<leader>sb', builtin.git_bcommits, { desc = '[S]earch [B]uffer commits' })
+  vim.keymap.set('n', '<leader>ss', builtin.git_stash, { desc = '[S]earch [S]tash' })
+  vim.keymap.set('n', '<leader>se', builtin.symbols, { desc = '[S]earch [E]mojis' })
+  vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
+  vim.keymap.set('n', '<leader>su', builtin.buffers, { desc = '[S]earch b[U]ffers' })
+  vim.keymap.set('n', '<leader>lr', builtin.lsp_references, { desc = '[L]sp [R]eferences' })
+end
+
 -- unbind space
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
@@ -124,10 +164,6 @@ vim.keymap.set('n', '<C-w>f', ':FocusFloatingWindow<CR>', { noremap = true, sile
 -- find and replace in quickfix list
 vim.keymap.set('n', '<M-f>', ':FindAndReplaceInQuickfix<CR>', { desc = '[F]ind and replace', silent = true })
 
-function SetTsKeymap(bufnr)
-  vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = '[O]rganize [I]mports' })
-end
-
 vim.keymap.set('n', '<leader>i', function()
   require('actions-preview').code_actions()
 end, { desc = 'Code actions / [I]mports', silent = true })
@@ -140,41 +176,6 @@ vim.keymap.set('n', '<leader>hn', ':HarpoonNext<CR>', { desc = '[H]arpoon [N]ext
 vim.keymap.set('n', '<leader>hp', ':HarpoonPrevious<CR>', { desc = '[H]arpoon [P]revious', silent = true })
 for i = 1, 8 do
   vim.keymap.set('n', string.format('<leader>%d', i), string.format(':HarpoonSelect %d<CR>', i), { desc = string.format('Harpoon [%d]', i), silent = true })
-end
-
--- telescope
-M.setTelescopeKeymaps = function(builtin)
-  vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = '[S]earch [R]ecently opened files' })
-  vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-  vim.keymap.set('n', '<leader>sn', function()
-    builtin.find_files {
-      cwd = vim.fn.stdpath 'config',
-    }
-  end, { desc = '[S]earch [N]vim files' })
-
-  vim.keymap.set('n', '<leader>sd', function()
-    builtin.find_files {
-      cwd = vim.fn.expand '~' .. '/projects/dots/',
-    }
-  end, { desc = '[S]earch [D]otfiles' })
-
-  vim.keymap.set('n', '<leader>sl', builtin.live_grep, { desc = '[S]earch by [L]ivegrep' })
-  vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-  vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-  -- vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch dia[G]nostics' })
-  vim.keymap.set('n', '<leader>sc', builtin.current_buffer_fuzzy_find, { desc = '[S]earch [C]urrent buffer' })
-  vim.keymap.set('n', '<leader>so', function()
-    local word = vim.fn.expand '<cword>'
-    builtin.current_buffer_fuzzy_find { default_text = word }
-  end, { silent = true, desc = '[S]earch w[O]rd in current buffer' })
-  vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-  vim.keymap.set('n', '<leader>sg', builtin.git_commits, { desc = '[S]earch [C]ommits' })
-  vim.keymap.set('n', '<leader>sb', builtin.git_bcommits, { desc = '[S]earch [B]uffer commits' })
-  vim.keymap.set('n', '<leader>ss', builtin.git_stash, { desc = '[S]earch [S]tash' })
-  vim.keymap.set('n', '<leader>se', builtin.symbols, { desc = '[S]earch [E]mojis' })
-  vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
-  vim.keymap.set('n', '<leader>su', builtin.buffers, { desc = '[S]earch b[U]ffers' })
-  vim.keymap.set('n', '<leader>lr', builtin.lsp_references, { desc = '[L]sp [R]eferences' })
 end
 
 -- format

@@ -6,11 +6,10 @@ vim.api.nvim_create_user_command('BufOnly', function()
     if buf ~= current_buf and vim.api.nvim_buf_is_loaded(buf) then
       local buf_modified = vim.api.nvim_buf_get_option(buf, 'modified')
       if not buf_modified then
-        vim.api.nvim_buf_delete(buf, { force = false })
+        vim.api.nvim_buf_delete(buf, { force = true })
       end
     end
   end
 
   vim.notify 'Closed all other buffers'
 end, { desc = 'Close all buffers except the current one' })
-
