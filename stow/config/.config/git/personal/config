@@ -1,6 +1,6 @@
 [user]
   email = contact@peterszarvas.hu
-  name = "Péter Szarvas"
+  name = "Peter Szarvas"
   # GPG signing key from ./sign:
   # signingkey = abc
 
