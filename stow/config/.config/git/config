@@ -36,10 +36,10 @@
   trustExitCode = false
 
 [includeIf "gitdir:~/projects/"]
-  path = ~/projects/dots/resources/git/personal/.gitconfig
+  path = ~/.config/git/personal/config
 
 [includeIf "gitdir:~/projects/"]
-  path = ~/projects/dots/resources/git/personal/.gitSign
+  path = ~/.config/git/personal/sign
 
 [includeIf "gitdir:~/work/"]
-  path = ~/projects/dots/resources/git/work/.gitconfig
+  path = ~/.config/git/work/config

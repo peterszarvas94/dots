@@ -94,7 +94,7 @@ return {
       }
 
       vim.lsp.config.eslint = {
-        -- autostart = false,
+        autostart = false,
         capabilities = (function()
           local c = vim.lsp.protocol.make_client_capabilities()
           c.textDocument.codeAction = nil
