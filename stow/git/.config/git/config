@@ -35,17 +35,21 @@
   cmd = nvim -d "$LOCAL" "$REMOTE" -c 'set wrap' -c 'wincmd w' -c 'set wrap'
   trustExitCode = false
 
+# personal
 [includeIf "gitdir:~/projects/"]
   path = ~/.config/git/personal/config
 
 [includeIf "gitdir:~/projects/"]
   path = ~/.config/git/personal/sign
 
-[includeIf "gitdir:~/obsidian-remote/"]
-  path = ~/.config/git/personal/config
-
-[includeIf "gitdir:~/obsidian-remote/"]
-  path = ~/.config/git/personal/sign
-
+# work
 [includeIf "gitdir:~/work/"]
   path = ~/.config/git/work/config
+[user]
+	name = Peter Szarvas
+	email = contact@peterszarvas.hu
+	signingkey = D3844746E8B51841
+[commit]
+	gpgSign = true
+[tag]
+	gpgSign = true

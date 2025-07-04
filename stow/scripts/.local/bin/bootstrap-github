@@ -1,0 +1,131 @@
+#!/bin/bash
+set -e
+
+EMAIL="contact@peterszarvas.hu"
+HOSTNAME=$(hostname)
+
+# Parse command line arguments
+SETUP_SSH=false
+SETUP_GPG=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --ssh)
+            SETUP_SSH=true
+            shift
+            ;;
+        --gpg)
+            SETUP_GPG=true
+            shift
+            ;;
+        -h|--help)
+            echo "Usage: $0 [--ssh] [--gpg]"
+            echo ""
+            echo "Options:"
+            echo "  --ssh    Setup SSH keys only"
+            echo "  --gpg    Setup GPG keys only"
+            echo "  (no flags) Setup both SSH and GPG keys"
+            echo "  -h, --help  Show this help message"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Use -h or --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
+# If no flags specified, setup both
+if [[ "$SETUP_SSH" == false && "$SETUP_GPG" == false ]]; then
+    SETUP_SSH=true
+    SETUP_GPG=true
+fi
+
+echo "🚀 Starting GitHub CLI bootstrap setup..."
+
+# 1. Check GitHub CLI authentication
+if ! gh auth status &>/dev/null; then
+    echo "🔐 Not authenticated with GitHub CLI, logging in..."
+    gh auth login --web
+else
+    echo "✅ Already authenticated with GitHub CLI"
+fi
+
+# Check if GPG scopes are needed and available
+if [[ "$SETUP_GPG" == true ]]; then
+    if ! gh api user/gpg_keys &>/dev/null; then
+        echo "🔄 Refreshing GitHub auth with GPG key scopes..."
+        gh auth refresh -s write:gpg_key
+    else
+        echo "✅ GPG key scopes already available"
+    fi
+fi
+
+if [[ "$SETUP_SSH" == true ]]; then
+    # 2. Generate SSH key
+    echo "🔑 Generating SSH key..."
+    ssh-keygen -t ed25519 -C "$EMAIL" -f ~/.ssh/github -N ""
+
+    # 3. Add SSH key to GitHub
+    echo "📤 Adding SSH key to GitHub..."
+    gh ssh-key add ~/.ssh/github.pub --title "$HOSTNAME-$(date +%Y%m%d)"
+
+    # 4. Test SSH connection
+    echo "🧪 Testing SSH connection..."
+    ssh -T git@github.com
+fi
+
+if [[ "$SETUP_GPG" == true ]]; then
+    # 5. Generate GPG key
+    echo "🔐 Generating GPG key..."
+    gpg --batch --full-generate-key <<EOF
+Key-Type: RSA
+Key-Length: 4096
+Subkey-Type: RSA
+Subkey-Length: 4096
+Name-Real: Peter Szarvas
+Name-Email: $EMAIL
+Expire-Date: 0
+%no-protection
+%commit
+EOF
+
+    # 6. Get GPG key ID
+    GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | head -1 | sed 's/.*\/\([A-F0-9]*\).*/\1/')
+    echo "📋 GPG Key ID: $GPG_KEY_ID"
+
+    # 7. Export and add GPG key to GitHub
+    echo "📤 Adding GPG key to GitHub..."
+    gpg --armor --export $GPG_KEY_ID | gh gpg-key add -
+
+    # 8. Configure git
+    echo "⚙️  Configuring git..."
+    git config --global user.name "Peter Szarvas"
+    git config --global user.email "$EMAIL"
+    git config --global user.signingkey $GPG_KEY_ID
+    git config --global commit.gpgSign true
+    git config --global tag.gpgSign true
+fi
+
+# 9. Verify setup
+echo "✅ Setup complete!"
+echo ""
+echo "🔍 Verification:"
+
+if [[ "$SETUP_SSH" == true ]]; then
+    echo "SSH keys on GitHub:"
+    gh ssh-key list
+    echo ""
+fi
+
+if [[ "$SETUP_GPG" == true ]]; then
+    echo "GPG keys on GitHub:"
+    gh gpg-key list
+    echo ""
+    echo "Git config:"
+    git config --global --list | grep -E "(user\.|commit\.gpg|tag\.gpg)"
+    echo ""
+fi
+
+echo "🎉 All done! Try making a signed commit to test."
