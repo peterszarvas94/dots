@@ -1,3 +1,3 @@
 #!/bin/bash
 
-stow --dir=stow --target=$HOME bin config ssh tmux zsh
+stow --dir=stow --target=$HOME bin config tmux zsh
