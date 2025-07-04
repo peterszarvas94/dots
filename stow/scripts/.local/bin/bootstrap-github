@@ -44,12 +44,35 @@ fi
 
 echo "🚀 Starting GitHub CLI bootstrap setup..."
 
+# Get titles and filenames for keys
+if [[ "$SETUP_SSH" == true ]]; then
+    read -p "📝 Enter SSH key filename (default: github): " SSH_FILENAME
+    SSH_FILENAME=${SSH_FILENAME:-"github"}
+    read -p "📝 Enter title for SSH key (default: $HOSTNAME-$(date +%Y%m%d)): " SSH_TITLE
+    SSH_TITLE=${SSH_TITLE:-"$HOSTNAME-$(date +%Y%m%d)"}
+fi
+
+if [[ "$SETUP_GPG" == true ]]; then
+    read -p "📝 Enter title for GPG key (default: $HOSTNAME-$(date +%Y%m%d)): " GPG_TITLE
+    GPG_TITLE=${GPG_TITLE:-"$HOSTNAME-$(date +%Y%m%d)"}
+fi
+
 # 1. Check GitHub CLI authentication
 if ! gh auth status &>/dev/null; then
     echo "🔐 Not authenticated with GitHub CLI, logging in..."
     gh auth login --web
 else
     echo "✅ Already authenticated with GitHub CLI"
+fi
+
+# Check if SSH scopes are needed and available
+if [[ "$SETUP_SSH" == true ]]; then
+    if ! gh api user/keys &>/dev/null; then
+        echo "🔄 Refreshing GitHub auth with SSH key scopes..."
+        gh auth refresh -s admin:public_key
+    else
+        echo "✅ SSH key scopes already available"
+    fi
 fi
 
 # Check if GPG scopes are needed and available
@@ -65,14 +88,15 @@ fi
 if [[ "$SETUP_SSH" == true ]]; then
     # 2. Generate SSH key
     echo "🔑 Generating SSH key..."
-    ssh-keygen -t ed25519 -C "$EMAIL" -f ~/.ssh/github -N ""
+    ssh-keygen -t ed25519 -C "$EMAIL" -f ~/.ssh/$SSH_FILENAME -N ""
 
     # 3. Add SSH key to GitHub
     echo "📤 Adding SSH key to GitHub..."
-    gh ssh-key add ~/.ssh/github.pub --title "$HOSTNAME-$(date +%Y%m%d)"
+    gh ssh-key add ~/.ssh/$SSH_FILENAME.pub --title "$SSH_TITLE"
 
     # 4. Test SSH connection
     echo "🧪 Testing SSH connection..."
+    ssh-add ~/.ssh/github > /dev/null 2>&1
     ssh -T git@github.com
 fi
 
@@ -97,15 +121,14 @@ EOF
 
     # 7. Export and add GPG key to GitHub
     echo "📤 Adding GPG key to GitHub..."
-    gpg --armor --export $GPG_KEY_ID | gh gpg-key add -
+    gpg --armor --export $GPG_KEY_ID | gh gpg-key add --title "$GPG_TITLE" -
 
-    # 8. Configure git
-    echo "⚙️  Configuring git..."
-    git config --global user.name "Peter Szarvas"
-    git config --global user.email "$EMAIL"
-    git config --global user.signingkey $GPG_KEY_ID
-    git config --global commit.gpgSign true
-    git config --global tag.gpgSign true
+    # 8. Display GPG key info for manual git config
+    echo "📋 GPG Key ID for manual git config: $GPG_KEY_ID"
+    echo "💡 To configure git signing manually:"
+    echo "   git config --global user.signingkey $GPG_KEY_ID"
+    echo "   git config --global commit.gpgSign true"
+    echo "   git config --global tag.gpgSign true"
 fi
 
 # 9. Verify setup
@@ -122,9 +145,6 @@ fi
 if [[ "$SETUP_GPG" == true ]]; then
     echo "GPG keys on GitHub:"
     gh gpg-key list
-    echo ""
-    echo "Git config:"
-    git config --global --list | grep -E "(user\.|commit\.gpg|tag\.gpg)"
     echo ""
 fi
 

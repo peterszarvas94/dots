@@ -45,11 +45,3 @@
 # work
 [includeIf "gitdir:~/work/"]
   path = ~/.config/git/work/config
-[user]
-	name = Peter Szarvas
-	email = contact@peterszarvas.hu
-	signingkey = D3844746E8B51841
-[commit]
-	gpgSign = true
-[tag]
-	gpgSign = true
