@@ -71,7 +71,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setqflist, { desc = 'Open diagno
 -- terminal
 vim.keymap.set('n', '<leader>to', ':term<CR>', { desc = '[T]erminal [O]pen', silent = true })
 vim.keymap.set('n', '<leader>ts', ':TerminalSmall<CR>', { desc = '[T]erminal [S]mall', silent = true })
-vim.keymap.set('n', '<leader>tf', ':TerminalFloat<CR>', { desc = '[T]erminal [F]loat', silent = true })
+vim.keymap.set('n', '<leader>f', ':TerminalFloat<CR>', { desc = 'Terminal [F]loat', silent = true })
 vim.keymap.set('n', '<leader>tt', ':TerminalTab<CR>', { desc = '[T]erminal [T]ab', silent = true })
 vim.keymap.set('t', '<C-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
 
@@ -179,7 +179,7 @@ for i = 1, 8 do
 end
 
 -- format
-vim.keymap.set('n', '<leader>f', ':Format<cr>', { desc = '[F]ormat', silent = true })
+-- vim.keymap.set('n', '<leader>f', ':Format<cr>', { desc = '[F]ormat', silent = true })
 
 -- marks
 vim.keymap.set('n', '<leader>dm', function()

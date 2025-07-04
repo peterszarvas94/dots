@@ -5,7 +5,7 @@ import = ["~/.config/alacritty/themes/cattpuccin.toml"]
 TERM = "xterm-256color"
 
 [font]
-size = 15
+size = 13
 offset.y = 3
 
 [font.normal]
@@ -23,7 +23,7 @@ family = "JetBrainsMono Nerd Font Mono"
 program = "/bin/zsh"
 
 [window]
-opacity = 0.95
+opacity = 0.97
 # opacity = 1
 decorations = "None"
 option_as_alt = "Both"
@@ -31,4 +31,3 @@ option_as_alt = "Both"
 [window.padding]
 x = 10
 y = 10
-

@@ -6,6 +6,7 @@ return {
     local function my_on_attach(bufnr)
       api.config.mappings.default_on_attach(bufnr)
       vim.keymap.del('n', '<C-E>', { buffer = bufnr })
+      vim.keymap.set('n', '<C-[>', api.tree.change_root_to_parent, { buffer = bufnr }, 'CD ..')
       vim.cmd 'ColorizerDetachFromBuffer'
     end
 
@@ -16,6 +17,7 @@ return {
         },
         relativenumber = true,
         number = true,
+        -- separator = '│',
         float = {
           enable = false,
           quit_on_focus_loss = false,
@@ -62,7 +64,7 @@ return {
         show_on_open_dirs = true,
       },
       update_focused_file = {
-        enable = false,
+        enable = true,
       },
       modified = {
         enable = true,
@@ -86,13 +88,13 @@ return {
       },
       on_attach = my_on_attach,
       hijack_directories = {
-        enable = false,
-        auto_open = false,
+        enable = true,
+        auto_open = true,
       },
     }
 
-    -- api.events.subscribe(api.events.Event.FileCreated, function(file)
-    --   vim.cmd('edit ' .. file.fname)
-    -- end)
+    api.events.subscribe(api.events.Event.FileCreated, function(file)
+      vim.cmd('edit ' .. file.fname)
+    end)
   end,
 }
