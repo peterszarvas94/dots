@@ -1,5 +1,5 @@
 .DS_Store
-stow/ssh/.ssh/
+stow/ssh/.ssh/config
 stow/zsh/.zsh/config/env.zsh
 stow/config/.config/karabiner/automatic_backups/
 stow/config/.config/aerc/

@@ -1,1 +1,2 @@
-# [[ -z $DISPLAY && $(tty) == /dev/tty1 ]] && exec Hyprland
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
