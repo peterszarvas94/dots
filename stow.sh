@@ -138,15 +138,13 @@ deploy_common_packages() {
     log_info "Deploying common packages..."
     
     # Git configuration
-    safe_remove "$HOME/.config/.gitignore"
+    safe_remove "$HOME/.gitignore"
     safe_remove "$HOME/.config/git"
     safe_stow "git"
     
     # Zsh configuration
-    safe_remove "$HOME/.config/.zshrc"
-    safe_remove "$HOME/.config/zsh"
-    mkdir -p "stow/zsh/.zsh/config"
-    touch "stow/zsh/.zsh/config/env.zsh"
+    safe_remove "$HOME/.zshrc"
+    safe_remove "$HOME/.zsh"
     safe_stow "zsh"
     
     # Neovim configuration
@@ -167,7 +165,7 @@ deploy_common_packages() {
     
     # Tmux configuration
     safe_remove "$HOME/.config/.tmux.conf"
-    safe_remove "$HOME/.config/tmux"
+    safe_remove "$HOME/.config/.tmux"
     safe_stow "tmux"
 }
 
