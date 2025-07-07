@@ -179,7 +179,8 @@ deploy_mac_packages() {
     safe_remove "$HOME/.config/aerospace"
     safe_stow "aerospace"
     
-    # macOS-specific zsh config
+    # macOS-specific zsh config (includes .zprofile)
+    safe_remove "$HOME/.zprofile"
     safe_stow "zsh-mac"
 }
 
@@ -195,7 +196,8 @@ deploy_arch_packages() {
     safe_remove "$HOME/.config/waybar"
     safe_stow "waybar"
     
-    # Arch-specific zsh config
+    # Arch-specific zsh config (includes .zprofile)
+    safe_remove "$HOME/.zprofile"
     safe_stow "zsh-arch"
 }
 
@@ -203,7 +205,8 @@ deploy_arch_packages() {
 deploy_ubuntu_packages() {
     log_info "Deploying Ubuntu-specific packages..."
     
-    # Ubuntu-specific zsh config
+    # Ubuntu-specific zsh config (includes .zprofile)
+    safe_remove "$HOME/.zprofile"
     safe_stow "zsh-ubuntu"
 }
 
