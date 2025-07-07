@@ -6,13 +6,18 @@ git clone https://github.com/peterszarvas94/dots ~/projects/dots
 cd projects/dots
 
 sudo pacman -S --needed base-devel
-git clone https://aur.archlinux.org/paru.git
 
-cd paru
-makepkg -si
-
-cd ..
-rm -rf paru
+# Check if paru is installed
+if ! command -v paru &> /dev/null; then
+    echo "Installing paru..."
+    git clone https://aur.archlinux.org/paru.git
+    cd paru
+    makepkg -si
+    cd ..
+    rm -rf paru
+else
+    echo "paru is already installed"
+fi
 
 paru -S --noconfirm --needed \
     nvim \
