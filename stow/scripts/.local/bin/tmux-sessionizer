@@ -7,7 +7,6 @@ parent_dirs=(~/work ~/projects ~/projects/go ~/youtube)
 
 select_directory() {
     find "${parent_dirs[@]}" -maxdepth 1 -mindepth 1 -type d ! -name go
-    echo ~/obsidian-remote
 }
 
 path="${1:-$(select_directory | fzf --prompt='Select a directory: ')}"

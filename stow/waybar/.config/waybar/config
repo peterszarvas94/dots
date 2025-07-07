@@ -10,6 +10,7 @@
       "clock"
     ],
     "modules-right": [
+      "hyprland/language",
       "bluetooth",
       "network",
       "pulseaudio",
@@ -108,6 +109,11 @@
       "tooltip-format": "Playing at {volume}%",
       "on-click-right": "pamixer -t",
       "ignored-sinks": ["Easy Effects Sink"]
+    },
+    "hyprland/language": {
+      "format": "{}",
+      "format-en": "EN ",
+      "format-hu": "HU "
     },
     "power-profiles-daemon": {
       "format": "{icon}",
