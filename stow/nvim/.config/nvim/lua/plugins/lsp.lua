@@ -19,7 +19,6 @@ return {
         ensure_installed = {
           'ts_ls',
           'cssls',
-          'eslint',
           'gopls',
           'bashls',
           'lua_ls',
@@ -95,12 +94,13 @@ return {
 
       vim.lsp.config.eslint = {
         autostart = false,
-        capabilities = (function()
-          local c = vim.lsp.protocol.make_client_capabilities()
-          c.textDocument.codeAction = nil
-          return c
-        end)(),
+        -- capabilities = (function()
+        --   local c = vim.lsp.protocol.make_client_capabilities()
+        --   return c
+        -- end)(),
+        capabilities = capabilities,
         on_attach = on_attach,
+        filetypes = {}, -- Empty filetypes prevents auto-attachment
       }
 
       vim.lsp.config.cssls = {
