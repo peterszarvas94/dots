@@ -11,34 +11,16 @@ return {
       }
     end,
   },
-  {
-    'williamboman/mason-lspconfig.nvim',
-    dependencies = { 'williamboman/mason.nvim' },
-    config = function()
-      require('mason-lspconfig').setup {
-        ensure_installed = {
-          'ts_ls',
-          'cssls',
-          'gopls',
-          'bashls',
-          'lua_ls',
-          'jsonls',
-          'yamlls',
-          'tailwindcss',
-          'ruby_lsp',
-          'solargraph',
-        },
-        automatic_installation = false,
-      }
-    end,
-  },
+
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'williamboman/mason-lspconfig.nvim',
       'nvim-telescope/telescope.nvim',
     },
     config = function()
+      -- Enable LSP logging for debugging
+      -- vim.lsp.set_log_level('debug')
+
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
@@ -46,14 +28,10 @@ return {
         keymaps.setKeymapsOnAttach(bufnr)
       end
 
-      -- Global LSP configuration
-      vim.lsp.config('*', {
+      -- Configure language servers
+      vim.lsp.config['lua_ls'] = {
         capabilities = capabilities,
         on_attach = on_attach,
-      })
-
-      -- Lua Language Server
-      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             workspace = { checkThirdParty = false },
@@ -63,12 +41,11 @@ return {
             },
           },
         },
-      })
+      }
 
-      -- TypeScript Language Server
-      vim.lsp.config('ts_ls', {
+      vim.lsp.config['ts_ls'] = {
+        capabilities = capabilities,
         on_attach = function(client, bufnr)
-          -- Create OrganizeImports command for this buffer
           vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
             local params = {
               command = '_typescript.organizeImports',
@@ -81,10 +58,10 @@ return {
           keymaps.setTsKeymap(bufnr)
           on_attach(client, bufnr)
         end,
-      })
+      }
 
-      -- Go Language Server
-      vim.lsp.config('gopls', {
+      vim.lsp.config['gopls'] = {
+        capabilities = capabilities,
         on_attach = function(client, bufnr)
           vim.g.gofmt_command = 'goimport'
           vim.api.nvim_create_autocmd('BufWritePre', {
@@ -95,60 +72,53 @@ return {
           })
           on_attach(client, bufnr)
         end,
-      })
+      }
 
-      -- Ruby Language Server
-      vim.lsp.config('ruby_lsp', {
+      vim.lsp.config['ruby_lsp'] = {
+        cmd = { 'ruby-lsp' },
+        capabilities = capabilities,
+        on_attach = on_attach,
         init_options = {
-          linters = { 'rubocop' },
-          formatter = 'rubocop',
+          formatter = 'auto',
         },
-      })
+      }
 
-      -- ESLint (disabled by default)
-      vim.lsp.config('eslint', {
-        autostart = false,
-        filetypes = {},
-      })
-
-      -- Tailwind CSS
-      vim.lsp.config('tailwindcss', {
+      vim.lsp.config['tailwindcss'] = {
+        capabilities = capabilities,
+        on_attach = on_attach,
         init_options = {
           userLanguages = {
             templ = 'html',
             html = 'html',
           },
         },
-      })
+      }
 
-      -- HTMX Language Server
-      vim.lsp.config('htmx', {
+      vim.lsp.config['htmx'] = {
+        capabilities = capabilities,
+        on_attach = on_attach,
         filetypes = { 'html', 'templ' },
-      })
+      }
 
-      -- YAML Language Server
-      vim.lsp.config('yamlls', {})
+      -- Configure remaining servers with default config
+      for _, server in ipairs { 'yamlls', 'jsonls', 'cssls', 'bashls' } do
+        vim.lsp.config[server] = {
+          capabilities = capabilities,
+          on_attach = on_attach,
+        }
+      end
 
-      -- JSON Language Server
-      vim.lsp.config('jsonls', {})
-
-      -- CSS Language Server
-      vim.lsp.config('cssls', {})
-
-      -- Bash Language Server
-      vim.lsp.config('bashls', {})
-
-      -- Enable language servers
+      -- Enable all configured language servers
       vim.lsp.enable 'lua_ls'
       vim.lsp.enable 'ts_ls'
       vim.lsp.enable 'gopls'
       vim.lsp.enable 'ruby_lsp'
+      vim.lsp.enable 'tailwindcss'
+      vim.lsp.enable 'htmx'
       vim.lsp.enable 'yamlls'
       vim.lsp.enable 'jsonls'
       vim.lsp.enable 'cssls'
       vim.lsp.enable 'bashls'
-      vim.lsp.enable 'tailwindcss'
-      vim.lsp.enable 'htmx'
 
       -- LSP handlers configuration
       vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -183,9 +153,22 @@ return {
   },
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
+    dependencies = { 'williamboman/mason.nvim' },
     config = function()
       require('mason-tool-installer').setup {
         ensure_installed = {
+          -- Language servers (mason names)
+          'typescript-language-server', -- ts_ls
+          'css-lsp', -- cssls
+          'gopls', -- gopls
+          'bash-language-server', -- bashls
+          'lua-language-server', -- lua_ls
+          'json-lsp', -- jsonls
+          'yaml-language-server', -- yamlls
+          'tailwindcss-language-server', -- tailwindcss
+          'ruby-lsp', -- ruby_lsp
+          'htmx-lsp', -- htmx
+          -- Tools
           'prettierd', -- prettier formatter
           'stylua', -- lua formatter
           'rubocop', -- ruby formatter
