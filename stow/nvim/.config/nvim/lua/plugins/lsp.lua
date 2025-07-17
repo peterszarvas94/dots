@@ -25,6 +25,8 @@ return {
           'jsonls',
           'yamlls',
           'tailwindcss',
+          'ruby_lsp',
+          'solargraph',
         },
         automatic_installation = false,
       }
@@ -44,10 +46,14 @@ return {
         keymaps.setKeymapsOnAttach(bufnr)
       end
 
-      -- Server configurations
-      vim.lsp.config.lua_ls = {
+      -- Global LSP configuration
+      vim.lsp.config('*', {
         capabilities = capabilities,
         on_attach = on_attach,
+      })
+
+      -- Lua Language Server
+      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             workspace = { checkThirdParty = false },
@@ -57,10 +63,10 @@ return {
             },
           },
         },
-      }
+      })
 
-      vim.lsp.config.ts_ls = {
-        capabilities = capabilities,
+      -- TypeScript Language Server
+      vim.lsp.config('ts_ls', {
         on_attach = function(client, bufnr)
           -- Create OrganizeImports command for this buffer
           vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
@@ -69,17 +75,16 @@ return {
               arguments = { vim.api.nvim_buf_get_name(0) },
               title = 'Organize Imports',
             }
-            -- vim.lsp.buf.execute_command(params)
             client:exec_cmd(params)
           end, { desc = 'Organize Imports' })
 
           keymaps.setTsKeymap(bufnr)
           on_attach(client, bufnr)
         end,
-      }
+      })
 
-      vim.lsp.config.gopls = {
-        capabilities = capabilities,
+      -- Go Language Server
+      vim.lsp.config('gopls', {
         on_attach = function(client, bufnr)
           vim.g.gofmt_command = 'goimport'
           vim.api.nvim_create_autocmd('BufWritePre', {
@@ -90,65 +95,67 @@ return {
           })
           on_attach(client, bufnr)
         end,
-      }
+      })
 
-      vim.lsp.config.eslint = {
+      -- Ruby Language Server
+      vim.lsp.config('ruby_lsp', {
+        init_options = {
+          linters = { 'rubocop' },
+          formatter = 'rubocop',
+        },
+      })
+
+      -- ESLint (disabled by default)
+      vim.lsp.config('eslint', {
         autostart = false,
-        -- capabilities = (function()
-        --   local c = vim.lsp.protocol.make_client_capabilities()
-        --   return c
-        -- end)(),
-        capabilities = capabilities,
-        on_attach = on_attach,
-        filetypes = {}, -- Empty filetypes prevents auto-attachment
-      }
+        filetypes = {},
+      })
 
-      vim.lsp.config.cssls = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-      }
-
-      vim.lsp.config.tailwindcss = {
-        capabilities = capabilities,
-        on_attach = on_attach,
+      -- Tailwind CSS
+      vim.lsp.config('tailwindcss', {
         init_options = {
           userLanguages = {
             templ = 'html',
             html = 'html',
           },
         },
-      }
+      })
 
-      vim.lsp.config.htmx = {
-        capabilities = capabilities,
-        on_attach = on_attach,
+      -- HTMX Language Server
+      vim.lsp.config('htmx', {
         filetypes = { 'html', 'templ' },
-      }
+      })
 
-      vim.lsp.config.astro = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-      }
+      -- YAML Language Server
+      vim.lsp.config('yamlls', {})
 
-      vim.lsp.config.bashls = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-      }
+      -- JSON Language Server
+      vim.lsp.config('jsonls', {})
 
-      vim.lsp.config.jsonls = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-      }
+      -- CSS Language Server
+      vim.lsp.config('cssls', {})
 
-      vim.lsp.config.yamlls = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-      }
+      -- Bash Language Server
+      vim.lsp.config('bashls', {})
 
+      -- Enable language servers
+      vim.lsp.enable 'lua_ls'
+      vim.lsp.enable 'ts_ls'
+      vim.lsp.enable 'gopls'
+      vim.lsp.enable 'ruby_lsp'
+      vim.lsp.enable 'yamlls'
+      vim.lsp.enable 'jsonls'
+      vim.lsp.enable 'cssls'
+      vim.lsp.enable 'bashls'
+      vim.lsp.enable 'tailwindcss'
+      vim.lsp.enable 'htmx'
+
+      -- LSP handlers configuration
       vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
         border = 'rounded',
       })
 
+      -- Diagnostic configuration
       vim.diagnostic.config {
         signs = false,
         float = {
@@ -181,6 +188,8 @@ return {
         ensure_installed = {
           'prettierd', -- prettier formatter
           'stylua', -- lua formatter
+          'rubocop', -- ruby formatter
+          'erb-lint', -- erb linter
         },
       }
     end,

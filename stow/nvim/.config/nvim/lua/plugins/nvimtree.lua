@@ -12,10 +12,11 @@ return {
 
     require('nvim-tree').setup {
       view = {
-        width = {
-          min = 50,
-        },
-        relativenumber = true,
+        -- width = {
+        --   min = 50,
+        -- },
+        width = 50,
+        relativenumber = false,
         number = true,
         -- separator = '│',
         float = {
@@ -93,8 +94,8 @@ return {
       },
     }
 
-    api.events.subscribe(api.events.Event.FileCreated, function(file)
-      vim.cmd('edit ' .. file.fname)
-    end)
+    -- api.events.subscribe(api.events.Event.FileCreated, function(file)
+    --   vim.cmd('edit ' .. file.fname)
+    -- end)
   end,
 }

@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-git diff --name-only | fzf --prompt="Select a diff: " --preview 'git diff --color=always {}' --bind 'enter:execute(git diff --color=always {} | less -R)'

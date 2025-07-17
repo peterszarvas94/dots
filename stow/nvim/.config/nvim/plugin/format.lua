@@ -8,5 +8,8 @@ vim.api.nvim_create_user_command('Format', function(args)
       ['end'] = { args.line2, end_line:len() },
     }
   end
+
+  -- require('config.misc').lsp_indent()
+
   conform.format { async = false, lsp_fallback = true, range = range }
 end, { range = true })

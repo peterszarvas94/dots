@@ -31,6 +31,7 @@ vim.o.wrap = true
 vim.o.timeoutlen = 1000
 -- vim.o.completeopt = 'menuone,noselect'
 vim.o.winborder = 'rounded'
+-- vim.opt.winbar = '%f %h%w%m%r%= %l:%c %p%%'
 
 -- neovide
 if vim.g.neovide then

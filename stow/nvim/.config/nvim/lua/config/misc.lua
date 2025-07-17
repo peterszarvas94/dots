@@ -3,6 +3,20 @@ vim.filetype.add {
     templ = 'templ',
     astro = 'astro',
   },
+  pattern = {
+    ['.*%.html%.erb'] = 'eruby',
+    ['.*%.erb'] = 'eruby',
+  },
 }
 
 vim.cmd.colorscheme 'catppuccin'
+
+local M = {}
+
+M.lsp_indent = function()
+  local pos = vim.api.nvim_win_get_cursor(0)
+  vim.cmd 'normal! ggVG='
+  vim.api.nvim_win_set_cursor(0, pos)
+end
+
+return M

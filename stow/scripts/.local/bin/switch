@@ -1,0 +1,21 @@
+#!/bin/bash
+
+read -p "GEMS branch? (Y/n): " gems
+
+number=""
+isGems=false
+
+read -p "Enter prefix: " prefix
+
+if [[ "$gems" == "y" || "$gems" == "Y" || "$gems" == "" ]]; then
+    isGems=true
+    read -p "Enter number: " number
+fi
+
+read -p "Enter branch: " branch
+
+if [[ "$isGems" == true ]]; then
+    git switch -c "${prefix}/GEMSU-${number}-${branch}"
+else
+    git switch -c "${prefix}/${branch}"
+fi

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# Check if a port number is provided
-if [ "$#" -eq 1 ]; then
-    PORT=$1
-    sudo lsof -i -P -n | grep LISTEN | grep ":$PORT "
-else
-    sudo lsof -i -P -n | grep LISTEN
-fi

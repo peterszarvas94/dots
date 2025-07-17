@@ -180,6 +180,9 @@ deploy_mac_packages() {
     # macOS-specific zsh config (includes .zprofile)
     safe_remove "$HOME/.zprofile"
     safe_stow "zsh-mac"
+
+    safe_remove "$HOME/ruby"
+    safe_stow "ruby"
 }
 
 # Deploy platform-specific packages for Arch Linux

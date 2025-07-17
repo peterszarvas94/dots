@@ -22,7 +22,9 @@ return {
         'markdown',
         'jsdoc',
         'bash',
+        'ruby',
       },
+
       -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
       modules = { 'go', 'lua', 'tsx', 'typescript' },
       auto_install = true,

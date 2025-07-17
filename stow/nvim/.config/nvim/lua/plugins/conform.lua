@@ -12,6 +12,9 @@ return { -- Autoformat
         if not vim.g.format_on_save then
           return
         end
+
+        -- require('config.misc').lsp_indent()
+
         return {
           lsp_format = 'fallback',
           timeout_ms = 500,
@@ -28,10 +31,12 @@ return { -- Autoformat
         html = { 'prettierd' },
         templ = { 'templ' },
         css = { 'prettierd' },
-        yml = { 'prettierd' },
+        yml = { 'yamlfmt' },
         go = { 'goimports' },
         c = { 'clang-format' },
         xml = { 'xmlformatter' },
+        ruby = { 'rubocop' }, -- Or choose "rufo" if preferred
+        eruby = { 'erb_format', 'erb_lint' }, -- Use 'eruby' for .erb files
       },
     }
 

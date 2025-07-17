@@ -12,7 +12,7 @@ export PATH=$GOPATH/bin:$PATH
 export PATH=$PATH:/opt/homebrew/bin
 
 # environment
-# export BROWSER='arc'
+export BROWSER='brave-browser'
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'
@@ -26,4 +26,11 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # turso
 export PATH="~/.turso:$PATH"
 
+# zdg
 export XDG_CONFIG_HOME="$HOME/.config"
+
+# ruby
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export GEM_HOME="$HOME/.gem"
+export GEM_PATH="$GEM_HOME"
+export PATH="$GEM_HOME/bin:$PATH"

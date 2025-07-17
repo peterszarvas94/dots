@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Enhanced fc command that opens current command or last history entry in nvim
+# This script is meant to be called from a zsh widget
+
+# Create temporary file for editing
+temp_file=$(mktemp /tmp/fc-nvim.XXXXXX)
+
+# If we have a current command (passed as argument), use it
+# Otherwise get the last command from history
+if [[ -n "$1" ]]; then
+    echo "$1" > "$temp_file"
+else
+    # Get the last command from history
+    fc -ln -1 > "$temp_file" 2>/dev/null || echo "" > "$temp_file"
+fi
+
+# Open in nvim
+nvim "$temp_file"
+
+# Output the edited command (the zsh widget will handle execution)
+if [[ -s "$temp_file" ]]; then
+    cat "$temp_file"
+fi
+
+# Clean up
+rm -f "$temp_file"

@@ -1,34 +1,5 @@
-# neovimalias
+# neovim
 alias v="nvim"
-
-# tmux
-alias ts="tmux-sessionizer"
-alias ta="tmux-attach"
-alias tk="tmux kill-server"
-alias tn="tmux-new"
-
-get_tmux_start_path() {
-    session_start_path=$(tmux display-message -p -t $(tmux display-message -p '#S'):0.0 "#{pane_start_path}")
-    if [ -z "$session_start_path" ]; then
-        session_start_path=$(tmux display-message -p -t $(tmux display-message -p '#S'):0.0 "#{pane_current_path}")
-    fi
-    echo "$session_start_path"
-}
-
-# cd tmux start path
-ct() {
-    cd "$(get_tmux_start_path)"
-}
-
-# nvim tmux start path
-vt() {
-    nvim "$(get_tmux_start_path)"
-}
-
-vd() {
-    cd "$(get_tmux_start_path)" && v
-}
-
 
 # gems backend 
 alias bdown="cd ~/work/gems-backend-platform && docker compose down"
@@ -50,44 +21,10 @@ alias fpre="cd ~/work/gems-frontend-platform/packages/app-gems && npm run previe
 alias genapi="cd ~/work/gems-frontend-platform && npm run generate:api"
 alias genobject="cd ~/work/gems-frontend-platform && npm run generate:object"
 
-# lazygit
-alias lg="lazygit"
-alias td="tmux-dots"
-alias cl="clear"
-alias gob="gobang"
-
-# fzf
-alias fc="fzf-checkout"
-alias fd="fzf-diff"
-alias fs="fzf-stash"
-alias ff='nvim "$(find . -type f | fzf)"'
-
-alias la="ls -la"
-
-alias ke="killall eslint_d"
-
-alias kp="killport"
-
-# ftp
+# misc
+alias openfile='nvim "$(find . -type f | fzf)"'
 alias ftp="termscp"
-
-# zed
 alias zed="open -a /Applications/Zed.app -n"
 
-# git
-alias gpo="push-origin"
-alias gcm="commit"
-alias gst="git status"
-alias gd="git diff"
-alias gr="git rebase"
-alias gpf="git push --force-with-lease"
-alias gfpa="git fetch --prune --all"
-alias gsc="git switch -c"
-alias gp="git pull"
-alias gs="git-switch"
-alias gca="git commit --amend"
-alias glg="git log --decorate --graph --oneline"
-
-# nvim
-alias cn="cd ~/.config/nvim"
-alias nn="tmux-nvim"
+# tmux
+alias ctmux="cd $(get-tmux-start)"

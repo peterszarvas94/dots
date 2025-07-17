@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+function fuzzy_find_branch() {
+    branches="$1"
+    prompt="$2"
+    branches=$(echo "$branches" | sed 's/^[ *]*//')
+    selected_branch=$(echo "$branches" | fzf --prompt="$prompt")
+    if [ -n "$selected_branch" ]; then
+        git checkout "$selected_branch"
+    else
+        echo "No branch selected."
+    fi
+}
+
+case "$1" in
+    -r|--remote)
+        remote_branches=$(git branch --remote)
+        fuzzy_find_branch "$remote_branches" "Select a remote branch: "
+        ;;
+    -a|--all)
+        all_branches=$(git branch --all | sed 's/remotes\///')
+        fuzzy_find_branch "$all_branches" "Select a branch (local or remote): "
+        ;;
+    *)
+        local_branches=$(git branch)
+        fuzzy_find_branch "$local_branches" "Select a local branch: "
+        ;;
+esac

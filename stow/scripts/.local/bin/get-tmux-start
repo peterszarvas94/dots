@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Get the starting directory of the current tmux session
+
+# Check if we're in a tmux session
+if [[ -z "$TMUX" ]]; then
+    echo "Not in a tmux session"
+    exit 1
+fi
+
+# Get current session name
+session_name=$(tmux display-message -p '#S')
+
+# Get the session's original start directory using session_path
+# This is the directory where the session was originally created
+start_dir=$(tmux display-message -t "$session_name" -p "#{session_path}")
+
+# If session_path is empty, try other methods
+if [[ -z "$start_dir" || "$start_dir" == "" ]]; then
+    # Try getting from session options
+    start_dir=$(tmux show-options -t "$session_name" start_directory 2>/dev/null | cut -d' ' -f2-)
+fi
+
+# If still empty, get from the first window's start path (not current path)
+if [[ -z "$start_dir" || "$start_dir" == "" ]]; then
+    # Get the original start directory from when the first window was created
+    start_dir=$(tmux list-windows -t "$session_name" -f "#{==:#{window_index},0}" -F "#{window_start_path}" | head -1)
+fi
+
+echo "$start_dir"
