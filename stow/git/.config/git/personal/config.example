@@ -1,0 +1,18 @@
+[user]
+  email = contact@peterszarvas.hu
+  name = "Peter Szarvas"
+  signingkey = xxx
+
+[commit]
+  gpgSign = true
+
+[tag]
+  gpgSign = true
+
+[gpg]
+  # program = gpg # for gpg
+  format = ssh # for 1pw
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" # for 1pw
+  allowedSignersFile = /Users/szarvaspeter/.config/git/allowed_signers # for 1pw

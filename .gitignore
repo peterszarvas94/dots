@@ -3,5 +3,6 @@ stow/ssh/.ssh/config
 stow/zsh/.zsh/config/env.zsh
 stow/config/.config/karabiner/automatic_backups/
 stow/config/.config/aerc/
-stow/git/.config/git/personal/sign
+stow/git/.config/git/personal/config
+stow/git/.config/git/work/config
 AGENTS.md
