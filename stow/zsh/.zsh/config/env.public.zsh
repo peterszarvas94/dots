@@ -12,7 +12,8 @@ export PATH=$GOPATH/bin:$PATH
 export PATH=$PATH:/opt/homebrew/bin
 
 # environment
-export BROWSER='brave-browser'
+alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
+export BROWSER='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'

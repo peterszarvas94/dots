@@ -167,6 +167,12 @@ deploy_common_packages() {
     safe_remove "$HOME/.config/.tmux.conf"
     safe_remove "$HOME/.config/.tmux"
     safe_stow "tmux"
+
+    safe_remove "$HOME/ruby"
+    safe_stow "ruby"
+
+    safe_remove "$HOME/lazygit"
+    safe_stow "lazygit"
 }
 
 # Deploy platform-specific packages for macOS
@@ -180,9 +186,6 @@ deploy_mac_packages() {
     # macOS-specific zsh config (includes .zprofile)
     safe_remove "$HOME/.zprofile"
     safe_stow "zsh-mac"
-
-    safe_remove "$HOME/ruby"
-    safe_stow "ruby"
 }
 
 # Deploy platform-specific packages for Arch Linux

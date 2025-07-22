@@ -15,7 +15,7 @@ return {
         -- width = {
         --   min = 50,
         -- },
-        width = 50,
+        width = 40,
         relativenumber = false,
         number = true,
         -- separator = '│',
