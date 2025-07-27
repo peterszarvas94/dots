@@ -1,7 +1,7 @@
 [user]
   email = contact@peterszarvas.hu
   name = "Peter Szarvas"
-  signingkey = xxx
+  signingkey = ssh-ed25519 xxx # ssh public key
 
 [commit]
   gpgSign = true
@@ -10,9 +10,7 @@
   gpgSign = true
 
 [gpg]
-  # program = gpg # for gpg
-  format = ssh # for 1pw
+  format = ssh
 
 [gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" # for 1pw
-  allowedSignersFile = /Users/szarvaspeter/.config/git/allowed_signers # for 1pw
+  program = ssh-keygen
