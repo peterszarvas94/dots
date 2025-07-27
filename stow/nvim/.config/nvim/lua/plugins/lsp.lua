@@ -108,6 +108,7 @@ return {
       vim.lsp.config['ruby_lsp'] = {
         capabilities = capabilities,
         on_attach = on_attach,
+        filetypes = { 'ruby', 'eruby' },
         init_options = {
           formatter = 'auto',
         },

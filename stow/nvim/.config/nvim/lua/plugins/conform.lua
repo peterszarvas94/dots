@@ -20,6 +20,12 @@ return { -- Autoformat
           timeout_ms = 500,
         }
       end,
+
+      formatters = {
+        gotmplfmt = {
+          command = 'gotmplfmt',
+        },
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         typescript = { 'prettierd' },
@@ -29,6 +35,7 @@ return { -- Autoformat
         json = { 'prettierd' },
         markdown = { 'prettierd' },
         html = { 'prettierd' },
+        template = { 'gotmplfmt' },
         templ = { 'templ' },
         css = { 'prettierd' },
         yml = { 'yamlfmt' },
