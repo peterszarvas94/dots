@@ -4,6 +4,12 @@ vim.api.nvim_create_user_command('CopyFileName', function()
   vim.notify('Copied filename: ' .. filename)
 end, {})
 
+vim.api.nvim_create_user_command('CopyFileNameNoExt', function()
+  local filename = vim.fn.expand '%:t:r'
+  vim.fn.setreg('+', filename)
+  vim.notify('Copied filename without extension: ' .. filename)
+end, {})
+
 vim.api.nvim_create_user_command('CopyFilePath', function()
   local file_dir = vim.fn.expand '%:p:h'
 

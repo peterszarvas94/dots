@@ -6,17 +6,22 @@ NC='\033[0m'
 
 # Show usage
 show_usage() {
-    echo "Usage: $0 [-s|--staged]"
+    echo "Usage: $0 [-s|--staged] [-f|--file FILE] [-h|--help]"
     echo "Options:"
     echo "  -s, --staged    Check only staged files"
+    echo "  -f, --file      Check specific file"
+    echo "  -h, --help      Show this help message"
     exit 1
 }
 
 # Parse arguments
 CHECK_STAGED=false
+SPECIFIC_FILE=""
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -s|--staged) CHECK_STAGED=true ;;
+        -f|--file) SPECIFIC_FILE="$2"; shift ;;
+        -h|--help) show_usage ;;
         *) show_usage ;;
     esac
     shift
@@ -34,7 +39,9 @@ if [ ! -f ".eslintrc.cjs" ]; then
 fi
 
 # Get files to check
-if [ "$CHECK_STAGED" = true ]; then
+if [ -n "$SPECIFIC_FILE" ]; then
+    files="$SPECIFIC_FILE"
+elif [ "$CHECK_STAGED" = true ]; then
     files=$(git diff --cached --name-only)
 else
     files=$(git diff --name-only)

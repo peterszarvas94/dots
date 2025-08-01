@@ -1,5 +1,8 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+vim.opt.belloff = ''
+
 vim.o.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
 -- vim.o.guicursor = 'n-v-c:block'
 vim.o.hlsearch = false

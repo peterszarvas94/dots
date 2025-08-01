@@ -36,6 +36,9 @@ local keymaps = require 'config.keymaps'
 --
 -- astro (Astro Language Server):
 --   npm install -g @astrojs/language-server
+--
+-- eslint (ESLint Language Server):
+--   npm install -g vscode-langservers-extracted
 
 return {
   {
@@ -89,6 +92,24 @@ return {
         end,
       }
 
+      vim.lsp.config['ts_go_ls'] = {
+        capabilities = capabilities,
+        cmd = { 'tsgo', '--lsp', '--stdio' },
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'javascript.jsx',
+          'typescript',
+          'typescriptreact',
+          'typescript.tsx',
+        },
+        root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
+        on_attach = function(client, bufnr)
+          keymaps.setTsKeymap(bufnr)
+          on_attach(client, bufnr)
+        end,
+      }
+
       -- Go Language Server - extend with auto-format on save
       vim.lsp.config['gopls'] = {
         capabilities = capabilities,
@@ -133,6 +154,57 @@ return {
         filetypes = { 'html', 'templ' },
       }
 
+      -- ESLint Language Server - custom configuration
+      vim.lsp.config['eslint'] = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { 'vscode-eslint-language-server', '--stdio' },
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'javascript.jsx',
+          'typescript',
+          'typescriptreact',
+          'typescript.tsx',
+          'vue',
+          'svelte',
+          'astro',
+        },
+        root_markers = { '.eslintrc', '.eslintrc.js', '.eslintrc.json', 'eslint.config.js', 'package.json' },
+        settings = {
+          -- codeAction = {
+          --   disableRuleComment = {
+          --     enable = true,
+          --     location = "separateLine"
+          --   },
+          --   showDocumentation = {
+          --     enable = true
+          --   }
+          -- },
+          -- codeActionOnSave = {
+          --   enable = false,
+          --   mode = "all"
+          -- },
+          -- experimental = {
+          --   useFlatConfig = false
+          -- },
+          -- format = true,
+          -- nodePath = "",
+          -- onIgnoredFiles = "off",
+          -- problems = {
+          --   shortenToSingleLine = false
+          -- },
+          -- quiet = false,
+          -- rulesCustomizations = {},
+          -- run = "onType",
+          -- useESLintClass = false,
+          -- validate = "on",
+          -- workingDirectory = {
+          --   mode = "location"
+          -- }
+        },
+      }
+
       -- Servers using default built-in configurations (minimal extension)
       for _, server in ipairs { 'yamlls', 'jsonls', 'cssls', 'bashls', 'astro' } do
         vim.lsp.config[server] = {
@@ -144,6 +216,7 @@ return {
       -- Enable all configured language servers
       vim.lsp.enable 'lua_ls'
       vim.lsp.enable 'ts_ls'
+      -- vim.lsp.enable 'ts_go_ls'
       vim.lsp.enable 'gopls'
       vim.lsp.enable 'ruby_lsp'
       vim.lsp.enable 'tailwindcss'
@@ -153,6 +226,7 @@ return {
       vim.lsp.enable 'cssls'
       vim.lsp.enable 'bashls'
       vim.lsp.enable 'astro'
+      vim.lsp.enable 'eslint'
 
       -- LSP handlers configuration
       vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {

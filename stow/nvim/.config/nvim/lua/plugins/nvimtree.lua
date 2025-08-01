@@ -12,10 +12,12 @@ return {
 
     require('nvim-tree').setup {
       view = {
-        -- width = {
-        --   min = 50,
-        -- },
-        width = 40,
+        width = {
+          min = 50,
+        },
+        -- width = 70,
+        -- width = 50,
+        side = 'right',
         relativenumber = false,
         number = true,
         -- separator = '│',
@@ -47,10 +49,15 @@ return {
         indent_markers = {
           enable = true,
           icons = {
-            corner = '└',
-            edge = '│',
-            item = '├',
-            bottom = '─',
+            -- corner = '└',
+            -- edge = '│',
+            -- item = '├',
+            -- bottom = '─',
+            -- none = ' ',
+            corner = ' ',
+            edge = ' ',
+            item = ' ',
+            bottom = ' ',
             none = ' ',
           },
         },
