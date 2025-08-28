@@ -2,24 +2,24 @@
 alias v="nvim"
 
 # gems backend 
-alias bdown="cd ~/work/gems-backend-platform && docker compose down"
-alias bup="cd ~/work/gems-backend-platform && docker compose up -d"
+alias bdown="docker compose --project-directory ~/work/gems-backend-platform down "
+alias bup="docker compose --project-directory ~/work/gems-backend-platform up -d"
 alias bdok="bdown && bup"
-alias bbuild="cd ~/work/gems-backend-platform && npm run build"
-alias bgen="cd ~/work/gems-backend-platform/packages/database && npm run generate:mig"
-alias bmig="cd ~/work/gems-backend-platform/packages/database && npm run migrate"
-alias binit="cd ~/work/gems-backend-platform/packages/database && npm run init-development"
-alias bstart="cd ~/work/gems-backend-platform/packages/app && npm run start"
-alias bdev="cd ~/work/gems-backend-platform/packages/app && npm run start:dev"
-alias bdebug="cd ~/work/gems-backend-platform/packages/app && npm run start:debug"
+alias bbuild="npm run build -C ~/work/gems-backend-platform "
+alias bgen="npm run generate:mig -C ~/work/gems-backend-platform/packages/database"
+alias bmig="npm run migrate -C ~/work/gems-backend-platform/packages/database"
+alias binit="npm run init-development -C ~/work/gems-backend-platform/packages/database"
+alias bstart="npm run start -C ~/work/gems-backend-platform/packages/app"
+alias bdev="npm run start:dev -C ~/work/gems-backend-platform/packages/app"
+alias bdebug="npm run start:debug -C ~/work/gems-backend-platform/packages/app"
 alias ball="bbuild && binit && bstart"
 
 # gems frontend
-alias fbuild="cd ~/work/gems-frontend-platform && npm run build"
-alias fdev="cd ~/work/gems-frontend-platform/packages/app-gems && npm run dev"
-alias fpre="cd ~/work/gems-frontend-platform/packages/app-gems && npm run preview"
-alias genapi="cd ~/work/gems-frontend-platform && npm run generate:api"
-alias genobject="cd ~/work/gems-frontend-platform && npm run generate:object"
+alias fbuild="npm run build -C ~/work/gems-frontend-platform"
+alias fdev="npm run dev -C ~/work/gems-frontend-platform/packages/app-gems"
+alias fpre="npm run preview -C ~/work/gems-frontend-platform/packages/app-gems"
+alias genapi="npm run generate:api -C ~/work/gems-frontend-platform"
+alias genobject="npm run generate:object -C ~/work/gems-frontend-platform"
 
 # misc
 alias openfile='nvim "$(find . -type f | fzf)"'

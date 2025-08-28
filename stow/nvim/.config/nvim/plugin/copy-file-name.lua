@@ -32,3 +32,30 @@ vim.api.nvim_create_user_command('CopyFilePath', function()
   vim.fn.setreg('+', filepath)
   vim.notify('Copied file path: ' .. filepath)
 end, {})
+
+vim.api.nvim_create_user_command('CopyFolderName', function()
+  local folder_name = vim.fn.expand '%:p:h:t'
+  vim.fn.setreg('+', folder_name)
+  vim.notify('Copied folder name: ' .. folder_name)
+end, {})
+
+vim.api.nvim_create_user_command('CopyFolderPath', function()
+  local file_dir = vim.fn.expand '%:p:h'
+
+  local git_root_cmd = 'git -C ' .. vim.fn.shellescape(file_dir) .. ' rev-parse --show-toplevel 2>/dev/null'
+  local git_root = vim.fn.trim(vim.fn.system(git_root_cmd))
+
+  local folder_path
+  if git_root ~= '' then
+    if vim.startswith(file_dir, git_root) then
+      folder_path = file_dir:sub(#git_root + 2)
+    else
+      folder_path = vim.fn.expand '%:h'
+    end
+  else
+    folder_path = vim.fn.expand '%:h'
+  end
+
+  vim.fn.setreg('+', folder_path)
+  vim.notify('Copied folder path: ' .. folder_path)
+end, {})

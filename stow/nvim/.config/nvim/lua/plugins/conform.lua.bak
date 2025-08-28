@@ -24,9 +24,7 @@ return { -- Autoformat
       formatters = {
         gotmplfmt = {
           command = 'gotmplfmt',
-          args = { '-w', '80' },
         },
-
         rubocop = {
           command = 'rubocop',
           args = { '--auto-correct', '--format', 'quiet', '--stderr', '--stdin', '$FILENAME' },
@@ -42,7 +40,7 @@ return { -- Autoformat
         json = { 'prettierd' },
         markdown = { 'prettierd' },
         html = { 'prettierd' },
-
+        template = { 'gotmplfmt' },
         templ = { 'templ' },
         css = { 'prettierd' },
         yml = { 'yamlfmt' },
@@ -51,7 +49,6 @@ return { -- Autoformat
         xml = { 'xmlformatter' },
         ruby = { 'rubocop' },
         eruby = { 'erb-formatter' },
-        gohtml = { 'gotmplfmt' },
       },
     }
 

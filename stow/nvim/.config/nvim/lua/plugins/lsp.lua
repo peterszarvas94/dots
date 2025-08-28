@@ -127,11 +127,12 @@ return {
 
       -- Ruby Language Server - extend with formatter config
       vim.lsp.config['ruby_lsp'] = {
+        cmd = { 'ruby-lsp' },
         capabilities = capabilities,
         on_attach = on_attach,
-        filetypes = { 'ruby', 'eruby' },
+        filetypes = { 'ruby', 'eruby', 'rake' },
         init_options = {
-          formatter = 'auto',
+          formatter = 'rubocop',
         },
       }
 
@@ -159,50 +160,9 @@ return {
         capabilities = capabilities,
         on_attach = on_attach,
         cmd = { 'vscode-eslint-language-server', '--stdio' },
-        filetypes = {
-          'javascript',
-          'javascriptreact',
-          'javascript.jsx',
-          'typescript',
-          'typescriptreact',
-          'typescript.tsx',
-          'vue',
-          'svelte',
-          'astro',
-        },
+        filetypes = {},
         root_markers = { '.eslintrc', '.eslintrc.js', '.eslintrc.json', 'eslint.config.js', 'package.json' },
-        settings = {
-          -- codeAction = {
-          --   disableRuleComment = {
-          --     enable = true,
-          --     location = "separateLine"
-          --   },
-          --   showDocumentation = {
-          --     enable = true
-          --   }
-          -- },
-          -- codeActionOnSave = {
-          --   enable = false,
-          --   mode = "all"
-          -- },
-          -- experimental = {
-          --   useFlatConfig = false
-          -- },
-          -- format = true,
-          -- nodePath = "",
-          -- onIgnoredFiles = "off",
-          -- problems = {
-          --   shortenToSingleLine = false
-          -- },
-          -- quiet = false,
-          -- rulesCustomizations = {},
-          -- run = "onType",
-          -- useESLintClass = false,
-          -- validate = "on",
-          -- workingDirectory = {
-          --   mode = "location"
-          -- }
-        },
+        settings = {},
       }
 
       -- Servers using default built-in configurations (minimal extension)

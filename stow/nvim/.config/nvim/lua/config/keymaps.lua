@@ -101,7 +101,7 @@ vim.keymap.set('n', '<C-[>', ':cprevious<CR>', { desc = 'Previous item in quickf
 vim.keymap.set('n', '<C-]>', ':cnext<CR>', { desc = 'Next item in quickfix list', silent = true })
 
 -- treesitter context
-vim.keymap.set('n', 'c', ':TSGoToContext<CR>', { desc = 'Previous to Context', silent = true })
+vim.keymap.set('n', '<leader>tc', ':TSGoToContext<CR>', { desc = 'Previous to Context', silent = true })
 
 -- git
 vim.keymap.set('n', '<leader>gg', ':Git<CR>', { desc = 'Fugitive', silent = true })
@@ -115,9 +115,8 @@ vim.keymap.set({ 'n', 'v' }, '<leader>gt', ':GpChatToggle<CR>', { desc = 'GpChat
 vim.keymap.set({ 'n', 'v' }, '<leader>gf', ':GpChatFinder<CR>', { desc = 'GpChat Finder', silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>gx', ':GpChatDelete<CR>', { desc = 'GpChat Delete', silent = true })
 
--- Obsidian
-vim.keymap.set('n', '<leader>oo', ':ObsidianOpen<CR>', { desc = 'Obsidian Open', silent = true })
-vim.keymap.set('n', '<leader>ot', ':ObsidianTemplate<CR>', { desc = 'Obsidian Template', silent = true })
+-- excalidraw
+vim.keymap.set('n', '<leader>oe', ':ExcalidrawOpen<CR>', { desc = 'Obsidian Open', silent = true })
 
 -- split (M = alt or option, D = CMD on mac)
 vim.keymap.set('n', '<M-.>', '<C-w>5>', { desc = 'Resize split +5 vertically', silent = true })

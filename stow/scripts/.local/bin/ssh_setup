@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# SSH Security Setup Script
+# Usage: ./ssh_setup.sh <username> <server_ip> <ssh_key.pub>
+
+set -e
+
+USERNAME=$1
+SERVER_IP=$2
+SSH_KEY=$3
+
+if [ -z "$USERNAME" ] || [ -z "$SERVER_IP" ] || [ -z "$SSH_KEY" ]; then
+    echo "Usage: ssh_setup <username> <server_ip> <ssh_key.pub>"
+    echo "Example: ssh_setup peti 192.168.1.100 ~/.ssh/my_key.pub"
+    exit 1
+fi
+
+# Validate that the key file ends with .pub
+if [[ ! "$SSH_KEY" == *.pub ]]; then
+    echo "Error: SSH key must be a .pub file"
+    echo "Example: ~/.ssh/my_key.pub"
+    exit 1
+fi
+
+# Check if the key file exists
+if [ ! -f "$SSH_KEY" ]; then
+    echo "Error: SSH key file not found: $SSH_KEY"
+    exit 1
+fi
+
+echo "Setting up SSH security for $USERNAME@$SERVER_IP"
+
+# Read the SSH key content
+SSH_KEY_CONTENT="$(cat $SSH_KEY)"
+
+# One-liner that runs all server setup commands
+ssh root@$SERVER_IP "
+set -e
+echo '=== Installing Docker ==='
+apt update && apt install -y docker.io
+systemctl enable --now docker
+
+echo '=== Creating user $USERNAME ==='
+adduser --disabled-password --gecos '' $USERNAME || true
+usermod -aG sudo,docker $USERNAME
+
+echo '=== Setting up SSH for $USERNAME ==='
+sudo -u $USERNAME mkdir -p /home/$USERNAME/.ssh
+sudo -u $USERNAME chmod 700 /home/$USERNAME/.ssh
+sudo -u $USERNAME touch /home/$USERNAME/.ssh/authorized_keys
+sudo -u $USERNAME chmod 600 /home/$USERNAME/.ssh/authorized_keys
+
+echo '=== Adding SSH key to user ==='
+echo '$SSH_KEY_CONTENT' >> /home/$USERNAME/.ssh/authorized_keys
+chown $USERNAME:$USERNAME /home/$USERNAME/.ssh/authorized_keys
+
+echo '=== Configuring SSH security ==='
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+sed -i 's/^#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+sed -i 's/^#*PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i 's/^#*ChallengeResponseAuthentication.*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
+sed -i 's/^#*UsePAM.*/UsePAM no/' /etc/ssh/sshd_config
+
+echo '=== Restarting services ==='
+systemctl restart ssh
+systemctl restart docker
+
+echo '=== Setup complete ==='
+"
+
+echo "Testing connection..."
+ssh -o ConnectTimeout=5 $USERNAME@$SERVER_IP "echo 'SSH connection successful!'"
+
+echo "Setup complete! You can now connect with: ssh $USERNAME@$SERVER_IP"
