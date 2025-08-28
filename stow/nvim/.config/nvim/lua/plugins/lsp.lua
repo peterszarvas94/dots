@@ -130,9 +130,15 @@ return {
         cmd = { 'ruby-lsp' },
         capabilities = capabilities,
         on_attach = on_attach,
-        filetypes = { 'ruby', 'eruby', 'rake' },
+        filetypes = { 'ruby', 'erb', 'eruby', 'rake', 'rakefile' },
+        root_markers = { 'Gemfile', '.git' },
         init_options = {
-          formatter = 'rubocop',
+          formatter = 'auto',
+          linters = { 'rubocop' },
+          enabledFeatures = {
+            formatting = false,
+            diagnostics = true,
+          },
         },
       }
 

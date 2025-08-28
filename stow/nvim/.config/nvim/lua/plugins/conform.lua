@@ -13,7 +13,10 @@ return { -- Autoformat
           return
         end
 
-        -- require('config.misc').lsp_indent()
+        -- rubocop does not auto indent
+        if vim.bo.filetype == 'ruby' then
+          require('config.misc').lsp_indent()
+        end
 
         return {
           lsp_format = 'fallback',
@@ -28,9 +31,7 @@ return { -- Autoformat
         },
 
         rubocop = {
-          command = 'rubocop',
-          args = { '--auto-correct', '--format', 'quiet', '--stderr', '--stdin', '$FILENAME' },
-          stdin = true,
+          args = { '-a', '-f', 'quiet', '--stderr', '--stdin', '$FILENAME' },
         },
       },
       formatters_by_ft = {
@@ -42,7 +43,6 @@ return { -- Autoformat
         json = { 'prettierd' },
         markdown = { 'prettierd' },
         html = { 'prettierd' },
-
         templ = { 'templ' },
         css = { 'prettierd' },
         yml = { 'yamlfmt' },
@@ -50,7 +50,12 @@ return { -- Autoformat
         c = { 'clang-format' },
         xml = { 'xmlformatter' },
         ruby = { 'rubocop' },
-        eruby = { 'erb-formatter' },
+        eruby = function(bufnr)
+          if vim.api.nvim_buf_get_name(bufnr):match('%.html%.erb$') then
+            return { 'erb_format' }
+          end
+          return {}
+        end,
         gohtml = { 'gotmplfmt' },
       },
     }
