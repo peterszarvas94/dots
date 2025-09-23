@@ -149,19 +149,16 @@ deploy_dotfiles() {
     
     log_info "Starting dotfiles deployment for platform: $platform"
     
-    # Deploy common packages first
-    deploy_common_packages
     
     # Deploy platform-specific packages
     case "$platform" in
         mac)
+            deploy_common_packages
             deploy_mac_packages
             ;;
         arch)
+            deploy_common_packages
             deploy_arch_packages
-            ;;
-        ubuntu)
-            deploy_ubuntu_packages
             ;;
         *)
             log_error "Unknown platform: $platform"
