@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Mac setup is working
+# Arch setup should be adjusted to work with omarchy
+# There is an old file ./_setup_arch.sh which serves a similar purpose, but should be removed in the future
+
 set -euo pipefail
 
 # Configuration
@@ -8,9 +12,7 @@ readonly STOW_DIR="$SCRIPT_DIR/stow"
 readonly TARGET_DIR="$HOME"
 
 # Script options
-FORCE_MODE=false
 BACKUP_MODE=false
-DRY_RUN=false
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -44,18 +46,13 @@ Usage: $0 [OPTION]
 Deploy dotfiles using GNU Stow for the specified platform.
 
 Options:
-  --mac           Deploy dotfiles for macOS
-  --arch          Deploy dotfiles for Arch Linux
-  --ubuntu        Deploy dotfiles for Ubuntu Linux
-  --force        Skip confirmation prompts and overwrite existing configs
+  --os=PLATFORM   Deploy dotfiles for specified platform (mac, arch)
   --backup       Backup existing configs before overwriting
-  --dry-run      Show what would be done without making changes
   -h, --help     Show this help message
 
 Examples:
-  $0 --mac              # Deploy for macOS
-  $0 --arch --backup    # Deploy for Arch Linux with backup
-  $0 --ubuntu --dry-run # Preview Ubuntu deployment
+  $0 --os=mac              # Deploy for macOS
+  $0 --os=arch --backup    # Deploy for Arch Linux with backup
 EOF
 }
 
@@ -74,105 +71,54 @@ backup_config() {
     fi
 }
 
-# Safe remove function with logging and confirmation
-safe_remove() {
-    local path="$1"
+# Deploy a package by removing existing config and stowing
+deploy_package() {
+    local package_name="$1"
+    shift
+    local config_paths=("$@")
     
-    if [[ ! -e "$path" ]]; then
-        return 0
-    fi
-    
-    if [[ "$DRY_RUN" == true ]]; then
-        log_info "[DRY RUN] Would remove: $path"
-        return 0
-    fi
-    
-    if [[ "$BACKUP_MODE" == true ]]; then
-        backup_config "$path"
-    fi
-    
-    if [[ "$FORCE_MODE" == false ]]; then
-        echo -n "Remove existing config at $path? [y/N] "
-        read -r response
-        case "$response" in
-            [yY]|[yY][eE][sS])
-                ;;
-            *)
-                log_warning "Skipping removal of: $path"
-                return 1
-                ;;
-        esac
-    fi
-    
-    log_info "Removing existing: $path"
-    rm -rf "$path"
-}
-
-# Safe stow function with error handling
-safe_stow() {
-    local package="$1"
-    local package_path="$STOW_DIR/$package"
-    
-    if [[ ! -d "$package_path" ]]; then
-        log_warning "Package '$package' not found in $STOW_DIR"
-        return 1
-    fi
-    
-    if [[ "$DRY_RUN" == true ]]; then
-        log_info "[DRY RUN] Would stow package: $package"
-        stow --dir="$STOW_DIR" --target="$TARGET_DIR" --no "$package" 2>/dev/null || true
-        return 0
-    fi
-    
-    log_info "Stowing package: $package"
-    if stow --dir="$STOW_DIR" --target="$TARGET_DIR" "$package" 2>/dev/null; then
-        log_success "Successfully stowed: $package"
-    else
-        log_error "Failed to stow: $package"
-        return 1
-    fi
+    for path in "${config_paths[@]}"; do
+        if [[ -f "$path" ]]; then
+            log_info "Removing $path"
+            rm -f "$path"
+        elif [[ -d "$path" ]]; then
+            log_info "Removing $path/"
+            rm -rf "$path"
+        else
+            log_info "Skipping removing $path (not found)"
+        fi
+    done
+    log_info "Linking $package_name package"
+    stow --dir="$STOW_DIR" --target="$TARGET_DIR" "$package_name"
+    log_success "Updating $package_name config done"
 }
 
 # Deploy common packages shared across all platforms
 deploy_common_packages() {
     log_info "Deploying common packages..."
     
-    # Git configuration
-    safe_remove "$HOME/.gitignore"
-    safe_remove "$HOME/.config/git"
-    safe_stow "git"
+    deploy_package "git" "$HOME/.gitignore" "$HOME/.config/git"
     
-    # Zsh configuration
-    safe_remove "$HOME/.zshrc"
-    safe_remove "$HOME/.zsh"
-    safe_stow "zsh"
+    deploy_package "zsh" "$HOME/.zshrc" "$HOME/.zsh"
     
     # Neovim configuration
-    safe_remove "$HOME/.config/nvim"
-    safe_stow "nvim"
+    deploy_package "nvim" "$HOME/.config/nvim"
     
     # OpenCode configuration
-    safe_remove "$HOME/.config/opencode"
-    safe_stow "opencode"
+    deploy_package "opencode" "$HOME/.config/opencode"
     
     # Scripts
-    safe_remove "$HOME/.local/bin"
-    safe_stow "scripts"
+    deploy_package "scripts" "$HOME/.local/bin"
     
     # Alacritty terminal
-    safe_remove "$HOME/.config/alacritty"
-    safe_stow "alacritty"
+    deploy_package "alacritty" "$HOME/.config/alacritty"
     
     # Tmux configuration
-    safe_remove "$HOME/.config/.tmux.conf"
-    safe_remove "$HOME/.config/.tmux"
-    safe_stow "tmux"
+    deploy_package "tmux" "$HOME/.tmux.conf" "$HOME/.tmux"
 
-    safe_remove "$HOME/ruby"
-    safe_stow "ruby"
+    deploy_package "ruby" "$HOME/.ruby"
 
-    safe_remove "$HOME/lazygit"
-    safe_stow "lazygit"
+    deploy_package "lazygit" "$HOME/.config/lazygit"
 }
 
 # Deploy platform-specific packages for macOS
@@ -180,38 +126,21 @@ deploy_mac_packages() {
     log_info "Deploying macOS-specific packages..."
     
     # Aerospace window manager
-    safe_remove "$HOME/.config/aerospace"
-    safe_stow "aerospace"
+    deploy_package "aerospace" "$HOME/.config/aerospace"
     
     # macOS-specific zsh config (includes .zprofile)
-    safe_remove "$HOME/.zprofile"
-    safe_stow "zsh-mac"
+    deploy_package "zsh-mac" "$HOME/.zprofile"
 }
 
 # Deploy platform-specific packages for Arch Linux
 deploy_arch_packages() {
     log_info "Deploying Arch Linux-specific packages..."
-    
-    # Hyprland window manager
-    safe_remove "$HOME/.config/hypr"
-    safe_stow "hypr"
-    
-    # Waybar status bar
-    safe_remove "$HOME/.config/waybar"
-    safe_stow "waybar"
-    
-    # Arch-specific zsh config (includes .zprofile)
-    safe_remove "$HOME/.zprofile"
-    safe_stow "zsh-arch"
-}
 
-# Deploy platform-specific packages for Ubuntu
-deploy_ubuntu_packages() {
-    log_info "Deploying Ubuntu-specific packages..."
-    
-    # Ubuntu-specific zsh config (includes .zprofile)
-    safe_remove "$HOME/.zprofile"
-    safe_stow "zsh-ubuntu"
+    # Hyprland window manager
+    deploy_package "hypr" "$HOME/.config/hypr"
+
+    # Waybar status bar
+    deploy_package "waybar" "$HOME/.config/waybar"
 }
 
 # Main deployment function
@@ -248,35 +177,19 @@ parse_arguments() {
     local platform=""
     
     if [[ $# -eq 0 ]]; then
-        log_error "No platform specified"
+        log_error "No OS specified"
         show_usage
         exit 1
     fi
     
     while [[ $# -gt 0 ]]; do
         case $1 in
-            --mac)
-                platform="mac"
-                shift
-                ;;
-            --arch)
-                platform="arch"
-                shift
-                ;;
-            --ubuntu)
-                platform="ubuntu"
-                shift
-                ;;
-            --force)
-                FORCE_MODE=true
+            --os=*)
+                platform="${1#*=}"
                 shift
                 ;;
             --backup)
                 BACKUP_MODE=true
-                shift
-                ;;
-            --dry-run)
-                DRY_RUN=true
                 shift
                 ;;
             -h|--help)
@@ -292,13 +205,9 @@ parse_arguments() {
     done
     
     if [[ -z "$platform" ]]; then
-        log_error "No platform specified"
+        log_error "No OS specified"
         show_usage
         exit 1
-    fi
-    
-    if [[ "$DRY_RUN" == true ]]; then
-        log_info "Running in dry-run mode - no changes will be made"
     fi
     
     if [[ "$BACKUP_MODE" == true ]]; then

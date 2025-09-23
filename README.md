@@ -3,8 +3,8 @@
 Managed by stow by running:
 
 ```bash
-./stow.sh --mac
-./stow.sh --arch
+./setup --mac
+./setup --arch
 ```
 
 Set up arch:

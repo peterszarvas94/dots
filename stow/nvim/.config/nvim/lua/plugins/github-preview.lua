@@ -1,13 +1,4 @@
 return {
-  -- {
-  --   dir = '~/projects/marky.nvim',
-  --   config = function()
-  --     require('marky').setup {
-  --       search_paths = { '.', './notes', './docs' },
-  --       filetypes = { 'markdown' },
-  --     }
-  --   end,
-  -- },
   {
     'wallpants/github-preview.nvim',
     config = function()

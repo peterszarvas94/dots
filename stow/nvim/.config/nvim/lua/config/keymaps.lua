@@ -130,10 +130,6 @@ vim.keymap.set('n', '<leader>v', 'ggVG', { desc = 'Visual select buffer', silent
 vim.keymap.set('n', '<leader>p', 'ggVGp', { desc = 'Paste to buffer', silent = true })
 vim.keymap.set('n', '<leader>bo', ':BufOnly<CR>', { desc = 'Buffers close, keep Only this', silent = true })
 
--- conceal level
--- vim.keymap.set('n', '<leader>l0', ':set conceallevel=0<CR>', { desc = 'Conceal Level 0', silent = true })
--- vim.keymap.set('n', '<leader>l2', ':set conceallevel=2<CR>', { desc = 'Conceal Level 2', silent = true })
-
 -- toggle diagnostics
 vim.keymap.set('n', '<leader>dt', ':ToggleDiagnostics<CR>', { desc = 'Diagnostics Toggle', silent = true })
 

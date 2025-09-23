@@ -1,5 +1,16 @@
 local keymaps = require 'config.keymaps'
 
+local function attach_organize_imports(client, bufnr)
+  vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
+    local params = {
+      command = '_typescript.organizeImports',
+      arguments = { vim.api.nvim_buf_get_name(0) },
+      title = 'Organize Imports',
+    }
+    client:exec_cmd(params)
+  end, { desc = 'Organize Imports' })
+end
+
 -- LSP Server Installation Instructions:
 --
 -- lua_ls (Lua Language Server):
@@ -78,21 +89,14 @@ return {
       vim.lsp.config['ts_ls'] = {
         capabilities = capabilities,
         on_attach = function(client, bufnr)
-          vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
-            local params = {
-              command = '_typescript.organizeImports',
-              arguments = { vim.api.nvim_buf_get_name(0) },
-              title = 'Organize Imports',
-            }
-            client:exec_cmd(params)
-          end, { desc = 'Organize Imports' })
+          attach_organize_imports(client, bufnr)
 
           keymaps.setTsKeymap(bufnr)
           on_attach(client, bufnr)
         end,
       }
 
-      vim.lsp.config['ts_go_ls'] = {
+      vim.lsp.config['tsgo'] = {
         capabilities = capabilities,
         cmd = { 'tsgo', '--lsp', '--stdio' },
         filetypes = {
@@ -103,7 +107,13 @@ return {
           'typescriptreact',
           'typescript.tsx',
         },
-        root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
+        root_markers = {
+          'tsconfig.json',
+          'jsconfig.json',
+          'package.json',
+          '.git',
+          'tsconfig.base.json',
+        },
         on_attach = function(client, bufnr)
           keymaps.setTsKeymap(bufnr)
           on_attach(client, bufnr)
@@ -182,7 +192,7 @@ return {
       -- Enable all configured language servers
       vim.lsp.enable 'lua_ls'
       vim.lsp.enable 'ts_ls'
-      -- vim.lsp.enable 'ts_go_ls'
+      -- vim.lsp.enable 'tsgo'
       vim.lsp.enable 'gopls'
       vim.lsp.enable 'ruby_lsp'
       vim.lsp.enable 'tailwindcss'

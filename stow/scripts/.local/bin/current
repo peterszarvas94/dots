@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+files=(~/projects/current.md ~/work/current.md)
+
+selected=$(printf '%s\n' "${files[@]}" | fzf --prompt="Select file: ")
+
+if [ -n "$selected" ]; then
+    nvim "$selected"
+fi

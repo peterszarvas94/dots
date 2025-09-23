@@ -31,9 +31,9 @@ return {
         -- names, RGB, RGBA, RRGGBB, RRGGBBAA, AARRGGBB, rgb_fn, hsl_fn
         css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
         -- Tailwind colors.  boolean|'normal'|'lsp'|'both'.  True sets to 'normal'
-        tailwind = false, -- Enable tailwind colors
+        tailwind = 'both', -- Enable tailwind colors
         tailwind_opts = { -- Options for highlighting tailwind names
-          update_names = false, -- When using tailwind = 'both', update tailwind names from LSP results.  See tailwind section
+          update_names = true, -- When using tailwind = 'both', update tailwind names from LSP results.  See tailwind section
         },
         -- parsers can contain values used in `user_default_options`
         sass = { enable = false, parsers = { 'css' } }, -- Enable sass colors
