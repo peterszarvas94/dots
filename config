@@ -108,6 +108,7 @@ deploy_common_packages() {
     remove "$HOME/.zshrc"
     remove "$HOME/.zsh"
     deploy "zsh"
+    touch "$HOME/.zsh/config/env.zsh"
     
     # Neovim configuration
     remove "$HOME/.config/nvim"
