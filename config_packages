@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Mac setup is working
-# Arch setup should be adjusted to work with omarchy
-# There is an old file ./_setup_arch.sh which serves a similar purpose, but should be removed in the future
+# Arch setup should be adjusted to work with omomarchyy
+# There is an old file ./_setup_omarchy.sh which serves a similar purpose, but should be removed in the future
 
 set -euo pipefail
 
@@ -46,13 +46,13 @@ Usage: $0 [OPTION]
 Deploy dotfiles using GNU Stow for the specified platform.
 
 Options:
-  --os=PLATFORM   Deploy dotfiles for specified platform (mac, arch)
+  --os=PLATFORM   Deploy dotfiles for specified platform (mac, omarchy)
   --backup       Backup existing configs before overwriting
   -h, --help     Show this help message
 
 Examples:
   $0 --os=mac              # Deploy for macOS
-  $0 --os=arch --backup    # Deploy for Arch Linux with backup
+  $0 --os=omarchy --backup    # Deploy for Arch Linux with backup
 EOF
 }
 
@@ -133,12 +133,14 @@ deploy_mac_packages() {
 }
 
 # Deploy platform-specific packages for Arch Linux
-deploy_arch_packages() {
+deploy_omarchy_packages() {
     log_info "Deploying Arch Linux-specific packages..."
 
+    # TODO:
     # Hyprland window manager
     # deploy_package "hypr" "$HOME/.config/hypr"
 
+    # TODO:
     # Waybar status bar
     # deploy_package "waybar" "$HOME/.config/waybar"
 }
@@ -156,9 +158,9 @@ deploy_dotfiles() {
             deploy_common_packages
             deploy_mac_packages
             ;;
-        arch)
+        omarchy)
             deploy_common_packages
-            deploy_arch_packages
+            deploy_omarchy_packages
             ;;
         *)
             log_error "Unknown platform: $platform"

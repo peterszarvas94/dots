@@ -1,10 +1,11 @@
 #!/bin/bash
 
-mkdir -p ~/projects/dots
-
-git clone https://github.com/peterszarvas94/dots ~/projects/dots
+# Clone dots
+mkdir -p ~/projects
+git clone https://github.com/peterszarvas94/dots.git ~/projects/dots
 cd projects/dots
 
+# This thing
 sudo pacman -S --needed base-devel
 
 # Check if paru is installed
@@ -19,9 +20,8 @@ else
     echo "paru is already installed"
 fi
 
+# Install packages
 paru -S --noconfirm --needed \
-    nvim \
-    alacritty \
     stow \
     tmux \
     zsh \
@@ -30,4 +30,10 @@ paru -S --noconfirm --needed \
     brave-browser \
     nodejs
 
-yes | ./stow.sh --arch
+# Config packages (TODO: wayland stuff)
+./config_packages --os=omarchy
+
+# Clone theme grabber and link theme file
+git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git ~/projects/LazyVim
+
+ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua

@@ -1,14 +1,19 @@
 # Dotfiles
 
-Managed by stow by running:
+Set up Mac:
 
 ```bash
-./setup --mac
-./setup --arch
+wget -qO- https://raw.githubusercontent.com/peterszarvas94/dots/main/setup_mac | bash
 ```
 
-Set up arch:
+Set up Omarchy:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/peterszarvas94/dots/main/setup_arch.sh | bash
+wget -qO- https://raw.githubusercontent.com/peterszarvas94/dots/main/setup_omarchy | bash
 ```
+
+## TODO
+
+- hyprland stuff
+- proper git auto setup (ssh keys)
+- add other missing packages (opencode, ruby etc)

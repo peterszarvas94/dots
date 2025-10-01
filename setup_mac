@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Clone dots
+mkdir -p ~/projects
+git clone https://github.com/peterszarvas94/dots.git ~/projects/dots
+cd projects/dots
+
+# Install homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install packages
+brew tap homebrew/cask-fonts
+brew install \
+    stow \
+    tmux \
+    zsh \
+    go \
+    font-jetbrains-mono-nerd-font \
+    brave-browser \
+    node
+
+# Config packages 
+./config_packages --os=mac
