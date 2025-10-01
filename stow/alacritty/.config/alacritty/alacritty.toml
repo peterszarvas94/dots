@@ -19,21 +19,21 @@ style = "Regular"
 # style = "SemiBold"
 
 # family = "GeistMono Nerd Font Mono"
-# family = "JetBrainsMono Nerd Font Mono"
+family = "JetBrainsMono Nerd Font Mono"
 # family = "MonoLisa Nerd Font Mono"
 # family = "SFMono Nerd Font Mono"
 # family = "MesloLGM Nerd Font Mono"
 # family = "CaskaydiaCove Nerd Font"
 # family = "CaskaydiaMono Nerd Font"
-family = "FiraCode Nerd Font Mono"
+# family = "FiraCode Nerd Font Mono"
 
 [font.bold]
 style = "Regular"
-family = "FiraCode Nerd Font Mono"
+family = "JetBrainsMono Nerd Font Mono"
 
 [font.italic]
 style = "Regular"
-family = "FiraCode Nerd Font Mono"
+family = "JetBrainsMono Nerd Font Mono"
 
 [font.bold_italic]
 

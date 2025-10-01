@@ -112,6 +112,7 @@ deploy_common_packages() {
     
     # Neovim configuration
     remove "$HOME/.config/nvim"
+    remove "$HOME/.local/share/nvim/lazy"
     deploy "neovim"
     
     # OpenCode configuration
