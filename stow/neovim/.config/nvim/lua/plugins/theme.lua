@@ -35,6 +35,7 @@ return {
     end,
   },
   {
+    -- for the fake lazyvim integration in omarchy
     'LazyVim/LazyVim',
     opts = {
       colorscheme = 'catppuccin',
