@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # Clone dots
+rm -rf ~/projects/dots
+rm -rf ~/projects/LazyVim
+
 mkdir -p ~/projects
 git clone https://github.com/peterszarvas94/dots.git ~/projects/dots
 cd projects/dots
@@ -20,6 +23,9 @@ brew install \
 
 # Config packages 
 ./config --os=mac
+
+# Clone theme grabber and link theme file (will be removed for mac)
+git clone --depth 1 https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git ~/projects/LazyVim
 
 # Link platform-specific alacritty config
 ln -nsf ~/.config/nvim/theme_default.lua ~/.config/nvim/lua/plugins/theme.lua
