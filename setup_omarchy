@@ -5,7 +5,7 @@ rm -rf ~/projects/dots
 rm -rf ~/projects/LazyVim
 
 mkdir -p ~/projects
-git clone https://github.com/peterszarvas94/dots.git ~/projects/dots
+git clone --depth 1 https://github.com/peterszarvas94/dots.git ~/projects/dots
 cd projects/dots
 
 # This thing
@@ -25,7 +25,7 @@ yay -S --noconfirm --needed \
 ./config --os=omarchy
 
 # Clone theme grabber and link theme file
-git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git ~/projects/LazyVim
+git clone --depth 1 https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git ~/projects/LazyVim
 
 ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
 ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
