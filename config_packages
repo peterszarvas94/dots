@@ -100,13 +100,13 @@ deploy_common_packages() {
     log_info "Deploying common packages..."
     
     # Git configuration
-    remove_file "$HOME/.gitignore"
-    remove_file "$HOME/.config/git"
+    remove "$HOME/.gitignore"
+    remove "$HOME/.config/git"
     deploy_package "git"
     
     # Zsh configuration  
-    remove_file "$HOME/.zshrc"
-    remove_file "$HOME/.zsh"
+    remove "$HOME/.zshrc"
+    remove "$HOME/.zsh"
     deploy_package "zsh"
     
     # Neovim configuration
@@ -114,25 +114,25 @@ deploy_common_packages() {
     deploy "neovim"
     
     # OpenCode configuration
-    remove_file "$HOME/.config/opencode"
+    remove "$HOME/.config/opencode"
     deploy_package "opencode"
     
     # Scripts
-    remove_file "$HOME/.local/bin"
+    remove "$HOME/.local/bin"
     deploy_package "scripts"
     
     # Alacritty terminal
-    remove_file "$HOME/.config/alacritty"
+    remove "$HOME/.config/alacritty"
     deploy_package "alacritty"
     
     # Tmux configuration
-    remove_file "$HOME/.tmux.conf"
+    remove "$HOME/.tmux.conf"
     deploy_package "tmux"
 
-    # remove_file "$HOME/.rubocop.yml"
+    # remove "$HOME/.rubocop.yml"
     # deploy_package "ruby"
 
-    # remove_file "$HOME/.config/lazygit"
+    # remove "$HOME/.config/lazygit"
     # deploy_package "lazygit"
 }
 
