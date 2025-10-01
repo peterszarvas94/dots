@@ -15,8 +15,8 @@ return {
         -- width = {
         --   min = 50,
         -- },
-        width = 70,
-        -- width = 50,
+        -- width = 70,
+        width = 50,
         -- side = 'right',
         side = 'left',
         relativenumber = false,
@@ -80,8 +80,8 @@ return {
         enable = true,
       },
       filters = {
-        enable = true,
-        git_ignored = true,
+        enable = false,
+        git_ignored = false,
         dotfiles = false,
         git_clean = false,
         no_buffer = false,

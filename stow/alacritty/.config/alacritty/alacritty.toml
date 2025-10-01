@@ -1,5 +1,5 @@
 [general]
-import = ["~/.config/alacritty/themes/cattpuccin.toml"]
+import = ["~/.config/alacritty/theme.toml"]
 
 # [bell]
 # animation = "Linear"

@@ -71,54 +71,69 @@ backup_config() {
     fi
 }
 
-# Deploy a package by removing existing config and stowing
-deploy_package() {
-    local package_name="$1"
-    shift
-    local config_paths=("$@")
+# Remove file with logging
+remove() {
+    local file_path="$1"
     
-    for path in "${config_paths[@]}"; do
-        if [[ -f "$path" ]]; then
-            log_info "Removing $path"
-            rm -f "$path"
-        elif [[ -d "$path" ]]; then
-            log_info "Removing $path/"
-            rm -rf "$path"
-        else
-            log_info "Skipping removing $path (not found)"
-        fi
-    done
+    if [[ -f "$file_path" ]]; then
+        log_info "Removing $file_path"
+        rm -f "$file_path"
+    elif [[ -d "$file_path" ]]; then
+        log_info "Removing directory $file_path"
+        rm -rf "$file_path"
+    else
+        log_info "Skipping $file_path (not found)"
+    fi
+}
+
+# Deploy a package by stowing
+deploy() {
+    local package_name="$1"
+    
     log_info "Linking $package_name package"
     stow --dir="$STOW_DIR" --target="$TARGET_DIR" "$package_name"
-    log_success "Updating $package_name config done"
+    log_success "Deployed $package_name"
 }
 
 # Deploy common packages shared across all platforms
 deploy_common_packages() {
     log_info "Deploying common packages..."
     
-    # deploy_package "git" "$HOME/.gitignore" "$HOME/.config/git"
+    # Git configuration
+    remove_file "$HOME/.gitignore"
+    remove_file "$HOME/.config/git"
+    deploy_package "git"
     
-    # deploy_package "zsh" "$HOME/.zshrc" "$HOME/.zsh"
+    # Zsh configuration  
+    remove_file "$HOME/.zshrc"
+    remove_file "$HOME/.zsh"
+    deploy_package "zsh"
     
     # Neovim configuration
-    deploy_package "neovim" "$HOME/.config/nvim"
+    remove "$HOME/.config/nvim"
+    deploy "neovim"
     
     # OpenCode configuration
-    # deploy_package "opencode" "$HOME/.config/opencode"
+    remove_file "$HOME/.config/opencode"
+    deploy_package "opencode"
     
     # Scripts
-    # deploy_package "scripts" "$HOME/.local/bin"
+    remove_file "$HOME/.local/bin"
+    deploy_package "scripts"
     
     # Alacritty terminal
-    # deploy_package "alacritty" "$HOME/.config/alacritty"
+    remove_file "$HOME/.config/alacritty"
+    deploy_package "alacritty"
     
     # Tmux configuration
-    # deploy_package "tmux" "$HOME/.tmux.conf" "$HOME/.tmux"
+    remove_file "$HOME/.tmux.conf"
+    deploy_package "tmux"
 
-    # deploy_package "ruby" "$HOME/.ruby"
+    # remove_file "$HOME/.rubocop.yml"
+    # deploy_package "ruby"
 
-    # deploy_package "lazygit" "$HOME/.config/lazygit"
+    # remove_file "$HOME/.config/lazygit"
+    # deploy_package "lazygit"
 }
 
 # Deploy platform-specific packages for macOS
@@ -126,23 +141,30 @@ deploy_mac_packages() {
     log_info "Deploying macOS-specific packages..."
     
     # Aerospace window manager
-    deploy_package "aerospace" "$HOME/.config/aerospace"
+    remove "$HOME/.config/aerospace"
+    deploy "aerospace"
     
     # macOS-specific zsh config (includes .zprofile)
-    deploy_package "zsh-mac" "$HOME/.zprofile"
+    remove "$HOME/.zprofile"
+    deploy "zsh-mac"
 }
 
 # Deploy platform-specific packages for Arch Linux
 deploy_omarchy_packages() {
     log_info "Deploying Arch Linux-specific packages..."
 
-    # TODO:
-    # Hyprland window manager
-    # deploy_package "hypr" "$HOME/.config/hypr"
+    # Hyprland window manager (selective files only)
+    remove "$HOME/.config/hypr/autostart.conf"
+    remove "$HOME/.config/hypr/bindings.conf"
+    remove "$HOME/.config/hypr/envs.conf"
+    remove "$HOME/.config/hypr/input.conf"
+    remove "$HOME/.config/hypr/looknfeel.conf"
+    remove "$HOME/.config/hypr/monitors.conf"
+    deploy "hypr"
 
-    # TODO:
     # Waybar status bar
-    # deploy_package "waybar" "$HOME/.config/waybar"
+    # remove "$HOME/.config/waybar"
+    # deploy "waybar"
 }
 
 # Main deployment function
