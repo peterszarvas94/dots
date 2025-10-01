@@ -15,7 +15,6 @@ brew install \
     tmux \
     zsh \
     go \
-    font-jetbrains-mono-nerd-font \
     brave-browser \
     node
 

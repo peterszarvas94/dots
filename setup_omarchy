@@ -17,7 +17,6 @@ yay -S --noconfirm --needed \
     tmux \
     zsh \
     go \
-    extra/ttf-jetbrains-mono-nerd \
     brave-browser \
     nodejs
 
