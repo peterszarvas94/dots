@@ -23,5 +23,6 @@ brew install \
 ./config --os=mac
 
 # Link platform-specific alacritty config
-ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
 ln -nsf ~/.config/nvim/theme_default.lua ~/.config/nvim/lua/plugins/theme.lua
+ln -nsf ~/.config/alacritty/theme_default.toml ~/.config/alacritty/theme.toml
+ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
