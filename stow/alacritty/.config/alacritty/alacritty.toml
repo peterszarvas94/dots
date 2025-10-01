@@ -20,7 +20,6 @@ TERM = "xterm-256color"
 normal = { family = "CaskaydiaMono Nerd Font", style = "Regular" }
 bold = { family = "CaskaydiaMono Nerd Font", style = "Bold" }
 italic = { family = "CaskaydiaMono Nerd Font", style = "Italic" }
-offset.y = 3
 # family = "GeistMono Nerd Font Mono"
 # family = "JetBrainsMono Nerd Font Mono"
 # family = "MonoLisa Nerd Font Mono"

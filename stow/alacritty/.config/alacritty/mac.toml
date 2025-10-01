@@ -1,2 +1,3 @@
 [font]
 size = 15  # Mac font size
+offset.y = 5

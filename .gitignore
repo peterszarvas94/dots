@@ -6,3 +6,6 @@ stow/config/.config/aerc/
 stow/git/.config/git/personal/config
 stow/git/.config/git/work/config
 AGENTS.md
+stow/neovim/.config/nvim/lua/plugins/theme.lua
+stow/alacritty/.config/alacritty/platform.toml
+stow/alacritty/.config/alacritty/theme.toml
