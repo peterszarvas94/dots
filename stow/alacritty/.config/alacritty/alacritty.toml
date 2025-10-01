@@ -33,8 +33,6 @@ italic = { family = "CaskaydiaMono Nerd Font", style = "Italic" }
 program = "/bin/zsh"
 
 [window]
-# opacity = 0.95
-opacity = 1
 decorations = "None"
 option_as_alt = "Both"
 

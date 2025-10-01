@@ -43,6 +43,4 @@ if vim.g.neovide then
   vim.o.guifont = 'MesloLGS Nerd Font Mono'
 end
 
-vim.cmd.colorscheme 'default'
--- vim.opt.background = 'light'
 vim.opt.background = 'dark'

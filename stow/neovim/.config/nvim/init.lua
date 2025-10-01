@@ -2,7 +2,7 @@ require 'config.options'
 require 'config.keymaps'
 require 'config.lazy'
 require 'config.misc'
-require 'config.transparency'
+-- require 'config.transparency'
 -- then "plugins" dir gets loaded
 
 -- The line beneath this is called `modeline`. See `:help modeline`

@@ -9,8 +9,6 @@ vim.filetype.add {
   },
 }
 
--- vim.cmd.colorscheme 'catppuccin'
-
 local M = {}
 
 M.lsp_indent = function()
