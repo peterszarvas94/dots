@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Mac setup is working
-# Arch setup should be adjusted to work with omomarchyy
-# There is an old file ./_setup_omarchy.sh which serves a similar purpose, but should be removed in the future
-
 set -euo pipefail
 
 # Configuration
