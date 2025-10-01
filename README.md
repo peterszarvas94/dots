@@ -3,14 +3,14 @@
 Set up Mac:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_mac | bash
+wget -qO- "https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_mac?$(date +%s)" | bash
 ```
 
 Set up Omarchy:
 
 ```bash
 yay -S --noconfirm --needed wget
-wget -qO- https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_omarchy | bash
+wget -qO- "https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_omarchy?$(date +%s)" | bash
 ```
 
 ## TODO

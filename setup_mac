@@ -20,4 +20,4 @@ brew install \
     node
 
 # Config packages 
-./config_packages --os=mac
+./config --os=mac

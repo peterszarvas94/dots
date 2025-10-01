@@ -19,7 +19,7 @@ yay -S --noconfirm --needed \
     nodejs
 
 # Config packages (TODO: wayland stuff)
-./config_packages --os=omarchy
+./config --os=omarchy
 
 # Clone theme grabber and link theme file
 git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git ~/projects/LazyVim
