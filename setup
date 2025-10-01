@@ -97,28 +97,28 @@ deploy_package() {
 deploy_common_packages() {
     log_info "Deploying common packages..."
     
-    deploy_package "git" "$HOME/.gitignore" "$HOME/.config/git"
+    # deploy_package "git" "$HOME/.gitignore" "$HOME/.config/git"
     
-    deploy_package "zsh" "$HOME/.zshrc" "$HOME/.zsh"
+    # deploy_package "zsh" "$HOME/.zshrc" "$HOME/.zsh"
     
     # Neovim configuration
     deploy_package "neovim" "$HOME/.config/nvim"
     
     # OpenCode configuration
-    deploy_package "opencode" "$HOME/.config/opencode"
+    # deploy_package "opencode" "$HOME/.config/opencode"
     
     # Scripts
-    deploy_package "scripts" "$HOME/.local/bin"
+    # deploy_package "scripts" "$HOME/.local/bin"
     
     # Alacritty terminal
-    deploy_package "alacritty" "$HOME/.config/alacritty"
+    # deploy_package "alacritty" "$HOME/.config/alacritty"
     
     # Tmux configuration
-    deploy_package "tmux" "$HOME/.tmux.conf" "$HOME/.tmux"
+    # deploy_package "tmux" "$HOME/.tmux.conf" "$HOME/.tmux"
 
-    deploy_package "ruby" "$HOME/.ruby"
+    # deploy_package "ruby" "$HOME/.ruby"
 
-    deploy_package "lazygit" "$HOME/.config/lazygit"
+    # deploy_package "lazygit" "$HOME/.config/lazygit"
 }
 
 # Deploy platform-specific packages for macOS
@@ -137,10 +137,10 @@ deploy_arch_packages() {
     log_info "Deploying Arch Linux-specific packages..."
 
     # Hyprland window manager
-    deploy_package "hypr" "$HOME/.config/hypr"
+    # deploy_package "hypr" "$HOME/.config/hypr"
 
     # Waybar status bar
-    deploy_package "waybar" "$HOME/.config/waybar"
+    # deploy_package "waybar" "$HOME/.config/waybar"
 }
 
 # Main deployment function
