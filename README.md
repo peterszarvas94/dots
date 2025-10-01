@@ -35,5 +35,7 @@ wget -qO- "https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_om
 ## TODO
 
 - hyprland stuff
-- proper git auto setup (ssh keys)
+- git ssh keys script
+- `git remote remove origin`
+- `git remote add origin git@github.com:peterszarvas94/dots.git`
 - add other missing packages (opencode, ruby etc)
