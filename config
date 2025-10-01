@@ -102,12 +102,12 @@ deploy_common_packages() {
     # Git configuration
     remove "$HOME/.gitignore"
     remove "$HOME/.config/git"
-    deploy_package "git"
+    deploy "git"
     
     # Zsh configuration  
     remove "$HOME/.zshrc"
     remove "$HOME/.zsh"
-    deploy_package "zsh"
+    deploy "zsh"
     
     # Neovim configuration
     remove "$HOME/.config/nvim"
@@ -115,25 +115,25 @@ deploy_common_packages() {
     
     # OpenCode configuration
     remove "$HOME/.config/opencode"
-    deploy_package "opencode"
+    deploy "opencode"
     
     # Scripts
     remove "$HOME/.local/bin"
-    deploy_package "scripts"
+    deploy "scripts"
     
     # Alacritty terminal
     remove "$HOME/.config/alacritty"
-    deploy_package "alacritty"
+    deploy "alacritty"
     
     # Tmux configuration
     remove "$HOME/.tmux.conf"
-    deploy_package "tmux"
+    deploy "tmux"
 
     # remove "$HOME/.rubocop.yml"
-    # deploy_package "ruby"
+    # deploy "ruby"
 
     # remove "$HOME/.config/lazygit"
-    # deploy_package "lazygit"
+    # deploy "lazygit"
 }
 
 # Deploy platform-specific packages for macOS
