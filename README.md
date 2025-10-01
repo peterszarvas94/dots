@@ -9,6 +9,7 @@ wget -qO- https://raw.githubusercontent.com/peterszarvas94/dots/main/setup_mac |
 Set up Omarchy:
 
 ```bash
+yay -S --noconfirm --needed wget
 wget -qO- https://raw.githubusercontent.com/peterszarvas94/dots/main/setup_omarchy | bash
 ```
 
