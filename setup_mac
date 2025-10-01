@@ -21,3 +21,6 @@ brew install \
 
 # Config packages 
 ./config --os=mac
+
+# Link platform-specific alacritty config
+ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml

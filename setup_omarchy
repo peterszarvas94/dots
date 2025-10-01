@@ -29,5 +29,6 @@ git clone --depth 1 https://github.com/peterszarvas94/omarchy-nvim-theme-grabber
 
 ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
 ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
+ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
 
 hyprctl reload
