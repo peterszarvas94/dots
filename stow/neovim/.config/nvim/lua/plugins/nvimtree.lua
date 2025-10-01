@@ -81,7 +81,7 @@ return {
       },
       filters = {
         enable = true,
-        git_ignored = false,
+        git_ignored = true,
         dotfiles = false,
         git_clean = false,
         no_buffer = false,

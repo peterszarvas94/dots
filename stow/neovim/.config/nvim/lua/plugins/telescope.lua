@@ -19,7 +19,7 @@ return {
       telescope.setup {
         defaults = {
           border = true,
-          file_ignore_patterns = { 'node_modules', '.git' },
+          file_ignore_patterns = { 'node_modules', '.git', '.*_templ%.go$' },
           layout_strategy = 'horizontal',
           wrap_results = true,
         },

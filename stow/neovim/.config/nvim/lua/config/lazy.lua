@@ -16,4 +16,11 @@ require('lazy').setup('plugins', {
   ui = {
     border = 'rounded',
   },
+  dev = {
+    path = '~/projects',
+    patterns = { 'LazyVim' },
+  },
+  -- spec = {
+  --   -- your existing plugin specs
+  -- }
 })

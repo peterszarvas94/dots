@@ -102,7 +102,7 @@ deploy_common_packages() {
     deploy_package "zsh" "$HOME/.zshrc" "$HOME/.zsh"
     
     # Neovim configuration
-    deploy_package "nvim" "$HOME/.config/nvim"
+    deploy_package "neovim" "$HOME/.config/nvim"
     
     # OpenCode configuration
     deploy_package "opencode" "$HOME/.config/opencode"

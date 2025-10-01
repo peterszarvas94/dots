@@ -9,7 +9,7 @@ vim.filetype.add {
   },
 }
 
-vim.cmd.colorscheme 'catppuccin'
+-- vim.cmd.colorscheme 'catppuccin'
 
 local M = {}
 

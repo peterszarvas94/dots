@@ -3,7 +3,7 @@
 # Based on ThePrimeagen's tmux-sessionizer
 
 # Select dirs
-parent_dirs=(~/work ~/projects ~/projects/go ~/youtube)
+parent_dirs=(~/work ~/projects ~/projects/go ~/youtube ~/projects/dots/stow/neovim/.config/)
 
 select_directory() {
     find "${parent_dirs[@]}" -maxdepth 1 -mindepth 1 -type d ! -name go

@@ -11,46 +11,6 @@ local function attach_organize_imports(client, bufnr)
   end, { desc = 'Organize Imports' })
 end
 
--- LSP Server Installation Instructions:
---
--- lua_ls (Lua Language Server):
---   npm install -g lua-language-server
---   OR: brew install lua-language-server
---   OR: pacman -S lua-language-server
---
--- ts_ls (TypeScript Language Server):
---   npm install -g typescript-language-server typescript
---
--- gopls (Go Language Server):
---   go install golang.org/x/tools/gopls@latest
---
--- ruby_lsp (Ruby Language Server):
---   gem install ruby-lsp
---
--- tailwindcss (Tailwind CSS Language Server):
---   npm install -g @tailwindcss/language-server
---
--- htmx (HTMX Language Server):
---   npm install -g htmx-lsp
---
--- yamlls (YAML Language Server):
---   npm install -g yaml-language-server
---
--- jsonls (JSON Language Server):
---   npm install -g vscode-langservers-extracted
---
--- cssls (CSS Language Server):
---   npm install -g vscode-langservers-extracted
---
--- bashls (Bash Language Server):
---   npm install -g bash-language-server
---
--- astro (Astro Language Server):
---   npm install -g @astrojs/language-server
---
--- eslint (ESLint Language Server):
---   npm install -g vscode-langservers-extracted
-
 return {
   {
     'neovim/nvim-lspconfig',
@@ -68,9 +28,6 @@ return {
         keymaps.setKeymapsOnAttach(bufnr)
       end
 
-      -- Configure language servers (extending built-in configurations)
-
-      -- Lua Language Server - extend built-in config with custom settings
       vim.lsp.config['lua_ls'] = {
         capabilities = capabilities,
         on_attach = on_attach,
@@ -85,7 +42,6 @@ return {
         },
       }
 
-      -- TypeScript Language Server - extend with custom commands
       vim.lsp.config['ts_ls'] = {
         capabilities = capabilities,
         on_attach = function(client, bufnr)
@@ -120,7 +76,6 @@ return {
         end,
       }
 
-      -- Go Language Server - extend with auto-format on save
       vim.lsp.config['gopls'] = {
         capabilities = capabilities,
         on_attach = function(client, bufnr)
@@ -135,7 +90,6 @@ return {
         end,
       }
 
-      -- Ruby Language Server - extend with formatter config
       vim.lsp.config['ruby_lsp'] = {
         cmd = { 'ruby-lsp' },
         capabilities = capabilities,
@@ -152,7 +106,6 @@ return {
         },
       }
 
-      -- Tailwind CSS - extend with custom language mappings
       vim.lsp.config['tailwindcss'] = {
         capabilities = capabilities,
         on_attach = on_attach,
@@ -160,18 +113,17 @@ return {
           userLanguages = {
             templ = 'html',
             html = 'html',
+            eruby = 'html',
           },
         },
       }
 
-      -- HTMX Language Server - extend with custom filetypes
       vim.lsp.config['htmx'] = {
         capabilities = capabilities,
         on_attach = on_attach,
         filetypes = { 'html', 'templ' },
       }
 
-      -- ESLint Language Server - custom configuration
       vim.lsp.config['eslint'] = {
         capabilities = capabilities,
         on_attach = on_attach,
@@ -181,8 +133,7 @@ return {
         settings = {},
       }
 
-      -- Servers using default built-in configurations (minimal extension)
-      for _, server in ipairs { 'yamlls', 'jsonls', 'cssls', 'bashls', 'astro' } do
+      for _, server in ipairs { 'yamlls', 'jsonls', 'cssls', 'bashls', 'astro', 'templ' } do
         vim.lsp.config[server] = {
           capabilities = capabilities,
           on_attach = on_attach,
@@ -197,6 +148,7 @@ return {
       vim.lsp.enable 'ruby_lsp'
       vim.lsp.enable 'tailwindcss'
       vim.lsp.enable 'htmx'
+      vim.lsp.enable 'templ'
       vim.lsp.enable 'yamlls'
       vim.lsp.enable 'jsonls'
       vim.lsp.enable 'cssls'
@@ -240,5 +192,9 @@ return {
     config = function()
       require('neodev').setup()
     end,
+  },
+  {
+    'mason-org/mason.nvim',
+    opts = {},
   },
 }

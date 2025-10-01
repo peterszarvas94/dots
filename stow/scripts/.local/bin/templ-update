@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+go get github.com/a-h/templ@latest
+go install github.com/a-h/templ/cmd/templ@latest
