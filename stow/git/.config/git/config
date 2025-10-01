@@ -16,7 +16,7 @@
   wt = worktree
 
 [init]
-  defaultBranch = main
+  defaultBranch = master
 
 [merge]
   tool = nvimdiff
