@@ -1,5 +1,3 @@
-local keymaps = require 'config.keymaps'
-
 local function attach_organize_imports(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
     local params = {
@@ -25,7 +23,13 @@ return {
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
       local on_attach = function(_, bufnr)
-        keymaps.setKeymapsOnAttach(bufnr)
+        -- LSP keymaps
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = 'Rename' })
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = 'Goto Definition' })
+        vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = 'Goto References' })
+        vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = 'Goto Implementation' })
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
       end
 
       vim.lsp.config['lua_ls'] = {
@@ -47,7 +51,9 @@ return {
         on_attach = function(client, bufnr)
           attach_organize_imports(client, bufnr)
 
-          keymaps.setTsKeymap(bufnr)
+          -- TypeScript specific keymaps
+          vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = 'Organize Imports' })
+
           on_attach(client, bufnr)
         end,
       }
@@ -71,7 +77,9 @@ return {
           'tsconfig.base.json',
         },
         on_attach = function(client, bufnr)
-          keymaps.setTsKeymap(bufnr)
+          -- TypeScript specific keymaps
+          vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = 'Organize Imports' })
+
           on_attach(client, bufnr)
         end,
       }

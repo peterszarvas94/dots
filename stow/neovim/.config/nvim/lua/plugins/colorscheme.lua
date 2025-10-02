@@ -1,3 +1,5 @@
+-- don't delete these, needed for omarchy integration
+-- also don't set the colorscheme here
 return {
   {
     'folke/tokyonight.nvim',

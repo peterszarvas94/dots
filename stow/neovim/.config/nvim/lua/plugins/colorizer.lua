@@ -63,5 +63,8 @@ return {
         vim.cmd 'ColorizerDetachFromBuffer'
       end,
     })
+
+    -- Colorizer keymap
+    vim.keymap.set('n', '<leader>c', ':ColorizerToggle<CR>', { desc = 'Colorizer Toggle', silent = true })
   end,
 }

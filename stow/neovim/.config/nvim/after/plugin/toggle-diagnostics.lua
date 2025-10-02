@@ -12,3 +12,6 @@ local function toggle_diagnostics()
 end
 
 vim.api.nvim_create_user_command('ToggleDiagnostics', toggle_diagnostics, {})
+
+-- Toggle diagnostics keymap
+vim.keymap.set('n', '<leader>dt', ':ToggleDiagnostics<CR>', { desc = 'Diagnostics Toggle', silent = true })

@@ -12,3 +12,6 @@ local function find_and_replace_in_quickfix()
 end
 
 vim.api.nvim_create_user_command('FindAndReplaceInQuickfix', find_and_replace_in_quickfix, {})
+
+-- Find and replace keymap
+vim.keymap.set('n', '<M-f>', ':FindAndReplaceInQuickfix<CR>', { desc = 'Find and replace', silent = true })

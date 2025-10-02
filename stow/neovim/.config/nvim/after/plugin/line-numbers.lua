@@ -1,4 +1,5 @@
--- Create user commands
+-- Line number commands (moved from autocmds.lua)
+
 vim.api.nvim_create_user_command('RelativeNumbersOn', function()
   vim.cmd 'windo if &buftype != "terminal" | set relativenumber | endif'
   vim.g.relative_numbers_enabled = true
@@ -29,3 +30,8 @@ vim.api.nvim_create_user_command('RelativeNumbersToggle', function()
     print 'Relative line numbers disabled in all non-terminal windows'
   end
 end, { desc = 'Toggle relative line numbers in all windows' })
+
+-- Relative line numbers keymaps
+vim.keymap.set('n', '<leader>ro', ':RelativeNumbersOn<CR>', { desc = 'Relative numbers On', silent = true })
+vim.keymap.set('n', '<leader>rf', ':RelativeNumbersOff<CR>', { desc = 'Relative numbers oFf', silent = true })
+vim.keymap.set('n', '<leader>rt', ':RelativeNumbersToggle<CR>', { desc = 'Relative numbers Toggle', silent = true })

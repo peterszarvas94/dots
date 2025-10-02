@@ -72,3 +72,10 @@ local function toggle_teminal()
 end
 
 vim.api.nvim_create_user_command('TerminalFloat', toggle_teminal, {})
+
+-- Terminal keymaps
+vim.keymap.set('n', '<leader>to', ':TerminalOpen<CR>', { desc = 'Terminal Open', silent = true })
+vim.keymap.set('n', '<leader>ts', ':TerminalSmall<CR>', { desc = 'Terminal Small', silent = true })
+vim.keymap.set('n', '<leader>tf', ':TerminalFloat<CR>', { desc = 'Terminal Float', silent = true })
+vim.keymap.set('n', '<leader>tt', ':TerminalTab<CR>', { desc = 'Terminal Tab', silent = true })
+vim.keymap.set('t', '<C-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })

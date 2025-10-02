@@ -4,30 +4,21 @@ import = [
   "~/.config/alacritty/platform.toml"
 ]
 
-# [bell]
-# animation = "Linear"
-# duration = 1000
-
 [env]
 TERM = "xterm-256color"
 
-# [font.normal]
-# style = "Light"
-# style = "Regular"
-# style = "SemiBold"
-
 [font]
-normal = { family = "CaskaydiaMono Nerd Font", style = "Regular" }
-bold = { family = "CaskaydiaMono Nerd Font", style = "Bold" }
-italic = { family = "CaskaydiaMono Nerd Font", style = "Italic" }
-# family = "GeistMono Nerd Font Mono"
-# family = "JetBrainsMono Nerd Font Mono"
-# family = "MonoLisa Nerd Font Mono"
-# family = "SFMono Nerd Font Mono"
-# family = "MesloLGM Nerd Font Mono"
-# family = "CaskaydiaCove Nerd Font"
-# family = "CaskaydiaMono Nerd Font"
-# family = "FiraCode Nerd Font Mono"
+normal = { family = "CaskaydiaMono Nerd Font", style = "Light" }
+bold = { family = "CaskaydiaMono Nerd Font", style = "Light" }
+italic = { family = "CaskaydiaMono Nerd Font", style = "Light" }
+# "GeistMono Nerd Font Mono"
+# "JetBrainsMono Nerd Font Mono"
+# "MonoLisa Nerd Font Mono"
+# "SFMono Nerd Font Mono"
+# "MesloLGM Nerd Font Mono"
+# "CaskaydiaCove Nerd Font"
+# "CaskaydiaMono Nerd Font"
+# "FiraCode Nerd Font Mono"
 
 [terminal.shell]
 program = "/bin/zsh"
@@ -35,6 +26,7 @@ program = "/bin/zsh"
 [window]
 decorations = "None"
 option_as_alt = "Both"
+opacity = 0.95
 
 [window.padding]
 x = 10

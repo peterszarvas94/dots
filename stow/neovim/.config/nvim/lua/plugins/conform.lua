@@ -6,6 +6,13 @@ return { -- Autoformat
   config = function()
     local conform = require 'conform'
 
+    -- LSP indent function (moved from misc.lua)
+    local function lsp_indent()
+      local pos = vim.api.nvim_win_get_cursor(0)
+      vim.cmd 'normal! ggVG='
+      vim.api.nvim_win_set_cursor(0, pos)
+    end
+
     conform.setup {
       notify_on_error = true,
       format_on_save = function(_bufnr)
@@ -15,7 +22,7 @@ return { -- Autoformat
 
         -- rubocop does not auto indent
         if vim.bo.filetype == 'ruby' then
-          require('config.misc').lsp_indent()
+          lsp_indent()
         end
 
         return {
@@ -75,5 +82,22 @@ return { -- Autoformat
       vim.g.format_on_save = true
       print 'Format on save: enabled'
     end, {})
+
+    -- Manual format command
+    vim.api.nvim_create_user_command('Format', function(args)
+      local range = nil
+      if args.count ~= -1 then
+        local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+        range = {
+          start = { args.line1, 0 },
+          ['end'] = { args.line2, end_line:len() },
+        }
+      end
+
+      conform.format { async = false, lsp_fallback = true, range = range }
+    end, { range = true })
+
+    -- Format keymap
+    vim.keymap.set('n', '<leader>f', ':Format<cr>', { desc = 'Format', silent = true })
   end,
 }

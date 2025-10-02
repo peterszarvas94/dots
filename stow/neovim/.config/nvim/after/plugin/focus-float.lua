@@ -27,3 +27,6 @@ local function focus_floating_window()
 end
 
 vim.api.nvim_create_user_command('FocusFloatingWindow', focus_floating_window, {})
+
+-- Focus floating window keymap
+vim.keymap.set('n', '<C-w>f', ':FocusFloatingWindow<CR>', { noremap = true, silent = true })

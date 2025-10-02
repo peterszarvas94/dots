@@ -46,9 +46,9 @@ local function set_transparency()
 end
 
 -- Apply transparency immediately
-set_transparency()
+-- set_transparency()
 
 -- Reapply transparency after any colorscheme change
-vim.api.nvim_create_autocmd('ColorScheme', {
-  callback = set_transparency,
-})
+-- vim.api.nvim_create_autocmd('ColorScheme', {
+--   callback = set_transparency,
+-- })

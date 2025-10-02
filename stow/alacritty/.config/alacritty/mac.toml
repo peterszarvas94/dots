@@ -1,6 +1,4 @@
 [font]
-size = 15  # Mac font size
+size = 14
 offset.y = 5
-
-[window]
-# opacity = 0.95
+offset.x = 0

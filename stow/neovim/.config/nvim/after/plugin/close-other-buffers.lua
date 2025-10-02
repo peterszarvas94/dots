@@ -13,3 +13,6 @@ vim.api.nvim_create_user_command('BufOnly', function()
 
   vim.notify 'Closed all other buffers'
 end, { desc = 'Close all buffers except the current one' })
+
+-- Close other buffers keymap
+vim.keymap.set('n', '<leader>bo', ':BufOnly<CR>', { desc = 'Buffers close, keep Only this', silent = true })

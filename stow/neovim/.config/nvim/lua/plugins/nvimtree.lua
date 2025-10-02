@@ -106,5 +106,9 @@ return {
     -- api.events.subscribe(api.events.Event.FileCreated, function(file)
     --   vim.cmd('edit ' .. file.fname)
     -- end)
+
+    -- NvimTree keymaps
+    vim.keymap.set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = 'NvimTree Toggle', silent = true })
+    vim.keymap.set('n', '<leader>n', ':NvimTreeFindFile<CR>', { desc = 'NvimTree Find file', silent = true })
   end,
 }

@@ -1,4 +1,10 @@
--- highlight on yank
+vim.api.nvim_create_autocmd('BufReadPost', {
+  pattern = '*',
+  callback = function()
+    vim.o.wrap = true
+  end,
+})
+
 local yank_highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -8,3 +14,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = yank_highlight_group,
   pattern = '*',
 })
+
