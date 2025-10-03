@@ -13,7 +13,11 @@ export PATH=$PATH:/opt/homebrew/bin
 
 # environment
 alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
-export BROWSER='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
+if [ "$(uname)" = "Darwin" ]; then
+    export BROWSER="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+elif [ "$(uname)" = "Linux" ]; then
+    export BROWSER="xdg-open"
+fi
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'
