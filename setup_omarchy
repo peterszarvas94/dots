@@ -10,7 +10,8 @@ yay -S --noconfirm --needed \
     zsh \
     go \
     brave-browser \
-    nodejs
+    nodejs \
+    ghostty
 
 # Remove
 rm -rf ~/projects/dots

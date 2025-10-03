@@ -11,7 +11,8 @@ brew install \
     zsh \
     go \
     brave-browser \
-    node
+    node \
+    ghostty
 
 # Remove
 rm -rf ~/projects/dots
