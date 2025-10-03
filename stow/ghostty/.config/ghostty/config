@@ -16,4 +16,4 @@ adjust-cell-height = 4
 
 keybind = f11=toggle_fullscreen
 
-command = zsh
+command = /bin/zsh
