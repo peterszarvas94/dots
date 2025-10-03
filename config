@@ -78,17 +78,21 @@ link_files() {
         ln -nsf ~/.config/alacritty/theme_default.toml ~/.config/alacritty/theme.toml
         ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
         ln -nsf ~/.config/ghostty/default_theme.conf ~/.config/ghostty/theme.conf
+        ln -nsf ~/.config/ghostty/mac.conf ~/.config/ghostty/platform.conf
         log_success "Theme files are liked"
     elif [ "$(uname)" = "Linux" ]; then
         ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
         ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
         ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
         ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
+        ln -nsf ~/.config/ghostty/omarchy.conf ~/.config/ghostty/platform.conf
         log_success "Theme files are liked"
         hyprctl reload
         log_success "Hyprland reloaded"
         omarchy-restart-app waybar
         log_success "Waybar reloaded"
+        chsh -s $(which zsh)
+        log_success "Shell changes to zsh"
     else
         log_error "Can not link theme files, unsupported os"
     fi
