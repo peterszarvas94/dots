@@ -28,3 +28,6 @@ alias zed="open -a /Applications/Zed.app -n"
 
 # tmux
 alias ctmux="cd $(get-tmux-start)"
+
+alias lgit="lazygit"
+alias ldocker="lazydocker"

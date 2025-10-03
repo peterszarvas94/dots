@@ -1,12 +1,17 @@
-theme = dark:nvimdark,light:nvimlight
+config-file = ?"./theme.conf"
 
-font-size = 15 
-font-thicken
+font-family = "CaskaydiaMono Nerd Font"
+font-size = 15
 font-feature = -calt, -liga, -dlig
 cursor-style-blink = false
 shell-integration-features = no-cursor
 confirm-close-surface = false
 
 window-padding-x = 10
-window-padding-y = 0,0
-adjust-cell-height = 2
+window-padding-y = 10
+window-decoration = none
+confirm-close-surface=false
+resize-overlay = never
+adjust-cell-height = 4
+
+keybind = f11=toggle_fullscreen

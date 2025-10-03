@@ -9,6 +9,7 @@ readonly TARGET_DIR="$HOME"
 
 # Script options
 BACKUP_MODE=false
+PKG=""
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -43,11 +44,13 @@ Deploy dotfiles using GNU Stow for the specified platform.
 
 Options:
   --os=PLATFORM   Deploy dotfiles for specified platform (mac, omarchy)
+  --pkg=PACKAGE   Deploy only the specified package
   --backup       Backup existing configs before overwriting
   -h, --help     Show this help message
 
 Examples:
-  $0 --os=mac              # Deploy for macOS
+  $0 --os=mac              # Deploy all packages for macOS
+  $0 --os=mac --pkg=ghostty   # Deploy only ghostty package for macOS
   $0 --os=omarchy --backup    # Deploy for Arch Linux with backup
 EOF
 }
@@ -70,6 +73,12 @@ backup_config() {
 # Remove file with logging
 remove() {
     local file_path="$1"
+    local package_name="$2"
+    
+    # Skip if PKG is specified and doesn't match
+    if [[ -n "$PKG" && "$PKG" != "$package_name" ]]; then
+        return 0
+    fi
     
     if [[ -f "$file_path" ]]; then
         log_info "Removing $file_path"
@@ -86,6 +95,11 @@ remove() {
 deploy() {
     local package_name="$1"
     
+    # Skip if PKG is specified and doesn't match
+    if [[ -n "$PKG" && "$PKG" != "$package_name" ]]; then
+        return 0
+    fi
+    
     log_info "Linking $package_name package"
     stow --dir="$STOW_DIR" --target="$TARGET_DIR" "$package_name"
     log_success "Deployed $package_name"
@@ -94,43 +108,47 @@ deploy() {
 # Deploy common packages shared across all platforms
 deploy_common_packages() {
     log_info "Deploying common packages..."
-    
+ 
     # Git configuration
-    remove "$HOME/.gitignore"
-    remove "$HOME/.config/git"
+    remove "$HOME/.gitignore" "git"
+    remove "$HOME/.config/git" "git"
     deploy "git"
     
     # Zsh configuration  
-    remove "$HOME/.zshrc"
-    remove "$HOME/.zsh"
+    remove "$HOME/.zshrc" "zsh"
+    remove "$HOME/.zsh" "zsh"
     deploy "zsh"
     touch "$HOME/.zsh/config/env.zsh"
     
     # Neovim configuration
-    remove "$HOME/.config/nvim"
-    remove "$HOME/.local/share/nvim/lazy"
+    remove "$HOME/.config/nvim" "neovim"
+    remove "$HOME/.local/share/nvim/lazy" "neovim"
     deploy "neovim"
     
     # OpenCode configuration
-    remove "$HOME/.config/opencode"
+    remove "$HOME/.config/opencode" "opencode"
     deploy "opencode"
     
     # Scripts
-    remove "$HOME/.local/bin"
+    remove "$HOME/.local/bin" "scripts"
     deploy "scripts"
     
     # Alacritty terminal
-    remove "$HOME/.config/alacritty"
+    remove "$HOME/.config/alacritty" "alacritty"
     deploy "alacritty"
-    
+ 
+    # Ghostty configuration
+    remove "$HOME/.config/ghostty" "ghostty"
+    deploy "ghostty"
+
     # Tmux configuration
-    remove "$HOME/.tmux.conf"
+    remove "$HOME/.tmux.conf" "tmux"
     deploy "tmux"
 
-    # remove "$HOME/.rubocop.yml"
+    # remove "$HOME/.rubocop.yml" "ruby"
     # deploy "ruby"
 
-    # remove "$HOME/.config/lazygit"
+    # remove "$HOME/.config/lazygit" "lazygit"
     # deploy "lazygit"
 }
 
@@ -139,11 +157,11 @@ deploy_mac_packages() {
     log_info "Deploying macOS-specific packages..."
     
     # Aerospace window manager
-    remove "$HOME/.config/aerospace"
+    remove "$HOME/.config/aerospace" "aerospace"
     deploy "aerospace"
     
     # macOS-specific zsh config (includes .zprofile)
-    remove "$HOME/.zprofile"
+    remove "$HOME/.zprofile" "zsh-mac"
     deploy "zsh-mac"
 }
 
@@ -152,16 +170,16 @@ deploy_omarchy_packages() {
     log_info "Deploying Arch Linux-specific packages..."
 
     # Hyprland window manager (selective files only)
-    remove "$HOME/.config/hypr/autostart.conf"
-    remove "$HOME/.config/hypr/bindings.conf"
-    remove "$HOME/.config/hypr/envs.conf"
-    remove "$HOME/.config/hypr/input.conf"
-    remove "$HOME/.config/hypr/looknfeel.conf"
-    remove "$HOME/.config/hypr/monitors.conf"
+    remove "$HOME/.config/hypr/autostart.conf" "hypr"
+    remove "$HOME/.config/hypr/bindings.conf" "hypr"
+    remove "$HOME/.config/hypr/envs.conf" "hypr"
+    remove "$HOME/.config/hypr/input.conf" "hypr"
+    remove "$HOME/.config/hypr/looknfeel.conf" "hypr"
+    remove "$HOME/.config/hypr/monitors.conf" "hypr"
     deploy "hypr"
 
     # Waybar status bar
-    # remove "$HOME/.config/waybar"
+    # remove "$HOME/.config/waybar" "waybar"
     # deploy "waybar"
 }
 
@@ -205,6 +223,10 @@ parse_arguments() {
         case $1 in
             --os=*)
                 platform="${1#*=}"
+                shift
+                ;;
+            --pkg=*)
+                PKG="${1#*=}"
                 shift
                 ;;
             --backup)

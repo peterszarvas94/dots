@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# Clone dots
-rm -rf ~/projects/dots
-rm -rf ~/projects/LazyVim
-
-mkdir -p ~/projects
-git clone --depth 1 https://github.com/peterszarvas94/dots.git ~/projects/dots
-cd projects/dots
-
 # This thing
 sudo pacman -S --needed base-devel
 
@@ -20,6 +12,16 @@ yay -S --noconfirm --needed \
     brave-browser \
     nodejs
 
+# Remove
+rm -rf ~/projects/dots
+rm -rf ~/projects/LazyVim
+
+# Clone
+mkdir -p ~/projects
+git clone --depth 1 https://github.com/peterszarvas94/dots.git ~/projects/dots
+cd projects/dots
+
+
 # Config packages (TODO: wayland stuff)
 ./config --os=omarchy
 
@@ -29,5 +31,6 @@ git clone --depth 1 https://github.com/peterszarvas94/omarchy-nvim-theme-grabber
 ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
 ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
 ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
+ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
 
 hyprctl reload
