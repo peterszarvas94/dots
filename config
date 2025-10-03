@@ -91,7 +91,6 @@ link_files() {
         log_success "Hyprland reloaded"
         omarchy-restart-app waybar
         log_success "Waybar reloaded"
-        chsh -s $(which zsh)
         log_success "Shell changes to zsh"
     else
         log_error "Can not link theme files, unsupported os"
