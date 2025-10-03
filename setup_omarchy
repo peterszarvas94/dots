@@ -21,7 +21,7 @@ rm -rf ~/projects/LazyVim
 mkdir -p ~/projects
 cd projects
 git clone https://github.com/peterszarvas94/dots.git
-git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git
+git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git LazyVim
 
 # Origin
 cd ~/projects/LazyVim
