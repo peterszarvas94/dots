@@ -85,6 +85,10 @@ link_files() {
         ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
         ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
         log_success "Theme files are liked"
+        hyprctl reload
+        log_success "Hyprland reloaded"
+        omarchy-restart-app waybar
+        log_success "Waybar reloaded"
     else
         log_error "Can not link theme files, unsupported os"
     fi
