@@ -64,20 +64,9 @@ setup_git() {
     rm -f ~/.ssh/github ~/.ssh/github.pub
     ssh-keygen -t ed25519 -f ~/.ssh/github -N "" -C "contact@peterszarvas.hu"
 
-    # make a local copy of the exampe config
-    cp "$STOW_DIR/git/.config/git/personal/config.example" "$STOW_DIR/git/.config/git/personal/config"
-    local pubkey=$(<~/.ssh/github.pub)
-
-    # replace text in config
-    if sed --version >/dev/null 2>&1; then
-        sed -i "s#.*signingkey = ssh-ed25519 xxx.*#  signingkey = $pubkey#" "$STOW_DIR/git/.config/git/personal/config"
-    else
-        sed -i '' "s#.*signingkey = ssh-ed25519 xxx.*#  signingkey = $pubkey#" "$STOW_DIR/git/.config/git/personal/config"
-    fi
-
     echo
     echo "Copy this key to GitHub:"
-    echo "$pubkey"
+    cat ~/.ssh/github.pub
     echo
     echo "Go to: https://github.com/settings/ssh/new to add it"
     echo "After adding, test with: ssh -T git@github.com"
@@ -89,13 +78,15 @@ link_files() {
         ln -nsf ~/.config/alacritty/theme_default.toml ~/.config/alacritty/theme.toml
         ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
         ln -nsf ~/.config/ghostty/default_theme.conf ~/.config/ghostty/theme.conf
+        log_success "Theme files are liked"
     elif [ "$(uname)" = "Linux" ]; then
         ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
         ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
         ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
         ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
+        log_success "Theme files are liked"
     else
-        echo "Other OS"
+        log_error "Can not link theme files, unsupported os"
     fi
 }
 
@@ -250,6 +241,7 @@ deploy_dotfiles() {
     esac
     
     log_success "Dotfiles deployment completed successfully!"
+
 }
 
 # Parse command line arguments
@@ -308,7 +300,9 @@ parse_arguments() {
     
     if [[ "$NO_PKG" == false ]]; then
         deploy_dotfiles "$platform"
+        link_files
     fi
+
     
     if [[ "$NO_GIT" == false ]]; then
         setup_git
