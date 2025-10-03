@@ -15,3 +15,5 @@ source ~/.zsh/config/aliases.zsh
 source ~/.zsh/config/prompt-style.zsh
 source ~/.zsh/config/fzf-theme.zsh
 source ~/.zsh/config/ssh.zsh
+
+alias config="$HOME/projects/dots/config"
