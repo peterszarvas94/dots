@@ -67,7 +67,13 @@ setup_git() {
     # Copy and update config
     cp "$STOW_DIR/git/.config/git/personal/config.example" "$STOW_DIR/git/.config/git/personal/config"
     local pubkey=$(cat ~/.ssh/github.pub)
-    sed -i '' "s#.*signingkey = ssh-ed25519 xxx.*#  signingkey = $pubkey#" "$STOW_DIR/git/.config/git/personal/config"
+    if sed --version >/dev/null 2>&1; then
+        # arch (gnu)
+        sed -i "s#.*signingkey = ssh-ed25519 xxx.*#  signingkey = $pubkey#" "$STOW_DIR/git/.config/git/personal/config"
+    else
+        # mac (bds)
+        sed -i '' "s#.*signingkey = ssh-ed25519 xxx.*#  signingkey = $pubkey#" "$STOW_DIR/git/.config/git/personal/config"
+    fi
     
     # Open GitHub SSH settings (cross-platform)
     ${BROWSER:-xdg-open} "https://github.com/settings/ssh/new" 2>/dev/null || open "https://github.com/settings/ssh/new" 2>/dev/null
