@@ -78,7 +78,7 @@ setup_git() {
     fi
     
     # Open GitHub SSH settings (cross-platform)
-    ${BROWSER:-xdg-open} "https://github.com/settings/ssh/new" 2>/dev/null || open "https://github.com/settings/ssh/new" 2>/dev/null
+    xdg-open "https://github.com/settings/ssh/new" 2>/dev/null || open "https://github.com/settings/ssh/new" 2>/dev/null
     
     # Display key to copy
     echo "Copy this key to GitHub:"
