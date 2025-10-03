@@ -10,6 +10,9 @@ readonly TARGET_DIR="$HOME"
 # Script options
 BACKUP_MODE=false
 PKG=""
+NO_PROJECTS=false
+NO_GIT=false
+NO_PKG=false
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -46,13 +49,72 @@ Options:
   --os=PLATFORM   Deploy dotfiles for specified platform (mac, omarchy)
   --pkg=PACKAGE   Deploy only the specified package
   --backup       Backup existing configs before overwriting
+  --noprojects   Skip setting up projects (cloning repos)
+  --nogit        Skip Git SSH key setup
+  --nopkg        Skip package deployment (stow)
   -h, --help     Show this help message
 
 Examples:
   $0 --os=mac              # Deploy all packages for macOS
   $0 --os=mac --pkg=ghostty   # Deploy only ghostty package for macOS
   $0 --os=omarchy --backup    # Deploy for Arch Linux with backup
+  $0 --os=mac --noprojects --nogit   # Only deploy packages, skip setup
 EOF
+}
+
+setup_projects() {
+    # Remove
+    mkdir -p "$HOME/projects"
+    rm -rf "$HOME/projects/dots"
+    rm -rf "$HOME/projects/LazyVim"
+
+    # Clone
+    git clone https://github.com/peterszarvas94/dots.git ~/projects/dots
+    git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git ~/projects/LazyVim
+    
+    cd "$HOME/projects/LazyVim"
+    git remote remove origin 2>/dev/null || true
+    git remote add origin git@github.com:peterszarvas94/omarchy-nvim-theme-grabber.git
+    log_info 'Updated theme grabber origin'
+
+    # Change git origins for projects
+    cd "$HOME/projects/dots"
+    git remote remove origin 2>/dev/null || true
+    git remote add origin git@github.com:peterszarvas94/dots.git
+    log_info 'Updated dots origin'
+}
+
+setup_git() {
+    # Generate SSH key
+    ssh-keygen -t ed25519 -f ~/.ssh/github -N "" -C "contact@peterszarvas.hu"
+    
+    # Copy and update config
+    cp "$STOW_DIR/git/.config/git/personal/config.example" "$STOW_DIR/git/.config/git/personal/config"
+    local pubkey=$(cat ~/.ssh/github.pub)
+    sed -i '' "s#.*signingkey = ssh-ed25519 xxx.*#  signingkey = $pubkey#" "$STOW_DIR/git/.config/git/personal/config"
+    
+    # Open GitHub SSH settings (cross-platform)
+    ${BROWSER:-xdg-open} "https://github.com/settings/ssh/new" 2>/dev/null || open "https://github.com/settings/ssh/new" 2>/dev/null
+    
+    # Display key to copy
+    echo "Copy this key to GitHub:"
+    cat ~/.ssh/github.pub
+    
+    # Copy to clipboard (cross-platform)
+    cat ~/.ssh/github.pub | pbcopy 2>/dev/null || cat ~/.ssh/github.pub | wl-copy 2>/dev/null
+    
+    # Wait for user to add key to GitHub
+    read -p "Press Enter after adding the key to GitHub to test connection..."
+    
+    # Reload zsh to pick up SSH config
+    exec zsh -c "
+        # Test SSH connection
+        if ssh -T git@github.com 2>&1 | grep -q 'successfully authenticated'; then
+            echo '✓ SSH connection to GitHub successful!'
+        else
+            echo '✗ SSH connection failed. Check if key was added correctly.'
+        fi
+    "
 }
 
 # Backup existing config
@@ -187,8 +249,7 @@ deploy_omarchy_packages() {
 deploy_dotfiles() {
     local platform="$1"
     
-    log_info "Starting dotfiles deployment for platform: $platform"
-    
+    log_info "Starting dotfiles deployment for platform: $platform" 
     
     # Deploy platform-specific packages
     case "$platform" in
@@ -233,6 +294,18 @@ parse_arguments() {
                 BACKUP_MODE=true
                 shift
                 ;;
+            --noprojects)
+                NO_PROJECTS=true
+                shift
+                ;;
+            --nogit)
+                NO_GIT=true
+                shift
+                ;;
+            --nopkg)
+                NO_PKG=true
+                shift
+                ;;
             -h|--help)
                 show_usage
                 exit 0
@@ -255,7 +328,17 @@ parse_arguments() {
         log_info "Backup mode enabled - existing configs will be backed up"
     fi
     
-    deploy_dotfiles "$platform"
+    if [[ "$NO_PROJECTS" == false ]]; then
+        setup_projects
+    fi
+    
+    if [[ "$NO_PKG" == false ]]; then
+        deploy_dotfiles "$platform"
+    fi
+    
+    if [[ "$NO_GIT" == false ]]; then
+        setup_git
+    fi
 }
 
 # Main execution
