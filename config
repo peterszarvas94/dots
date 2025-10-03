@@ -214,8 +214,8 @@ deploy_omarchy_packages() {
     deploy "hypr"
 
     # Waybar status bar
-    # remove "$HOME/.config/waybar" "waybar"
-    # deploy "waybar"
+    remove "$HOME/.config/waybar" "waybar"
+    deploy "waybar"
 }
 
 # Main deployment function
