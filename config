@@ -61,44 +61,42 @@ EOF
 }
 
 setup_git() {
-    # Generate SSH key
-    rm -rf ~/.ssh/github
-    rm -rf ~/.ssh/github.pub
+    rm -f ~/.ssh/github ~/.ssh/github.pub
     ssh-keygen -t ed25519 -f ~/.ssh/github -N "" -C "contact@peterszarvas.hu"
-    
-    # Copy and update config
+
+    # make a local copy of the exampe config
     cp "$STOW_DIR/git/.config/git/personal/config.example" "$STOW_DIR/git/.config/git/personal/config"
-    local pubkey=$(cat ~/.ssh/github.pub)
+    local pubkey=$(<~/.ssh/github.pub)
+
+    # replace text in config
     if sed --version >/dev/null 2>&1; then
-        # arch (gnu)
         sed -i "s#.*signingkey = ssh-ed25519 xxx.*#  signingkey = $pubkey#" "$STOW_DIR/git/.config/git/personal/config"
     else
-        # mac (bds)
         sed -i '' "s#.*signingkey = ssh-ed25519 xxx.*#  signingkey = $pubkey#" "$STOW_DIR/git/.config/git/personal/config"
     fi
-    
-    # Open GitHub SSH settings (cross-platform)
-    xdg-open "https://github.com/settings/ssh/new" 2>/dev/null || open "https://github.com/settings/ssh/new" 2>/dev/null
-    
-    # Display key to copy
+
+    echo
     echo "Copy this key to GitHub:"
-    cat ~/.ssh/github.pub
-    
-    # Copy to clipboard (cross-platform)
-    cat ~/.ssh/github.pub | pbcopy 2>/dev/null || cat ~/.ssh/github.pub | wl-copy 2>/dev/null
-    
-    # Wait for user to add key to GitHub
-    read -p "Press Enter after adding the key to GitHub to test connection..."
-    
-    # Reload zsh to pick up SSH config
-    exec zsh -c "
-        # Test SSH connection
-        if ssh -T git@github.com 2>&1 | grep -q 'successfully authenticated'; then
-            echo '✓ SSH connection to GitHub successful!'
-        else
-            echo '✗ SSH connection failed. Check if key was added correctly.'
-        fi
-    "
+    echo "$pubkey"
+    echo
+    echo "Go to: https://github.com/settings/ssh/new to add it"
+    echo "After adding, test with: ssh -T git@github.com"
+}
+
+link_files() {
+    if [ "$(uname)" = "Darwin" ]; then
+        ln -nsf ~/.config/nvim/theme_default.lua ~/.config/nvim/lua/plugins/theme.lua
+        ln -nsf ~/.config/alacritty/theme_default.toml ~/.config/alacritty/theme.toml
+        ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
+        ln -nsf ~/.config/ghostty/default_theme.conf ~/.config/ghostty/theme.conf
+    elif [ "$(uname)" = "Linux" ]; then
+        ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
+        ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
+        ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
+        ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
+    else
+        echo "Other OS"
+    fi
 }
 
 # Backup existing config

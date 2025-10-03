@@ -35,9 +35,3 @@ git remote add origin git@github.com:peterszarvas94/dots.git
 
 # Config packages 
 ./config --os=mac
-
-# Link platform-specific alacritty config
-ln -nsf ~/.config/nvim/theme_default.lua ~/.config/nvim/lua/plugins/theme.lua
-ln -nsf ~/.config/alacritty/theme_default.toml ~/.config/alacritty/theme.toml
-ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
-ln -nsf ~/.config/ghostty/default_theme.conf ~/.config/ghostty/theme.conf

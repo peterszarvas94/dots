@@ -32,12 +32,5 @@ cd ~/projects/dots
 git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git
 
-# Config packages (TODO: wayland stuff)
 ./config --os=omarchy
-
-ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
-ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
-ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
-ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
-
 hyprctl reload
