@@ -1,5 +1,5 @@
 source ~/.zsh/config/env.public.zsh
-source ~/.zsh/config/env.zsh
+# source ~/.zsh/config/env.zsh
 source ~/.zsh/config/docker.zsh
 
 autoload -Uz compinit
