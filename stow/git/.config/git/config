@@ -42,9 +42,6 @@
 [includeIf "gitdir:~/projects/"]
   path = ~/.config/git/personal/config
 
-[includeIf "gitdir:~/projects/"]
-  path = ~/.config/git/personal/sign
-
 # work
 [includeIf "gitdir:~/work/"]
   path = ~/.config/git/work/config

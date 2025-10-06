@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+NODEV_DIR="$HOME/.nodev"
+CMD=$1
+VERSION=$2
+
+log() { echo "[nodev] $1"; }
+
+if [ -n "$VERSION" ]; then
+  VERSION="${VERSION#v}"
+  VERSION_LOG="v$VERSION"
+fi
+
+version_path() { echo "$NODEV_DIR/versions/$VERSION"; }
+
+node_exists() { [ -d "$(version_path)" ]; }
+
+check_version() {
+  if [ -z "$VERSION" ]; then
+    log "Error: No version specified. Usage: nodev $CMD <version>"
+    return 1
+  fi
+}
+
+install_node() {
+  check_version || return 1
+  if node_exists; then
+    log "Node $VERSION_LOG is already installed."
+    return
+  fi
+  log "Installing Node $VERSION_LOG..."
+  mkdir -p "$(version_path)"
+  URL="https://nodejs.org/dist/$VERSION_LOG/node-$VERSION_LOG-darwin-x64.tar.gz"
+  if ! curl --head --silent --fail "$URL" >/dev/null; then
+    log "Error: Node version $VERSION_LOG not found."
+    return 1
+  fi
+  curl -fsSL "$URL" | tar -xz -C "$(version_path)" --strip-components=1
+  log "Node $VERSION_LOG installed successfully."
+}
+
+remove_node() {
+  check_version || return 1
+  if ! node_exists; then
+    log "Node $VERSION_LOG is not installed."
+    return
+  fi
+  log "Removing Node $VERSION_LOG..."
+  rm -rf "$(version_path)"
+  log "Node $VERSION_LOG removed."
+}
+
+use_node() {
+  check_version || return 1
+  if ! node_exists; then
+    log "Node version $VERSION_LOG is not installed."
+    return 1
+  fi
+  mkdir -p "$NODEV_DIR/current"
+  for bin in node npm npx; do
+    ln -sf "$(version_path)/bin/$bin" "$NODEV_DIR/current/$bin"
+  done
+  log "Now using Node $VERSION_LOG via symlink in $NODEV_DIR/current"
+}
+
+list_nodes() {
+  mkdir -p "$NODEV_DIR/versions"
+  log "Installed Node versions:"
+  ls -1 "$NODEV_DIR/versions"
+}
+
+current_node() {
+  if [ ! -d "$NODEV_DIR/current" ]; then
+    log "No Node version is currently in use."
+    return 1
+  fi
+  echo "node: $("$NODEV_DIR/current/node" -v)"
+  echo "npm: $("$NODEV_DIR/current/npm" -v)"
+  echo "npx: $("$NODEV_DIR/current/npx" -v)"
+}
+
+case $CMD in
+  install) install_node ;;
+  remove) remove_node ;;
+  use) use_node ;;
+  list) list_nodes ;;
+  current) current_node ;;
+  *) log "Usage: nodev {install|remove|use|list|current} [version]" ;;
+esac
