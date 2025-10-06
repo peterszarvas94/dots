@@ -1,4 +1,14 @@
 export NODE_OPTIONS="--max-old-space-size=4096"
+export EDITOR='nvim'
+export VISUAL='nvim'
+export TERM='xterm-256color'
+
+alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
+if [ "$(uname)" = "Darwin" ]; then
+    export BROWSER="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+elif [ "$(uname)" = "Linux" ]; then
+    export BROWSER="xdg-open"
+fi
 
 # scripts
 export PATH="$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin:$PATH"
@@ -12,16 +22,6 @@ export PATH=$GOPATH/bin:$PATH
 export PATH=$PATH:/opt/homebrew/bin
 
 # environment
-alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
-if [ "$(uname)" = "Darwin" ]; then
-    export BROWSER="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
-elif [ "$(uname)" = "Linux" ]; then
-    export BROWSER="xdg-open"
-fi
-export EDITOR='nvim'
-export VISUAL='nvim'
-export TERM='xterm-256color'
-
 # bun completions
 # [ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
 [ -s "/Userds/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
