@@ -42,6 +42,10 @@
 [includeIf "gitdir:~/projects/"]
   path = ~/.config/git/personal/config
 
+# personal
+[includeIf "gitdir:~/youtube/"]
+  path = ~/.config/git/personal/config
+
 # work
 [includeIf "gitdir:~/work/"]
   path = ~/.config/git/work/config

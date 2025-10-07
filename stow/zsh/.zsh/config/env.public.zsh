@@ -3,9 +3,9 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'
 
-alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
 if [ "$(uname)" = "Darwin" ]; then
-    export BROWSER="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+    alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
+    export BROWSER="open"
 elif [ "$(uname)" = "Linux" ]; then
     export BROWSER="xdg-open"
 fi
@@ -24,7 +24,7 @@ export PATH=$PATH:/opt/homebrew/bin
 # environment
 # bun completions
 # [ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
-[ -s "/Userds/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
+[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
