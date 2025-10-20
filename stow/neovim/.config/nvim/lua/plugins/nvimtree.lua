@@ -12,9 +12,7 @@ return {
 
     require('nvim-tree').setup {
       view = {
-        width = function()
-          return vim.api.nvim_win_get_width(0) > 120 and 70 or 50
-        end,
+        width = 50,
         side = 'left',
         relativenumber = false,
         number = true,

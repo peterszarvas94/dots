@@ -10,8 +10,9 @@ readonly TARGET_DIR="$HOME"
 # Script options
 BACKUP_MODE=false
 PKG=""
-NO_GIT=false
+WITH_GIT=false
 NO_PKG=false
+WITH_THEME=false
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -46,17 +47,18 @@ Deploy dotfiles using GNU Stow for the specified platform.
 
 Options:
   --os=PLATFORM   Deploy dotfiles for specified platform (mac, omarchy)
-  --pkg=PACKAGE   Deploy only the specified package
+  --pkg=PACKAGE   Deploy specified package (required: use 'all' for everything)
   --backup       Backup existing configs before overwriting
-  --nogit        Skip Git SSH key setup
+  --git          Enable Git SSH key setup
+  --theme        Link theme files
   --nopkg        Skip package deployment (stow)
   -h, --help     Show this help message
 
 Examples:
-  $0 --os=mac              # Deploy all packages for macOS
-  $0 --os=mac --pkg=ghostty   # Deploy only ghostty package for macOS
-  $0 --os=omarchy --backup    # Deploy for Arch Linux with backup
-  $0 --os=mac --nogit   # Only deploy packages, skip git
+  $0 --os=mac --pkg=all        # Deploy all packages for macOS
+  $0 --os=mac --pkg=ghostty    # Deploy only ghostty package for macOS
+  $0 --os=omarchy --pkg=all --backup  # Deploy all for Arch Linux with backup
+  $0 --os=mac --pkg=all --git --theme # Deploy all, set up git, link themes
 EOF
 }
 
@@ -117,8 +119,8 @@ remove() {
     local file_path="$1"
     local package_name="$2"
     
-    # Skip if PKG is specified and doesn't match
-    if [[ -n "$PKG" && "$PKG" != "$package_name" ]]; then
+    # Skip if PKG is specified and doesn't match (unless PKG is "all")
+    if [[ -n "$PKG" && "$PKG" != "all" && "$PKG" != "$package_name" ]]; then
         return 0
     fi
     
@@ -137,8 +139,8 @@ remove() {
 deploy() {
     local package_name="$1"
     
-    # Skip if PKG is specified and doesn't match
-    if [[ -n "$PKG" && "$PKG" != "$package_name" ]]; then
+    # Skip if PKG is specified and doesn't match (unless PKG is "all")
+    if [[ -n "$PKG" && "$PKG" != "all" && "$PKG" != "$package_name" ]]; then
         return 0
     fi
     
@@ -275,8 +277,12 @@ parse_arguments() {
                 BACKUP_MODE=true
                 shift
                 ;;
-            --nogit)
-                NO_GIT=true
+            --git)
+                WITH_GIT=true
+                shift
+                ;;
+            --theme)
+                WITH_THEME=true
                 shift
                 ;;
             --nopkg)
@@ -301,17 +307,27 @@ parse_arguments() {
         exit 1
     fi
     
+
+    
     if [[ "$BACKUP_MODE" == true ]]; then
         log_info "Backup mode enabled - existing configs will be backed up"
     fi
     
-    if [[ "$NO_PKG" == false ]]; then
-        deploy_dotfiles "$platform"
-        link_files
+    # Check if any action is requested
+    if [[ -z "$PKG" && "$WITH_THEME" == false && "$WITH_GIT" == false ]]; then
+        log_info "Nothing to do. Use --pkg=all, --theme, or --git to specify actions."
+        exit 0
     fi
 
+    if [[ "$NO_PKG" == false && -n "$PKG" ]]; then
+        deploy_dotfiles "$platform"
+    fi
+
+    if [[ "$WITH_THEME" == true ]]; then
+        link_files
+    fi
     
-    if [[ "$NO_GIT" == false ]]; then
+    if [[ "$WITH_GIT" == true ]]; then
         setup_git
     fi
 }

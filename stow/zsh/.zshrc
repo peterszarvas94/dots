@@ -17,3 +17,6 @@ source ~/.zsh/config/fzf-theme.zsh
 source ~/.zsh/config/ssh.zsh
 
 alias config="$HOME/projects/dots/config"
+
+# bun completions
+[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
