@@ -34,4 +34,4 @@ git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git
 
 # Config packages 
-./config --os=mac --git --pkg=all --theme
+./config --git --pkg=all --theme

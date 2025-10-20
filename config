@@ -11,7 +11,6 @@ readonly TARGET_DIR="$HOME"
 BACKUP_MODE=false
 PKG=""
 WITH_GIT=false
-NO_PKG=false
 WITH_THEME=false
 
 # Colors for output
@@ -43,22 +42,20 @@ show_usage() {
     cat << EOF
 Usage: $0 [OPTION]
 
-Deploy dotfiles using GNU Stow for the specified platform.
+Deploy dotfiles using GNU Stow (auto-detects macOS or Arch Linux/omarchy).
 
 Options:
-  --os=PLATFORM   Deploy dotfiles for specified platform (mac, omarchy)
   --pkg=PACKAGE   Deploy specified package (required: use 'all' for everything)
   --backup       Backup existing configs before overwriting
   --git          Enable Git SSH key setup
   --theme        Link theme files
-  --nopkg        Skip package deployment (stow)
   -h, --help     Show this help message
 
 Examples:
-  $0 --os=mac --pkg=all        # Deploy all packages for macOS
-  $0 --os=mac --pkg=ghostty    # Deploy only ghostty package for macOS
-  $0 --os=omarchy --pkg=all --backup  # Deploy all for Arch Linux with backup
-  $0 --os=mac --pkg=all --git --theme # Deploy all, set up git, link themes
+  $0 --pkg=all           # Deploy all packages for current OS
+  $0 --pkg=ghostty       # Deploy only ghostty package
+  $0 --pkg=all --backup  # Deploy all with backup
+  $0 --pkg=all --git --theme # Deploy all, set up git, link themes
 EOF
 }
 
@@ -75,28 +72,35 @@ setup_git() {
 }
 
 link_files() {
-    if [ "$(uname)" = "Darwin" ]; then
-        ln -nsf ~/.config/nvim/theme_default.lua ~/.config/nvim/lua/plugins/theme.lua
-        ln -nsf ~/.config/alacritty/theme_default.toml ~/.config/alacritty/theme.toml
-        ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
-        ln -nsf ~/.config/ghostty/default_theme.conf ~/.config/ghostty/theme.conf
-        ln -nsf ~/.config/ghostty/mac.conf ~/.config/ghostty/platform.conf
-        log_success "Theme files are liked"
-    elif [ "$(uname)" = "Linux" ]; then
-        ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
-        ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
-        ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
-        ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
-        ln -nsf ~/.config/ghostty/omarchy.conf ~/.config/ghostty/platform.conf
-        log_success "Theme files are liked"
-        hyprctl reload
-        log_success "Hyprland reloaded"
-        omarchy-restart-app waybar
-        log_success "Waybar reloaded"
-        log_success "Shell changes to zsh"
-    else
-        log_error "Can not link theme files, unsupported os"
-    fi
+    local platform="$1"
+    
+    case "$platform" in
+        mac)
+            ln -nsf ~/.config/nvim/theme_default.lua ~/.config/nvim/lua/plugins/theme.lua
+            ln -nsf ~/.config/alacritty/theme_default.toml ~/.config/alacritty/theme.toml
+            ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
+            ln -nsf ~/.config/ghostty/default_theme.conf ~/.config/ghostty/theme.conf
+            ln -nsf ~/.config/ghostty/mac.conf ~/.config/ghostty/platform.conf
+            log_success "Theme files are liked"
+            ;;
+        omarchy)
+            ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
+            ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
+            ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
+            ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
+            ln -nsf ~/.config/ghostty/omarchy.conf ~/.config/ghostty/platform.conf
+            log_success "Theme files are liked"
+            hyprctl reload
+            log_success "Hyprland reloaded"
+            omarchy-restart-app waybar
+            log_success "Waybar reloaded"
+            log_success "Shell changes to zsh"
+            ;;
+        *)
+            log_error "Can not link theme files, unsupported platform: $platform"
+            return 1
+            ;;
+    esac
 }
 
 # Backup existing config
@@ -209,9 +213,9 @@ deploy_mac_packages() {
     deploy "zsh-mac"
 }
 
-# Deploy platform-specific packages for Arch Linux
+# Deploy platform-specific packages for Arch Linux (omarchy)
 deploy_omarchy_packages() {
-    log_info "Deploying Arch Linux-specific packages..."
+    log_info "Deploying Arch Linux (omarchy) specific packages..."
 
     # Hyprland window manager (selective files only)
     remove "$HOME/.config/hypr/autostart.conf" "hypr"
@@ -253,22 +257,29 @@ deploy_dotfiles() {
 
 }
 
+# Detect platform automatically
+detect_platform() {
+    case "$(uname)" in
+        Darwin)
+            echo "mac"
+            ;;
+        Linux)
+            echo "omarchy"
+            ;;
+        *)
+            log_error "Unsupported operating system: $(uname)"
+            exit 1
+            ;;
+    esac
+}
+
 # Parse command line arguments
 parse_arguments() {
-    local platform=""
-    
-    if [[ $# -eq 0 ]]; then
-        log_error "No OS specified"
-        show_usage
-        exit 1
-    fi
+    local platform
+    platform=$(detect_platform)
     
     while [[ $# -gt 0 ]]; do
         case $1 in
-            --os=*)
-                platform="${1#*=}"
-                shift
-                ;;
             --pkg=*)
                 PKG="${1#*=}"
                 shift
@@ -285,10 +296,7 @@ parse_arguments() {
                 WITH_THEME=true
                 shift
                 ;;
-            --nopkg)
-                NO_PKG=true
-                shift
-                ;;
+
             -h|--help)
                 show_usage
                 exit 0
@@ -300,12 +308,6 @@ parse_arguments() {
                 ;;
         esac
     done
-    
-    if [[ -z "$platform" ]]; then
-        log_error "No OS specified"
-        show_usage
-        exit 1
-    fi
     
 
     
@@ -319,12 +321,12 @@ parse_arguments() {
         exit 0
     fi
 
-    if [[ "$NO_PKG" == false && -n "$PKG" ]]; then
+    if [[ -n "$PKG" ]]; then
         deploy_dotfiles "$platform"
     fi
 
     if [[ "$WITH_THEME" == true ]]; then
-        link_files
+        link_files "$platform"
     fi
     
     if [[ "$WITH_GIT" == true ]]; then
