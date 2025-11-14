@@ -87,7 +87,7 @@ link_files() {
             ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
             ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
             ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
-            ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.toml
+            ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.conf
             ln -nsf ~/.config/ghostty/omarchy.conf ~/.config/ghostty/platform.conf
             log_success "Theme files are liked"
             hyprctl reload
