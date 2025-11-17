@@ -12,6 +12,7 @@ BACKUP_MODE=false
 PKG=""
 WITH_GIT=false
 WITH_THEME=false
+WITH_DEBLOAT=false
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -49,6 +50,7 @@ Options:
   --backup       Backup existing configs before overwriting
   --git          Enable Git SSH key setup
   --theme        Link theme files
+  --debloat      Remove bloatware (omarchy only, does nothing on macOS)
   -h, --help     Show this help message
 
 Examples:
@@ -56,6 +58,7 @@ Examples:
   $0 --pkg=ghostty       # Deploy only ghostty package
   $0 --pkg=all --backup  # Deploy all with backup
   $0 --pkg=all --git --theme # Deploy all, set up git, link themes
+  $0 --debloat           # Remove bloatware (omarchy only)
 EOF
 }
 
@@ -98,6 +101,38 @@ link_files() {
             ;;
         *)
             log_error "Can not link theme files, unsupported platform: $platform"
+            return 1
+            ;;
+    esac
+}
+
+# Remove system bloatware
+debloat_system() {
+    local platform="$1"
+    
+    case "$platform" in
+        mac)
+            log_info "Debloat option does nothing on macOS"
+            ;;
+        omarchy)
+            log_info "Removing webapps and packages..."
+            
+            # Remove webapps
+            local webapps=("Basecamp" "Figma" "Google Contacts" "Google Messages" "HEY" "Zoom")
+            for webapp in "${webapps[@]}"; do
+                omarchy-webapp-remove "$webapp" 2>/dev/null && log_success "Removed $webapp" || log_warning "$webapp not found"
+            done
+            
+            # Remove packages
+            local packages=("obsidian" "spotify" "chromium" "signal-desktop" "alacritty")
+            for package in "${packages[@]}"; do
+                yay -Rs "$package" --noconfirm 2>/dev/null && log_success "Removed $package" || log_warning "$package not found"
+            done
+            
+            log_success "Debloating completed"
+            ;;
+        *)
+            log_error "Unsupported platform: $platform"
             return 1
             ;;
     esac
@@ -296,7 +331,10 @@ parse_arguments() {
                 WITH_THEME=true
                 shift
                 ;;
-
+            --debloat)
+                WITH_DEBLOAT=true
+                shift
+                ;;
             -h|--help)
                 show_usage
                 exit 0
@@ -316,8 +354,8 @@ parse_arguments() {
     fi
     
     # Check if any action is requested
-    if [[ -z "$PKG" && "$WITH_THEME" == false && "$WITH_GIT" == false ]]; then
-        log_info "Nothing to do. Use --pkg=all, --theme, or --git to specify actions."
+    if [[ -z "$PKG" && "$WITH_THEME" == false && "$WITH_GIT" == false && "$WITH_DEBLOAT" == false ]]; then
+        log_info "Nothing to do. Use --pkg=all, --theme, --git, or --debloat to specify actions."
         exit 0
     fi
 
@@ -331,6 +369,10 @@ parse_arguments() {
     
     if [[ "$WITH_GIT" == true ]]; then
         setup_git
+    fi
+    
+    if [[ "$WITH_DEBLOAT" == true ]]; then
+        debloat_system "$platform"
     fi
 }
 
