@@ -12,7 +12,9 @@ brew install \
     go \
     brave-browser \
     node \
-    ghostty
+    ghostty \
+    bun-bin \
+    opencode
 
 # Remove
 rm -rf ~/projects/dots

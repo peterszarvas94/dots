@@ -11,7 +11,9 @@ yay -S --noconfirm --needed \
     go \
     brave-browser \
     nodejs \
-    ghostty
+    ghostty \
+    bun-bin \
+    opencode
 
 # Remove
 rm -rf ~/projects/dots
