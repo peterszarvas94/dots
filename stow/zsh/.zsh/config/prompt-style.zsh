@@ -21,15 +21,5 @@ function git_branch_name() {
 
 # cattpuccin
 setopt PROMPT_SUBST
-PROMPT='%F{#f9e2af}%~%b%f %F{#89b4fa}$(git_branch_name)%f
+PROMPT='%F{yellow}%~%b%f %F{blue}$(git_branch_name)%f
 '
-
-# # nvim default dark mode
-# setopt PROMPT_SUBST
-# PROMPT='%B%F{#FCE094}%~%b%f %F{#A6DBFF}$(git_branch_name)%f
-# '
-
-# nvim default light mode
-# setopt PROMPT_SUBST
-# PROMPT='%B%F{#765d00}%~%b%f %F{#005574}$(git_branch_name)%f
-# '
