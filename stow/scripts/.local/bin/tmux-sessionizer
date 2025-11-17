@@ -6,6 +6,9 @@
 parent_dirs=(~/work ~/projects ~/projects/go ~/youtube ~/projects/dots/stow/neovim/.config/)
 
 select_directory() {
+    # Include parent directories themselves
+    printf '%s\n' "${parent_dirs[@]}"
+    # Include children of parent directories
     find "${parent_dirs[@]}" -maxdepth 1 -mindepth 1 -type d ! -name go
 }
 

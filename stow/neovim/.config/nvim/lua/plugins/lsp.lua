@@ -58,31 +58,37 @@ return {
         end,
       }
 
-      vim.lsp.config['tsgo'] = {
+      vim.lsp.config['denols'] = {
         capabilities = capabilities,
-        cmd = { 'tsgo', '--lsp', '--stdio' },
-        filetypes = {
-          'javascript',
-          'javascriptreact',
-          'javascript.jsx',
-          'typescript',
-          'typescriptreact',
-          'typescript.tsx',
-        },
-        root_markers = {
-          'tsconfig.json',
-          'jsconfig.json',
-          'package.json',
-          '.git',
-          'tsconfig.base.json',
-        },
-        on_attach = function(client, bufnr)
-          -- TypeScript specific keymaps
-          vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = 'Organize Imports' })
-
-          on_attach(client, bufnr)
-        end,
+        on_attach = on_attach,
+        cmd = { 'deno', 'lsp' },
       }
+
+      -- vim.lsp.config['tsgo'] = {
+      --   capabilities = capabilities,
+      --   cmd = { 'tsgo', '--lsp', '--stdio' },
+      --   filetypes = {
+      --     'javascript',
+      --     'javascriptreact',
+      --     'javascript.jsx',
+      --     'typescript',
+      --     'typescriptreact',
+      --     'typescript.tsx',
+      --   },
+      --   root_markers = {
+      --     'tsconfig.json',
+      --     'jsconfig.json',
+      --     'package.json',
+      --     '.git',
+      --     'tsconfig.base.json',
+      --   },
+      --   on_attach = function(client, bufnr)
+      --     -- TypeScript specific keymaps
+      --     vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = 'Organize Imports' })
+      --
+      --     on_attach(client, bufnr)
+      --   end,
+      -- }
 
       vim.lsp.config['gopls'] = {
         capabilities = capabilities,
@@ -149,7 +155,16 @@ return {
       end
 
       vim.lsp.enable 'lua_ls'
-      vim.lsp.enable 'ts_ls'
+
+      local has_package_json = vim.fs.find('package.json', { upward = true, type = 'file' })[1]
+      local has_deno_json = vim.fs.find({ 'deno.json', 'deno.jsonc' }, { upward = true, type = 'file' })[1]
+      if has_package_json and not has_deno_json then
+        vim.lsp.enable 'ts_ls'
+      end
+      if has_deno_json and not has_package_json then
+        vim.lsp.enable 'denols'
+      end
+
       -- vim.lsp.enable 'tsgo'
       vim.lsp.enable 'gopls'
       vim.lsp.enable 'ruby_lsp'

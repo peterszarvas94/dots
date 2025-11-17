@@ -1,5 +1,5 @@
 source ~/.zsh/config/env.public.zsh
-# source ~/.zsh/config/env.zsh
+source ~/.zsh/config/env.zsh
 source ~/.zsh/config/docker.zsh
 
 autoload -Uz compinit
@@ -20,3 +20,4 @@ alias config="$HOME/projects/dots/config"
 
 # bun completions
 [ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"

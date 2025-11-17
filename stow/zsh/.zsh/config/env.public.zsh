@@ -41,3 +41,8 @@ export GEM_PATH="$GEM_HOME"
 export PATH="$GEM_HOME/bin:$PATH"
 
 export PATH="$HOME/.nodev/current:$PATH"
+
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+export PATH="/Users/szarvaspeter/.deno/bin:$PATH"
