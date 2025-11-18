@@ -219,4 +219,32 @@ return {
     'mason-org/mason.nvim',
     opts = {},
   },
+  {
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    dependencies = { 'mason-org/mason.nvim' },
+    opts = {
+      ensure_installed = {
+        -- LSPs
+        'deno',
+
+        'tailwindcss-language-server',
+        'htmx-lsp',
+        'templ',
+        'yaml-language-server',
+        'css-lsp',
+        'json-lsp',
+        'bash-language-server',
+        'astro-language-server',
+        'eslint-lsp',
+
+        -- Formatters
+        'stylua',
+        'prettierd',
+        'yamlfmt',
+        'clang-format',
+      },
+      auto_update = true,
+      run_on_start = true,
+    },
+  },
 }
