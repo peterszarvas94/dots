@@ -34,4 +34,8 @@ cd ~/projects/dots
 git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git
 
+mkdir ~/work
+mkdir ~/projects/go
+mkdir ~/youtube
+
 ./config --git --pkg=all --theme
