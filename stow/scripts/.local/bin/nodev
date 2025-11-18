@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+
+NODEV_VERSION="1.0.0"
+NODEV_DIR="$HOME/.nodev"
+CMD=$1
+VERSION=$2
+
+log() { echo "[nodev] $1"; }
+
+get_platform() {
+  local os arch
+  case "$(uname -s)" in
+    Darwin*) os="darwin" ;;
+    Linux*) os="linux" ;;
+    *) log "Error: Unsupported OS $(uname -s)"; return 1 ;;
+  esac
+  
+  case "$(uname -m)" in
+    x86_64|amd64) arch="x64" ;;
+    arm64|aarch64) arch="arm64" ;;
+    armv7l) arch="armv7l" ;;
+    ppc64le) arch="ppc64le" ;;
+    s390x) arch="s390x" ;;
+    *) log "Error: Unsupported architecture $(uname -m)"; return 1 ;;
+  esac
+  
+  echo "$os-$arch"
+}
+
+if [ -n "$VERSION" ]; then
+  VERSION="${VERSION#v}"
+  VERSION_LOG="v$VERSION"
+fi
+
+version_path() { echo "$NODEV_DIR/versions/$VERSION"; }
+
+node_exists() { [ -d "$(version_path)" ]; }
+
+check_version() {
+  if [ -z "$VERSION" ]; then
+    log "Error: No version specified. Usage: nodev $CMD <version>"
+    return 1
+  fi
+}
+
+install_node() {
+  check_version || return 1
+  if node_exists; then
+    log "Node $VERSION_LOG is already installed."
+    return
+  fi
+  
+  local platform
+  platform=$(get_platform) || return 1
+  
+  log "Installing Node $VERSION_LOG for $platform..."
+  mkdir -p "$(version_path)"
+  
+  URL="https://nodejs.org/dist/$VERSION_LOG/node-$VERSION_LOG-$platform.tar.gz"
+  if ! curl --head --silent --fail "$URL" >/dev/null; then
+    log "Error: Node version $VERSION_LOG for $platform not found."
+    return 1
+  fi
+  
+  curl -fsSL "$URL" | tar -xz -C "$(version_path)" --strip-components=1
+  log "Node $VERSION_LOG installed successfully."
+}
+
+remove_node() {
+  check_version || return 1
+  if ! node_exists; then
+    log "Node $VERSION_LOG is not installed."
+    return
+  fi
+  log "Removing Node $VERSION_LOG..."
+  rm -rf "$(version_path)"
+  log "Node $VERSION_LOG removed."
+}
+
+use_node() {
+  check_version || return 1
+  if ! node_exists; then
+    log "Node version $VERSION_LOG is not installed."
+    return 1
+  fi
+  mkdir -p "$NODEV_DIR/current"
+  for bin in node npm npx; do
+    ln -sf "$(version_path)/bin/$bin" "$NODEV_DIR/current/$bin"
+  done
+  log "Now using Node $VERSION_LOG via symlink in $NODEV_DIR/current"
+}
+
+list_nodes() {
+  mkdir -p "$NODEV_DIR/versions"
+  log "Installed Node versions:"
+  ls -1 "$NODEV_DIR/versions"
+}
+
+current_node() {
+  if [ ! -d "$NODEV_DIR/current" ]; then
+    log "No Node version is currently in use."
+    return 1
+  fi
+  echo "node: $("$NODEV_DIR/current/node" -v)"
+  echo "npm: $("$NODEV_DIR/current/npm" -v)"
+  echo "npx: $("$NODEV_DIR/current/npx" -v)"
+}
+
+show_version() {
+  echo "nodev $NODEV_VERSION"
+}
+
+show_help() {
+  show_version
+  echo "Usage: nodev {install|remove|use|list|current|version|help} [version]"
+  echo ""
+  echo "Commands:"
+  echo "  install <version>  Install a Node.js version"
+  echo "  remove <version>   Remove a Node.js version"
+  echo "  use <version>      Switch to a Node.js version"
+  echo "  list               List installed versions"
+  echo "  current            Show current version"
+  echo "  version            Show nodev version"
+  echo "  help               Show this help"
+  echo ""
+  echo "Recommended Node.js versions:"
+  echo "  v22.x.x (Active LTS - recommended for production)"
+  echo "  v20.x.x (Maintenance LTS - stable)"
+  echo "  v24.x.x (Current - latest features)"
+  echo ""
+  echo "Examples:"
+  echo "  nodev install 22.20.0"
+  echo "  nodev use 22.20.0"
+  echo "  nodev list"
+}
+
+case $CMD in
+  install) install_node ;;
+  remove) remove_node ;;
+  use) use_node ;;
+  list) list_nodes ;;
+  current) current_node ;;
+  version) show_version ;;
+  help) show_help ;;
+  *) show_help ;;
+esac
