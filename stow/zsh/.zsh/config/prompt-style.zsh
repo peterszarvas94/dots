@@ -21,5 +21,5 @@ function git_branch_name() {
 
 # cattpuccin
 setopt PROMPT_SUBST
-PROMPT='%F{yellow}%~%b%f %F{blue}$(git_branch_name)%f
+PROMPT='%F{white}%~%b%f %F{yellow}$(git_branch_name)%f
 '

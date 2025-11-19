@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+scrcpy --video-codec=h264 --max-size=1920 --video-bit-rate=8M --capture-orientation=0 --stay-awake --turn-screen-off --v4l2-sink=/dev/video0
