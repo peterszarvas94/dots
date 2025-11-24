@@ -17,3 +17,6 @@ adjust-cell-height = 4
 keybind = f11=toggle_fullscreen
 
 command = /bin/zsh
+
+# Slowdown mouse scrolling
+mouse-scroll-multiplier = 0.95

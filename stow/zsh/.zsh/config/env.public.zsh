@@ -2,6 +2,7 @@ export NODE_OPTIONS="--max-old-space-size=4096"
 export EDITOR='nvim'
 export VISUAL='nvim'
 export TERM='xterm-256color'
+export COLORTERM='truecolor'
 
 if [ "$(uname)" = "Darwin" ]; then
     alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
