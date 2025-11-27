@@ -34,3 +34,5 @@ alias ldocker="lazydocker"
 
 alias conform-log='cat ~/.local/state/nvim/conform.log | less -R'
 alias conform-file='nvim ~/.local/state/nvim/conform.log'
+
+alias uuid='uuidgen -r | wl-copy'

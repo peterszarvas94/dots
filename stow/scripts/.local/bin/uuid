@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-cd ~/projects/uuid
-
-go run main.go
