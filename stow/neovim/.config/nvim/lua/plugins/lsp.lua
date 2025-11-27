@@ -48,6 +48,7 @@ return {
 
       vim.lsp.config['ts_ls'] = {
         capabilities = capabilities,
+        cmd = { 'bun', 'x', 'typescript-language-server', '--stdio' },
         on_attach = function(client, bufnr)
           attach_organize_imports(client, bufnr)
 

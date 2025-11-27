@@ -14,7 +14,8 @@ confirm-close-surface=false
 resize-overlay = never
 adjust-cell-height = 4
 
-keybind = f11=toggle_fullscreen
+keybind = cmd+v=paste_from_clipboard
+keybind = cmd+c=copy_to_clipboard
 
 command = /bin/zsh
 
