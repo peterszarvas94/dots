@@ -13,6 +13,7 @@ PKG=""
 WITH_GIT=false
 WITH_THEME=false
 WITH_DEBLOAT=false
+WITH_SERVICES=false
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -50,6 +51,7 @@ Options:
   --backup       Backup existing configs before overwriting
   --git          Enable Git SSH key setup
   --theme        Link theme files
+  --services     Start and enable systemd services (omarchy only)
   --debloat      Remove bloatware (omarchy only, does nothing on macOS)
   -h, --help     Show this help message
 
@@ -57,7 +59,8 @@ Examples:
   $0 --pkg=all           # Deploy all packages for current OS
   $0 --pkg=ghostty       # Deploy only ghostty package
   $0 --pkg=all --backup  # Deploy all with backup
-  $0 --pkg=all --git --theme # Deploy all, set up git, link themes
+  $0 --pkg=all --git --theme --services # Deploy all, set up git, link themes, start services
+  $0 --services          # Start systemd services only
   $0 --debloat           # Remove bloatware (omarchy only)
 EOF
 }
@@ -101,6 +104,38 @@ link_files() {
             ;;
         *)
             log_error "Can not link theme files, unsupported platform: $platform"
+            return 1
+            ;;
+    esac
+}
+
+# Start and enable systemd services
+start_services() {
+    local platform="$1"
+    
+    case "$platform" in
+        mac)
+            log_info "Service management not available on macOS"
+            ;;
+        omarchy)
+            log_info "Starting and enabling systemd services..."
+            
+            # List of services to enable/start (add services as needed)
+            local services=("colima.service")
+            
+            for service in "${services[@]}"; do
+                if [[ -f "$HOME/.config/systemd/user/$service" ]]; then
+                    log_info "Enabling and starting $service"
+                    systemctl --user enable "$service" 2>/dev/null && log_success "Enabled $service" || log_warning "Failed to enable $service"
+                    systemctl --user start "$service" 2>/dev/null && log_success "Started $service" || log_warning "Failed to start $service"
+                    systemctl --user --no-pager status "$service" --lines=3
+                else
+                    log_warning "Service file not found: $service"
+                fi
+            done
+            ;;
+        *)
+            log_error "Unsupported platform for service management: $platform"
             return 1
             ;;
     esac
@@ -177,15 +212,22 @@ remove() {
 # Deploy a package by stowing
 deploy() {
     local package_name="$1"
+    local adopt_flag="${2:-false}"
     
     # Skip if PKG is specified and doesn't match (unless PKG is "all")
     if [[ -n "$PKG" && "$PKG" != "all" && "$PKG" != "$package_name" ]]; then
         return 0
     fi
     
-    log_info "Linking $package_name package"
-    stow --dir="$STOW_DIR" --target="$TARGET_DIR" "$package_name"
-    log_success "Deployed $package_name"
+    if [[ "$adopt_flag" == true ]]; then
+        log_info "Adopting existing files and linking $package_name package"
+        stow --dir="$STOW_DIR" --target="$TARGET_DIR" --adopt "$package_name"
+        log_success "Adopted and deployed $package_name"
+    else
+        log_info "Linking $package_name package"
+        stow --dir="$STOW_DIR" --target="$TARGET_DIR" "$package_name"
+        log_success "Deployed $package_name"
+    fi
 }
 
 # Deploy common packages shared across all platforms
@@ -264,6 +306,9 @@ deploy_omarchy_packages() {
     # Waybar status bar
     remove "$HOME/.config/waybar" "waybar"
     deploy "waybar"
+    
+    # Systemd services (adopt existing files)
+    deploy "systemd" true
 }
 
 # Main deployment function
@@ -331,6 +376,10 @@ parse_arguments() {
                 WITH_THEME=true
                 shift
                 ;;
+            --services)
+                WITH_SERVICES=true
+                shift
+                ;;
             --debloat)
                 WITH_DEBLOAT=true
                 shift
@@ -354,8 +403,8 @@ parse_arguments() {
     fi
     
     # Check if any action is requested
-    if [[ -z "$PKG" && "$WITH_THEME" == false && "$WITH_GIT" == false && "$WITH_DEBLOAT" == false ]]; then
-        log_info "Nothing to do. Use --pkg=all, --theme, --git, or --debloat to specify actions."
+    if [[ -z "$PKG" && "$WITH_THEME" == false && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
+        log_info "Nothing to do. Use --pkg=all, --theme, --git, --services, or --debloat to specify actions."
         exit 0
     fi
 
@@ -369,6 +418,10 @@ parse_arguments() {
     
     if [[ "$WITH_GIT" == true ]]; then
         setup_git
+    fi
+    
+    if [[ "$WITH_SERVICES" == true ]]; then
+        start_services "$platform"
     fi
     
     if [[ "$WITH_DEBLOAT" == true ]]; then

@@ -24,10 +24,8 @@ export PATH=$PATH:/opt/homebrew/bin
 
 # environment
 # bun completions
-# [ -s "/home/peti/.bun/_bun" ] && source "/home/peti/.bun/_bun"
 [ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
 # turso
 export PATH="~/.turso:$PATH"

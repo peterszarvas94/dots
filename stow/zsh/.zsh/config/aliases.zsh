@@ -36,3 +36,14 @@ alias conform-log='cat ~/.local/state/nvim/conform.log | less -R'
 alias conform-file='nvim ~/.local/state/nvim/conform.log'
 
 alias uuid='uuidgen -r | wl-copy'
+
+# colima systemd service management
+alias colima-start='systemctl --user start colima.service'
+alias colima-stop='systemctl --user stop colima.service'
+alias colima-restart='systemctl --user restart colima.service'
+alias colima-status='systemctl --user status colima.service'
+alias colima-logs='journalctl --user -u colima.service -f'
+alias colima-enable='systemctl --user enable colima.service'
+alias colima-disable='systemctl --user disable colima.service'
+
+alias config="$HOME/projects/dots/config"

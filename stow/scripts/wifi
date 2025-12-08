@@ -1,0 +1,206 @@
+#!/bin/bash
+
+# WiFi Management Script
+# Usage: ./wifi list | ./wifi up <interface> | ./wifi down <interface>
+
+show_help() {
+    echo "WiFi Management Tool"
+    echo
+    echo "Usage:"
+    echo "  ./wifi list              - Show all WiFi interfaces with status"
+    echo "  ./wifi up <interface>    - Enable WiFi interface"
+    echo "  ./wifi down <interface>  - Disable WiFi interface"
+    echo "  ./wifi help              - Show this help"
+    echo
+    echo "Examples:"
+    echo "  ./wifi list"
+    echo "  ./wifi up wlan0"
+    echo "  ./wifi down wlan2"
+}
+
+# Function to get signal info
+get_signal_info() {
+    local interface=$1
+    local signal_info=""
+    
+    if grep -q "^[[:space:]]*$interface:" /proc/net/wireless 2>/dev/null; then
+        signal_info=$(awk -v iface="$interface:" '$1 == iface {
+            printf "Signal: %s dBm, Quality: %s/70", $4, $3
+        }' /proc/net/wireless)
+    else
+        signal_info="No signal"
+    fi
+    
+    echo "$signal_info"
+}
+
+# Function to get connection info
+get_connection_info() {
+    local interface=$1
+    local ssid=""
+    
+    # Get SSID from iw
+    local iw_info=$(iw dev "$interface" info 2>/dev/null)
+    if [[ $? -eq 0 ]]; then
+        ssid=$(echo "$iw_info" | grep "ssid" | cut -d' ' -f2-)
+    fi
+    
+    if [[ -n "$ssid" ]]; then
+        echo "Connected: $ssid"
+    else
+        echo "Not connected"
+    fi
+}
+
+# Function to check if interface is routing traffic
+is_active_route() {
+    local interface=$1
+    if ip route | grep -q "dev $interface"; then
+        echo "ACTIVE"
+    else
+        echo "inactive"
+    fi
+}
+
+list_interfaces() {
+    echo "==============================================="
+    echo "              WiFi Interfaces                  "
+    echo "==============================================="
+    echo
+    
+    # Get all wireless interfaces
+    wireless_interfaces=$(ls /sys/class/net/ | grep -E '^wl|^wlan')
+    
+    if [[ -z "$wireless_interfaces" ]]; then
+        echo "No wireless interfaces found!"
+        return 1
+    fi
+    
+    # Header
+    printf "%-8s %-6s %-8s %-18s %-25s %s\n" "NAME" "STATE" "STATUS" "MAC" "SIGNAL" "CONNECTION"
+    echo "-----------------------------------------------"
+    
+    # Display info for each wireless interface
+    for iface in $wireless_interfaces; do
+        # Get interface state
+        state=$(ip link show "$iface" | grep -o 'state [A-Z]*' | cut -d' ' -f2)
+        
+        # Get MAC address (short format)
+        mac=$(ip link show "$iface" | grep -o 'link/ether [a-f0-9:]*' | cut -d' ' -f2)
+        mac_short="${mac:0:8}..."
+        
+        # Check routing status
+        routing_status=$(is_active_route "$iface")
+        
+        if [[ "$state" == "UP" ]]; then
+            # Get signal and connection info for UP interfaces
+            signal_info=$(get_signal_info "$iface")
+            connection_info=$(get_connection_info "$iface")
+            
+            printf "%-8s %-6s %-8s %-18s %-25s %s\n" "$iface" "$state" "$routing_status" "$mac_short" "$signal_info" "$connection_info"
+        else
+            printf "%-8s %-6s %-8s %-18s %-25s %s\n" "$iface" "$state" "$routing_status" "$mac_short" "N/A" "N/A"
+        fi
+    done
+    
+    echo
+    echo "Current default route:"
+    default_iface=$(ip route | grep '^default' | grep -o 'dev [a-zA-Z0-9]*' | cut -d' ' -f2)
+    if [[ -n "$default_iface" ]]; then
+        echo "Internet traffic via: $default_iface"
+    else
+        echo "No default route found"
+    fi
+}
+
+interface_up() {
+    local interface=$1
+    
+    if [[ -z "$interface" ]]; then
+        echo "Error: Interface name required"
+        echo "Usage: ./wifi up <interface>"
+        return 1
+    fi
+    
+    # Check if interface exists
+    if [[ ! -d "/sys/class/net/$interface" ]]; then
+        echo "Error: Interface '$interface' not found"
+        echo "Available interfaces:"
+        ls /sys/class/net/ | grep -E '^wl|^wlan' | sed 's/^/  /'
+        return 1
+    fi
+    
+    echo "Bringing up interface: $interface"
+    
+    if sudo ip link set "$interface" up; then
+        echo "✓ Interface $interface is now UP"
+        
+        # Wait a moment for the interface to initialize
+        sleep 2
+        
+        # Show current status
+        state=$(ip link show "$interface" | grep -o 'state [A-Z]*' | cut -d' ' -f2)
+        echo "Status: $state"
+        
+        if [[ "$state" == "UP" ]]; then
+            signal_info=$(get_signal_info "$interface")
+            echo "$signal_info"
+        fi
+    else
+        echo "✗ Failed to bring up interface $interface"
+        return 1
+    fi
+}
+
+interface_down() {
+    local interface=$1
+    
+    if [[ -z "$interface" ]]; then
+        echo "Error: Interface name required"
+        echo "Usage: ./wifi down <interface>"
+        return 1
+    fi
+    
+    # Check if interface exists
+    if [[ ! -d "/sys/class/net/$interface" ]]; then
+        echo "Error: Interface '$interface' not found"
+        echo "Available interfaces:"
+        ls /sys/class/net/ | grep -E '^wl|^wlan' | sed 's/^/  /'
+        return 1
+    fi
+    
+    echo "Bringing down interface: $interface"
+    
+    if sudo ip link set "$interface" down; then
+        echo "✓ Interface $interface is now DOWN"
+        
+        # Show current status
+        state=$(ip link show "$interface" | grep -o 'state [A-Z]*' | cut -d' ' -f2)
+        echo "Status: $state"
+    else
+        echo "✗ Failed to bring down interface $interface"
+        return 1
+    fi
+}
+
+# Main script logic
+case "$1" in
+    "list"|"ls")
+        list_interfaces
+        ;;
+    "up")
+        interface_up "$2"
+        ;;
+    "down")
+        interface_down "$2"
+        ;;
+    "help"|"-h"|"--help"|"")
+        show_help
+        ;;
+    *)
+        echo "Error: Unknown command '$1'"
+        echo
+        show_help
+        exit 1
+        ;;
+esac

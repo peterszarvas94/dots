@@ -1,0 +1,21 @@
+[Unit]
+Description=Colima container runtime
+Documentation=https://github.com/abiosoft/colima
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+ExecStartPre=-/usr/bin/colima status
+ExecStart=/usr/bin/colima start --foreground
+ExecReload=/usr/bin/colima restart
+ExecStop=/usr/bin/colima stop
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+KillMode=mixed
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=default.target

@@ -16,9 +16,4 @@ source ~/.zsh/config/prompt-style.zsh
 source ~/.zsh/config/fzf-theme.zsh
 source ~/.zsh/config/ssh.zsh
 source ~/.zsh/config/history.zsh
-
-alias config="$HOME/projects/dots/config"
-
-# bun completions
-[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+source ~/.zsh/config/zoxide.zsh
