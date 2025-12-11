@@ -13,12 +13,12 @@ return {
       },
       views = {
         finder = {
-          close_on_select = false,
+          close_on_select = true,
           confirm_simple = false,
           default_explorer = true,
           delete_to_trash = false,
           git_status = {
-            enabled = true,
+            enabled = false,
             symbols = {
               Untracked = '+',
               Added = '✓',
@@ -36,7 +36,7 @@ return {
             directory_expanded = '',
           },
           indentscope = {
-            enabled = true,
+            enabled = false,
             group = 'FylerIndentMarker',
             marker = '│',
           },
@@ -59,7 +59,7 @@ return {
           },
           follow_current_file = true,
           watcher = {
-            enabled = true,
+            enabled = false,
           },
           win = {
             border = vim.o.winborder == '' and 'single' or vim.o.winborder,
@@ -71,7 +71,7 @@ return {
               expandtab = true,
               shiftwidth = 2,
             },
-            kind = 'split_left_most',
+            kind = 'float',
             kinds = {
               float = {
                 height = '70%',
