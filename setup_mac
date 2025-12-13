@@ -18,7 +18,6 @@ brew install \
 
 # Remove
 rm -rf ~/projects/dots
-rm -rf ~/projects/LazyVim
 
 # Clone
 mkdir -p ~/projects
@@ -27,10 +26,6 @@ git clone https://github.com/peterszarvas94/dots.git
 git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git
 
 # Origin
-cd ~/projects/LazyVim
-git remote remove origin 2>/dev/null || true
-git remote add origin git@github.com:peterszarvas94/omarchy-nvim-theme-grabber.git
-
 cd ~/projects/dots
 git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git

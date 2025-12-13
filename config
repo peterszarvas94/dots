@@ -82,19 +82,25 @@ link_files() {
     
     case "$platform" in
         mac)
-            ln -nsf ~/.config/nvim/theme_default.lua ~/.config/nvim/lua/plugins/theme.lua
-            ln -nsf ~/.config/alacritty/theme_default.toml ~/.config/alacritty/theme.toml
-            ln -nsf ~/.config/alacritty/mac.toml ~/.config/alacritty/platform.toml
-            ln -nsf ~/.config/ghostty/default_theme.conf ~/.config/ghostty/theme.conf
-            ln -nsf ~/.config/ghostty/mac.conf ~/.config/ghostty/platform.conf
+            ln -nsf ~/.config/nvim/mac/theme.lua ~/.config/nvim/lua/plugins/theme.lua
+
+            ln -nsf ~/.config/alacritty/mac/theme.toml ~/.config/alacritty/theme.toml
+            ln -nsf ~/.config/alacritty/mac/settings.toml ~/.config/alacritty/settings.toml
+
+            ln -nsf ~/.config/ghostty/mac/theme.conf ~/.config/ghostty/theme.conf
+            ln -nsf ~/.config/ghostty/mac/settings.conf ~/.config/ghostty/settings.conf
             log_success "Theme files are liked"
             ;;
         omarchy)
+            ln -nsf ~/.config/nvim/omarchy/theme-preload.lua ~/.config/nvim/lua/plugins/theme.lua
             ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
+
             ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
-            ln -nsf ~/.config/alacritty/omarchy.toml ~/.config/alacritty/platform.toml
+            ln -nsf ~/.config/alacritty/omarchy/settings.toml ~/.config/alacritty/settings.toml
+
             ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.conf
             ln -nsf ~/.config/ghostty/omarchy.conf ~/.config/ghostty/platform.conf
+
             log_success "Theme files are liked"
             hyprctl reload
             log_success "Hyprland reloaded"

@@ -1,5 +1,5 @@
 config-file = ?"./theme.conf"
-config-file = ?"./platform.conf"
+config-file = ?"./settings.conf"
 
 font-family = "CaskaydiaMono Nerd Font"
 font-feature = -calt, -liga, -dlig
