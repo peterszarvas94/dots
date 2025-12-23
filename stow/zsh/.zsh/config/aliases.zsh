@@ -37,5 +37,7 @@ alias conform-file='nvim ~/.local/state/nvim/conform.log'
 
 alias uuid='uuidgen -r | wl-copy'
 
-
 alias config="$HOME/projects/dots/config"
+
+alias wip="git commit -m 'wip' --no-verify && git push"
+alias admend="git commit --amend --no-edit"
