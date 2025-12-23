@@ -58,12 +58,13 @@ return { -- Autoformat
         xml = { 'xmlformatter' },
         ruby = { 'rubocop' },
         eruby = function(bufnr)
-          if vim.api.nvim_buf_get_name(bufnr):match('%.html%.erb$') then
+          if vim.api.nvim_buf_get_name(bufnr):match '%.html%.erb$' then
             return { 'erb_format' }
           end
           return {}
         end,
         gohtml = { 'gotmplfmt' },
+        astro = { 'prettierd' },
       },
     }
 

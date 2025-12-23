@@ -41,3 +41,5 @@ alias config="$HOME/projects/dots/config"
 
 alias wip="git add . && git commit -m 'wip' --no-verify && git push"
 alias amend="git add . && git commit --amend --no-edit && git push"
+
+alias fix-droidcam="sudo rmmod v4l2loopback && sudo modprobe v4l2loopback video_nr=0 card_label=\"DroidCam\" exclusive_caps=1 && droidcam"

@@ -17,10 +17,3 @@ source ~/.zsh/config/fzf-theme.zsh
 source ~/.zsh/config/ssh.zsh
 source ~/.zsh/config/history.zsh
 source ~/.zsh/config/zoxide.zsh
-
-# bun completions
-[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"

@@ -22,11 +22,15 @@ export PATH=$GOPATH/bin:$PATH
 # brew
 export PATH=$PATH:/opt/homebrew/bin
 
-# environment
-# bun completions
+# bun
+# [ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
+# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+# export PATH="/home/peti/.cache/.bun/bin:$PATH"
+
+# bun
 [ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export PATH="/home/peti/.cache/.bun/bin:$PATH"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
 # turso
 export PATH="~/.turso:$PATH"
