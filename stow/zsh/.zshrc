@@ -1,6 +1,7 @@
 source ~/.zsh/config/env.public.zsh
 source ~/.zsh/config/env.zsh
 source ~/.zsh/config/docker.zsh
+source ~/.zsh/config/platform.zsh
 
 autoload -Uz compinit
 # compinit -i

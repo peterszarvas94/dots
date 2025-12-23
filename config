@@ -11,7 +11,6 @@ readonly TARGET_DIR="$HOME"
 BACKUP_MODE=false
 PKG=""
 WITH_GIT=false
-WITH_THEME=false
 WITH_DEBLOAT=false
 WITH_SERVICES=false
 
@@ -50,16 +49,15 @@ Options:
   --pkg=PACKAGE   Deploy specified package (required: use 'all' for everything)
   --backup       Backup existing configs before overwriting
   --git          Enable Git SSH key setup
-  --theme        Link theme files
   --services     Start and enable systemd services (omarchy only)
   --debloat      Remove bloatware (omarchy only, does nothing on macOS)
   -h, --help     Show this help message
 
 Examples:
   $0 --pkg=all           # Deploy all packages for current OS
-  $0 --pkg=ghostty       # Deploy only ghostty package
+  $0 --pkg=ghostty       # Deploy only ghostty package (includes theme linking)
   $0 --pkg=all --backup  # Deploy all with backup
-  $0 --pkg=all --git --theme --services # Deploy all, set up git, link themes, start services
+  $0 --pkg=all --git --services # Deploy all, set up git, start services
   $0 --services          # Start systemd services only
   $0 --debloat           # Remove bloatware (omarchy only)
 EOF
@@ -77,42 +75,99 @@ setup_git() {
     echo "After adding, test with: ssh -T git@github.com"
 }
 
-link_files() {
+# Link neovim theme files
+link_neovim_theme() {
     local platform="$1"
     
     case "$platform" in
         mac)
             ln -nsf ~/.config/nvim/mac/theme.lua ~/.config/nvim/lua/plugins/theme.lua
-
-            ln -nsf ~/.config/alacritty/mac/theme.toml ~/.config/alacritty/theme.toml
-            ln -nsf ~/.config/alacritty/mac/settings.toml ~/.config/alacritty/settings.toml
-
-            ln -nsf ~/.config/ghostty/mac/theme.conf ~/.config/ghostty/theme.conf
-            ln -nsf ~/.config/ghostty/mac/settings.conf ~/.config/ghostty/settings.conf
-            log_success "Theme files are liked"
+            log_success "Neovim theme linked for macOS"
             ;;
         omarchy)
             ln -nsf ~/.config/nvim/omarchy/theme-preload.lua ~/.config/nvim/lua/plugins/theme.lua
             ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
-
-            ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
-            ln -nsf ~/.config/alacritty/omarchy/settings.toml ~/.config/alacritty/settings.toml
-
-            ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.conf
-            ln -nsf ~/.config/ghostty/omarchy.conf ~/.config/ghostty/platform.conf
-
-            log_success "Theme files are liked"
-            hyprctl reload
-            log_success "Hyprland reloaded"
-            omarchy-restart-app waybar
-            log_success "Waybar reloaded"
-            log_success "Shell changes to zsh"
+            log_success "Neovim theme linked for omarchy"
             ;;
         *)
-            log_error "Can not link theme files, unsupported platform: $platform"
+            log_error "Cannot link neovim theme files, unsupported platform: $platform"
             return 1
             ;;
     esac
+}
+
+# Link alacritty theme files
+link_alacritty_theme() {
+    local platform="$1"
+    
+    case "$platform" in
+        mac)
+            ln -nsf ~/.config/alacritty/mac/theme.toml ~/.config/alacritty/theme.toml
+            ln -nsf ~/.config/alacritty/mac/settings.toml ~/.config/alacritty/settings.toml
+            log_success "Alacritty theme linked for macOS"
+            ;;
+        omarchy)
+            ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
+            ln -nsf ~/.config/alacritty/omarchy/settings.toml ~/.config/alacritty/settings.toml
+            log_success "Alacritty theme linked for omarchy"
+            ;;
+        *)
+            log_error "Cannot link alacritty theme files, unsupported platform: $platform"
+            return 1
+            ;;
+    esac
+}
+
+# Link ghostty theme files
+link_ghostty_theme() {
+    local platform="$1"
+    
+    case "$platform" in
+        mac)
+            ln -nsf ~/.config/ghostty/mac/theme.conf ~/.config/ghostty/theme.conf
+            ln -nsf ~/.config/ghostty/mac/settings.conf ~/.config/ghostty/settings.conf
+            log_success "Ghostty theme linked for macOS"
+            ;;
+        omarchy)
+            ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.conf
+            ln -nsf ~/.config/ghostty/omarchy/settings.conf ~/.config/ghostty/settings.conf
+            log_success "Ghostty theme linked for omarchy"
+            ;;
+        *)
+            log_error "Cannot link ghostty theme files, unsupported platform: $platform"
+            return 1
+            ;;
+    esac
+}
+
+# Link zsh platform files
+link_zsh_platform() {
+    local platform="$1"
+    
+    case "$platform" in
+        mac)
+            ln -nsf ~/.zsh/mac/platform.zsh ~/.zsh/config/platform.zsh
+            log_success "Zsh macOS profile linked"
+            ;;
+        omarchy)
+            ln -nsf ~/.zsh/omarchy/platform.zsh ~/.zsh/config/platform.zsh
+            log_success "Zsh omarchy configuration ready"
+            ;;
+        *)
+            log_error "Cannot link zsh platform files, unsupported platform: $platform"
+            return 1
+            ;;
+    esac
+}
+
+# Reload system components after theme changes (omarchy only)
+reload_system_components() {
+    local platform="$1"
+    
+    if [[ "$platform" == "omarchy" ]]; then
+        hyprctl reload 2>/dev/null && log_success "Hyprland reloaded"
+        omarchy-restart-app waybar 2>/dev/null && log_success "Waybar reloaded"
+    fi
 }
 
 # Start and enable systemd services
@@ -219,6 +274,7 @@ remove() {
 deploy() {
     local package_name="$1"
     local adopt_flag="${2:-false}"
+    local platform="${3:-$(detect_platform)}"
     
     # Skip if PKG is specified and doesn't match (unless PKG is "all")
     if [[ -n "$PKG" && "$PKG" != "all" && "$PKG" != "$package_name" ]]; then
@@ -234,6 +290,22 @@ deploy() {
         stow --dir="$STOW_DIR" --target="$TARGET_DIR" "$package_name"
         log_success "Deployed $package_name"
     fi
+    
+    # Automatically link theme files for specific packages
+    case "$package_name" in
+        neovim)
+            link_neovim_theme "$platform"
+            ;;
+        alacritty)
+            link_alacritty_theme "$platform"
+            ;;
+        ghostty)
+            link_ghostty_theme "$platform"
+            ;;
+        zsh)
+            link_zsh_platform "$platform"
+            ;;
+    esac
 }
 
 # Deploy common packages shared across all platforms
@@ -277,10 +349,10 @@ deploy_common_packages() {
     deploy "tmux"
 
     # remove "$HOME/.rubocop.yml" "ruby"
-    # deploy "ruby"
+    # deploy "ruby" "" "$platform"
 
     # remove "$HOME/.config/lazygit" "lazygit"
-    # deploy "lazygit"
+    # deploy "lazygit" "" "$platform"
 }
 
 # Deploy platform-specific packages for macOS
@@ -290,10 +362,6 @@ deploy_mac_packages() {
     # Aerospace window manager
     remove "$HOME/.config/aerospace" "aerospace"
     deploy "aerospace"
-    
-    # macOS-specific zsh config (includes .zprofile)
-    remove "$HOME/.zprofile" "zsh-mac"
-    deploy "zsh-mac"
 }
 
 # Deploy platform-specific packages for Arch Linux (omarchy)
@@ -315,6 +383,9 @@ deploy_omarchy_packages() {
     
     # Systemd services (adopt existing files)
     deploy "systemd" true
+    
+    # Reload system components after deployment
+    reload_system_components "omarchy"
 }
 
 # Main deployment function
@@ -359,6 +430,24 @@ detect_platform() {
     esac
 }
 
+# Validate package name exists
+validate_package() {
+    local pkg_name="$1"
+    
+    # Allow "all" as a special case
+    if [[ "$pkg_name" == "all" ]]; then
+        return 0
+    fi
+    
+    # Check if package directory exists in stow directory
+    if [[ ! -d "$STOW_DIR/$pkg_name" ]]; then
+        log_error "Package '$pkg_name' not found in stow directory"
+        log_info "Available packages:"
+        ls -1 "$STOW_DIR" | sed 's/^/  /'
+        return 1
+    fi
+}
+
 # Parse command line arguments
 parse_arguments() {
     local platform
@@ -368,6 +457,7 @@ parse_arguments() {
         case $1 in
             --pkg=*)
                 PKG="${1#*=}"
+                validate_package "$PKG" || exit 1
                 shift
                 ;;
             --backup)
@@ -376,10 +466,6 @@ parse_arguments() {
                 ;;
             --git)
                 WITH_GIT=true
-                shift
-                ;;
-            --theme)
-                WITH_THEME=true
                 shift
                 ;;
             --services)
@@ -409,17 +495,13 @@ parse_arguments() {
     fi
     
     # Check if any action is requested
-    if [[ -z "$PKG" && "$WITH_THEME" == false && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
-        log_info "Nothing to do. Use --pkg=all, --theme, --git, --services, or --debloat to specify actions."
+    if [[ -z "$PKG" && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
+        log_info "Nothing to do. Use --pkg=all, --git, --services, or --debloat to specify actions."
         exit 0
     fi
 
     if [[ -n "$PKG" ]]; then
         deploy_dotfiles "$platform"
-    fi
-
-    if [[ "$WITH_THEME" == true ]]; then
-        link_files "$platform"
     fi
     
     if [[ "$WITH_GIT" == true ]]; then

@@ -1,0 +1,1 @@
+/home/peti/.zsh/omarchy/platform.zsh
