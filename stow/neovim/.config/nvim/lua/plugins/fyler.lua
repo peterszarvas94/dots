@@ -15,7 +15,7 @@ return {
         finder = {
           close_on_select = true,
           confirm_simple = false,
-          default_explorer = true,
+          default_explorer = false,
           delete_to_trash = false,
           git_status = {
             enabled = false,
