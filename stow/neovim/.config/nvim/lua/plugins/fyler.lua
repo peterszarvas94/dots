@@ -36,7 +36,7 @@ return {
             directory_expanded = '',
           },
           indentscope = {
-            enabled = false,
+            enabled = true,
             group = 'FylerIndentMarker',
             marker = '│',
           },
