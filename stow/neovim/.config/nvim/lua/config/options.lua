@@ -5,8 +5,8 @@ vim.opt.belloff = ''
 -- vim.opt.winblend = 20 -- 0-100, where 100 is fully transparent
 -- vim.opt.pumblend = 20 -- same for popup menus
 
-vim.o.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
--- vim.o.guicursor = 'n-v-c:block'
+-- vim.o.guicursor = 'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50'
+vim.o.guicursor = 'n-v-c:block'
 vim.o.hlsearch = false
 vim.o.number = true
 vim.o.relativenumber = false

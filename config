@@ -85,7 +85,7 @@ link_neovim_theme() {
             log_success "Neovim theme linked for macOS"
             ;;
         omarchy)
-            ln -nsf ~/.config/nvim/omarchy/theme-preload.lua ~/.config/nvim/lua/plugins/theme.lua
+            ln -nsf ~/.config/nvim/omarchy/theme-preload.lua ~/.config/nvim/lua/plugins/theme-preload.lua
             ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
             log_success "Neovim theme linked for omarchy"
             ;;

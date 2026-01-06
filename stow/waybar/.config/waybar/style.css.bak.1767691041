@@ -38,22 +38,27 @@
 #custom-update {
   min-width: 12px;
   margin: 0 7.5px;
+  font-size: 16px;
 }
 
 #tray {
   margin-right: 16px;
+  font-size: 16px;
 }
 
 #bluetooth {
   margin-right: 17px;
+  font-size: 16px;
 }
 
 #network {
-  margin-right: 13px;
+  margin-right: 10px;
+  font-size: 16px;
 }
 
 #custom-expand-icon {
   margin-right: 18px;
+  font-size: 16px;
 }
 
 tooltip {
@@ -62,6 +67,7 @@ tooltip {
 
 #custom-update {
   font-size: 10px;
+  font-size: 16px;
 }
 
 #clock {
@@ -75,7 +81,7 @@ tooltip {
 #custom-screenrecording-indicator {
   min-width: 12px;
   margin-left: 8.75px;
-  font-size: 10px;
+  font-size: 16px;
 }
 
 #custom-screenrecording-indicator.active {
