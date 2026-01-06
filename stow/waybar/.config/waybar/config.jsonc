@@ -19,7 +19,8 @@
     "network",
     "pulseaudio",
     "cpu",
-    "battery"
+    "battery",
+    "hyprland/language"
   ],
   "hyprland/workspaces": {
     "on-click": "activate",
@@ -183,5 +184,11 @@
   "tray": {
     "icon-size": 12,
     "spacing": 17
+  },
+  "hyprland/language": {
+    "format": "{}",
+    "format-en": " US",
+    "format-hu": " HU",
+    "tooltip-format": "Keyboard Layout: {}"
   }
 }
