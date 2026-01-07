@@ -8,9 +8,9 @@ import = [
 TERM = "xterm-256color"
 
 [font]
-normal = { family = "Berkeley Mono Trial" }
-bold = { family = "Berkeley Mono Trial" }
-italic = { family = "Berkeley Mono Trial" }
+normal = { family = "Berkeley Mono" }
+bold = { family = "Berkeley Mono" }
+italic = { family = "Berkeley Mono" }
 # "GeistMono Nerd Font Mono"
 # "JetBrainsMono Nerd Font Mono"
 # "MonoLisa Nerd Font Mono"
