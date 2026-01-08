@@ -8,3 +8,6 @@ AGENTS.md
 stow/neovim/.config/nvim/lua/plugins/theme.lua
 stow/alacritty/.config/alacritty/platform.toml
 stow/alacritty/.config/alacritty/theme.toml
+stow/ghostty/.config/ghostty/settings.conf
+stow/ghostty/.config/ghostty/theme.conf
+stow/zsh/.zsh/config/platform.zsh
