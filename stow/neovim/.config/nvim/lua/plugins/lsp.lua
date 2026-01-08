@@ -240,7 +240,7 @@ return {
 
         -- Formatters
         'stylua',
-        'prettierd',
+        -- 'prettierd',
         'yamlfmt',
         'clang-format',
       },

@@ -43,17 +43,19 @@ return { -- Autoformat
       },
       formatters_by_ft = {
         lua = { 'stylua' },
-        typescript = { 'prettierd' },
-        typescriptreact = { 'prettierd' },
-        javascript = { 'prettierd' },
-        javascriptreact = { 'prettierd' },
-        json = { 'prettierd' },
-        markdown = { 'prettierd' },
-        html = { 'prettierd' },
+        typescript = { 'prettierd', 'prettier' },
+        typescriptreact = { 'prettierd', 'prettier' },
+        javascript = { 'prettierd', 'prettier' },
+        javascriptreact = { 'prettierd', 'prettier' },
+        json = { 'prettierd', 'prettier' },
+        markdown = { 'prettierd', 'prettier' },
+        html = { 'prettierd', 'prettier' },
         templ = { 'templ' },
-        css = { 'prettierd' },
+        css = { 'prettierd', 'prettier' },
+        astro = { 'prettierd', 'prettier' },
         yml = { 'yamlfmt' },
         go = { 'goimports' },
+        gohtml = { 'gotmplfmt' },
         c = { 'clang-format' },
         xml = { 'xmlformatter' },
         ruby = { 'rubocop' },
@@ -63,8 +65,6 @@ return { -- Autoformat
           end
           return {}
         end,
-        gohtml = { 'gotmplfmt' },
-        astro = { 'prettierd' },
       },
     }
 
