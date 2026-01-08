@@ -65,6 +65,6 @@ return {
     })
 
     -- Colorizer keymap
-    vim.keymap.set('n', '<leader>c', ':ColorizerToggle<CR>', { desc = 'Colorizer Toggle', silent = true })
+    vim.keymap.set('n', '<leader>ct', ':ColorizerToggle<CR>', { desc = 'Colorizer Toggle', silent = true })
   end,
 }

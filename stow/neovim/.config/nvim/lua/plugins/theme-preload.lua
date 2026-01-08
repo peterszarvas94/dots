@@ -1,1 +1,0 @@
-/home/peti/.config/nvim/omarchy/theme-preload.lua
