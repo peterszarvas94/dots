@@ -43,6 +43,8 @@ return { -- Autoformat
       },
       formatters_by_ft = {
         lua = { 'stylua' },
+        blade = { 'blade-formatter' },
+        php = { 'pint' },
         typescript = { 'prettierd', 'prettier' },
         typescriptreact = { 'prettierd', 'prettier' },
         javascript = { 'prettierd', 'prettier' },

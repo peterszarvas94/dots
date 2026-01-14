@@ -1,5 +1,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.g.editorconfig = true
 
 vim.opt.belloff = ''
 -- vim.opt.winblend = 20 -- 0-100, where 100 is fully transparent
