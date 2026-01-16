@@ -105,7 +105,7 @@ return {
         end,
       }
 
-      vim.lsp.config['ruby_lsp'] = {
+      vim.lsp.config['ruby-lsp'] = {
         cmd = { 'ruby-lsp' },
         capabilities = capabilities,
         on_attach = on_attach,
