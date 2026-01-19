@@ -21,6 +21,9 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setqflist, { desc = 'Open diagno
 -- tabs
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'Tab New', silent = true })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Tab Close', silent = true })
+vim.keymap.set('n', '<leader>tw', function()
+  vim.o.wrap = not vim.o.wrap
+end, { desc = 'Toggle wrap', silent = true })
 
 -- tmux
 vim.keymap.set('n', '<leader>tm', ':Telescope tmux sessions<CR>', { desc = 'Tmux sessions', silent = true })
