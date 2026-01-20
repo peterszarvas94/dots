@@ -7,6 +7,21 @@
       "type": "local",
       "command": ["rails-mcp-server"],
       "enabled": true
+    },
+    "astro": {
+      "type": "remote",
+      "url": "https://mcp.docs.astro.build/mcp"
+    },
+    "omarchy": {
+      "type": "local",
+      "command": [
+        "docker",
+        "exec",
+        "-i",
+        "omarchy-mcp-server",
+        "python",
+        "/app/mcp_server/main.py"
+      ]
     }
   }
 }

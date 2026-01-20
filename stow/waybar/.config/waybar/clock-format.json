@@ -1,0 +1,3 @@
+{
+  "text": "<span weight='bold'>YEAR</span> %s <span weight='bold'>DATE</span> %s %s <span weight='bold'>DAY</span> %s <span weight='bold'>WEEK</span> %s <span weight='bold'>TIME</span> %s"
+}

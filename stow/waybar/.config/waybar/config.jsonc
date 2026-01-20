@@ -9,7 +9,7 @@
     "hyprland/workspaces"
   ],
   "modules-center": [
-    "clock",
+    "custom/clock",
     "custom/update",
     "custom/screenrecording-indicator"
   ],
@@ -58,7 +58,7 @@
     "tooltip-format": "Omarchy Menu\n\nSuper + Alt + Space"
   },
   "custom/update": {
-    "format": "",
+    "format": "<span weight='bold'>UPD</span>",
     "exec": "omarchy-update-available",
     "on-click": "omarchy-launch-floating-terminal-with-presentation omarchy-update",
     "tooltip-format": "Omarchy update available",
@@ -67,28 +67,24 @@
   },
   "cpu": {
     "interval": 5,
-    "format": "󰍛",
+    "format": "<span weight='bold'>CPU</span> {usage}%",
     "on-click": "omarchy-launch-or-focus-tui btop",
     "on-click-right": "alacritty"
   },
-  "clock": {
-    "format": "{:L%B %d %A %H:%M}",
-    "format-alt": "{:%Y Week %V}",
+  "custom/clock": {
+    "exec": "~/.config/waybar/clock.sh",
+    "return-type": "json",
+    "interval": 60,
     "tooltip": false,
+    "markup": "pango",
+    "on-click": "omarchy-launch-webapp https://calendar.google.com",
     "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
   },
   "network": {
-    "format-icons": [
-      "󰤯",
-      "󰤟",
-      "󰤢",
-      "󰤥",
-      "󰤨"
-    ],
-    "format": "{icon}",
-    "format-wifi": "{icon}",
-    "format-ethernet": "󰀂",
-    "format-disconnected": "󰤮",
+    "format": "<span weight='bold'>NET</span> {essid}",
+    "format-wifi": "<span weight='bold'>NET</span> {essid}",
+    "format-ethernet": "<span weight='bold'>NET</span>",
+    "format-disconnected": "<span weight='bold'>NET</span> off",
     "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
     "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
     "tooltip-format-disconnected": "Disconnected",
@@ -97,37 +93,10 @@
     "on-click": "omarchy-launch-wifi"
   },
   "battery": {
-    "format": "{capacity}% {icon}",
-    "format-discharging": "{icon}",
-    "format-charging": "{icon}",
-    "format-plugged": "",
-    "format-icons": {
-      "charging": [
-        "󰢜",
-        "󰂆",
-        "󰂇",
-        "󰂈",
-        "󰢝",
-        "󰂉",
-        "󰢞",
-        "󰂊",
-        "󰂋",
-        "󰂅"
-      ],
-      "default": [
-        "󰁺",
-        "󰁻",
-        "󰁼",
-        "󰁽",
-        "󰁾",
-        "󰁿",
-        "󰂀",
-        "󰂁",
-        "󰂂",
-        "󰁹"
-      ]
-    },
-    "format-full": "󰂅",
+    "format": "<span weight='bold'>BAT</span> {capacity}%",
+    "format-discharging": "<span weight='bold'>BAT</span> {capacity}%",
+    "format-charging": "<span weight='bold'>BAT</span> {capacity}%",
+    "format-plugged": "<span weight='bold'>BAT</span> {capacity}%",
     "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 5,
@@ -138,28 +107,20 @@
     }
   },
   "bluetooth": {
-    "format": "",
-    "format-disabled": "󰂲",
-    "format-connected": "󰂱",
+    "format": "<span weight='bold'>BLU</span> ON",
+    "format-disabled": "<span weight='bold'>BLU</span> OFF",
+    "format-connected": "<span weight='bold'>BLU</span> {num_connections}",
     "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "omarchy-launch-bluetooth"
   },
   "pulseaudio": {
-    "format": "{icon}",
+    "format": "<span weight='bold'>VOL</span> {volume}",
     "on-click": "omarchy-launch-audio",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
-    "format-muted": "",
-    "format-icons": {
-      "headphone": "",
-      "default": [
-        "",
-        "",
-        ""
-      ]
-    }
+    "format-muted": "<span weight='bold'>VOL</span> MUT"
   },
   "group/tray-expander": {
     "orientation": "inherit",
@@ -200,9 +161,9 @@
     "spacing": 17
   },
   "hyprland/language": {
-    "format": "{}",
-    "format-en": " US",
-    "format-hu": " HU",
-    "tooltip-format": "Keyboard Layout: {}"
+    "format": "<span weight='bold'>KBD</span> {}",
+    "format-en": "US",
+    "format-hu": "HU",
+    "on-click": "hyprctl switchxkblayout \"hl-virtual-keyboard-fcitx5\" next"
   }
 }
