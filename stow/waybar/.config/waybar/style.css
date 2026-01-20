@@ -33,14 +33,17 @@
 #cpu,
 #battery,
 #pulseaudio,
-#custom-omarchy,
 #custom-screenrecording-indicator,
 #custom-update,
 #custom-expand-icon,
 #bluetooth,
 #tray,
 #network {
-  margin: 0 8px 0 0;
+  margin: 0 16px 0 0;
+}
+
+#custom-omarchy {
+  margin: 4px 0 0 8px;
 }
 
 tooltip {
