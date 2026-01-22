@@ -170,6 +170,7 @@ reload_system_components() {
     fi
 }
 
+
 # Start and enable systemd services
 start_services() {
     local platform="$1"
@@ -331,6 +332,10 @@ deploy_common_packages() {
     # OpenCode configuration
     remove "$HOME/.config/opencode" "opencode"
     deploy "opencode"
+
+    # XDG defaults
+    remove "$HOME/.config/mimeapps.list" "xdg"
+    deploy "xdg"
     
     # Scripts
     remove "$HOME/.local/bin" "scripts"
