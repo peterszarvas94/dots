@@ -27,7 +27,9 @@ alias ftp="termscp"
 alias zed="open -a /Applications/Zed.app -n"
 
 # tmux
-alias ctmux="cd $(get-tmux-start)"
+alias ct="cd $(get-tmux-start)"
+alias ta="tmux a"
+alias tk="tmux kill-server"
 
 alias lgit="lazygit"
 alias ldocker="lazydocker"
