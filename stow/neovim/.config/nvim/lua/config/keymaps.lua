@@ -38,7 +38,7 @@ vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap 
 
 -- disable arrow keys
 vim.keymap.set('n', '<left>', ':echo "Use h to move!!"<CR>')
-vim.keymap.set('n', '<right>', ':echo "Use l to move!!"<CR>')
+-- vim.keymap.set('n', '<right>', ':echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', ':echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', ':echo "Use j to move!!"<CR>')
 
@@ -56,3 +56,4 @@ vim.keymap.set('n', '<M-->', '<C-w>-', { desc = 'Resize split -1 horizontally', 
 vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = 'Yank buffer', silent = true })
 vim.keymap.set('n', '<leader>v', 'ggVG', { desc = 'Visual select buffer', silent = true })
 vim.keymap.set('n', '<leader>p', 'ggVGp', { desc = 'Paste to buffer', silent = true })
+
