@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+repo_name=$(basename "$(pwd)")
+
+[ -f README.md ] || echo "# $repo_name" > README.md
+
+git init
+git add .
+git commit -m "initialize"
+
+gh repo create "$repo_name" --public --source . --remote origin --push

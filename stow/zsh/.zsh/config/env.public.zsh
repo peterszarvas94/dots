@@ -15,9 +15,8 @@ fi
 export PATH="$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin:$PATH"
 
 # go
-export PATH=$PATH:/usr/local/go/bin
 export GOPATH="$HOME/go"
-export PATH=$GOPATH/bin:$PATH
+export PATH="$GOPATH/bin:$PATH"
 
 # brew
 export PATH=$PATH:/opt/homebrew/bin
