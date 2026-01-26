@@ -4,12 +4,12 @@ export VISUAL='nvim'
 export TERM='xterm-256color'
 export COLORTERM='truecolor'
 
-if [ "$(uname)" = "Darwin" ]; then
-    alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
-    export BROWSER="open"
-elif [ "$(uname)" = "Linux" ]; then
-    export BROWSER="xdg-open"
-fi
+# if [ "$(uname)" = "Darwin" ]; then
+#     alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
+#     export BROWSER="open"
+# elif [ "$(uname)" = "Linux" ]; then
+#     export BROWSER="xdg-open"
+# fi
 
 # scripts
 export PATH="$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin:$PATH"
