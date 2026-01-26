@@ -13,6 +13,7 @@ PKG=""
 WITH_GIT=false
 WITH_DEBLOAT=false
 WITH_SERVICES=false
+PLATFORM=""
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -160,22 +161,17 @@ link_zsh_platform() {
     esac
 }
 
-# Reload system components after theme changes (omarchy only)
-reload_system_components() {
-    local platform="$1"
-    
-    if [[ "$platform" == "omarchy" ]]; then
-        hyprctl reload 2>/dev/null && log_success "Hyprland reloaded"
-        omarchy-restart-app waybar 2>/dev/null && log_success "Waybar reloaded"
-    fi
+reload_hyprland() {
+    hyprctl reload 2>/dev/null && log_success "Hyprland reloaded"
 }
 
+reload_waybar() {
+    omarchy-restart-app waybar 2>/dev/null && log_success "Waybar reloaded"
+}
 
 # Start and enable systemd services
 start_services() {
-    local platform="$1"
-    
-    case "$platform" in
+    case "$PLATFORM" in
         mac)
             log_info "Service management not available on macOS"
             ;;
@@ -197,7 +193,7 @@ start_services() {
             done
             ;;
         *)
-            log_error "Unsupported platform for service management: $platform"
+            log_error "Unsupported platform for service management: $PLATFORM"
             return 1
             ;;
     esac
@@ -205,9 +201,7 @@ start_services() {
 
 # Remove system bloatware
 debloat_system() {
-    local platform="$1"
-    
-    case "$platform" in
+    case "$PLATFORM" in
         mac)
             log_info "Debloat option does nothing on macOS"
             ;;
@@ -229,7 +223,7 @@ debloat_system() {
             log_success "Debloating completed"
             ;;
         *)
-            log_error "Unsupported platform: $platform"
+            log_error "Unsupported platform: $PLATFORM"
             return 1
             ;;
     esac
@@ -255,11 +249,6 @@ remove() {
     local file_path="$1"
     local package_name="$2"
     
-    # Skip if PKG is specified and doesn't match (unless PKG is "all")
-    if [[ -n "$PKG" && "$PKG" != "all" && "$PKG" != "$package_name" ]]; then
-        return 0
-    fi
-    
     if [[ -f "$file_path" ]]; then
         log_info "Removing $file_path"
         rm -f "$file_path"
@@ -275,12 +264,6 @@ remove() {
 deploy() {
     local package_name="$1"
     local adopt_flag="${2:-false}"
-    local platform="${3:-$(detect_platform)}"
-    
-    # Skip if PKG is specified and doesn't match (unless PKG is "all")
-    if [[ -n "$PKG" && "$PKG" != "all" && "$PKG" != "$package_name" ]]; then
-        return 0
-    fi
     
     if [[ "$adopt_flag" == true ]]; then
         log_info "Adopting existing files and linking $package_name package"
@@ -295,16 +278,19 @@ deploy() {
     # Automatically link theme files for specific packages
     case "$package_name" in
         neovim)
-            link_neovim_theme "$platform"
-            ;;
-        alacritty)
-            link_alacritty_theme "$platform"
+            link_neovim_theme "$PLATFORM"
             ;;
         ghostty)
-            link_ghostty_theme "$platform"
+            link_ghostty_theme "$PLATFORM"
             ;;
         zsh)
-            link_zsh_platform "$platform"
+            link_zsh_platform "$PLATFORM"
+            ;;
+        hypr)
+            reload_hyprland
+            ;;
+        waybar)
+            reload_waybar
             ;;
     esac
 }
@@ -317,34 +303,26 @@ deploy_common_packages() {
     remove "$HOME/.gitignore" "git"
     remove "$HOME/.config/git" "git"
     deploy "git"
-    
+
     # Zsh configuration  
     remove "$HOME/.zshrc" "zsh"
     remove "$HOME/.zsh" "zsh"
     deploy "zsh"
     touch "$HOME/.zsh/config/env.zsh"
-    
+
     # Neovim configuration
     remove "$HOME/.config/nvim" "neovim"
     remove "$HOME/.local/share/nvim/lazy" "neovim"
     deploy "neovim"
-    
+
     # OpenCode configuration
     remove "$HOME/.config/opencode" "opencode"
     deploy "opencode"
 
-    # XDG defaults
-    remove "$HOME/.config/mimeapps.list" "xdg"
-    deploy "xdg"
-    
     # Scripts
     remove "$HOME/.local/bin" "scripts"
     deploy "scripts"
-    
-    # Alacritty terminal
-    remove "$HOME/.config/alacritty" "alacritty"
-    deploy "alacritty"
- 
+
     # Ghostty configuration
     remove "$HOME/.config/ghostty" "ghostty"
     deploy "ghostty"
@@ -352,21 +330,6 @@ deploy_common_packages() {
     # Tmux configuration
     remove "$HOME/.tmux.conf" "tmux"
     deploy "tmux"
-
-    # remove "$HOME/.rubocop.yml" "ruby"
-    # deploy "ruby" "" "$platform"
-
-    # remove "$HOME/.config/lazygit" "lazygit"
-    # deploy "lazygit" "" "$platform"
-}
-
-# Deploy platform-specific packages for macOS
-deploy_mac_packages() {
-    log_info "Deploying macOS-specific packages..."
-    
-    # Aerospace window manager
-    remove "$HOME/.config/aerospace" "aerospace"
-    deploy "aerospace"
 }
 
 # Deploy platform-specific packages for Arch Linux (omarchy)
@@ -388,29 +351,34 @@ deploy_omarchy_packages() {
     
     # Systemd services (adopt existing files)
     deploy "systemd" true
-    
-    # Reload system components after deployment
-    reload_system_components "omarchy"
+
+    # XDG defaults
+    remove "$HOME/.config/mimeapps.list" "xdg"
+    deploy "xdg"
 }
 
 # Main deployment function
 deploy_dotfiles() {
-    local platform="$1"
+    log_info "Starting dotfiles deployment for platform: $PLATFORM" 
     
-    log_info "Starting dotfiles deployment for platform: $platform" 
+    # If a specific package is requested (not "all"), deploy only that package
+    if [[ -n "$PKG" && "$PKG" != "all" ]]; then
+        deploy "$PKG" false
+        log_success "Package '$PKG' deployed successfully!"
+        return 0
+    fi
     
     # Deploy platform-specific packages
-    case "$platform" in
+    case "$PLATFORM" in
         mac)
             deploy_common_packages
-            deploy_mac_packages
             ;;
         omarchy)
             deploy_common_packages
             deploy_omarchy_packages
             ;;
         *)
-            log_error "Unknown platform: $platform"
+            log_error "Unknown platform: $PLATFORM"
             return 1
             ;;
     esac
@@ -455,8 +423,7 @@ validate_package() {
 
 # Parse command line arguments
 parse_arguments() {
-    local platform
-    platform=$(detect_platform)
+    PLATFORM=$(detect_platform)
     
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -506,7 +473,7 @@ parse_arguments() {
     fi
 
     if [[ -n "$PKG" ]]; then
-        deploy_dotfiles "$platform"
+        deploy_dotfiles
     fi
     
     if [[ "$WITH_GIT" == true ]]; then
@@ -514,11 +481,11 @@ parse_arguments() {
     fi
     
     if [[ "$WITH_SERVICES" == true ]]; then
-        start_services "$platform"
+        start_services
     fi
     
     if [[ "$WITH_DEBLOAT" == true ]]; then
-        debloat_system "$platform"
+        debloat_system
     fi
 }
 

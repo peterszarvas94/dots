@@ -29,10 +29,10 @@ git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git LazyV
 cd ~/projects/LazyVim
 git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/omarchy-nvim-theme-grabber.git
-
 cd ~/projects/dots
 git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git
+
 
 mkdir ~/work
 mkdir ~/projects/go
