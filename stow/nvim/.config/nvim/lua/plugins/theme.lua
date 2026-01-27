@@ -1,0 +1,1 @@
+/Users/szarvaspeter/.config/nvim/mac/theme.lua
