@@ -1,0 +1,2 @@
+#!/bin/bash
+exec chromium --profile-directory="Profile 1" --new-window "$@"
