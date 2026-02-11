@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VIDEO_NR="${VIDEO_NR:-10}"
+LABEL="${LABEL:-Android Cam}"
+DEV="/dev/video${VIDEO_NR}"
+
+require() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Missing dependency: $1" >&2
+    exit 1
+  fi
+}
+
+require scrcpy
+require adb
+
+if ! command -v modprobe >/dev/null 2>&1; then
+  echo "Missing dependency: modprobe (kmod)" >&2
+  exit 1
+fi
+
+if [[ ! -e "$DEV" ]]; then
+  echo "Loading v4l2loopback at $DEV..."
+  sudo modprobe v4l2loopback "video_nr=${VIDEO_NR}" "card_label=${LABEL}" exclusive_caps=1
+fi
+
+echo "Detecting Android cameras..."
+scrcpy --list-cameras || true
+
+echo -n "Camera id to use (default 0): "
+read -r CAM_ID
+CAM_ID="${CAM_ID:-0}"
+
+echo -n "Camera size (default 1280x720): "
+read -r CAM_SIZE
+CAM_SIZE="${CAM_SIZE:-1280x720}"
+
+echo -n "Camera fps (default 30): "
+read -r CAM_FPS
+CAM_FPS="${CAM_FPS:-30}"
+
+ARGS=(--video-source=camera --camera-id="${CAM_ID}" --v4l2-sink="$DEV" --no-playback --no-window)
+ARGS+=(--camera-size="${CAM_SIZE}" --camera-fps="${CAM_FPS}")
+
+echo "Starting scrcpy camera -> $DEV"
+echo "Press Ctrl+C to stop."
+
+scrcpy "${ARGS[@]}"

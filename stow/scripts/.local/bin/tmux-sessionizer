@@ -3,7 +3,7 @@
 # Based on ThePrimeagen's tmux-sessionizer
 
 # Select dirs
-parent_dirs=(~/work ~/projects ~/projects/go ~/youtube ~/projects/dots/stow/neovim/.config/)
+parent_dirs=(~/work ~/projects ~/projects/dots/stow/nvim/.config/)
 
 select_directory() {
     # Include parent directories themselves

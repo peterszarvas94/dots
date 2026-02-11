@@ -277,7 +277,7 @@ deploy() {
     
     # Automatically link theme files for specific packages
     case "$package_name" in
-        neovim)
+        nvim)
             link_neovim_theme "$PLATFORM"
             ;;
         ghostty)
