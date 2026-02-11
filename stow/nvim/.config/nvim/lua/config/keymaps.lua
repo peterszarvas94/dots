@@ -36,12 +36,6 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Indent right', noremap = true, silent 
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
 
--- disable arrow keys
-vim.keymap.set('n', '<left>', ':echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', ':echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', ':echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', ':echo "Use j to move!!"<CR>')
-
 -- quickfix list
 vim.keymap.set('n', '<C-[>', ':cprevious<CR>', { desc = 'Previous item in quickfix list', silent = true })
 vim.keymap.set('n', '<C-]>', ':cnext<CR>', { desc = 'Next item in quickfix list', silent = true })
@@ -56,4 +50,3 @@ vim.keymap.set('n', '<M-->', '<C-w>-', { desc = 'Resize split -1 horizontally', 
 vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = 'Yank buffer', silent = true })
 vim.keymap.set('n', '<leader>v', 'ggVG', { desc = 'Visual select buffer', silent = true })
 vim.keymap.set('n', '<leader>p', 'ggVGp', { desc = 'Paste to buffer', silent = true })
-
