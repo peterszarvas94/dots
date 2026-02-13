@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+print_usage() {
+  echo "Usage: $0 <light|dark>"
+}
+
+if [[ ${#} -ne 1 ]]; then
+  print_usage
+  exit 1
+fi
+
+MODE="$1"
+
+case "$MODE" in
+  light)
+    TARGET="prefer-light"
+    ;;
+  dark)
+    TARGET="prefer-dark"
+    ;;
+  *)
+    print_usage
+    exit 1
+    ;;
+esac
+
+gsettings set org.gnome.desktop.interface color-scheme "$TARGET"
+systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
+
+echo "Set color-scheme to: $TARGET"
