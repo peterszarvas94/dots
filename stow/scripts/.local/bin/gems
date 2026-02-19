@@ -1,0 +1,27 @@
+#!/bin/bash
+set -euo pipefail
+
+backend_session="gems-backend-platform"
+frontend_session="gems-frontend-platform"
+
+backend_dir="$HOME/work/gems-backend-platform"
+frontend_dir="$HOME/work/gems-frontend-platform"
+colima_cmd='if colima status >/dev/null 2>&1; then colima restart; else colima start; fi'
+backend_start_cmd="$colima_cmd && git switch development && git pull && npm i && docker compose down && docker compose up -d && npm run build && npm run init-development -C packages/database && npm run start -C packages/app"
+frontend_start_cmd="git switch development && git pull && npm i && npm run dev -C packages/app-center"
+
+if ! tmux has-session -t "$backend_session" 2>/dev/null; then
+  tmux new-session -d -s "$backend_session" -c "$backend_dir"
+  tmux send-keys -t "$backend_session" "cd \"$backend_dir\" && $backend_start_cmd" C-m
+fi
+
+if ! tmux has-session -t "$frontend_session" 2>/dev/null; then
+  tmux new-session -d -s "$frontend_session" -c "$frontend_dir"
+  tmux send-keys -t "$frontend_session" "cd \"$frontend_dir\" && $frontend_start_cmd" C-m
+fi
+
+if [ -n "${TMUX:-}" ]; then
+  tmux switch-client -t "$backend_session"
+else
+  tmux attach-session -t "$backend_session"
+fi
