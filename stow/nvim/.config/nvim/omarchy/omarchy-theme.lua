@@ -82,6 +82,27 @@ return {
     lazy = true,
   },
   {
+    'steve-lohmeyer/mars.nvim',
+    name = 'mars',
+    priority = 1000,
+    lazy = true,
+  },
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    -- Customize theme specs, e.g: disable italic. For full spec: https://github.com/rose-pine/neovim
+    config = function()
+      require('rose-pine').setup {
+        styles = {
+          italic = false,
+          bold = false,
+        },
+      }
+    end,
+    priority = 1000,
+    lazy = true,
+  },
+  {
     -- for the fake lazyvim integration in omarchy
     'LazyVim/LazyVim',
     opts = {},
@@ -94,8 +115,6 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      local transparency_file = vim.fn.stdpath 'config' .. '/plugin/after/transparency.lua'
-
       vim.api.nvim_create_autocmd('User', {
         pattern = 'LazyReload',
         callback = function()
@@ -115,11 +134,9 @@ return {
 
                 vim.defer_fn(function()
                   pcall(vim.cmd.colorscheme, colorscheme)
-
-                  if vim.fn.filereadable(transparency_file) == 1 then
-                    vim.defer_fn(function()
-                      vim.cmd.source(transparency_file)
-                    end, 5)
+                  -- set bg to dark for gruvbox
+                  if colorscheme == 'gruvbox' then
+                    pcall(vim.cmd.set, 'background=dark')
                   end
                 end, 5)
 
