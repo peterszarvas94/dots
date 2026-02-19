@@ -19,8 +19,7 @@
     "network",
     "pulseaudio",
     "cpu",
-    "battery",
-    "hyprland/language"
+    "battery"
   ],
   "hyprland/workspaces": {
     "on-click": "activate",
@@ -159,11 +158,5 @@
   "tray": {
     "icon-size": 12,
     "spacing": 17
-  },
-  "hyprland/language": {
-    "format": "<span weight='bold'>KBD</span> {}",
-    "format-en": "US",
-    "format-hu": "HU",
-    "on-click": "hyprctl switchxkblayout \"hl-virtual-keyboard-fcitx5\" next"
   }
 }
