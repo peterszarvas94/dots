@@ -40,8 +40,19 @@ local git_status = new_git_status()
 
 return {
   'stevearc/oil.nvim',
+  lazy = false,
   dependencies = {
     'nvim-tree/nvim-web-devicons',
+  },
+  keys = {
+    { '-', '<CMD>Oil<CR>', desc = 'Open parent directory' },
+    {
+      '_',
+      function()
+        require('oil').open(vim.fn.getcwd())
+      end,
+      desc = 'Open working directory',
+    },
   },
   config = function()
     require('oil').setup {
@@ -69,6 +80,5 @@ return {
         end,
       },
     }
-    vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
   end,
 }

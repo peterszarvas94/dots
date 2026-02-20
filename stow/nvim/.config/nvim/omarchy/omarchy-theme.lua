@@ -1,6 +1,11 @@
 return {
   -- omarchy theme hot preloads
   {
+    'bjarneo/ethereal.nvim',
+    priority = 1000,
+    lazy = true,
+  },
+  {
     'ribru17/bamboo.nvim',
     priority = 1000,
     lazy = true,

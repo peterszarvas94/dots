@@ -4,7 +4,6 @@ stow/zsh/.zsh/config/env.zsh
 stow/config/.config/karabiner/automatic_backups/
 stow/config/.config/aerc/
 stow/git/.config/git/work/config
-AGENTS.md
 stow/neovim/.config/nvim/lua/plugins/theme.lua
 stow/alacritty/.config/alacritty/platform.toml
 stow/alacritty/.config/alacritty/theme.toml
