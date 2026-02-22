@@ -76,8 +76,8 @@ setup_git() {
     echo "After adding, test with: ssh -T git@github.com"
 }
 
-# Link neovim theme files
-link_neovim_theme() {
+# Link nvim theme files
+link_nvim_theme() {
     local platform="$1"
     
     case "$platform" in
@@ -87,11 +87,11 @@ link_neovim_theme() {
             ;;
         omarchy)
             ln -nsf ~/.config/nvim/omarchy/omarchy-theme.lua ~/.config/nvim/lua/plugins/omarchy-theme.lua
-            ln -nsf ~/.config/omarchy/current/theme/neovim.lua ~/.config/nvim/lua/plugins/theme.lua
+            ln -nsf ~/.config/omarchy/current/theme/nvim.lua ~/.config/nvim/lua/plugins/theme.lua
             log_success "Neovim theme linked for omarchy"
             ;;
         *)
-            log_error "Cannot link neovim theme files, unsupported platform: $platform"
+            log_error "Cannot link nvim theme files, unsupported platform: $platform"
             return 1
             ;;
     esac
@@ -278,7 +278,7 @@ deploy() {
     # Automatically link theme files for specific packages
     case "$package_name" in
         nvim)
-            link_neovim_theme "$PLATFORM"
+            link_nvim_theme "$PLATFORM"
             ;;
         ghostty)
             link_ghostty_theme "$PLATFORM"
@@ -311,9 +311,9 @@ deploy_common_packages() {
     touch "$HOME/.zsh/config/env.zsh"
 
     # Neovim configuration
-    remove "$HOME/.config/nvim" "neovim"
-    remove "$HOME/.local/share/nvim/lazy" "neovim"
-    deploy "neovim"
+    remove "$HOME/.config/nvim" "nvim"
+    remove "$HOME/.local/share/nvim/lazy" "nvim"
+    deploy "nvim"
 
     # OpenCode configuration
     remove "$HOME/.config/opencode" "opencode"
