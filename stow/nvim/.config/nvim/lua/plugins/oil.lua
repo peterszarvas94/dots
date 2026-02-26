@@ -47,7 +47,7 @@ return {
   keys = {
     { '-', '<CMD>Oil<CR>', desc = 'Open parent directory' },
     {
-      '_',
+      '<C-\\>',
       function()
         require('oil').open(vim.fn.getcwd())
       end,

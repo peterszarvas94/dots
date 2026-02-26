@@ -40,6 +40,15 @@ return { -- Autoformat
         rubocop = {
           args = { '-a', '-f', 'quiet', '--stderr', '--stdin', '$FILENAME' },
         },
+        -- pg_format = {
+        --   command = 'pg_format',
+        --   args = {
+        --     '-B', -- break INSERT values after commas
+        --     '-W',
+        --     '1', -- wrap lists aggressively (one item per line)
+        --   },
+        --   stdin = true,
+        -- },
       },
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -67,6 +76,7 @@ return { -- Autoformat
           end
           return {}
         end,
+        -- sql = { 'pg_format' },
       },
     }
 
