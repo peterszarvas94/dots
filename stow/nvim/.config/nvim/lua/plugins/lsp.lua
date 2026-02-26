@@ -139,6 +139,14 @@ return {
         filetypes = { 'html', 'templ' },
       }
 
+      vim.lsp.config['templ'] = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { 'templ', 'lsp' },
+        filetypes = { 'templ' },
+        root_markers = { 'go.work', 'go.mod', '.git' },
+      }
+
       vim.lsp.config['eslint'] = {
         capabilities = capabilities,
         on_attach = on_attach,
@@ -148,7 +156,7 @@ return {
         settings = {},
       }
 
-      for _, server in ipairs { 'yamlls', 'jsonls', 'cssls', 'bashls', 'astro', 'templ' } do
+      for _, server in ipairs { 'yamlls', 'jsonls', 'cssls', 'bashls', 'astro' } do
         vim.lsp.config[server] = {
           capabilities = capabilities,
           on_attach = on_attach,

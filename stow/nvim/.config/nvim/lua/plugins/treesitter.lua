@@ -14,6 +14,7 @@ return {
           'go',
           'javascript',
           'typescript',
+          'templ',
           'html',
           'css',
           'json',
@@ -96,5 +97,9 @@ return {
         tscontext.toggle()
       end, { desc = 'TSContext toggle', silent = true })
     end,
+  },
+  {
+    'joerdav/templ.vim',
+    ft = 'templ',
   },
 }
