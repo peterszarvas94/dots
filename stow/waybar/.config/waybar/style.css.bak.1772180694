@@ -33,26 +33,17 @@
 #cpu,
 #battery,
 #pulseaudio,
-#custom-omarchy,
-#custom-update {
-  min-width: 12px;
-  margin: 0 7.5px;
-}
 
-#tray {
-  margin-right: 16px;
-}
-
-#bluetooth {
-  margin-right: 17px;
-}
-
+#custom-update,
+#custom-expand-icon,
+#bluetooth,
+#tray,
 #network {
-  margin-right: 13px;
+  margin: 0 16px 0 0;
 }
 
-#custom-expand-icon {
-  margin-right: 18px;
+#custom-omarchy {
+  margin: 4px 0 0 8px;
 }
 
 tooltip {
@@ -63,13 +54,14 @@ tooltip {
   font-size: 10px;
 }
 
-#clock {
-  margin-left: 8.75px;
+#language {
+  margin-right: 8px;
 }
 
 .hidden {
   opacity: 0;
 }
+
 
 #custom-screenrecording-indicator,
 #custom-idle-indicator,
@@ -85,16 +77,16 @@ tooltip {
   color: #a55555;
 }
 
-#custom-idle-indicator.active,
-#custom-notification-silencing-indicator.active {
-  color: #a55555;
-}
-
 #custom-voxtype {
   min-width: 12px;
   margin: 0 0 0 7.5px;
 }
 
 #custom-voxtype.recording {
+  color: #a55555;
+}
+
+#custom-idle-indicator.active,
+#custom-notification-silencing-indicator.active {
   color: #a55555;
 }

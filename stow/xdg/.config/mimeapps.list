@@ -46,3 +46,4 @@ application/xml=nvim.desktop
 text/xml=nvim.desktop
 x-scheme-handler/msteams=teams-for-linux.desktop
 x-scheme-handler/postman=Postman.desktop
+inode/directory=org.gnome.Nautilus.desktop
