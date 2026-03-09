@@ -1,0 +1,28 @@
+#!/bin/bash
+# Post-processing hook for screen recordings
+# Converts mono audio to stereo by duplicating the left channel to both channels
+
+RECORDING_FILE="$1"
+
+if [[ -z "$RECORDING_FILE" || ! -f "$RECORDING_FILE" ]]; then
+  exit 0
+fi
+
+# Check audio channels
+CHANNELS=$(ffprobe -v error -select_streams a:0 -show_entries stream=channels -of default=noprint_wrappers=1:nokey=1 "$RECORDING_FILE" 2>/dev/null)
+
+if [[ "$CHANNELS" == "1" ]] || [[ "$CHANNELS" == "2" ]]; then
+  # Check if right channel is silent by looking for -inf
+  HAS_RIGHT_AUDIO=$(ffmpeg -i "$RECORDING_FILE" -vn -af "astats=metadata=1:reset=1" -f null - 2>&1 | grep "RMS level dB" | sed -n '2p' | grep -v "\-inf")
+  
+  if [[ -z "$HAS_RIGHT_AUDIO" ]]; then
+    TEMP_FILE="${RECORDING_FILE%.mp4}-stereo-temp.mp4"
+    
+    # Duplicate left channel to right
+    if ffmpeg -y -i "$RECORDING_FILE" -af "pan=stereo|c0=c0|c1=c0" -c:v copy "$TEMP_FILE" -loglevel quiet 2>/dev/null; then
+      mv "$TEMP_FILE" "$RECORDING_FILE"
+    else
+      rm -f "$TEMP_FILE"
+    fi
+  fi
+fi
