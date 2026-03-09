@@ -1,5 +1,4 @@
 git:
   paging:
     colorArg: always
-    # pager: delta --dark --paging=never
-    # pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+    pager: delta --side-by-side --paging=never --hunk-header-style=omit --file-style=omit --file-decoration-style=omit --keep-plus-minus-markers --minus-style='red' --plus-style='green' --zero-style='normal' --line-numbers-left-format='' --line-numbers-right-format='' --line-numbers-left-style='normal' --line-numbers-right-style='normal' --minus-emph-style='black red' --plus-emph-style='black green' --wrap-max-lines=unlimited
