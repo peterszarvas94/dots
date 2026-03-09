@@ -247,7 +247,6 @@ backup_config() {
 # Remove file with logging
 remove() {
     local file_path="$1"
-    local package_name="$2"
     
     if [[ -f "$file_path" ]]; then
         log_info "Removing $file_path"
@@ -266,8 +265,12 @@ prepare_package_deploy() {
 
     case "$package_name" in
         tmux)
-            remove "$HOME/.tmux.conf" "tmux"
-            remove "$HOME/.config/tmux" "tmux"
+            remove "$HOME/.tmux.conf"
+            remove "$HOME/.config/tmux"
+            ;;
+        omarchy)
+            remove "$HOME/.config/omarchy/hooks"
+            remove "$HOME/.config/omarchy/branding"
             ;;
     esac
 }
@@ -316,36 +319,36 @@ deploy_common_packages() {
     log_info "Deploying common packages..."
  
     # Git configuration
-    remove "$HOME/.gitignore" "git"
-    remove "$HOME/.config/git" "git"
+    remove "$HOME/.gitignore"
+    remove "$HOME/.config/git"
     deploy "git"
 
-    # Zsh configuration  
-    remove "$HOME/.zshrc" "zsh"
-    remove "$HOME/.zsh" "zsh"
+    # Zsh configuration
+    remove "$HOME/.zshrc"
+    remove "$HOME/.zsh"
     deploy "zsh"
     touch "$HOME/.zsh/config/env.zsh"
 
     # Neovim configuration
-    remove "$HOME/.config/nvim" "nvim"
-    remove "$HOME/.local/share/nvim/lazy" "nvim"
+    remove "$HOME/.config/nvim"
+    remove "$HOME/.local/share/nvim/lazy"
     deploy "nvim"
 
     # OpenCode configuration
-    remove "$HOME/.config/opencode" "opencode"
+    remove "$HOME/.config/opencode"
     deploy "opencode"
 
     # Scripts
-    remove "$HOME/.local/bin" "scripts"
+    remove "$HOME/.local/bin"
     deploy "scripts"
 
     # Ghostty configuration
-    remove "$HOME/.config/ghostty" "ghostty"
+    remove "$HOME/.config/ghostty"
     deploy "ghostty"
 
     # Tmux configuration
-    remove "$HOME/.tmux.conf" "tmux"
-    remove "$HOME/.config/tmux" "tmux"
+    remove "$HOME/.tmux.conf"
+    remove "$HOME/.config/tmux"
     deploy "tmux"
 }
 
@@ -354,23 +357,28 @@ deploy_omarchy_packages() {
     log_info "Deploying Arch Linux (omarchy) specific packages..."
 
     # Hyprland window manager (selective files only)
-    remove "$HOME/.config/hypr/autostart.conf" "hypr"
-    remove "$HOME/.config/hypr/bindings.conf" "hypr"
-    remove "$HOME/.config/hypr/envs.conf" "hypr"
-    remove "$HOME/.config/hypr/input.conf" "hypr"
-    remove "$HOME/.config/hypr/looknfeel.conf" "hypr"
-    remove "$HOME/.config/hypr/monitors.conf" "hypr"
+    remove "$HOME/.config/hypr/autostart.conf"
+    remove "$HOME/.config/hypr/bindings.conf"
+    remove "$HOME/.config/hypr/envs.conf"
+    remove "$HOME/.config/hypr/input.conf"
+    remove "$HOME/.config/hypr/looknfeel.conf"
+    remove "$HOME/.config/hypr/monitors.conf"
     deploy "hypr"
 
+    # Omarchy
+    remove "$HOME/.config/omarchy/hooks"
+    remove "$HOME/.config/omarchy/branding"
+    deploy "omarchy"
+
     # Waybar status bar
-    remove "$HOME/.config/waybar" "waybar"
+    remove "$HOME/.config/waybar"
     deploy "waybar"
-    
+
     # Systemd services (adopt existing files)
     deploy "systemd" true
 
     # XDG defaults
-    remove "$HOME/.config/mimeapps.list" "xdg"
+    remove "$HOME/.config/mimeapps.list"
     deploy "xdg"
 }
 
