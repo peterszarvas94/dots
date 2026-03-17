@@ -1,0 +1,85 @@
+[tools]
+node = "24.14.0"
+npm = "11.9.0"
+
+[tasks.setup]
+description = "Install backend and frontend dependencies"
+run = [
+  "npm ci --prefix gems-backend-platform",
+  "npm ci --prefix gems-frontend-platform",
+]
+
+[tasks.install]
+description = "Run npm install in both repos"
+run = [
+  "npm i --prefix gems-backend-platform",
+  "npm i --prefix gems-frontend-platform",
+]
+
+[tasks.pull]
+description = "Rebase-pull latest changes in both repos"
+run = [
+  "git -C gems-backend-platform pull --rebase --autostash",
+  "git -C gems-frontend-platform pull --rebase --autostash",
+]
+
+[tasks.status]
+description = "Show git status for backend and frontend"
+run = [
+  "git -C gems-backend-platform status --short --branch",
+  "git -C gems-frontend-platform status --short --branch",
+]
+
+[tasks.doctor]
+description = "Check local tooling and Docker health"
+run = [
+  "mise --version",
+  "node --version",
+  "npm --version",
+  "docker --version",
+  "docker compose version",
+  "docker info > /dev/null",
+]
+
+[tasks.backend-init]
+description = "Initialize backend development database"
+dir = "gems-backend-platform/packages/database"
+run = "npm run init-development"
+
+[tasks.docker]
+description = "Restart docker"
+run = [
+  "docker compose -f gems-backend-platform/docker-compose.yml down",
+  "docker compose -f gems-backend-platform/docker-compose.yml up -d",
+]
+
+[tasks.backend]
+description = "Build backend and start watch mode"
+dir = "gems-backend-platform"
+run = [
+  "npm run build",
+  "npm run start:dev --workspace @gems-server/gems",
+]
+
+[tasks.frontend]
+description = "Start frontend in watch mode"
+dir = "gems-frontend-platform/packages/app-center"
+run = "npm run dev"
+
+[tasks.dev]
+description = "Start backend and frontend in watch mode"
+depends = ["backend", "frontend"]
+
+[tasks.generate-api]
+description = "Generate frontend API client from backend"
+dir = "gems-frontend-platform"
+run = "npm run generate:api"
+
+[tasks.generate-object]
+description = "Generate frontend object definitions"
+dir = "gems-frontend-platform"
+run = "npm run generate:object"
+
+[tasks.generate]
+description = "Generate API client and object definitions"
+depends = ["generate-api", "generate-object"]

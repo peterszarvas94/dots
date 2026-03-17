@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+backend_dir="$HOME/work/gems-backend-platform"
+frontend_dir="$HOME/work/gems-frontend-platform"
+
+if [[ -z "${TMUX:-}" ]]; then
+  echo "Not in a tmux session"
+  exit 1
+fi
+
+current_pane="$(tmux display-message -p '#{pane_id}')"
+
+tmux send-keys -t "$current_pane" "cd \"$backend_dir\"" C-m
+right_pane="$(tmux split-window -h -P -F '#{pane_id}' -t "$current_pane" -c "$frontend_dir")"
+tmux select-layout even-horizontal
+tmux send-keys -t "$current_pane" C-l
+tmux send-keys -t "$right_pane" C-l
+tmux select-pane -t "$current_pane"
