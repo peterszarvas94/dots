@@ -41,10 +41,18 @@ run = [
   "docker info > /dev/null",
 ]
 
-[tasks.backend-init]
+[tasks.init]
 description = "Initialize backend development database"
 dir = "gems-backend-platform/packages/database"
 run = "npm run init-development"
+
+[tasks.up]
+description = "Start docker"
+run = "docker compose -f gems-backend-platform/docker-compose.yml up -d"
+
+[tasks.down]
+description = "Stop docker"
+run = "docker compose -f gems-backend-platform/docker-compose.yml down"
 
 [tasks.docker]
 description = "Restart docker"
