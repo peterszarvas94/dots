@@ -2,62 +2,79 @@
 
 ## Purpose
 
-Help explain how this repo organizes dotfiles, how to use the existing configs, and how to add new ones.
+Reference for how this repo is laid out and which files/folders are responsible for setup, deployment, and reusable assets.
 
-## Repo structure
+## Top-level layout
 
-- `stow/` contains per-tool packages intended for GNU Stow.
-- Each package mirrors the target location under your home directory.
-- Example: `stow/neovim/.config/nvim` maps to `~/.config/nvim`.
+- `stow/`: Main dotfiles packages managed by GNU Stow.
+- `config`: Main deploy script (`--pkg`, `--git`, `--services`, `--debloat`) with platform-aware linking.
+- `setup_mac`: Bootstrap script for macOS package install + clone + initial `./config` run.
+- `setup_omarchy`: Bootstrap script for Linux/Omarchy package install + clone + initial `./config` run.
+- `doc/`: Repository documentation (this file lives here).
+- `resources/`: Extra assets like fonts, wallpapers, keyboard layout, and `mise` related files.
+- `_old/`: Archived legacy configs/scripts kept for reference.
+- `README.md`: Quick-start instructions for macOS and Omarchy setup.
+- `TODO.md`: Short project backlog notes.
 
-Major packages in `stow/`:
+## `stow/` packages
 
-- `neovim` (Neovim config)
-- `zsh` (shell config)
-- `tmux` (terminal multiplexer)
-- `git` (git config)
-- `alacritty`, `ghostty` (terminal emulators)
-- `yabai`, `skhd`, `aerospace`, `amethyst` (window managers)
-- `karabiner` (keyboard)
-- `starship` (prompt)
-- `lazygit` (git UI)
-- `opencode`, `zed`, `ruby`, `ssh`, `scripts`, `hypr`, `waybar`, `systemd`
+Current packages:
 
-## Using the configs
+- `ghostty`, `git`, `hypr`, `lazygit`, `nvim`, `omarchy`, `opencode`, `scripts`
+- `ssh`, `systemd`, `tmux`, `waybar`, `xdg`, `zed`, `zsh`
 
-- Use the repo `./config` script from the repo root. It handles package linking plus extra per-tool steps.
-- Deploy a single package:
+Each package mirrors the target path under `$HOME`.
 
-```bash
-./config --pkg=neovim
+Example:
+
+```text
+stow/nvim/.config/nvim -> ~/.config/nvim
 ```
 
-- Deploy all packages for the current OS:
+## Major packages
+
+For the packages you are most likely to edit first, see:
+
+- `doc/major-packages.md`
+
+It covers what each package owns, where platform-specific files live, and which files are safe to tweak directly.
+
+## Common usage
+
+Deploy all packages for the current platform:
 
 ```bash
 ./config --pkg=all
 ```
 
-## Adding a new config
-
-1. Create a new package folder in `stow/`, named after the tool.
-2. Mirror the target path inside that folder (shows where it links to).
-3. Put the config files under that mirrored path.
-
-Example for a new tool `foo` that stores config in `~/.config/foo`:
-
-```
-stow/foo/.config/foo/
-```
-
-Then deploy it:
+Deploy one package:
 
 ```bash
-./config --pkg=foo
+./config --pkg=nvim
+```
+
+Optional extra actions:
+
+```bash
+./config --git
+./config --services
+./config --debloat
+```
+
+## Adding a new package
+
+1. Create a folder under `stow/` named after the tool.
+2. Mirror the destination path inside that folder.
+3. Add files, then deploy with `./config --pkg=<name>`.
+
+Example structure:
+
+```text
+stow/foo/.config/foo/
 ```
 
 ## Notes
 
-- Do not edit generated or external files (e.g. `node_modules`).
-- Keep new configs ASCII unless a file already uses Unicode.
-- Prefer small, focused changes that match existing conventions.
+- The `config` script auto-detects platform (`mac` or `omarchy`).
+- Theme/platform links for tools like `nvim`, `ghostty`, and `zsh` are handled by `config` after stow deploy.
+- Keep changes focused and consistent with existing folder conventions.
