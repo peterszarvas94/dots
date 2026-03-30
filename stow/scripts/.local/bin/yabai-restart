@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-rm /tmp/yabai*
-yabai --restart-service
-skhd --restart-service

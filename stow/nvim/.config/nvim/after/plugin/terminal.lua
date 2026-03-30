@@ -22,6 +22,33 @@ vim.api.nvim_create_user_command('TerminalTab', function()
   vim.cmd 'tabnew | term'
 end, {})
 
+local function find_lazygit_tab()
+  for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      if vim.b[buf].lazygit_tab == true then
+        return tab
+      end
+    end
+  end
+
+  return nil
+end
+
+local function toggle_lazygit_tab()
+  local lazygit_tab = find_lazygit_tab()
+  if lazygit_tab ~= nil and vim.api.nvim_tabpage_is_valid(lazygit_tab) then
+    vim.api.nvim_set_current_tabpage(lazygit_tab)
+    vim.cmd 'tabclose!'
+    return
+  end
+
+  vim.cmd 'tabnew'
+  vim.cmd 'terminal lazygit'
+  vim.b[vim.api.nvim_get_current_buf()].lazygit_tab = true
+  vim.cmd 'startinsert'
+end
+
 local state = {
   floating = {
     buf = -1,
@@ -78,4 +105,5 @@ vim.keymap.set('n', '<leader>to', ':TerminalOpen<CR>', { desc = 'Terminal Open',
 vim.keymap.set('n', '<leader>ts', ':TerminalSmall<CR>', { desc = 'Terminal Small', silent = true })
 vim.keymap.set('n', '<leader>tf', ':TerminalFloat<CR>', { desc = 'Terminal Float', silent = true })
 vim.keymap.set('n', '<leader>tt', ':TerminalTab<CR>', { desc = 'Terminal Tab', silent = true })
+vim.keymap.set('n', '<leader>L', toggle_lazygit_tab, { desc = 'LazyGit Tab (toggle)', silent = true })
 vim.keymap.set('t', '<C-e>', '<c-\\><c-n>', { desc = 'Escape terminal mode', silent = true })
