@@ -9,7 +9,7 @@ Workflow:
 1. Parse ticket key (`GEMSU-<number>`) and short title from input.
 2. Switch to `development` branch, pull. Create/switch branch in format: `fix/GEMSU-<number>-<kebab-slug>`, based/rebased to development. This should be a fresh branch, same commits as latest `development`. English branch name.
 3. Implement the ticket with minimal, scoped changes following repo conventions.
-4. Commit everything, it will run eslint automatically for the commited files. Commit title should be the same as branch name: `fix/GEMSU-<number>-<kebab-slug>`.
+4. Dont commit anything, keep it unstaged.
 5. Create or update `MR/<number>.md`, using `MR/example.md` as a template. Don't commit this folder.
 6. Return:
    - branch name
