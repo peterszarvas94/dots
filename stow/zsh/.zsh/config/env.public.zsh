@@ -4,6 +4,12 @@ export VISUAL='nvim'
 export TERM='xterm-256color'
 export COLORTERM='truecolor'
 
+# avoid stale RubyGems overrides from parent shells
+unset GEM_HOME GEM_PATH
+path=(${path:#$HOME/.gem/bin})
+path=(${path:#/opt/homebrew/opt/ruby/bin})
+export PATH
+
 # if [ "$(uname)" = "Darwin" ]; then
 #     alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
 #     export BROWSER="open"
@@ -36,12 +42,6 @@ export PATH="~/.turso:$PATH"
 
 # zdg
 export XDG_CONFIG_HOME="$HOME/.config"
-
-# ruby
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export GEM_HOME="$HOME/.gem"
-export GEM_PATH="$GEM_HOME"
-export PATH="$GEM_HOME/bin:$PATH"
 
 export PATH="$HOME/.nodev/current:$PATH"
 
