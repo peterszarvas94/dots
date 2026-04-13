@@ -71,12 +71,6 @@ return {
     lazy = true,
   },
   {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    priority = 1000,
-    lazy = true,
-  },
-  {
     'folke/tokyonight.nvim',
     priority = 1000,
     lazy = true,
@@ -113,68 +107,4 @@ return {
     opts = {},
   },
 
-  -- omarchy theme hot reloading
-  {
-    name = 'theme-hotreload',
-    dir = vim.fn.stdpath 'config',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      local group = vim.api.nvim_create_augroup('OmarchyThemeHotReload', { clear = true })
-
-      local function apply_colorscheme_from_spec(theme_spec)
-        if type(theme_spec) ~= 'table' then
-          return
-        end
-
-        for _, spec in ipairs(theme_spec) do
-          if spec[1] == 'LazyVim/LazyVim' and spec.opts and spec.opts.colorscheme then
-            local colorscheme = spec.opts.colorscheme
-
-            local ok_loader, loader = pcall(require, 'lazy.core.loader')
-            if ok_loader and loader and loader.colorscheme then
-              pcall(loader.colorscheme, colorscheme)
-            end
-
-            vim.defer_fn(function()
-              pcall(vim.cmd.colorscheme, colorscheme)
-              if colorscheme == 'gruvbox' then
-                pcall(vim.cmd.set, 'background=dark')
-              end
-            end, 5)
-
-            return
-          end
-        end
-      end
-
-      local function reload_theme()
-        package.loaded['plugins.theme'] = nil
-
-        vim.schedule(function()
-          local ok, theme_spec = pcall(require, 'plugins.theme')
-          if not ok then
-            return
-          end
-
-          apply_colorscheme_from_spec(theme_spec)
-        end)
-      end
-
-      pcall(vim.api.nvim_del_user_command, 'SyncTheme')
-      vim.api.nvim_create_user_command('SyncTheme', function()
-        reload_theme()
-      end, {
-        desc = 'Reload Neovim theme from Omarchy theme file',
-      })
-
-      vim.api.nvim_create_autocmd('User', {
-        group = group,
-        pattern = 'LazyReload',
-        callback = function()
-          reload_theme()
-        end,
-      })
-    end,
-  },
 }

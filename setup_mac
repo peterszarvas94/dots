@@ -5,6 +5,7 @@
 
 # Install packages
 brew tap homebrew/cask-fonts
+brew tap cormacrelf/tap
 brew install \
     stow \
     tmux \
@@ -15,7 +16,7 @@ brew install \
     ghostty \
     bun-bin \
     opencode \
-    dark-mode
+    dark-notify
 
 # Remove
 rm -rf ~/projects/dots
