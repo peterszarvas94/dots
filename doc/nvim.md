@@ -8,8 +8,7 @@
 
 - Entry: `stow/nvim/.config/nvim/init.lua`
 - Core config: `stow/nvim/.config/nvim/lua/config/`
-- Theme runtime: `stow/nvim/.config/nvim/lua/config/theme/runtime.lua`
-- Plugin specs: `stow/nvim/.config/nvim/lua/plugins/`
+- Plugin specs (including theme runtime logic): `stow/nvim/.config/nvim/lua/plugins/`
 
 ## Platform behavior
 
