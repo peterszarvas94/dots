@@ -1,1 +1,1 @@
-/home/peti/.config/nvim/omarchy/theme-preload.lua
+/Users/szarvaspeter/.config/nvim/mac/theme-preload.lua

@@ -1,1 +1,1 @@
-/home/peti/.config/nvim/omarchy/theme.lua
+/Users/szarvaspeter/.config/nvim/mac/theme.lua

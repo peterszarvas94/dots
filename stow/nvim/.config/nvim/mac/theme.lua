@@ -3,28 +3,46 @@ return {
   name = 'rose-pine',
   config = function()
     local uv = vim.uv or vim.loop
-    local POLL_INTERVAL_MS = 2000
-    local sync_group = vim.api.nvim_create_augroup('RosePineMacThemeSync', { clear = true })
-    local timer_group = vim.api.nvim_create_augroup('RosePineMacThemeSyncTimer', { clear = true })
+    local state = _G.__rose_pine_mac_theme_state or {}
+    _G.__rose_pine_mac_theme_state = state
 
-    local function system_prefers_dark()
-      local output = vim.fn.system { 'defaults', 'read', '-g', 'AppleInterfaceStyle' }
-      return vim.v.shell_error == 0 and output:match 'Dark' ~= nil
-    end
+    local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
+    local theme_dir = vim.fn.fnamemodify(theme_file, ':h')
+    local theme_name = vim.fn.fnamemodify(theme_file, ':t')
 
-    local current_background = nil
-
-    local function sync_background(force)
-      local target_background = system_prefers_dark() and 'dark' or 'light'
-
-      if not force and current_background == target_background then
-        return target_background, false
+    local function read_theme()
+      local ok, data = pcall(dofile, theme_file)
+      if not ok or type(data) ~= 'table' then
+        return {
+          background = 'dark',
+          colorscheme = 'rose-pine',
+        }
       end
 
-      current_background = target_background
-      vim.o.background = target_background
-      pcall(vim.cmd.colorscheme, 'rose-pine')
-      return target_background, true
+      local background = data.background == 'light' and 'light' or 'dark'
+      return {
+        background = background,
+        colorscheme = 'rose-pine',
+      }
+    end
+
+    local function sync_theme(force)
+      local theme = read_theme()
+      local changed = force
+        or state.background ~= theme.background
+        or state.colorscheme ~= theme.colorscheme
+
+      if not changed then
+        return theme, false
+      end
+
+      state.background = theme.background
+      state.colorscheme = theme.colorscheme
+
+      vim.o.background = theme.background
+      pcall(vim.cmd.colorscheme, theme.colorscheme)
+
+      return theme, true
     end
 
     require('rose-pine').setup {
@@ -44,60 +62,60 @@ return {
       },
     }
 
-    sync_background(true)
+    sync_theme(true)
 
     pcall(vim.api.nvim_del_user_command, 'SyncTheme')
     vim.api.nvim_create_user_command('SyncTheme', function(opts)
-      local target_background, changed = sync_background(opts.bang)
+      local theme, changed = sync_theme(opts.bang)
       local status = changed and 'updated' or 'already in sync'
-      vim.notify(('Theme sync: %s (%s)'):format(target_background, status), vim.log.levels.INFO)
+      vim.notify(('Theme sync: %s/%s (%s)'):format(theme.colorscheme, theme.background, status), vim.log.levels.INFO)
     end, {
       bang = true,
-      desc = 'Sync Neovim theme with macOS appearance (! forces reload)',
+      desc = 'Sync Neovim theme from generated theme file (! forces reload)',
     })
 
-    vim.api.nvim_create_autocmd({ 'VimEnter', 'FocusGained', 'VimResume' }, {
-      group = sync_group,
+    vim.api.nvim_create_autocmd({ 'VimEnter', 'FocusGained', 'VimResume', 'BufEnter' }, {
+      group = vim.api.nvim_create_augroup('RosePineMacThemeSync', { clear = true }),
       callback = function()
-        sync_background(false)
+        sync_theme(false)
       end,
     })
 
-    local uv_timer = uv and uv.new_timer and uv.new_timer() or nil
-    if uv_timer then
-      uv_timer:start(
-        POLL_INTERVAL_MS,
-        POLL_INTERVAL_MS,
-        vim.schedule_wrap(function()
-          if vim.v.exiting == 0 then
-            sync_background(false)
-          end
-        end)
-      )
-
-      vim.api.nvim_create_autocmd('VimLeavePre', {
-        group = timer_group,
-        callback = function()
-          if not uv_timer:is_closing() then
-            uv_timer:stop()
-            uv_timer:close()
-          end
-        end,
-      })
-      return
-    end
-
-    local fallback_timer = vim.fn.timer_start(POLL_INTERVAL_MS, function()
-      if vim.v.exiting == 0 then
-        sync_background(false)
+    if uv and uv.new_fs_event then
+      if state.watcher and not state.watcher:is_closing() then
+        state.watcher:stop()
+        state.watcher:close()
+        state.watcher = nil
       end
-    end, { ['repeat'] = -1 })
 
-    vim.api.nvim_create_autocmd('VimLeavePre', {
-      group = timer_group,
-      callback = function()
-        pcall(vim.fn.timer_stop, fallback_timer)
-      end,
-    })
+      local watcher = uv.new_fs_event()
+      local ok = watcher:start(theme_dir, {}, vim.schedule_wrap(function(err, fname)
+        if err then
+          return
+        end
+        if fname and fname ~= theme_name then
+          return
+        end
+        if vim.v.exiting == 0 then
+          sync_theme(false)
+        end
+      end))
+
+      if ok then
+        state.watcher = watcher
+        vim.api.nvim_create_autocmd('VimLeavePre', {
+          group = vim.api.nvim_create_augroup('RosePineMacThemeSyncCleanup', { clear = true }),
+          callback = function()
+            if state.watcher and not state.watcher:is_closing() then
+              state.watcher:stop()
+              state.watcher:close()
+              state.watcher = nil
+            end
+          end,
+        })
+      elseif watcher and not watcher:is_closing() then
+        watcher:close()
+      end
+    end
   end,
 }
