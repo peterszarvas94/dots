@@ -22,4 +22,17 @@ esac
 
 omarchy-theme-set "$TARGET_THEME"
 
+sleep 0.2
+
+if command -v nvim >/dev/null 2>&1; then
+  shopt -s nullglob
+  sockets=("/run/user/$(id -u)/"nvim.* "/tmp/nvim.$USER/"*)
+  for socket in "${sockets[@]}"; do
+    if [[ -S "$socket" ]]; then
+      nvim --server "$socket" --remote-send '<Cmd>SyncTheme!<CR>' >/dev/null 2>&1 || true
+    fi
+  done
+  shopt -u nullglob
+fi
+
 echo "Set Omarchy theme to: $TARGET_THEME"
