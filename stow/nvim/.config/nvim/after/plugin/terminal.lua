@@ -18,6 +18,10 @@ vim.api.nvim_create_user_command('TerminalOpen', function()
   vim.cmd 'term'
 end, {})
 
+vim.api.nvim_create_user_command('LazyGit', function()
+  vim.cmd 'terminal lazygit'
+end, {})
+
 vim.api.nvim_create_user_command('TerminalTab', function()
   vim.cmd 'tabnew | term'
 end, {})
