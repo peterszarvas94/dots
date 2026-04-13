@@ -6,3 +6,5 @@ stow/ghostty/.config/ghostty/settings.conf
 stow/ghostty/.config/ghostty/theme.conf
 stow/zsh/.zsh/config/platform.zsh
 stow/scripts/.local/bin/mise
+stow/nvim/.config/nvim/lua/plugins/omarchy-theme-preload.lua
+stow/nvim/.config/nvim/lua/plugins/theme.lua
