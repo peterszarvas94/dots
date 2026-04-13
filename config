@@ -13,6 +13,7 @@ PKG=""
 WITH_GIT=false
 WITH_DEBLOAT=false
 WITH_SERVICES=false
+WITH_THEME=false
 PLATFORM=""
 
 # Colors for output
@@ -52,6 +53,7 @@ Options:
   --git          Enable Git SSH key setup
   --services     Start and enable systemd services (omarchy only)
   --debloat      Remove bloatware (omarchy only, does nothing on macOS)
+  --theme        Configure platform theme integration
   -h, --help     Show this help message
 
 Examples:
@@ -59,6 +61,7 @@ Examples:
   $0 --pkg=ghostty       # Deploy only ghostty package (includes theme linking)
   $0 --pkg=all --backup  # Deploy all with backup
   $0 --pkg=all --git --services # Deploy all, set up git, start services
+  $0 --pkg=all --theme   # Deploy all and configure theme integration
   $0 --services          # Start systemd services only
   $0 --debloat           # Remove bloatware (omarchy only)
 EOF
@@ -82,7 +85,10 @@ link_ghostty_theme() {
     
     case "$platform" in
         mac)
-            ln -nsf ~/.config/ghostty/mac/theme.conf ~/.config/ghostty/theme.conf
+            if [[ -x "$HOME/.local/bin/mac-sync-theme" ]]; then
+                "$HOME/.local/bin/mac-sync-theme" --apply
+            fi
+            ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.conf
             ln -nsf ~/.config/ghostty/mac/settings.conf ~/.config/ghostty/settings.conf
             log_success "Ghostty theme linked for macOS"
             ;;
@@ -124,6 +130,45 @@ reload_hyprland() {
 
 reload_waybar() {
     omarchy-restart-app waybar 2>/dev/null && log_success "Waybar reloaded"
+}
+
+setup_mac_theme_sync() {
+    if [[ "$PLATFORM" != "mac" ]]; then
+        log_info "Theme setup is only needed on macOS"
+        return 0
+    fi
+
+    local sync_script="$HOME/.local/bin/mac-sync-theme"
+    local agent_plist="$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
+    local launchd_target="gui/$(id -u)"
+
+    mkdir -p "$HOME/.config/omarchy/current/theme"
+    mkdir -p "$HOME/Library/LaunchAgents"
+
+    if [[ ! -x "$sync_script" ]]; then
+        log_error "Missing theme sync script: $sync_script"
+        log_info "Run ./config --pkg=scripts first"
+        return 1
+    fi
+
+    "$sync_script" --apply
+    log_success "Initial macOS theme files generated"
+
+    if ! command -v dark-notify >/dev/null 2>&1; then
+        log_warning "dark-notify not found. Install it with: brew install dark-notify"
+        return 0
+    fi
+
+    if [[ ! -f "$agent_plist" ]]; then
+        log_error "Missing launch agent: $agent_plist"
+        log_info "Run ./config --pkg=launchd first"
+        return 1
+    fi
+
+    launchctl bootout "$launchd_target" "$agent_plist" 2>/dev/null || true
+    launchctl bootstrap "$launchd_target" "$agent_plist"
+    launchctl kickstart -k "$launchd_target/com.peterszarvas.theme-sync"
+    log_success "macOS theme watcher loaded"
 }
 
 # Start and enable systemd services
@@ -338,6 +383,12 @@ deploy_omarchy_packages() {
     deploy "xdg"
 }
 
+deploy_mac_packages() {
+    log_info "Deploying macOS specific packages..."
+    remove "$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
+    deploy "launchd"
+}
+
 # Main deployment function
 deploy_dotfiles() {
     log_info "Starting dotfiles deployment for platform: $PLATFORM" 
@@ -354,6 +405,7 @@ deploy_dotfiles() {
     case "$PLATFORM" in
         mac)
             deploy_common_packages
+            deploy_mac_packages
             ;;
         omarchy)
             deploy_common_packages
@@ -430,6 +482,10 @@ parse_arguments() {
                 WITH_DEBLOAT=true
                 shift
                 ;;
+            --theme)
+                WITH_THEME=true
+                shift
+                ;;
             -h|--help)
                 show_usage
                 exit 0
@@ -449,8 +505,8 @@ parse_arguments() {
     fi
     
     # Check if any action is requested
-    if [[ -z "$PKG" && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
-        log_info "Nothing to do. Use --pkg=all, --git, --services, or --debloat to specify actions."
+    if [[ -z "$PKG" && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false && "$WITH_THEME" == false ]]; then
+        log_info "Nothing to do. Use --pkg=all, --git, --services, --debloat, or --theme to specify actions."
         exit 0
     fi
 
@@ -468,6 +524,10 @@ parse_arguments() {
     
     if [[ "$WITH_DEBLOAT" == true ]]; then
         debloat_system
+    fi
+
+    if [[ "$WITH_THEME" == true ]]; then
+        setup_mac_theme_sync
     fi
 }
 

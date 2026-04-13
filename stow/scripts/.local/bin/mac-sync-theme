@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+THEME_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/omarchy/current/theme"
+
+mkdir -p "$THEME_DIR"
+
+detect_mode() {
+    if defaults read -g AppleInterfaceStyle 2>/dev/null | grep -q "Dark"; then
+        echo "dark"
+    else
+        echo "light"
+    fi
+}
+
+MODE="${1:-}"
+if [[ "$MODE" != "dark" && "$MODE" != "light" ]]; then
+    MODE="$(detect_mode)"
+fi
+
+if [[ "$MODE" == "dark" ]]; then
+    GHOSTTY_THEME="Rose Pine"
+else
+    GHOSTTY_THEME="Rose Pine Dawn"
+fi
+
+TMP_NVIM="$THEME_DIR/neovim.lua.tmp"
+TMP_GHOSTTY="$THEME_DIR/ghostty.conf.tmp"
+
+cat > "$TMP_NVIM" <<EOF
+return {
+  background = '$MODE',
+  colorscheme = 'rose-pine',
+}
+EOF
+
+cat > "$TMP_GHOSTTY" <<EOF
+theme = $GHOSTTY_THEME
+EOF
+
+mv "$TMP_NVIM" "$THEME_DIR/neovim.lua"
+mv "$TMP_GHOSTTY" "$THEME_DIR/ghostty.conf"
+printf '%s\n' "$MODE" > "$THEME_DIR/mode"

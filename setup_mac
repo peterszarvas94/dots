@@ -14,7 +14,8 @@ brew install \
     node \
     ghostty \
     bun-bin \
-    opencode
+    opencode \
+    dark-notify
 
 # Remove
 rm -rf ~/projects/dots
