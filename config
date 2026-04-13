@@ -154,8 +154,8 @@ setup_mac_theme_sync() {
     "$sync_script" --apply
     log_success "Initial macOS theme files generated"
 
-    if ! command -v dark-notify >/dev/null 2>&1; then
-        log_warning "dark-notify not found. Install it with: brew install dark-notify"
+    if ! command -v dark-mode >/dev/null 2>&1; then
+        log_warning "dark-mode not found. Install it with: brew install dark-mode"
         return 0
     fi
 

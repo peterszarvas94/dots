@@ -16,7 +16,7 @@ Reference for how this repo is laid out and which files/folders are responsible 
 - `README.md`: Quick-start instructions for macOS and Omarchy setup.
 - `TODO.md`: Short project backlog notes.
 
-`./config --theme` configures platform theme integration (macOS launchd + `dark-notify` watcher).
+`./config --theme` configures platform theme integration (macOS launchd watcher + generated theme files).
 
 ## `stow/` packages
 

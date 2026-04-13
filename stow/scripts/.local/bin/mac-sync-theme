@@ -6,6 +6,15 @@ THEME_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/omarchy/current/theme"
 mkdir -p "$THEME_DIR"
 
 detect_mode() {
+    if command -v dark-mode >/dev/null 2>&1; then
+        if [[ "$(dark-mode status 2>/dev/null || true)" == "on" ]]; then
+            echo "dark"
+        else
+            echo "light"
+        fi
+        return
+    fi
+
     if defaults read -g AppleInterfaceStyle 2>/dev/null | grep -q "Dark"; then
         echo "dark"
     else

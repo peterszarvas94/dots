@@ -9,14 +9,17 @@
   <array>
     <string>/bin/bash</string>
     <string>-lc</string>
-    <string>export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"; "$HOME/.local/bin/mac-sync-theme" --apply; exec dark-notify -c "$HOME/.local/bin/mac-sync-theme"</string>
+    <string>export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"; "$HOME/.local/bin/mac-sync-theme" --apply</string>
   </array>
 
   <key>RunAtLoad</key>
   <true/>
 
+  <key>StartInterval</key>
+  <integer>2</integer>
+
   <key>KeepAlive</key>
-  <true/>
+  <false/>
 
   <key>StandardOutPath</key>
   <string>/tmp/com.peterszarvas.theme-sync.out.log</string>
