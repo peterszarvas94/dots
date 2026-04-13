@@ -79,6 +79,31 @@ setup_git() {
     echo "After adding, test with: ssh -T git@github.com"
 }
 
+# Link nvim theme files
+link_nvim_theme() {
+    local platform="$1"
+    local plugins_dir="$HOME/.config/nvim/lua/plugins"
+
+    mkdir -p "$plugins_dir"
+
+    case "$platform" in
+        mac)
+            ln -nsf ~/.config/nvim/mac/theme.lua "$plugins_dir/theme.lua"
+            ln -nsf ~/.config/nvim/mac/theme-preload.lua "$plugins_dir/omarchy-theme-preload.lua"
+            log_success "Neovim theme linked for macOS"
+            ;;
+        omarchy)
+            ln -nsf ~/.config/nvim/omarchy/theme.lua "$plugins_dir/theme.lua"
+            ln -nsf ~/.config/nvim/omarchy/theme-preload.lua "$plugins_dir/omarchy-theme-preload.lua"
+            log_success "Neovim theme linked for omarchy"
+            ;;
+        *)
+            log_error "Cannot link nvim theme files, unsupported platform: $platform"
+            return 1
+            ;;
+    esac
+}
+
 # Link ghostty theme files
 link_ghostty_theme() {
     local platform="$1"
@@ -294,6 +319,9 @@ deploy() {
     
     # Automatically link theme files for specific packages
     case "$package_name" in
+        nvim)
+            link_nvim_theme "$PLATFORM"
+            ;;
         ghostty)
             link_ghostty_theme "$PLATFORM"
             ;;
