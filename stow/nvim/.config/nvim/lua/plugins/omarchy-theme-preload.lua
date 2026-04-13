@@ -13,6 +13,7 @@ return {
     priority = 1000,
     config = function()
       local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
+      local poll_interval_ms = 4000
       local timer_id = nil
       local last_hash = nil
 
@@ -55,27 +56,9 @@ return {
         return nil, nil
       end
 
-      local function reload_theme(force)
-        local current_hash = theme_hash()
-        if not current_hash then
-          return nil, false
-        end
-
-        if not force and current_hash == last_hash then
-          return nil, false
-        end
-
-        local theme_spec = load_theme_spec()
-        if not theme_spec then
-          return nil, false
-        end
-
-        local colorscheme, target_background = desired_from_spec(theme_spec)
-        if not colorscheme then
-          return nil, false
-        end
-
+      local function apply_theme(colorscheme, target_background)
         local apply_colorscheme = colorscheme
+
         if colorscheme:match '^rose%-pine' then
           local variant = target_background == 'light' and 'dawn' or 'main'
           local ok_rose_pine, rose_pine = pcall(require, 'rose-pine')
@@ -106,6 +89,29 @@ return {
             pcall(vim.cmd.set, 'background=dark')
           end
         end, 5)
+      end
+
+      local function reload_theme(force)
+        local current_hash = theme_hash()
+        if not current_hash then
+          return nil, false
+        end
+
+        if not force and current_hash == last_hash then
+          return nil, false
+        end
+
+        local theme_spec = load_theme_spec()
+        if not theme_spec then
+          return nil, false
+        end
+
+        local colorscheme, target_background = desired_from_spec(theme_spec)
+        if not colorscheme then
+          return nil, false
+        end
+
+        apply_theme(colorscheme, target_background)
 
         last_hash = current_hash
         return colorscheme, true
@@ -134,21 +140,14 @@ return {
       vim.api.nvim_create_autocmd({ 'VimEnter', 'FocusGained', 'VimResume' }, {
         group = group,
         callback = function()
-          reload_theme(true)
+          reload_theme(false)
         end,
       })
 
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
-        group = group,
-        callback = function()
-          reload_theme(true)
-        end,
-      })
-
-      timer_id = vim.fn.timer_start(1500, function()
+      timer_id = vim.fn.timer_start(poll_interval_ms, function()
         vim.schedule(function()
           if vim.v.exiting == 0 then
-            reload_theme(true)
+            reload_theme(false)
           end
         end)
       end, { ['repeat'] = -1 })
