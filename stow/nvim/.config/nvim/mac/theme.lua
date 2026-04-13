@@ -9,7 +9,6 @@ return {
     local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
     local theme_dir = vim.fn.fnamemodify(theme_file, ':h')
     local theme_name = vim.fn.fnamemodify(theme_file, ':t')
-    local server_registry = vim.fn.stdpath 'state' .. '/theme-sync-servers'
     local tmux_registry = vim.fn.stdpath 'state' .. '/theme-sync-tmux'
 
     local function read_lines(path)
@@ -41,49 +40,6 @@ return {
       end
 
       return out
-    end
-
-    local function ensure_server()
-      if vim.v.servername ~= '' then
-        return vim.v.servername
-      end
-
-      local server_path = vim.fn.stdpath('run') .. ('/theme-sync-%d.sock'):format(vim.fn.getpid())
-      local ok, name = pcall(vim.fn.serverstart, server_path)
-      if ok and type(name) == 'string' and name ~= '' then
-        return name
-      end
-
-      return vim.v.servername
-    end
-
-    local function register_server()
-      local server = ensure_server()
-      if server == '' then
-        return
-      end
-
-      local lines = read_lines(server_registry)
-      table.insert(lines, server)
-      write_lines(server_registry, unique_lines(lines))
-    end
-
-    local function unregister_server()
-      local server = vim.v.servername
-      if server == '' then
-        return
-      end
-
-      local lines = read_lines(server_registry)
-      local keep = {}
-
-      for _, line in ipairs(lines) do
-        if line ~= server then
-          table.insert(keep, line)
-        end
-      end
-
-      write_lines(server_registry, unique_lines(keep))
     end
 
     local function register_tmux_pane()
@@ -179,7 +135,6 @@ return {
     }
 
     sync_theme(true)
-    register_server()
     register_tmux_pane()
 
     pcall(vim.api.nvim_del_user_command, 'SyncTheme')
@@ -196,7 +151,6 @@ return {
       group = vim.api.nvim_create_augroup('RosePineMacThemeSync', { clear = true }),
       callback = function()
         sync_theme(false)
-        register_server()
         register_tmux_pane()
       end,
     })
@@ -231,7 +185,6 @@ return {
     vim.api.nvim_create_autocmd('VimLeavePre', {
       group = vim.api.nvim_create_augroup('RosePineMacThemeSyncCleanup', { clear = true }),
       callback = function()
-        unregister_server()
         unregister_tmux_pane()
         if state.watcher and not state.watcher:is_closing() then
           state.watcher:stop()
