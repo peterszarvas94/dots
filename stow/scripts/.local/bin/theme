@@ -22,8 +22,6 @@ esac
 
 omarchy-theme-set "$TARGET_THEME"
 
-sleep 0.2
-
 if command -v nvim >/dev/null 2>&1; then
   shopt -s nullglob
   sockets=("/run/user/$(id -u)/"nvim.* "/tmp/nvim.$USER/"*)
