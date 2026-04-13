@@ -45,5 +45,3 @@ if vim.g.neovide then
   vim.g.neovide_cursor_trail_size = 0.03
   vim.o.guifont = 'MesloLGS Nerd Font Mono'
 end
-
-vim.opt.background = 'dark'

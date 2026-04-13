@@ -2,6 +2,28 @@ return {
   'rose-pine/neovim',
   name = 'rose-pine',
   config = function()
+    local POLL_INTERVAL_MS = 2000
+
+    local function system_prefers_dark()
+      local output = vim.fn.system { 'defaults', 'read', '-g', 'AppleInterfaceStyle' }
+      return vim.v.shell_error == 0 and output:match 'Dark' ~= nil
+    end
+
+    local current_background = nil
+
+    local function sync_background(force)
+      local target_background = system_prefers_dark() and 'dark' or 'light'
+
+      if not force and current_background == target_background then
+        return target_background, false
+      end
+
+      current_background = target_background
+      vim.o.background = target_background
+      pcall(vim.cmd.colorscheme, 'rose-pine')
+      return target_background, true
+    end
+
     require('rose-pine').setup {
       variant = 'auto', -- auto, main, moon, or dawn
       dark_variant = 'main', -- main, moon, or dawn
@@ -81,6 +103,45 @@ return {
       end,
     }
 
-    vim.cmd 'colorscheme rose-pine'
+    sync_background(true)
+
+    vim.api.nvim_create_user_command('SyncTheme', function(opts)
+      local target_background, changed = sync_background(opts.bang)
+      local status = changed and 'updated' or 'already in sync'
+      vim.notify(('Theme sync: %s (%s)'):format(target_background, status), vim.log.levels.INFO)
+    end, {
+      bang = true,
+      desc = 'Sync Neovim theme with macOS appearance (! forces reload)',
+    })
+
+    vim.api.nvim_create_autocmd({ 'VimEnter', 'FocusGained', 'VimResume' }, {
+      group = vim.api.nvim_create_augroup('RosePineMacThemeSync', { clear = true }),
+      callback = function()
+        sync_background(false)
+      end,
+    })
+
+    local timer = vim.uv.new_timer()
+    if timer then
+      timer:start(
+        POLL_INTERVAL_MS,
+        POLL_INTERVAL_MS,
+        vim.schedule_wrap(function()
+          if vim.v.exiting == 0 then
+            sync_background(false)
+          end
+        end)
+      )
+
+      vim.api.nvim_create_autocmd('VimLeavePre', {
+        group = vim.api.nvim_create_augroup('RosePineMacThemeSyncTimer', { clear = true }),
+        callback = function()
+          if not timer:is_closing() then
+            timer:stop()
+            timer:close()
+          end
+        end,
+      })
+    end
   end,
 }

@@ -43,6 +43,11 @@ export PATH="~/.turso:$PATH"
 # zdg
 export XDG_CONFIG_HOME="$HOME/.config"
 
+# ruby
+# export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+# unset GEM_HOME GEM_PATH
+# export PATH="$HOME/.gem/bin:$PATH"
+
 export PATH="$HOME/.nodev/current:$PATH"
 
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
