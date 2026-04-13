@@ -16,7 +16,7 @@
 `./config` links theme files differently per platform:
 
 - macOS: `stow/nvim/.config/nvim/lua/plugins/theme.lua` uses `~/.config/omarchy/current/theme/neovim.lua`
-- omarchy: `stow/nvim/.config/nvim/omarchy/omarchy-theme-preload.lua` and `~/.config/omarchy/current/theme/neovim.lua`
+- omarchy: `stow/nvim/.config/nvim/lua/plugins/theme.lua` uses `~/.config/omarchy/current/theme/neovim.lua`
 
 On macOS, `./config --theme` sets up a launchd watcher (`dark-notify`) that keeps `~/.config/omarchy/current/theme/neovim.lua` updated from system light/dark mode.
 

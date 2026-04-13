@@ -10,7 +10,7 @@
   - [ ] ghostty: link `~/.config/ghostty/omarchy/theme.conf` -> `~/.config/ghostty/theme.conf`
   - [ ] nvim: link `~/.config/nvim/omarchy/theme.lua` -> `~/.config/nvim/lua/plugins/theme.lua`
   - [ ] keep existing omarchy settings links unchanged
-- [ ] Check `stow/nvim/.config/nvim/omarchy/omarchy-theme-preload.lua` does not override Rose Pine selection
+- [ ] Keep Neovim on Rose Pine only across platforms
 - [ ] Omarchy test checklist:
   - [ ] `./config --pkg=ghostty`
   - [ ] `./config --pkg=nvim`

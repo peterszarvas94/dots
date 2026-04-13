@@ -63,6 +63,9 @@ function M.sync(name, force)
   end
 
   local theme = read_theme(instance.theme_file, instance.fallback)
+  if instance.lock_colorscheme then
+    theme.colorscheme = instance.lock_colorscheme
+  end
   local changed = force
     or instance.background ~= theme.background
     or instance.colorscheme ~= theme.colorscheme
@@ -93,6 +96,7 @@ function M.setup(opts)
   instance.theme_dir = vim.fn.fnamemodify(instance.theme_file, ':h')
   instance.theme_name = vim.fn.fnamemodify(instance.theme_file, ':t')
   instance.fallback = fallback
+  instance.lock_colorscheme = opts.lock_colorscheme
   state.instances[name] = instance
 
   local command_name = opts.command_name or 'SyncTheme'
