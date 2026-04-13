@@ -1,14 +1,8 @@
 .DS_Store
 stow/ssh/.ssh/config
 stow/zsh/.zsh/config/env.zsh
-stow/config/.config/karabiner/automatic_backups/
-stow/config/.config/aerc/
 stow/git/.config/git/work/config
-stow/neovim/.config/nvim/lua/plugins/theme.lua
-stow/alacritty/.config/alacritty/platform.toml
-stow/alacritty/.config/alacritty/theme.toml
 stow/ghostty/.config/ghostty/settings.conf
 stow/ghostty/.config/ghostty/theme.conf
 stow/zsh/.zsh/config/platform.zsh
-stow/neovim/.config/nvim/lua/plugins/omarchy-theme-preload.lua
 stow/scripts/.local/bin/mise

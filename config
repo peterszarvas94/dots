@@ -76,53 +76,6 @@ setup_git() {
     echo "After adding, test with: ssh -T git@github.com"
 }
 
-# Link nvim theme files
-link_nvim_theme() {
-    local platform="$1"
-    local plugins_dir="$HOME/.config/nvim/lua/plugins"
-
-    mkdir -p "$plugins_dir"
-    rm -f "$plugins_dir/theme.lua" "$plugins_dir/omarchy-theme-preload.lua"
-    
-    case "$platform" in
-        mac)
-            ln -nsf ~/.config/nvim/mac/theme.lua "$plugins_dir/theme.lua"
-            log_success "Neovim theme linked for macOS"
-            ;;
-        omarchy)
-            ln -nsf ~/.config/nvim/omarchy/omarchy-theme-preload.lua "$plugins_dir/omarchy-theme-preload.lua"
-            ln -nsf ~/.config/omarchy/current/theme/neovim.lua "$plugins_dir/theme.lua"
-            log_success "Neovim theme linked for omarchy"
-            ;;
-        *)
-            log_error "Cannot link nvim theme files, unsupported platform: $platform"
-            return 1
-            ;;
-    esac
-}
-
-# Link alacritty theme files
-link_alacritty_theme() {
-    local platform="$1"
-    
-    case "$platform" in
-        mac)
-            ln -nsf ~/.config/alacritty/mac/theme.toml ~/.config/alacritty/theme.toml
-            ln -nsf ~/.config/alacritty/mac/settings.toml ~/.config/alacritty/settings.toml
-            log_success "Alacritty theme linked for macOS"
-            ;;
-        omarchy)
-            ln -nsf ~/.config/omarchy/current/theme/alacritty.toml ~/.config/alacritty/theme.toml
-            ln -nsf ~/.config/alacritty/omarchy/settings.toml ~/.config/alacritty/settings.toml
-            log_success "Alacritty theme linked for omarchy"
-            ;;
-        *)
-            log_error "Cannot link alacritty theme files, unsupported platform: $platform"
-            return 1
-            ;;
-    esac
-}
-
 # Link ghostty theme files
 link_ghostty_theme() {
     local platform="$1"
@@ -296,12 +249,6 @@ deploy() {
     
     # Automatically link theme files for specific packages
     case "$package_name" in
-        nvim)
-            link_nvim_theme "$PLATFORM"
-            ;;
-        omarchy)
-            link_nvim_theme "$PLATFORM"
-            ;;
         ghostty)
             link_ghostty_theme "$PLATFORM"
             ;;
