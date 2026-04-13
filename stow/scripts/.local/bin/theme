@@ -2,14 +2,24 @@
 set -euo pipefail
 
 CURRENT=$(gsettings get org.gnome.desktop.interface color-scheme)
+CURRENT_THEME=$(omarchy-theme-current 2>/dev/null || true)
 
-if [[ "$CURRENT" == *"prefer-dark"* ]]; then
-  TARGET="prefer-light"
-else
-  TARGET="prefer-dark"
-fi
+case "$CURRENT_THEME" in
+  "Rose Pine Dark")
+    TARGET_THEME="Rose Pine"
+    ;;
+  "Rose Pine")
+    TARGET_THEME="Rose Pine Dark"
+    ;;
+  *)
+    if [[ "$CURRENT" == *"prefer-dark"* ]]; then
+      TARGET_THEME="Rose Pine"
+    else
+      TARGET_THEME="Rose Pine Dark"
+    fi
+    ;;
+esac
 
-gsettings set org.gnome.desktop.interface color-scheme "$TARGET"
-systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
+omarchy-theme-set "$TARGET_THEME"
 
-echo "Set color-scheme to: $TARGET"
+echo "Set Omarchy theme to: $TARGET_THEME"

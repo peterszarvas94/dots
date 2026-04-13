@@ -120,35 +120,46 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
+      local function reload_theme()
+        package.loaded['plugins.theme'] = nil
+
+        vim.schedule(function()
+          local ok, theme_spec = pcall(require, 'plugins.theme')
+          if not ok then
+            return
+          end
+
+          for _, spec in ipairs(theme_spec) do
+            if spec[1] == 'LazyVim/LazyVim' and spec.opts and spec.opts.colorscheme then
+              local colorscheme = spec.opts.colorscheme
+
+              require('lazy.core.loader').colorscheme(colorscheme)
+
+              vim.defer_fn(function()
+                pcall(vim.cmd.colorscheme, colorscheme)
+                -- set bg to dark for gruvbox
+                if colorscheme == 'gruvbox' then
+                  pcall(vim.cmd.set, 'background=dark')
+                end
+              end, 5)
+
+              break
+            end
+          end
+        end)
+      end
+
+      vim.api.nvim_create_user_command('SyncTheme', function()
+        reload_theme()
+        vim.notify('Theme sync: requested', vim.log.levels.INFO)
+      end, {
+        desc = 'Reload Neovim theme from Omarchy theme file',
+      })
+
       vim.api.nvim_create_autocmd('User', {
         pattern = 'LazyReload',
         callback = function()
-          package.loaded['plugins.theme'] = nil
-
-          vim.schedule(function()
-            local ok, theme_spec = pcall(require, 'plugins.theme')
-            if not ok then
-              return
-            end
-
-            for _, spec in ipairs(theme_spec) do
-              if spec[1] == 'LazyVim/LazyVim' and spec.opts and spec.opts.colorscheme then
-                local colorscheme = spec.opts.colorscheme
-
-                require('lazy.core.loader').colorscheme(colorscheme)
-
-                vim.defer_fn(function()
-                  pcall(vim.cmd.colorscheme, colorscheme)
-                  -- set bg to dark for gruvbox
-                  if colorscheme == 'gruvbox' then
-                    pcall(vim.cmd.set, 'background=dark')
-                  end
-                end, 5)
-
-                break
-              end
-            end
-          end)
+          reload_theme()
         end,
       })
     end,
