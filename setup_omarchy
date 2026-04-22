@@ -38,4 +38,4 @@ mkdir ~/work
 mkdir ~/projects/go
 mkdir ~/youtube
 
-./config --git --pkg=all --theme
+./config --git --pkg=all

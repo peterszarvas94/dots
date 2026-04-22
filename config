@@ -13,7 +13,6 @@ PKG=""
 WITH_GIT=false
 WITH_DEBLOAT=false
 WITH_SERVICES=false
-WITH_THEME=false
 PLATFORM=""
 
 # Colors for output
@@ -53,7 +52,6 @@ Options:
   --git          Enable Git SSH key setup
   --services     Start and enable systemd services (omarchy only)
   --debloat      Remove bloatware (omarchy only, does nothing on macOS)
-  --theme        Configure platform theme integration
   -h, --help     Show this help message
 
 Examples:
@@ -61,7 +59,6 @@ Examples:
   $0 --pkg=ghostty       # Deploy only ghostty package (includes theme linking)
   $0 --pkg=all --backup  # Deploy all with backup
   $0 --pkg=all --git --services # Deploy all, set up git, start services
-  $0 --pkg=all --theme   # Deploy all and configure theme integration
   $0 --services          # Start systemd services only
   $0 --debloat           # Remove bloatware (omarchy only)
 EOF
@@ -160,20 +157,20 @@ setup_mac_theme_sync() {
         return 0
     fi
 
-    local sync_script="$HOME/.local/bin/mac-sync-theme"
+    local sync_script="$HOME/.local/bin/mac-sync-nvim-theme"
     local agent_plist="$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
     local launchd_target="gui/$(id -u)"
 
     mkdir -p "$HOME/.config/omarchy/current/theme"
     mkdir -p "$HOME/Library/LaunchAgents"
 
-    if [[ ! -x "$sync_script" ]]; then
+    if [[ ! -f "$sync_script" ]]; then
         log_error "Missing theme sync script: $sync_script"
         log_info "Run ./config --pkg=scripts first"
         return 1
     fi
 
-    "$sync_script" --apply
+    bash "$sync_script" --apply
     log_success "Initial macOS theme files generated"
 
     if ! command -v dark-notify >/dev/null 2>&1; then
@@ -183,7 +180,7 @@ setup_mac_theme_sync() {
 
     if [[ ! -f "$agent_plist" ]]; then
         log_error "Missing launch agent: $agent_plist"
-        log_info "Run ./config --pkg=launchd first"
+        log_info "Run ./config --pkg=nvim-theme-mac first"
         return 1
     fi
 
@@ -197,7 +194,24 @@ setup_mac_theme_sync() {
 start_services() {
     case "$PLATFORM" in
         mac)
-            log_info "Service management not available on macOS"
+            log_info "Starting macOS services..."
+
+            local launchd_target="gui/$(id -u)"
+            local agent_plist="$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
+
+            if [[ -f "$agent_plist" ]]; then
+                launchctl bootout "$launchd_target" "$agent_plist" 2>/dev/null || true
+                launchctl bootstrap "$launchd_target" "$agent_plist" && log_success "Loaded launchd agent: com.peterszarvas.theme-sync" || log_warning "Failed to load launchd agent"
+                launchctl kickstart -k "$launchd_target/com.peterszarvas.theme-sync" && log_success "Restarted launchd agent: com.peterszarvas.theme-sync" || log_warning "Failed to restart launchd agent"
+            else
+                log_warning "LaunchAgent not found: $agent_plist (deploy nvim-theme-mac first)"
+            fi
+
+            if command -v colima >/dev/null 2>&1; then
+                colima start 2>/dev/null && log_success "Colima started" || log_warning "Failed to start Colima"
+            else
+                log_warning "colima command not found"
+            fi
             ;;
         omarchy)
             log_info "Starting and enabling systemd services..."
@@ -272,7 +286,7 @@ backup_config() {
 remove() {
     local file_path="$1"
     
-    if [[ -f "$file_path" ]]; then
+    if [[ -L "$file_path" || -f "$file_path" ]]; then
         log_info "Removing $file_path"
         rm -f "$file_path"
     elif [[ -d "$file_path" ]]; then
@@ -318,6 +332,12 @@ deploy() {
     case "$package_name" in
         nvim)
             link_nvim_theme "$PLATFORM"
+            if [[ "$PLATFORM" == "mac" ]]; then
+                remove "$HOME/.local/bin/mac-sync-nvim-theme"
+                remove "$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
+                deploy "nvim-theme-mac"
+                setup_mac_theme_sync
+            fi
             ;;
         ghostty)
             link_ghostty_theme "$PLATFORM"
@@ -410,8 +430,6 @@ deploy_omarchy_packages() {
 
 deploy_mac_packages() {
     log_info "Deploying macOS specific packages..."
-    remove "$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
-    deploy "launchd"
 }
 
 # Main deployment function
@@ -507,10 +525,6 @@ parse_arguments() {
                 WITH_DEBLOAT=true
                 shift
                 ;;
-            --theme)
-                WITH_THEME=true
-                shift
-                ;;
             -h|--help)
                 show_usage
                 exit 0
@@ -530,8 +544,8 @@ parse_arguments() {
     fi
     
     # Check if any action is requested
-    if [[ -z "$PKG" && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false && "$WITH_THEME" == false ]]; then
-        log_info "Nothing to do. Use --pkg=all, --git, --services, --debloat, or --theme to specify actions."
+    if [[ -z "$PKG" && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
+        log_info "Nothing to do. Use --pkg=all, --git, --services, or --debloat to specify actions."
         exit 0
     fi
 
@@ -551,9 +565,6 @@ parse_arguments() {
         debloat_system
     fi
 
-    if [[ "$WITH_THEME" == true ]]; then
-        setup_mac_theme_sync
-    fi
 }
 
 # Main execution

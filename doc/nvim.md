@@ -17,7 +17,7 @@
 - macOS: `stow/nvim/.config/nvim/lua/plugins/theme.lua` uses `~/.config/omarchy/current/theme/neovim.lua`
 - omarchy: `stow/nvim/.config/nvim/lua/plugins/theme.lua` uses `~/.config/omarchy/current/theme/neovim.lua`
 
-On macOS, `./config --theme` sets up a launchd watcher (`dark-notify`) that keeps `~/.config/omarchy/current/theme/neovim.lua` updated from system light/dark mode.
+On macOS, `./config --pkg=nvim` also deploys `nvim-theme-mac` and reloads the launchd watcher (`dark-notify`) that keeps `~/.config/omarchy/current/theme/neovim.lua` updated from system light/dark mode.
 
 ## Typical edits
 

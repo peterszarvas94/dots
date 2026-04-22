@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+THEME_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/omarchy/current/theme"
+NVIM_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/nvim"
+SERVER_REGISTRY="$NVIM_STATE_DIR/theme-sync-servers"
+
+mkdir -p "$THEME_DIR"
+
+detect_mode() {
+    if command -v dark-mode >/dev/null 2>&1; then
+        if [[ "$(dark-mode status 2>/dev/null || true)" == "on" ]]; then
+            echo "dark"
+        else
+            echo "light"
+        fi
+        return
+    fi
+
+    if defaults read -g AppleInterfaceStyle 2>/dev/null | grep -q "Dark"; then
+        echo "dark"
+    else
+        echo "light"
+    fi
+}
+
+MODE="${1:-}"
+if [[ "$MODE" != "dark" && "$MODE" != "light" ]]; then
+    MODE="$(detect_mode)"
+fi
+
+TMP_NVIM="$THEME_DIR/neovim.lua.tmp"
+
+cat > "$TMP_NVIM" <<EOF
+return {
+  background = '$MODE',
+  colorscheme = 'rose-pine',
+}
+EOF
+
+mv "$TMP_NVIM" "$THEME_DIR/neovim.lua"
+
+if [ -f "$SERVER_REGISTRY" ] && command -v nvim >/dev/null 2>&1; then
+    while IFS= read -r SERVER || [ -n "$SERVER" ]; do
+        [ -z "$SERVER" ] && continue
+        [ -S "$SERVER" ] || continue
+        nvim --server "$SERVER" --remote-send '<Cmd>silent! SyncTheme<CR>' >/dev/null 2>&1 || true
+    done < "$SERVER_REGISTRY"
+fi

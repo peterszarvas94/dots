@@ -37,4 +37,4 @@ mkdir ~/projects/go
 mkdir ~/youtube
 
 # Config packages 
-./config --git --pkg=all --theme
+./config --git --pkg=all

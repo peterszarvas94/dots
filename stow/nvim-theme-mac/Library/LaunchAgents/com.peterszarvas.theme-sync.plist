@@ -9,7 +9,7 @@
   <array>
     <string>/bin/bash</string>
     <string>-lc</string>
-    <string>export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"; "$HOME/.local/bin/mac-sync-theme" --apply; exec dark-notify -c "$HOME/.local/bin/mac-sync-theme"</string>
+    <string>export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"; bash "$HOME/.local/bin/mac-sync-nvim-theme" --apply; exec dark-notify -c "bash \"$HOME/.local/bin/mac-sync-nvim-theme\""</string>
   </array>
 
   <key>RunAtLoad</key>

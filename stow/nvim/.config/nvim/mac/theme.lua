@@ -8,8 +8,8 @@ return {
 
     local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
     local theme_dir = vim.fn.fnamemodify(theme_file, ':h')
-    local theme_name = vim.fn.fnamemodify(theme_file, ':t')
     local tmux_registry = vim.fn.stdpath 'state' .. '/theme-sync-tmux'
+    local server_registry = vim.fn.stdpath 'state' .. '/theme-sync-servers'
 
     local function read_lines(path)
       if vim.fn.filereadable(path) ~= 1 then
@@ -82,6 +82,65 @@ return {
       write_lines(tmux_registry, unique_lines(keep))
     end
 
+    local function ensure_server_name()
+      local server = vim.v.servername
+      if server and server ~= '' then
+        return server
+      end
+
+      local run_dir = vim.fn.stdpath 'run'
+      vim.fn.mkdir(run_dir, 'p')
+      local socket = run_dir .. '/theme-sync-' .. vim.fn.getpid() .. '.sock'
+      pcall(vim.fn.serverstart, socket)
+      server = vim.v.servername
+
+      if server and server ~= '' then
+        return server
+      end
+
+      return nil
+    end
+
+    local function register_theme_server()
+      local server = ensure_server_name()
+      if not server then
+        return
+      end
+
+      local lines = read_lines(server_registry)
+      local found = false
+      for _, line in ipairs(lines) do
+        if line == server then
+          found = true
+          break
+        end
+      end
+
+      if not found then
+        table.insert(lines, server)
+      end
+
+      write_lines(server_registry, unique_lines(lines))
+    end
+
+    local function unregister_theme_server()
+      local server = vim.v.servername
+      if not server or server == '' then
+        return
+      end
+
+      local lines = read_lines(server_registry)
+      local keep = {}
+
+      for _, line in ipairs(lines) do
+        if line ~= server then
+          table.insert(keep, line)
+        end
+      end
+
+      write_lines(server_registry, unique_lines(keep))
+    end
+
     local function read_theme()
       local ok, data = pcall(dofile, theme_file)
       if not ok or type(data) ~= 'table' then
@@ -136,6 +195,7 @@ return {
 
     sync_theme(true)
     register_tmux_pane()
+    register_theme_server()
 
     pcall(vim.api.nvim_del_user_command, 'SyncTheme')
     vim.api.nvim_create_user_command('SyncTheme', function(opts)
@@ -147,14 +207,6 @@ return {
       desc = 'Sync Neovim theme from generated theme file (! forces reload)',
     })
 
-    vim.api.nvim_create_autocmd({ 'VimEnter', 'FocusGained', 'VimResume', 'BufEnter' }, {
-      group = vim.api.nvim_create_augroup('RosePineMacThemeSync', { clear = true }),
-      callback = function()
-        sync_theme(false)
-        register_tmux_pane()
-      end,
-    })
-
     if uv and uv.new_fs_event then
       if state.watcher and not state.watcher:is_closing() then
         state.watcher:stop()
@@ -163,11 +215,8 @@ return {
       end
 
       local watcher = uv.new_fs_event()
-      local ok = watcher:start(theme_dir, {}, vim.schedule_wrap(function(err, fname)
+      local ok = watcher:start(theme_dir, {}, vim.schedule_wrap(function(err)
         if err then
-          return
-        end
-        if fname and fname ~= theme_name then
           return
         end
         if vim.v.exiting == 0 then
@@ -186,6 +235,7 @@ return {
       group = vim.api.nvim_create_augroup('RosePineMacThemeSyncCleanup', { clear = true }),
       callback = function()
         unregister_tmux_pane()
+        unregister_theme_server()
         if state.watcher and not state.watcher:is_closing() then
           state.watcher:stop()
           state.watcher:close()
