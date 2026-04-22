@@ -110,10 +110,7 @@ link_ghostty_theme() {
     
     case "$platform" in
         mac)
-            if [[ -x "$HOME/.local/bin/mac-sync-theme" ]]; then
-                "$HOME/.local/bin/mac-sync-theme" --apply
-            fi
-            ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.conf
+            ln -nsf ~/.config/ghostty/mac/theme.conf ~/.config/ghostty/theme.conf
             ln -nsf ~/.config/ghostty/mac/settings.conf ~/.config/ghostty/settings.conf
             log_success "Ghostty theme linked for macOS"
             ;;
