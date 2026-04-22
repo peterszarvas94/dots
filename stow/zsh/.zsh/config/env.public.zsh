@@ -48,8 +48,6 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # unset GEM_HOME GEM_PATH
 # export PATH="$HOME/.gem/bin:$PATH"
 
-export PATH="$HOME/.nodev/current:$PATH"
-
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export HOMEBREW_NO_AUTO_UPDATE=1
 
