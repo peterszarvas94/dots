@@ -91,18 +91,6 @@ return {
           }
         end
 
-        for _, entry in ipairs(data) do
-          if type(entry) == 'table' and entry[1] == 'LazyVim/LazyVim' and type(entry.opts) == 'table' then
-            local colorscheme = entry.opts.colorscheme
-            if type(colorscheme) == 'string' and colorscheme ~= '' then
-              return {
-                colorscheme = colorscheme,
-                background = entry.opts.background == 'light' and 'light' or 'dark',
-              }
-            end
-          end
-        end
-
         return nil
       end
 
