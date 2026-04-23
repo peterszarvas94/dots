@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+THEME_KEY="${1:-}"
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+
+THEME_DIR="$XDG_CONFIG_HOME/omarchy/current/theme"
+NVIM_FILE="$THEME_DIR/neovim.lua"
+SERVER_REGISTRY="$XDG_STATE_HOME/nvim/theme-sync-servers"
+
+normalize_theme_key() {
+  local value="$1"
+  printf '%s' "$value" \
+    | tr '[:upper:]' '[:lower:]' \
+    | sed -E 's/[^a-z0-9]+/_/g; s/^_+//; s/_+$//'
+}
+
+resolve_theme_name() {
+  local raw="$1"
+  local normalized="$2"
+  local dashed="${normalized//_/-}"
+  local candidate
+
+  for candidate in \
+    "$raw" \
+    "$normalized" \
+    "$dashed"; do
+    [[ -z "$candidate" ]] && continue
+    [[ -r "$XDG_CONFIG_HOME/omarchy/themes/$candidate/neovim.lua" ]] && printf '%s' "$candidate" && return 0
+    [[ -r "$HOME/.local/share/omarchy/themes/$candidate/neovim.lua" ]] && printf '%s' "$candidate" && return 0
+  done
+
+  return 1
+}
+
+if [[ -z "$THEME_KEY" ]]; then
+  THEME_KEY="$(omarchy-theme-current 2>/dev/null || true)"
+fi
+
+THEME_NORMALIZED="$(normalize_theme_key "$THEME_KEY")"
+if [[ -z "$THEME_NORMALIZED" ]]; then
+  THEME_NORMALIZED="rose_pine"
+fi
+
+THEME_NAME="$(resolve_theme_name "$THEME_KEY" "$THEME_NORMALIZED" || true)"
+if [[ -z "$THEME_NAME" ]]; then
+  THEME_NAME="rose-pine"
+fi
+
+THEME_SOURCE_CANDIDATES=(
+  "$XDG_CONFIG_HOME/omarchy/themes/$THEME_NAME/neovim.lua"
+  "$HOME/.local/share/omarchy/themes/$THEME_NAME/neovim.lua"
+)
+
+mkdir -p "$THEME_DIR"
+
+tmp_file="$NVIM_FILE.tmp"
+copied=0
+for candidate in "${THEME_SOURCE_CANDIDATES[@]}"; do
+  if [[ -r "$candidate" ]]; then
+    cp "$candidate" "$tmp_file"
+    copied=1
+    break
+  fi
+done
+
+if [[ "$copied" -eq 0 ]]; then
+  cat > "$tmp_file" <<'EOF'
+return {
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    config = function()
+      require('rose-pine').setup {
+        styles = {
+          italic = false,
+          bold = false,
+        },
+      }
+    end,
+  },
+  {
+    'LazyVim/LazyVim',
+    opts = {
+      colorscheme = 'rose-pine',
+    },
+  },
+}
+EOF
+fi
+
+mv "$tmp_file" "$NVIM_FILE"
+
+if [[ -f "$SERVER_REGISTRY" ]] && command -v nvim >/dev/null 2>&1; then
+  while IFS= read -r server || [[ -n "$server" ]]; do
+    [[ -z "$server" ]] && continue
+    [[ -S "$server" ]] || continue
+    nvim --server "$server" --remote-send '<Cmd>silent! SyncTheme!<CR>' >/dev/null 2>&1 || true
+  done < "$SERVER_REGISTRY"
+fi

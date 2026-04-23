@@ -6,9 +6,97 @@ return {
     priority = 1000,
     config = function()
       local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
-      local poll_interval_ms = 4000
-      local timer_id = nil
+      local server_registry = vim.fn.stdpath 'state' .. '/theme-sync-servers'
       local last_hash = nil
+
+      local function read_lines(path)
+        if vim.fn.filereadable(path) ~= 1 then
+          return {}
+        end
+
+        local ok, lines = pcall(vim.fn.readfile, path)
+        if not ok or type(lines) ~= 'table' then
+          return {}
+        end
+
+        return lines
+      end
+
+      local function write_lines(path, lines)
+        pcall(vim.fn.writefile, lines, path)
+      end
+
+      local function unique_lines(lines)
+        local seen = {}
+        local out = {}
+
+        for _, line in ipairs(lines) do
+          if line ~= '' and not seen[line] then
+            seen[line] = true
+            table.insert(out, line)
+          end
+        end
+
+        return out
+      end
+
+      local function ensure_server_name()
+        local server = vim.v.servername
+        if server and server ~= '' then
+          return server
+        end
+
+        local run_dir = vim.fn.stdpath 'run'
+        vim.fn.mkdir(run_dir, 'p')
+        local socket = run_dir .. '/theme-sync-' .. vim.fn.getpid() .. '.sock'
+        pcall(vim.fn.serverstart, socket)
+        server = vim.v.servername
+
+        if server and server ~= '' then
+          return server
+        end
+
+        return nil
+      end
+
+      local function register_theme_server()
+        local server = ensure_server_name()
+        if not server then
+          return
+        end
+
+        local lines = read_lines(server_registry)
+        local found = false
+        for _, line in ipairs(lines) do
+          if line == server then
+            found = true
+            break
+          end
+        end
+
+        if not found then
+          table.insert(lines, server)
+        end
+
+        write_lines(server_registry, unique_lines(lines))
+      end
+
+      local function unregister_theme_server()
+        local server = vim.v.servername
+        if not server or server == '' then
+          return
+        end
+
+        local lines = read_lines(server_registry)
+        local keep = {}
+        for _, line in ipairs(lines) do
+          if line ~= server then
+            table.insert(keep, line)
+          end
+        end
+
+        write_lines(server_registry, unique_lines(keep))
+      end
 
       local function theme_hash()
         if vim.fn.filereadable(theme_file) ~= 1 then
@@ -137,24 +225,14 @@ return {
         end,
       })
 
-      timer_id = vim.fn.timer_start(poll_interval_ms, function()
-        vim.schedule(function()
-          if vim.v.exiting == 0 then
-            reload_theme(false)
-          end
-        end)
-      end, { ['repeat'] = -1 })
-
       vim.api.nvim_create_autocmd('VimLeavePre', {
         group = group,
         callback = function()
-          if timer_id then
-            pcall(vim.fn.timer_stop, timer_id)
-            timer_id = nil
-          end
+          unregister_theme_server()
         end,
       })
 
+      register_theme_server()
       reload_theme(true)
     end,
   },
