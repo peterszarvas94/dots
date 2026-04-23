@@ -17,6 +17,9 @@ cursor-style-blink = false
 # (all shell integration options must be passed together)
 shell-integration-features = no-cursor,ssh-env
 font-feature = -calt, -liga, -dlig
+font-style = "SemiBold"
+font-style-bold = "ExtraBold"
+# minimum-contrast = 3
 
 # Keyboard bindings
 # keybind = shift+insert=paste_from_clipboard
