@@ -9,7 +9,7 @@ readonly TARGET_DIR="$HOME"
 
 # Script options
 BACKUP_MODE=false
-PKG=""
+PKGS=()
 WITH_GIT=false
 WITH_DEBLOAT=false
 WITH_SERVICES=false
@@ -47,7 +47,7 @@ Usage: $0 [OPTION]
 Deploy dotfiles using GNU Stow (auto-detects macOS or Arch Linux/omarchy).
 
 Options:
-  --pkg=PACKAGE   Deploy specified package (required: use 'all' for everything)
+  --pkg=PACKAGE   Deploy package(s): single, comma list, or 'all'
   --backup       Backup existing configs before overwriting
   --git          Enable Git SSH key setup
   --services     Start and enable systemd services (omarchy only)
@@ -55,8 +55,9 @@ Options:
   -h, --help     Show this help message
 
 Examples:
-  $0 --pkg=all           # Deploy all packages for current OS
-  $0 --pkg=ghostty       # Deploy only ghostty package (includes theme linking)
+  $0 --pkg=all                   # Deploy all packages for current OS
+  $0 --pkg=ghostty               # Deploy only ghostty package (includes theme linking)
+  $0 --pkg=nvim,omarchy          # Deploy multiple packages in order
   $0 --pkg=all --backup  # Deploy all with backup
   $0 --pkg=all --git --services # Deploy all, set up git, start services
   $0 --services          # Start systemd services only
@@ -435,13 +436,26 @@ deploy_mac_packages() {
 # Main deployment function
 deploy_dotfiles() {
     log_info "Starting dotfiles deployment for platform: $PLATFORM" 
-    
-    # If a specific package is requested (not "all"), deploy only that package
-    if [[ -n "$PKG" && "$PKG" != "all" ]]; then
-        prepare_package_deploy "$PKG"
-        deploy "$PKG" false
-        log_success "Package '$PKG' deployed successfully!"
-        return 0
+
+    # If specific packages are requested (without "all"), deploy only those.
+    if [[ ${#PKGS[@]} -gt 0 ]]; then
+        local pkg
+        local has_all=false
+        for pkg in "${PKGS[@]}"; do
+            if [[ "$pkg" == "all" ]]; then
+                has_all=true
+                break
+            fi
+        done
+
+        if [[ "$has_all" == false ]]; then
+            for pkg in "${PKGS[@]}"; do
+                prepare_package_deploy "$pkg"
+                deploy "$pkg" false
+            done
+            log_success "Package list deployed successfully: ${PKGS[*]}"
+            return 0
+        fi
     fi
     
     # Deploy platform-specific packages
@@ -505,8 +519,20 @@ parse_arguments() {
     while [[ $# -gt 0 ]]; do
         case $1 in
             --pkg=*)
-                PKG="${1#*=}"
-                validate_package "$PKG" || exit 1
+                local pkg_arg="${1#*=}"
+                if [[ -z "$pkg_arg" ]]; then
+                    log_error "Empty --pkg value"
+                    exit 1
+                fi
+                local IFS=','
+                local pkg
+                for pkg in $pkg_arg; do
+                    if [[ -z "$pkg" ]]; then
+                        continue
+                    fi
+                    validate_package "$pkg" || exit 1
+                    PKGS+=("$pkg")
+                done
                 shift
                 ;;
             --backup)
@@ -544,12 +570,12 @@ parse_arguments() {
     fi
     
     # Check if any action is requested
-    if [[ -z "$PKG" && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
+    if [[ ${#PKGS[@]} -eq 0 && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
         log_info "Nothing to do. Use --pkg=all, --git, --services, or --debloat to specify actions."
         exit 0
     fi
 
-    if [[ -n "$PKG" ]]; then
+    if [[ ${#PKGS[@]} -gt 0 ]]; then
         deploy_dotfiles
     fi
     
