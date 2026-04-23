@@ -21,18 +21,32 @@ local theme_plugins = {
   { 'bjarneo/aether.nvim' },
 }
 
-local fallback_opts = {
+local fallback = {
   colorscheme = 'rose-pine',
+  background = 'dark',
 }
 
-local function extract_lazyvim_opts(spec)
-  if type(spec) ~= 'table' then
+local function extract_theme_data(data)
+  if type(data) ~= 'table' then
     return nil
   end
 
-  for _, entry in ipairs(spec) do
+  if type(data.colorscheme) == 'string' and data.colorscheme ~= '' then
+    return {
+      colorscheme = data.colorscheme,
+      background = data.background == 'light' and 'light' or 'dark',
+    }
+  end
+
+  for _, entry in ipairs(data) do
     if type(entry) == 'table' and entry[1] == 'LazyVim/LazyVim' and type(entry.opts) == 'table' then
-      return vim.deepcopy(entry.opts)
+      local colorscheme = entry.opts.colorscheme
+      if type(colorscheme) == 'string' and colorscheme ~= '' then
+        return {
+          colorscheme = colorscheme,
+          background = entry.opts.background == 'light' and 'light' or 'dark',
+        }
+      end
     end
   end
 
@@ -40,12 +54,26 @@ local function extract_lazyvim_opts(spec)
 end
 
 local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
-local ok, spec = pcall(dofile, theme_file)
-local lazyvim_opts = ok and extract_lazyvim_opts(spec) or nil
+local ok, data = pcall(dofile, theme_file)
+data = ok and extract_theme_data(data) or nil
+data = data or fallback
+
+local background = data.background == 'light' and 'light' or 'dark'
 
 return vim.list_extend(vim.deepcopy(theme_plugins), {
   {
+    name = 'omarchy-theme-background',
+    dir = vim.fn.stdpath 'config',
+    lazy = false,
+    priority = 1001,
+    config = function()
+      vim.o.background = background
+    end,
+  },
+  {
     'LazyVim/LazyVim',
-    opts = lazyvim_opts or fallback_opts,
+    opts = {
+      colorscheme = data.colorscheme,
+    },
   },
 })
