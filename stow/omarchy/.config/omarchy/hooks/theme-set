@@ -9,23 +9,13 @@ THEME_DIR="$XDG_CONFIG_HOME/omarchy/current/theme"
 NVIM_FILE="$THEME_DIR/neovim.lua"
 SERVER_REGISTRY="$XDG_STATE_HOME/nvim/theme-sync-servers"
 
-normalize_theme_key() {
-  local value="$1"
-  printf '%s' "$value" \
-    | tr '[:upper:]' '[:lower:]' \
-    | sed -E 's/[^a-z0-9]+/_/g; s/^_+//; s/_+$//'
-}
-
 resolve_theme_name() {
-  local raw="$1"
-  local normalized="$2"
-  local dashed="${normalized//_/-}"
-  local candidate
+  local base="$1"
+  local normalized dashed candidate
+  normalized="$(printf '%s' "$base" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/_/g; s/^_+//; s/_+$//')"
+  dashed="${normalized//_/-}"
 
-  for candidate in \
-    "$raw" \
-    "$normalized" \
-    "$dashed"; do
+  for candidate in "$base" "$normalized" "$dashed"; do
     [[ -z "$candidate" ]] && continue
     [[ -r "$XDG_CONFIG_HOME/omarchy/themes/$candidate/neovim.lua" ]] && printf '%s' "$candidate" && return 0
     [[ -r "$HOME/.local/share/omarchy/themes/$candidate/neovim.lua" ]] && printf '%s' "$candidate" && return 0
@@ -38,12 +28,7 @@ if [[ -z "$THEME_KEY" ]]; then
   THEME_KEY="$(omarchy-theme-current 2>/dev/null || true)"
 fi
 
-THEME_NORMALIZED="$(normalize_theme_key "$THEME_KEY")"
-if [[ -z "$THEME_NORMALIZED" ]]; then
-  THEME_NORMALIZED="rose_pine"
-fi
-
-THEME_NAME="$(resolve_theme_name "$THEME_KEY" "$THEME_NORMALIZED" || true)"
+THEME_NAME="$(resolve_theme_name "${THEME_KEY:-rose_pine}" || true)"
 if [[ -z "$THEME_NAME" ]]; then
   THEME_NAME="rose-pine"
 fi
@@ -94,8 +79,7 @@ mv "$tmp_file" "$NVIM_FILE"
 
 if [[ -f "$SERVER_REGISTRY" ]] && command -v nvim >/dev/null 2>&1; then
   while IFS= read -r server || [[ -n "$server" ]]; do
-    [[ -z "$server" ]] && continue
-    [[ -S "$server" ]] || continue
+    [[ -n "$server" && -S "$server" ]] || continue
     nvim --server "$server" --remote-send '<Cmd>silent! SyncTheme!<CR>' >/dev/null 2>&1 || true
   done < "$SERVER_REGISTRY"
 fi

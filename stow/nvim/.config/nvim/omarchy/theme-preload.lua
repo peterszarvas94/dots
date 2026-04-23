@@ -9,24 +9,7 @@ return {
       local server_registry = vim.fn.stdpath 'state' .. '/theme-sync-servers'
       local last_hash = nil
 
-      local function read_lines(path)
-        if vim.fn.filereadable(path) ~= 1 then
-          return {}
-        end
-
-        local ok, lines = pcall(vim.fn.readfile, path)
-        if not ok or type(lines) ~= 'table' then
-          return {}
-        end
-
-        return lines
-      end
-
-      local function write_lines(path, lines)
-        pcall(vim.fn.writefile, lines, path)
-      end
-
-      local function unique_lines(lines)
+      local function dedupe(lines)
         local seen = {}
         local out = {}
 
@@ -40,7 +23,7 @@ return {
         return out
       end
 
-      local function ensure_server_name()
+      local function current_or_started_server()
         local server = vim.v.servername
         if server and server ~= '' then
           return server
@@ -59,43 +42,41 @@ return {
         return nil
       end
 
-      local function register_theme_server()
-        local server = ensure_server_name()
+      local function update_server_registry(remove_current)
+        local server = vim.v.servername
+        if not remove_current then
+          server = current_or_started_server()
+        end
+
         if not server then
           return
         end
 
-        local lines = read_lines(server_registry)
+        local lines = {}
+        if vim.fn.filereadable(server_registry) == 1 then
+          local ok, existing = pcall(vim.fn.readfile, server_registry)
+          if ok and type(existing) == 'table' then
+            lines = existing
+          end
+        end
+
+        local keep = {}
         local found = false
         for _, line in ipairs(lines) do
           if line == server then
             found = true
-            break
-          end
-        end
-
-        if not found then
-          table.insert(lines, server)
-        end
-
-        write_lines(server_registry, unique_lines(lines))
-      end
-
-      local function unregister_theme_server()
-        local server = vim.v.servername
-        if not server or server == '' then
-          return
-        end
-
-        local lines = read_lines(server_registry)
-        local keep = {}
-        for _, line in ipairs(lines) do
-          if line ~= server then
+          elseif line ~= '' then
             table.insert(keep, line)
           end
         end
 
-        write_lines(server_registry, unique_lines(keep))
+        if not remove_current then
+          table.insert(keep, server)
+        elseif not found then
+          return
+        end
+
+        pcall(vim.fn.writefile, dedupe(keep), server_registry)
       end
 
       local function theme_hash()
@@ -228,11 +209,11 @@ return {
       vim.api.nvim_create_autocmd('VimLeavePre', {
         group = group,
         callback = function()
-          unregister_theme_server()
+          update_server_registry(true)
         end,
       })
 
-      register_theme_server()
+      update_server_registry(false)
       reload_theme(true)
     end,
   },
