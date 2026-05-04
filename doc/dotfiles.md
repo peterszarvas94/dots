@@ -7,7 +7,7 @@ Reference for how this repo is laid out and which files/folders are responsible 
 ## Top-level layout
 
 - `stow/`: Main dotfiles packages managed by GNU Stow.
-- `config`: Main deploy script (`--pkg`, `--git`, `--services`, `--debloat`) with platform-aware linking.
+- `config`: Main deploy script (`--pkg`, `--services`, `--debloat`) with platform-aware linking.
 - `setup_mac`: Bootstrap script for macOS package install + clone + initial `./config` run.
 - `setup_omarchy`: Bootstrap script for Linux/Omarchy package install + clone + initial `./config` run.
 - `doc/`: Repository documentation (this file lives here).
@@ -58,7 +58,6 @@ Deploy one package:
 Optional extra actions:
 
 ```bash
-./config --git
 ./config --services
 ./config --debloat
 ```

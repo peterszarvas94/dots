@@ -16,7 +16,8 @@ brew install \
     ghostty \
     bun-bin \
     opencode \
-    dark-notify
+    dark-notify \
+    1password-cli
 
 # Remove
 rm -rf ~/projects/dots
@@ -36,5 +37,14 @@ mkdir ~/work
 mkdir ~/projects/go
 mkdir ~/youtube
 
-# Config packages 
-./config --git --pkg=all
+# SSH config for 1Password
+mkdir -p stow/ssh/.ssh
+printf 'Host *\n\tIdentityAgent ~/.1password/agent.sock\n' > stow/ssh/.ssh/config
+
+# Config packages
+./config --pkg=all
+
+# 1Password
+echo ""
+echo "Login to 1Password:"
+echo "  op signin"

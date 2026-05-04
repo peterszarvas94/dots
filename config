@@ -10,7 +10,6 @@ readonly TARGET_DIR="$HOME"
 # Script options
 BACKUP_MODE=false
 PKGS=()
-WITH_GIT=false
 WITH_DEBLOAT=false
 WITH_SERVICES=false
 PLATFORM=""
@@ -49,7 +48,6 @@ Deploy dotfiles using GNU Stow (auto-detects macOS or Arch Linux/omarchy).
 Options:
   --pkg=PACKAGE   Deploy package(s): single, comma list, or 'all'
   --backup       Backup existing configs before overwriting
-  --git          Enable Git SSH key setup
   --services     Start and enable systemd services (omarchy only)
   --debloat      Remove bloatware (omarchy only, does nothing on macOS)
   -h, --help     Show this help message
@@ -58,23 +56,11 @@ Examples:
   $0 --pkg=all                   # Deploy all packages for current OS
   $0 --pkg=ghostty               # Deploy only ghostty package (includes theme linking)
   $0 --pkg=nvim,omarchy          # Deploy multiple packages in order
-  $0 --pkg=all --backup  # Deploy all with backup
-  $0 --pkg=all --git --services # Deploy all, set up git, start services
-  $0 --services          # Start systemd services only
-  $0 --debloat           # Remove bloatware (omarchy only)
+  $0 --pkg=all --backup          # Deploy all with backup
+  $0 --pkg=all --services        # Deploy all, start services
+  $0 --services                  # Start systemd services only
+  $0 --debloat                   # Remove bloatware (omarchy only)
 EOF
-}
-
-setup_git() {
-    rm -f ~/.ssh/github ~/.ssh/github.pub
-    ssh-keygen -t ed25519 -f ~/.ssh/github -N "" -C "contact@peterszarvas.hu"
-
-    echo
-    echo "Copy this key to GitHub:"
-    cat ~/.ssh/github.pub
-    echo
-    echo "Go to: https://github.com/settings/ssh/new to add it"
-    echo "After adding, test with: ssh -T git@github.com"
 }
 
 # Link nvim theme files
@@ -539,10 +525,6 @@ parse_arguments() {
                 BACKUP_MODE=true
                 shift
                 ;;
-            --git)
-                WITH_GIT=true
-                shift
-                ;;
             --services)
                 WITH_SERVICES=true
                 shift
@@ -570,19 +552,15 @@ parse_arguments() {
     fi
     
     # Check if any action is requested
-    if [[ ${#PKGS[@]} -eq 0 && "$WITH_GIT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
-        log_info "Nothing to do. Use --pkg=all, --git, --services, or --debloat to specify actions."
+    if [[ ${#PKGS[@]} -eq 0 && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
+        log_info "Nothing to do. Use --pkg=all, --services, or --debloat to specify actions."
         exit 0
     fi
 
     if [[ ${#PKGS[@]} -gt 0 ]]; then
         deploy_dotfiles
     fi
-    
-    if [[ "$WITH_GIT" == true ]]; then
-        setup_git
-    fi
-    
+
     if [[ "$WITH_SERVICES" == true ]]; then
         start_services
     fi
