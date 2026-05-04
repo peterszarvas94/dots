@@ -9,6 +9,7 @@ yay -S --noconfirm --needed \
     tmux \
     zsh \
     go \
+    cmake \
     brave-browser \
     nodejs \
     ghostty \

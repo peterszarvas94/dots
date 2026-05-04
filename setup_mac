@@ -11,6 +11,7 @@ brew install \
     tmux \
     zsh \
     go \
+    cmake \
     brave-browser \
     node \
     ghostty \

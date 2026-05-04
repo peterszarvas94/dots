@@ -237,7 +237,7 @@ debloat_system() {
             log_info "Removing webapps and packages..."
             
             # Remove webapps
-            local webapps=("Basecamp" "Figma" "Google Contacts" "Google Messages" "HEY" "Zoom")
+            local webapps=("Basecamp" "Figma" "Google Contacts" "Google Messages" "Zoom")
             for webapp in "${webapps[@]}"; do
                 omarchy-webapp-remove "$webapp" 2>/dev/null && log_success "Removed $webapp" || log_warning "$webapp not found"
             done
