@@ -12,6 +12,7 @@ BACKUP_MODE=false
 PKGS=()
 WITH_DEBLOAT=false
 WITH_SERVICES=false
+WITH_FONT=false
 PLATFORM=""
 
 # Colors for output
@@ -50,6 +51,7 @@ Options:
   --backup       Backup existing configs before overwriting
   --services     Start and enable systemd services (omarchy only)
   --debloat      Remove bloatware (omarchy only, does nothing on macOS)
+  --font         Install fonts from private repo
   -h, --help     Show this help message
 
 Examples:
@@ -60,6 +62,7 @@ Examples:
   $0 --pkg=all --services        # Deploy all, start services
   $0 --services                  # Start systemd services only
   $0 --debloat                   # Remove bloatware (omarchy only)
+  $0 --font                      # Install fonts from private repo
 EOF
 }
 
@@ -252,6 +255,32 @@ debloat_system() {
             return 1
             ;;
     esac
+}
+
+# Install fonts from private repo
+install_fonts() {
+    local private_dir="$HOME/projects/private"
+    
+    if [[ ! -d "$private_dir" ]]; then
+        log_info "Cloning private font repo..."
+        mkdir -p "$(dirname "$private_dir")"
+        git clone git@github.com:peterszarvas94/private.git "$private_dir" || { log_error "Failed to clone private repo"; return 1; }
+    fi
+    
+    local font_count=0
+    mkdir -p "$HOME/.local/share/fonts"
+    
+    for font in "$private_dir"/*.ttf "$private_dir"/*.otf; do
+        if [[ -f "$font" ]]; then
+            cp "$font" "$HOME/.local/share/fonts/" && font_count=$((font_count + 1))
+        fi
+    done
+    
+    if [[ $font_count -gt 0 ]]; then
+        fc-cache -f 2>/dev/null && log_success "Installed $font_count fonts and refreshed cache" || log_success "Installed $font_count fonts (fc-cache not found)"
+    else
+        log_info "No font files found in private repo"
+    fi
 }
 
 # Backup existing config
@@ -525,6 +554,10 @@ parse_arguments() {
                 BACKUP_MODE=true
                 shift
                 ;;
+            --font)
+                WITH_FONT=true
+                shift
+                ;;
             --services)
                 WITH_SERVICES=true
                 shift
@@ -552,13 +585,17 @@ parse_arguments() {
     fi
     
     # Check if any action is requested
-    if [[ ${#PKGS[@]} -eq 0 && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
-        log_info "Nothing to do. Use --pkg=all, --services, or --debloat to specify actions."
+    if [[ ${#PKGS[@]} -eq 0 && "$WITH_FONT" == false && "$WITH_SERVICES" == false && "$WITH_DEBLOAT" == false ]]; then
+        log_info "Nothing to do. Use --pkg=all, --font, --services, or --debloat to specify actions."
         exit 0
     fi
 
     if [[ ${#PKGS[@]} -gt 0 ]]; then
         deploy_dotfiles
+    fi
+
+    if [[ "$WITH_FONT" == true ]]; then
+        install_fonts
     fi
 
     if [[ "$WITH_SERVICES" == true ]]; then

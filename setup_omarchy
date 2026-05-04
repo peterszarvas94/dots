@@ -35,15 +35,21 @@ git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git
 
 
-mkdir ~/work
-mkdir ~/projects/go
-mkdir ~/youtube
+mkdir -p ~/work
+mkdir -p ~/projects/go
+mkdir -p ~/youtube
 
 # SSH config for 1Password
 mkdir -p stow/ssh/.ssh
 printf 'Host *\n\tIdentityAgent ~/.1password/agent.sock\n' > stow/ssh/.ssh/config
 
-./config --pkg=all
+# Clone private repo for fonts
+git clone git@github.com:peterszarvas94/private.git ~/projects/private 2>/dev/null || true
+
+# Install rose-pine-dark theme
+omarchy-theme-install https://github.com/guilhermetk/omarchy-rose-pine-dark.git
+
+./config --pkg=all --font --debloat
 
 # 1Password
 echo ""

@@ -26,6 +26,7 @@ rm -rf ~/projects/dots
 mkdir -p ~/projects
 cd projects
 git clone https://github.com/peterszarvas94/dots.git
+git clone git@github.com:peterszarvas94/private.git
 git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git
 
 # Origin
@@ -33,16 +34,16 @@ cd ~/projects/dots
 git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git
 
-mkdir ~/work
-mkdir ~/projects/go
-mkdir ~/youtube
+mkdir -p ~/work
+mkdir -p ~/projects/go
+mkdir -p ~/youtube
 
 # SSH config for 1Password
 mkdir -p stow/ssh/.ssh
 printf 'Host *\n\tIdentityAgent ~/.1password/agent.sock\n' > stow/ssh/.ssh/config
 
 # Config packages
-./config --pkg=all
+./config --pkg=all --font
 
 # 1Password
 echo ""
