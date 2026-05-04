@@ -13,6 +13,9 @@ yay -S --noconfirm --needed \
     brave-browser \
     nodejs \
     ghostty \
+    qemu-base \
+    lima-bin \
+    colima-bin \
     bun-bin \
     opencode \
     1password-cli
