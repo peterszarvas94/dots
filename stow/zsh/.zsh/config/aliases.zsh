@@ -37,7 +37,24 @@ alias ldocker="lazydocker"
 alias conform-log='cat ~/.local/state/nvim/conform.log | less -R'
 alias conform-file='nvim ~/.local/state/nvim/conform.log'
 
-alias uuid='printf %s "$(uuidgen -r)" | wl-copy'
+uuid() {
+  local id
+  id="$(uuidgen | tr '[:upper:]' '[:lower:]')"
+
+  if command -v wl-copy >/dev/null 2>&1; then
+    printf %s "$id" | wl-copy
+  elif command -v pbcopy >/dev/null 2>&1; then
+    printf %s "$id" | pbcopy
+  elif command -v xclip >/dev/null 2>&1; then
+    printf %s "$id" | xclip -selection clipboard
+  else
+    printf '%s\n' "$id"
+    printf 'No clipboard tool found (tried wl-copy, pbcopy, xclip).\n' >&2
+    return 1
+  fi
+
+  printf '%s\n' "$id"
+}
 
 alias config="$HOME/projects/dots/config"
 
