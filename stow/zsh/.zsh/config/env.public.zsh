@@ -7,48 +7,26 @@ export COLORTERM='truecolor'
 # avoid stale RubyGems overrides from parent shells
 unset GEM_HOME GEM_PATH
 path=(${path:#$HOME/.gem/bin})
-path=(${path:#/opt/homebrew/opt/ruby/bin})
-export PATH
-
-# if [ "$(uname)" = "Darwin" ]; then
-#     alias brave='/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser'
-#     export BROWSER="open"
-# elif [ "$(uname)" = "Linux" ]; then
-#     export BROWSER="xdg-open"
-# fi
 
 # scripts
-export PATH="$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin:$PATH"
+path=("$HOME/.local/bin" "$HOME/.local/share/nvim/mason/bin" $path)
 
 # go
 export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$PATH"
-
-# brew
-export PATH=$PATH:/opt/homebrew/bin
+path=("$GOPATH/bin" $path)
 
 # bun
-# [ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
-# export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-# export PATH="/home/peti/.cache/.bun/bin:$PATH"
-
-# bun
-[ -s "/Users/szarvaspeter/.bun/_bun" ] && source "/Users/szarvaspeter/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+path=("$BUN_INSTALL/bin" $path)
 
 # turso
-export PATH="~/.turso:$PATH"
+path=("$HOME/.turso" $path)
 
 # zdg
 export XDG_CONFIG_HOME="$HOME/.config"
 
-# ruby
-# export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-# unset GEM_HOME GEM_PATH
-# export PATH="$HOME/.gem/bin:$PATH"
+path=("$HOME/.deno/bin" $path)
 
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export HOMEBREW_NO_AUTO_UPDATE=1
-
-export PATH="/Users/szarvaspeter/.deno/bin:$PATH"
+typeset -U path
+export PATH
