@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CARD_INDEX="$(awk '/\[EGO[[:space:]]*\]/{print $1; exit}' /proc/asound/cards)"
+RAZER_CARD_INDEX="$(awk '/\[Mini[[:space:]]*\]/{print $1; exit}' /proc/asound/cards || true)"
+RAZER_SOURCE="$(pactl list short sources | awk '/usb-Razer_Inc\._Razer_Seiren_V3_Mini/ && $2 !~ /\.monitor$/ {print $2; exit}' || true)"
+
+if [[ -z "${CARD_INDEX}" ]]; then
+  printf 'EGO card not found. Plug in the dongle and retry.\n' >&2
+  exit 1
+fi
+
+pactl set-card-profile alsa_card.usb-XiiSound_Technology_Corporation_EGO-00 output:analog-stereo+input:mono-fallback || true
+pactl set-default-sink alsa_output.usb-XiiSound_Technology_Corporation_EGO-00.analog-stereo || true
+
+amixer -c "${CARD_INDEX}" sset 'PCM',0 100% unmute
+amixer -c "${CARD_INDEX}" sset 'PCM',1 100% unmute
+amixer -c "${CARD_INDEX}" sset 'Mic',0 100% cap || true
+amixer -c "${CARD_INDEX}" sset 'Mic',1 100% cap || true
+
+if [[ -n "${RAZER_CARD_INDEX}" ]]; then
+  amixer -c "${RAZER_CARD_INDEX}" sset 'Mic',0 100% cap || true
+fi
+
+if [[ -n "${RAZER_SOURCE}" ]]; then
+  pactl set-default-source "${RAZER_SOURCE}" || true
+  pactl set-source-mute "${RAZER_SOURCE}" 0 || true
+  pactl set-source-volume "${RAZER_SOURCE}" 100% || true
+fi
+
+if command -v alsactl >/dev/null 2>&1; then
+  if [[ "${EUID}" -eq 0 ]]; then
+    alsactl store || true
+  elif [[ -t 0 ]] && command -v sudo >/dev/null 2>&1; then
+    sudo alsactl store || true
+  fi
+fi
+
+printf 'EGO output fixed (card %s), Razer mic fix applied%s.\n' "${CARD_INDEX}" "${RAZER_CARD_INDEX:+ on card ${RAZER_CARD_INDEX}}"
