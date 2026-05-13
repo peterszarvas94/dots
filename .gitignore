@@ -9,5 +9,6 @@ stow/scripts/.local/bin/mise
 stow/nvim/.config/nvim/lua/plugins/omarchy-theme-preload.lua
 stow/nvim/.config/nvim/lua/plugins/theme.lua
 stow/nvim/.config/nvim/lazy-lock.json
+/stow/nvim/.config/nvim/parsers
 stow/opencode/.config/opencode/package-lock.json
 .opencode/package-lock.json
