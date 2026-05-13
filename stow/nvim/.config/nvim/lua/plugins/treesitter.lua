@@ -1,12 +1,8 @@
 return {
   {
-    'nvim-treesitter/nvim-treesitter',
+    'folke/nvim-treesitter',
     branch = 'master',
     lazy = false,
-    -- dependencies = {
-    --   'nvim-treesitter/nvim-treesitter-textobjects',
-    --   'nvim-treesitter/playground',
-    -- },
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup {
@@ -27,19 +23,13 @@ return {
           'bash',
           'ruby',
         },
-
         auto_install = true,
-        highlight = { enable = true },
-        indent = { enable = true },
-        incremental_selection = {
+        highlight = {
           enable = true,
-          keymaps = {
-            init_selection = '<c-space>',
-            node_incremental = '<c-space>',
-            scope_incremental = '<c-s>',
-            node_decremental = '<M-space>',
-          },
+          disable = { 'markdown', 'markdown_inline', 'bash' },
+          additional_vim_regex_highlighting = false,
         },
+        indent = { enable = false },
       }
 
       local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
