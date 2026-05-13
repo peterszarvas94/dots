@@ -22,6 +22,16 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+      local function has_executable(cmd)
+        return vim.fn.executable(cmd) == 1
+      end
+
+      local function enable_if_available(server, cmd)
+        if has_executable(cmd) then
+          vim.lsp.enable(server)
+        end
+      end
+
       local on_attach = function(_, bufnr)
         -- LSP keymaps
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = 'Rename' })
@@ -30,6 +40,20 @@ return {
         vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = 'Goto Implementation' })
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
+      end
+
+      vim.lsp.handlers['textDocument/hover'] = function(err, result, ctx, config)
+        if err or not (result and result.contents) then
+          return
+        end
+        local lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+        lines = vim.lsp.util.trim_empty_lines(lines)
+        if vim.tbl_isempty(lines) then
+          return
+        end
+        return vim.lsp.util.open_floating_preview(lines, 'plaintext', vim.tbl_extend('keep', config or {}, {
+          border = 'rounded',
+        }))
       end
 
       vim.lsp.config['lua_ls'] = {
@@ -93,6 +117,7 @@ return {
 
       vim.lsp.config['gopls'] = {
         capabilities = capabilities,
+        cmd = { 'gopls' },
         on_attach = function(client, bufnr)
           vim.g.gofmt_command = 'goimport'
           vim.api.nvim_create_autocmd('BufWritePre', {
@@ -105,7 +130,7 @@ return {
         end,
       }
 
-      vim.lsp.config['ruby-lsp'] = {
+      vim.lsp.config['ruby_lsp'] = {
         cmd = { 'ruby-lsp' },
         capabilities = capabilities,
         on_attach = on_attach,
@@ -119,24 +144,6 @@ return {
             diagnostics = true,
           },
         },
-      }
-
-      vim.lsp.config['tailwindcss'] = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        init_options = {
-          userLanguages = {
-            templ = 'html',
-            html = 'html',
-            eruby = 'html',
-          },
-        },
-      }
-
-      vim.lsp.config['htmx'] = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        filetypes = { 'html', 'templ' },
       }
 
       vim.lsp.config['templ'] = {
@@ -175,17 +182,15 @@ return {
       end
 
       -- vim.lsp.enable 'tsgo'
-      vim.lsp.enable 'gopls'
-      vim.lsp.enable 'ruby_lsp'
-      vim.lsp.enable 'tailwindcss'
-      vim.lsp.enable 'htmx'
-      vim.lsp.enable 'templ'
-      vim.lsp.enable 'yamlls'
-      vim.lsp.enable 'jsonls'
-      vim.lsp.enable 'cssls'
-      vim.lsp.enable 'bashls'
-      vim.lsp.enable 'astro'
-      vim.lsp.enable 'eslint'
+      enable_if_available('gopls', 'gopls')
+      enable_if_available('ruby_lsp', 'ruby-lsp')
+      enable_if_available('templ', 'templ')
+      enable_if_available('yamlls', 'yaml-language-server')
+      enable_if_available('jsonls', 'vscode-json-language-server')
+      enable_if_available('cssls', 'vscode-css-language-server')
+      enable_if_available('bashls', 'bash-language-server')
+      enable_if_available('astro', 'astro-ls')
+      enable_if_available('eslint', 'vscode-eslint-language-server')
 
       -- Diagnostic configuration
       vim.diagnostic.config {
@@ -230,9 +235,8 @@ return {
       ensure_installed = {
         -- LSPs
         'deno',
+        'gopls',
 
-        'tailwindcss-language-server',
-        'htmx-lsp',
         'templ',
         'yaml-language-server',
         'css-lsp',
