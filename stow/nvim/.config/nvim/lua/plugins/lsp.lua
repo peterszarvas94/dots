@@ -187,11 +187,6 @@ return {
       vim.lsp.enable 'astro'
       vim.lsp.enable 'eslint'
 
-      -- LSP handlers configuration
-      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = 'rounded',
-      })
-
       -- Diagnostic configuration
       vim.diagnostic.config {
         signs = false,

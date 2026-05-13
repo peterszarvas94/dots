@@ -8,77 +8,7 @@ return {
       local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
       local server_registry = vim.fn.stdpath 'state' .. '/theme-sync-servers'
 
-      local function dedupe(lines)
-        local seen = {}
-        local out = {}
-
-        for _, line in ipairs(lines) do
-          if line ~= '' and not seen[line] then
-            seen[line] = true
-            table.insert(out, line)
-          end
-        end
-
-        return out
-      end
-
-      local function current_or_started_server()
-        local server = vim.v.servername
-        if server and server ~= '' then
-          return server
-        end
-
-        local run_dir = vim.fn.stdpath 'run'
-        vim.fn.mkdir(run_dir, 'p')
-        local socket = run_dir .. '/theme-sync-' .. vim.fn.getpid() .. '.sock'
-        pcall(vim.fn.serverstart, socket)
-        server = vim.v.servername
-
-        if server and server ~= '' then
-          return server
-        end
-
-        return nil
-      end
-
-      local function update_server_registry(remove_current)
-        local server = vim.v.servername
-        if not remove_current then
-          server = current_or_started_server()
-        end
-
-        if not server then
-          return
-        end
-
-        local lines = {}
-        if vim.fn.filereadable(server_registry) == 1 then
-          local ok, existing = pcall(vim.fn.readfile, server_registry)
-          if ok and type(existing) == 'table' then
-            lines = existing
-          end
-        end
-
-        local keep = {}
-        local found = false
-        for _, line in ipairs(lines) do
-          if line == server then
-            found = true
-          elseif line ~= '' then
-            table.insert(keep, line)
-          end
-        end
-
-        if not remove_current then
-          table.insert(keep, server)
-        elseif not found then
-          return
-        end
-
-        pcall(vim.fn.writefile, dedupe(keep), server_registry)
-      end
-
-      local function read_theme()
+      local function read_theme_data()
         local ok, data = pcall(dofile, theme_file)
         if not ok or type(data) ~= 'table' then
           return nil
@@ -91,11 +21,23 @@ return {
           }
         end
 
+        for _, spec in ipairs(data) do
+          if spec[1] == 'LazyVim/LazyVim' and type(spec.opts) == 'table' then
+            local cs = spec.opts.colorscheme
+            if type(cs) == 'string' and cs ~= '' then
+              return {
+                colorscheme = cs,
+                background = spec.opts.background == 'light' and 'light' or 'dark',
+              }
+            end
+          end
+        end
+
         return nil
       end
 
       local function sync_theme()
-        local theme = read_theme()
+        local theme = read_theme_data()
         if not theme then
           return nil, false
         end
@@ -103,6 +45,42 @@ return {
         vim.o.background = theme.background
         pcall(vim.cmd.colorscheme, theme.colorscheme)
         return theme.colorscheme, true
+      end
+
+      local function register_server()
+        local server = vim.v.servername
+        if not server or server == '' then
+          local run_dir = vim.fn.stdpath 'run'
+          vim.fn.mkdir(run_dir, 'p')
+          local socket = run_dir .. '/theme-sync-' .. vim.fn.getpid() .. '.sock'
+          pcall(vim.fn.serverstart, socket)
+          server = vim.v.servername
+        end
+
+        if not server or server == '' then
+          return
+        end
+
+        local lines = {}
+        if vim.fn.filereadable(server_registry) == 1 then
+          local ok, existing = pcall(vim.fn.readfile, server_registry)
+          if ok and type(existing) == 'table' then
+            lines = existing
+          end
+        end
+
+        local seen = {}
+        local out = {}
+        for _, line in ipairs(lines) do
+          if line ~= '' and not seen[line] then
+            seen[line] = true
+            table.insert(out, line)
+          end
+        end
+        if not seen[server] then
+          table.insert(out, server)
+        end
+        pcall(vim.fn.writefile, out, server_registry)
       end
 
       pcall(vim.api.nvim_del_user_command, 'SyncTheme')
@@ -115,31 +93,14 @@ return {
         desc = 'Reload Neovim theme from Omarchy theme file',
       })
 
-      local group = vim.api.nvim_create_augroup('OmarchyThemeHotReload', { clear = true })
-
-      vim.api.nvim_create_autocmd('User', {
-        group = group,
-        pattern = 'LazyReload',
-        callback = function()
-          sync_theme()
-        end,
-      })
-
       vim.api.nvim_create_autocmd('VimEnter', {
-        group = group,
         callback = function()
+          register_server()
           sync_theme()
         end,
       })
 
-      vim.api.nvim_create_autocmd('VimLeavePre', {
-        group = group,
-        callback = function()
-          update_server_registry(true)
-        end,
-      })
-
-      update_server_registry(false)
+      register_server()
       sync_theme()
     end,
   },

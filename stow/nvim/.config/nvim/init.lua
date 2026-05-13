@@ -22,10 +22,6 @@ require('lazy').setup {
   spec = {
     import = 'plugins',
   },
-  dev = {
-    path = '~/projects',
-    patterns = { 'LazyVim' },
-  },
   ui = {
     border = 'rounded',
   },
