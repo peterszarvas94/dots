@@ -1,4 +1,11 @@
 # neovim
+nvim() {
+  local runtime_dir socket
+  runtime_dir="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+  socket="${runtime_dir}/nvim.$$.${RANDOM}.sock"
+  command nvim --listen "$socket" "$@"
+}
+
 alias v="nvim"
 
 # gems backend 

@@ -1,66 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-THEME_KEY="${1:-}"
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-
-THEME_DIR="$XDG_CONFIG_HOME/omarchy/current/theme"
-NVIM_FILE="$THEME_DIR/neovim.lua"
-SERVER_REGISTRY="$XDG_STATE_HOME/nvim/theme-sync-servers"
-
-resolve_theme_name() {
-  local base="$1"
-  local normalized dashed candidate
-  normalized="$(printf '%s' "$base" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/_/g; s/^_+//; s/_+$//')"
-  dashed="${normalized//_/-}"
-
-  for candidate in "$base" "$normalized" "$dashed"; do
-    [[ -z "$candidate" ]] && continue
-    [[ -r "$XDG_CONFIG_HOME/omarchy/themes/$candidate/neovim.lua" ]] && printf '%s' "$candidate" && return 0
-    [[ -r "$HOME/.local/share/omarchy/themes/$candidate/neovim.lua" ]] && printf '%s' "$candidate" && return 0
-  done
-
-  return 1
-}
-
-if [[ -z "$THEME_KEY" ]]; then
-  THEME_KEY="$(omarchy-theme-current 2>/dev/null || true)"
+if ! command -v nvim >/dev/null 2>&1; then
+  exit 0
 fi
 
-THEME_NAME="$(resolve_theme_name "${THEME_KEY:-rose_pine}" || true)"
-if [[ -z "$THEME_NAME" ]]; then
-  THEME_NAME="rose-pine"
-fi
+runtime_dir="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+tmp_dir="/tmp/nvim.${USER}"
 
-THEME_SOURCE_CANDIDATES=(
-  "$XDG_CONFIG_HOME/omarchy/themes/$THEME_NAME/neovim.lua"
-  "$HOME/.local/share/omarchy/themes/$THEME_NAME/neovim.lua"
-)
+shopt -s nullglob
+sockets=("${runtime_dir}"/nvim.* "${tmp_dir}"/*)
+shopt -u nullglob
 
-mkdir -p "$THEME_DIR"
-
-source_file=""
-for candidate in "${THEME_SOURCE_CANDIDATES[@]}"; do
-  if [[ -r "$candidate" ]]; then
-    source_file="$candidate"
-    break
-  fi
+for socket in "${sockets[@]}"; do
+  [[ -S "$socket" ]] || continue
+  nvim --server "$socket" --remote-send '<Cmd>SyncTheme<CR>' >/dev/null 2>&1 || true
 done
-
-if [[ -z "$source_file" ]]; then
-  echo "theme-set: missing neovim.lua for theme '$THEME_NAME'" >&2
-  exit 1
-fi
-
-tmp_file="$NVIM_FILE.tmp"
-cp "$source_file" "$tmp_file"
-
-mv "$tmp_file" "$NVIM_FILE"
-
-if [[ -f "$SERVER_REGISTRY" ]] && command -v nvim >/dev/null 2>&1; then
-  while IFS= read -r server || [[ -n "$server" ]]; do
-    [[ -n "$server" && -S "$server" ]] || continue
-    nvim --server "$server" --remote-send '<Cmd>silent! SyncTheme!<CR>' >/dev/null 2>&1 || true
-  done < "$SERVER_REGISTRY"
-fi

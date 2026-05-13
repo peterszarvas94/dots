@@ -28,7 +28,7 @@ local fallback = {
 
 local function extract_theme_data(data)
   if type(data) ~= 'table' then
-    return nil
+    return vim.deepcopy(fallback)
   end
 
   if type(data.colorscheme) == 'string' and data.colorscheme ~= '' then
@@ -38,13 +38,25 @@ local function extract_theme_data(data)
     }
   end
 
-  return nil
+  for _, spec in ipairs(data) do
+    local plugin = spec[1]
+    if plugin == 'LazyVim/LazyVim' and type(spec.opts) == 'table' then
+      local cs = spec.opts.colorscheme
+      if type(cs) == 'string' and cs ~= '' then
+        return {
+          colorscheme = cs,
+          background = spec.opts.background == 'light' and 'light' or 'dark',
+        }
+      end
+    end
+  end
+
+  return vim.deepcopy(fallback)
 end
 
 local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
 local ok, data = pcall(dofile, theme_file)
-data = ok and extract_theme_data(data) or nil
-data = data or fallback
+data = ok and extract_theme_data(data) or vim.deepcopy(fallback)
 
 local background = data.background == 'light' and 'light' or 'dark'
 
@@ -60,8 +72,17 @@ return vim.list_extend(vim.deepcopy(theme_plugins), {
   },
   {
     'LazyVim/LazyVim',
+    dir = vim.fn.stdpath('config') .. '/local/lazyvim-stub',
+    lazy = false,
+    priority = 1000,
+    config = function(_, opts)
+      if type(opts) == 'table' and type(opts.colorscheme) == 'string' and opts.colorscheme ~= '' then
+        pcall(vim.cmd.colorscheme, opts.colorscheme)
+      end
+    end,
     opts = {
       colorscheme = data.colorscheme,
+      background = data.background,
     },
   },
 })
