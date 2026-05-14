@@ -485,7 +485,6 @@ deploy_omarchy_packages() {
     remove "$HOME/.config/hypr/bindings.conf"
     remove "$HOME/.config/hypr/envs.conf"
     remove "$HOME/.config/hypr/input.conf"
-    remove "$HOME/.config/hypr/looknfeel.conf"
     remove "$HOME/.config/hypr/monitors.conf"
     remove "$HOME/.config/hypr/hyprlock.conf"
     remove "$HOME/.config/hypr/hypridle.conf"
