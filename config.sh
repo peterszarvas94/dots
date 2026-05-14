@@ -137,6 +137,48 @@ reload_hyprland() {
     hyprctl reload 2>/dev/null && log_success "Hyprland reloaded"
 }
 
+apply_cursor_theme() {
+    local cursor_theme="BreezeX-Dark"
+    local cursor_size="24"
+
+    mkdir -p "$HOME/.icons/default"
+
+    cat > "$HOME/.icons/default/index.theme" << EOF
+[Icon Theme]
+Inherits=$cursor_theme
+EOF
+
+    if [[ -d "$HOME/.icons/$cursor_theme" || -d "/usr/share/icons/$cursor_theme" ]]; then
+        hyprctl setcursor "$cursor_theme" "$cursor_size" 2>/dev/null && log_success "Applied cursor theme: $cursor_theme ($cursor_size)" || log_warning "Failed to apply cursor via hyprctl (will apply on next login)"
+    else
+        log_warning "Cursor theme not found: $cursor_theme"
+        log_info "Install it first (setup_omarchy handles this)"
+    fi
+}
+
+install_breezex_cursor_theme() {
+    local cursor_theme="BreezeX-Dark"
+    local release_url="https://github.com/ful1e5/BreezeX_Cursor/releases/download/v2.0.1/BreezeX-Dark.tar.xz"
+    local tmp_dir="/tmp/breezex-cursor"
+
+    if [[ -d "$HOME/.icons/$cursor_theme" || -d "/usr/share/icons/$cursor_theme" ]]; then
+        log_info "Cursor theme already present: $cursor_theme"
+        return 0
+    fi
+
+    mkdir -p "$HOME/.icons" "$tmp_dir"
+    log_info "Installing cursor theme: $cursor_theme"
+
+    wget -qO "$tmp_dir/$cursor_theme.tar.xz" "$release_url"
+    tar -xf "$tmp_dir/$cursor_theme.tar.xz" -C "$tmp_dir"
+
+    rm -rf "$HOME/.icons/$cursor_theme"
+    mv "$tmp_dir/$cursor_theme" "$HOME/.icons/"
+    rm -rf "$tmp_dir"
+
+    log_success "Installed cursor theme: $cursor_theme"
+}
+
 reload_waybar() {
     omarchy-restart-app waybar 2>/dev/null && log_success "Waybar reloaded"
 }
@@ -317,6 +359,22 @@ remove() {
 prepare_package_deploy() {
     local package_name="$1"
 
+    # Remove only files/symlinks that are managed by stow for this package.
+    # This avoids stow conflicts while keeping directories intact.
+    local package_dir="$STOW_DIR/$package_name"
+    if [[ -d "$package_dir" ]]; then
+        while IFS= read -r source_path; do
+            local relative_path="${source_path#$package_dir/}"
+            local target_path="$TARGET_DIR/$relative_path"
+
+            if [[ "$BACKUP_MODE" == true && -e "$target_path" ]]; then
+                backup_config "$target_path"
+            fi
+
+            remove "$target_path"
+        done < <(find "$package_dir" -mindepth 1 \( -type f -o -type l \))
+    fi
+
     case "$package_name" in
         tmux)
             remove "$HOME/.tmux.conf"
@@ -333,6 +391,10 @@ prepare_package_deploy() {
 deploy() {
     local package_name="$1"
     local adopt_flag="${2:-false}"
+
+    if [[ "$adopt_flag" != true ]]; then
+        prepare_package_deploy "$package_name"
+    fi
     
     if [[ "$adopt_flag" == true ]]; then
         log_info "Adopting existing files and linking $package_name package"
@@ -366,6 +428,8 @@ deploy() {
             log_success "Tmux source-file executed"
             ;;
         hypr)
+            install_breezex_cursor_theme
+            apply_cursor_theme
             reload_hyprland
             ;;
         waybar)
@@ -465,7 +529,6 @@ deploy_dotfiles() {
 
         if [[ "$has_all" == false ]]; then
             for pkg in "${PKGS[@]}"; do
-                prepare_package_deploy "$pkg"
                 deploy "$pkg" false
             done
             log_success "Package list deployed successfully: ${PKGS[*]}"

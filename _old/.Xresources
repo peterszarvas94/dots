@@ -1,6 +1,0 @@
-Xcursor.theme: custom-theme
-Xcursor.size: 12
-Xft.dpi: 110
-
-! place this in: '~/', then run:
-! xrdb -merge ~/.Xresources
