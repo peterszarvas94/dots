@@ -8,8 +8,9 @@ Reference for how this repo is laid out and which files/folders are responsible 
 
 - `stow/`: Main dotfiles packages managed by GNU Stow.
 - `config`: Main deploy script (`--pkg`, `--services`, `--debloat`) with platform-aware linking.
-- `setup_mac`: Bootstrap script for macOS package install + clone + initial `./config` run.
-- `setup_omarchy`: Bootstrap script for Linux/Omarchy package install + clone + initial `./config` run.
+- `setup_mac.sh`: Bootstrap script for macOS package install + clone + initial `./config` run.
+- `setup_omarchy.sh`: Bootstrap script for Linux/Omarchy package install + clone + initial `./config` run.
+- `install_treesitter_parsers.sh`: Installs Tree-sitter parsers and queries into `~/.config/nvim/parsers` with compatibility patches.
 - `doc/`: Repository documentation (this file lives here).
 - `resources/`: Extra assets like fonts, wallpapers, keyboard layout, and `mise` related files.
 - `_old/`: Archived legacy configs/scripts kept for reference.

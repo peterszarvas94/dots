@@ -17,7 +17,7 @@ brew install wget
 Run setup script:
 
 ```bash
-wget -qO- "https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_mac?$(date +%s)" | bash
+wget -qO- "https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_mac.sh?$(date +%s)" | bash
 ```
 
 ## Set up Omarchy:
@@ -29,7 +29,7 @@ yay -S --noconfirm --needed wget
 ```
 
 ```bash
-wget -qO- "https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_omarchy?$(date +%s)" | bash
+wget -qO- "https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_omarchy.sh?$(date +%s)" | bash
 ```
 
 # Documentation
