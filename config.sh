@@ -340,27 +340,12 @@ backup_config() {
     fi
 }
 
-# Remove file with logging
-remove() {
-    local file_path="$1"
-    
-    if [[ -L "$file_path" || -f "$file_path" ]]; then
-        log_info "Removing $file_path"
-        rm -f "$file_path"
-    elif [[ -d "$file_path" ]]; then
-        log_info "Removing directory $file_path"
-        rm -rf "$file_path"
-    else
-        log_info "Skipping $file_path (not found)"
-    fi
-}
-
 # Clean up config targets before deploying specific packages
 prepare_package_deploy() {
     local package_name="$1"
 
-    # Remove only files/symlinks that are managed by stow for this package.
-    # This avoids stow conflicts while keeping directories intact.
+    # Remove only explicit files/symlinks managed by stow for this package.
+    # Directories are never removed in cleanup.
     local package_dir="$STOW_DIR/$package_name"
     if [[ -d "$package_dir" ]]; then
         while IFS= read -r source_path; do
@@ -371,20 +356,16 @@ prepare_package_deploy() {
                 backup_config "$target_path"
             fi
 
-            remove "$target_path"
+            if [[ -L "$target_path" || -f "$target_path" ]]; then
+                log_info "Removing file $target_path"
+                rm -f "$target_path"
+            elif [[ -d "$target_path" ]]; then
+                log_info "Skipping directory $target_path (explicit file-only cleanup)"
+            else
+                log_info "Skipping $target_path (not found)"
+            fi
         done < <(find "$package_dir" -mindepth 1 \( -type f -o -type l \))
     fi
-
-    case "$package_name" in
-        tmux)
-            remove "$HOME/.tmux.conf"
-            remove "$HOME/.config/tmux"
-            ;;
-        omarchy)
-            remove "$HOME/.config/omarchy/hooks"
-            remove "$HOME/.config/omarchy/branding"
-            ;;
-    esac
 }
 
 # Deploy a package by stowing
@@ -411,8 +392,8 @@ deploy() {
         nvim)
             link_nvim_theme "$PLATFORM"
             if [[ "$PLATFORM" == "mac" ]]; then
-                remove "$HOME/.local/bin/mac-sync-nvim-theme"
-                remove "$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
+                rm -f "$HOME/.local/bin/mac-sync-nvim-theme"
+                rm -f "$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
                 deploy "nvim-theme-mac"
                 setup_mac_theme_sync
             fi
@@ -443,36 +424,28 @@ deploy_common_packages() {
     log_info "Deploying common packages..."
  
     # Git configuration
-    remove "$HOME/.gitignore"
-    remove "$HOME/.config/git"
+    rm -f "$HOME/.gitignore"
     deploy "git"
 
     # Zsh configuration
-    remove "$HOME/.zshrc"
-    remove "$HOME/.zsh"
+    rm -f "$HOME/.zshrc"
     deploy "zsh"
     touch "$HOME/.zsh/config/env.zsh"
 
     # Neovim configuration
-    remove "$HOME/.config/nvim"
-    remove "$HOME/.local/share/nvim/lazy"
     deploy "nvim"
 
     # OpenCode configuration
-    remove "$HOME/.config/opencode"
     deploy "opencode"
 
     # Scripts
-    remove "$HOME/.local/bin"
     deploy "scripts"
 
     # Ghostty configuration
-    remove "$HOME/.config/ghostty"
     deploy "ghostty"
 
     # Tmux configuration
-    remove "$HOME/.tmux.conf"
-    remove "$HOME/.config/tmux"
+    rm -f "$HOME/.tmux.conf"
     deploy "tmux"
 }
 
@@ -480,30 +453,20 @@ deploy_common_packages() {
 deploy_omarchy_packages() {
     log_info "Deploying Arch Linux (omarchy) specific packages..."
 
-    # Hyprland window manager (selective files only)
-    remove "$HOME/.config/hypr/autostart.conf"
-    remove "$HOME/.config/hypr/bindings.conf"
-    remove "$HOME/.config/hypr/envs.conf"
-    remove "$HOME/.config/hypr/input.conf"
-    remove "$HOME/.config/hypr/monitors.conf"
-    remove "$HOME/.config/hypr/hyprlock.conf"
-    remove "$HOME/.config/hypr/hypridle.conf"
+    # Hyprland window manager
     deploy "hypr"
 
     # Omarchy
-    remove "$HOME/.config/omarchy/hooks"
-    remove "$HOME/.config/omarchy/branding"
     deploy "omarchy"
 
     # Waybar status bar
-    remove "$HOME/.config/waybar"
     deploy "waybar"
 
     # Systemd services (adopt existing files)
     deploy "systemd" true
 
     # XDG defaults
-    remove "$HOME/.config/mimeapps.list"
+    rm -f "$HOME/.config/mimeapps.list"
     deploy "xdg"
 }
 

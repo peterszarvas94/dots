@@ -5,5 +5,3 @@
 #     ssh-add ~/.ssh/linode > /dev/null 2>&1
 #     ssh-add ~/.ssh/hetzner > /dev/null 2>&1
 # fi
-
-export SSH_AUTH_SOCK=~/.1password/agent.sock

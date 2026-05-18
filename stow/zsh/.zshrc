@@ -10,13 +10,22 @@ compinit
 source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/config/cursor.zsh
+
+source <(docker completion zsh)
+source <(colima completion zsh)
+
 source ~/.zsh/config/keybinds.zsh
 source ~/.zsh/config/aliases.zsh
-source ~/.zsh/config/prompt-style.zsh
-source ~/.zsh/config/fzf-theme.zsh
+source ~/.zsh/config/prompt.zsh
 source ~/.zsh/config/ssh.zsh
 source ~/.zsh/config/history.zsh
 source ~/.zsh/config/zoxide.zsh
-export PATH="/Users/szarvaspeter/.config/herd-lite/bin:$PATH"
-export PHP_INI_SCAN_DIR="/Users/szarvaspeter/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"
+fi
+
+
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi

@@ -1,3 +1,4 @@
+# options
 export NODE_OPTIONS="--max-old-space-size=4096"
 export EDITOR='nvim'
 export VISUAL='nvim'
@@ -26,7 +27,27 @@ path=("$HOME/.turso" $path)
 # zdg
 export XDG_CONFIG_HOME="$HOME/.config"
 
+# deno
 path=("$HOME/.deno/bin" $path)
 
+# fzf
+export FZF_DEFAULT_OPTS="--no-color"
+zstyle ':fzf-tab:*' fzf-flags $(echo $FZF_DEFAULT_OPTS)
+
+# history
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+
+# ssh
+export SSH_AUTH_SOCK=~/.1password/agent.sock
+
+# path
 typeset -U path
 export PATH
