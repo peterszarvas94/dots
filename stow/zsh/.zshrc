@@ -1,25 +1,35 @@
-source ~/.zsh/config/env.public.zsh
-source ~/.zsh/config/env.zsh
-source ~/.zsh/config/docker.zsh
-source ~/.zsh/config/platform.zsh
+source_if_exists() {
+    local file_path="$1"
+    [[ -f "$file_path" ]] && source "$file_path"
+}
+
+source_if_exists ~/.zsh/config/env.public.zsh
+source_if_exists ~/.zsh/config/env.zsh
+source_if_exists ~/.zsh/config/docker.zsh
+source_if_exists ~/.zsh/config/platform.zsh
 
 autoload -Uz compinit
 # compinit -i
 compinit
 
-source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
-source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source_if_exists ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
+source_if_exists ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source_if_exists ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-source <(docker completion zsh)
-source <(colima completion zsh)
+if command -v docker >/dev/null 2>&1; then
+    source <(docker completion zsh)
+fi
 
-source ~/.zsh/config/keybinds.zsh
-source ~/.zsh/config/aliases.zsh
-source ~/.zsh/config/prompt.zsh
-source ~/.zsh/config/ssh.zsh
-source ~/.zsh/config/history.zsh
-source ~/.zsh/config/zoxide.zsh
+if command -v colima >/dev/null 2>&1; then
+    source <(colima completion zsh)
+fi
+
+source_if_exists ~/.zsh/config/keybinds.zsh
+source_if_exists ~/.zsh/config/aliases.zsh
+source_if_exists ~/.zsh/config/prompt.zsh
+source_if_exists ~/.zsh/config/ssh.zsh
+source_if_exists ~/.zsh/config/history.zsh
+source_if_exists ~/.zsh/config/zoxide.zsh
 
 if command -v mise >/dev/null 2>&1; then
     eval "$(mise activate zsh)"

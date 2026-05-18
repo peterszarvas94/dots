@@ -340,32 +340,107 @@ backup_config() {
     fi
 }
 
-# Clean up config targets before deploying specific packages
-prepare_package_deploy() {
+# Explicit cleanup before deploying specific packages
+cleanup_package() {
     local package_name="$1"
 
-    # Remove only explicit files/symlinks managed by stow for this package.
-    # Directories are never removed in cleanup.
-    local package_dir="$STOW_DIR/$package_name"
-    if [[ -d "$package_dir" ]]; then
-        while IFS= read -r source_path; do
-            local relative_path="${source_path#$package_dir/}"
-            local target_path="$TARGET_DIR/$relative_path"
-
-            if [[ "$BACKUP_MODE" == true && -e "$target_path" ]]; then
-                backup_config "$target_path"
-            fi
-
-            if [[ -L "$target_path" || -f "$target_path" ]]; then
-                log_info "Removing file $target_path"
-                rm -f "$target_path"
-            elif [[ -d "$target_path" ]]; then
-                log_info "Skipping directory $target_path (explicit file-only cleanup)"
-            else
-                log_info "Skipping $target_path (not found)"
-            fi
-        done < <(find "$package_dir" -mindepth 1 \( -type f -o -type l \))
-    fi
+    case "$package_name" in
+        alacritty)
+            log_info "Removing directory $TARGET_DIR/.config/alacritty"
+            rm -rf "$TARGET_DIR/.config/alacritty"
+            ;;
+        ghostty)
+            log_info "Removing directory $TARGET_DIR/.config/ghostty"
+            rm -rf "$TARGET_DIR/.config/ghostty"
+            ;;
+        git)
+            log_info "Removing directory $TARGET_DIR/.config/git"
+            rm -rf "$TARGET_DIR/.config/git"
+            log_info "Removing file $TARGET_DIR/.gitignore"
+            rm -f "$TARGET_DIR/.gitignore"
+            ;;
+        hypr)
+            log_info "Removing file $TARGET_DIR/.config/hypr/autostart.conf"
+            rm -f "$TARGET_DIR/.config/hypr/autostart.conf"
+            log_info "Removing file $TARGET_DIR/.config/hypr/bindings.conf"
+            rm -f "$TARGET_DIR/.config/hypr/bindings.conf"
+            log_info "Removing file $TARGET_DIR/.config/hypr/envs.conf"
+            rm -f "$TARGET_DIR/.config/hypr/envs.conf"
+            log_info "Removing file $TARGET_DIR/.config/hypr/hypridle.conf"
+            rm -f "$TARGET_DIR/.config/hypr/hypridle.conf"
+            log_info "Removing file $TARGET_DIR/.config/hypr/hyprlock.conf"
+            rm -f "$TARGET_DIR/.config/hypr/hyprlock.conf"
+            log_info "Removing file $TARGET_DIR/.config/hypr/input.conf"
+            rm -f "$TARGET_DIR/.config/hypr/input.conf"
+            log_info "Removing file $TARGET_DIR/.config/hypr/monitors.conf"
+            rm -f "$TARGET_DIR/.config/hypr/monitors.conf"
+            ;;
+        lazygit)
+            log_info "Removing directory $TARGET_DIR/.config/lazygit"
+            rm -rf "$TARGET_DIR/.config/lazygit"
+            ;;
+        nvim)
+            log_info "Removing directory $TARGET_DIR/.config/nvim"
+            rm -rf "$TARGET_DIR/.config/nvim"
+            log_info "Removing directory $TARGET_DIR/.local/share/nvim/lazy"
+            rm -rf "$TARGET_DIR/.local/share/nvim/lazy"
+            ;;
+        nvim-theme-mac)
+            log_info "Removing file $TARGET_DIR/.local/bin/mac-sync-nvim-theme"
+            rm -f "$TARGET_DIR/.local/bin/mac-sync-nvim-theme"
+            log_info "Removing file $TARGET_DIR/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
+            rm -f "$TARGET_DIR/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
+            ;;
+        omarchy)
+            log_info "Removing directory $TARGET_DIR/.config/omarchy/hooks"
+            rm -rf "$TARGET_DIR/.config/omarchy/hooks"
+            log_info "Removing directory $TARGET_DIR/.config/omarchy/branding"
+            rm -rf "$TARGET_DIR/.config/omarchy/branding"
+            ;;
+        opencode)
+            log_info "Removing directory $TARGET_DIR/.config/opencode"
+            rm -rf "$TARGET_DIR/.config/opencode"
+            ;;
+        scripts)
+            log_info "Removing directory $TARGET_DIR/.local/bin"
+            rm -rf "$TARGET_DIR/.local/bin"
+            ;;
+        ssh)
+            log_info "Removing file $TARGET_DIR/.ssh/config"
+            rm -f "$TARGET_DIR/.ssh/config"
+            log_info "Removing file $TARGET_DIR/.ssh/config.example"
+            rm -f "$TARGET_DIR/.ssh/config.example"
+            ;;
+        systemd)
+            log_info "Removing directory $TARGET_DIR/.config/systemd/user"
+            rm -rf "$TARGET_DIR/.config/systemd/user"
+            ;;
+        tmux)
+            log_info "Removing file $TARGET_DIR/.tmux.conf"
+            rm -f "$TARGET_DIR/.tmux.conf"
+            ;;
+        waybar)
+            log_info "Removing directory $TARGET_DIR/.config/waybar"
+            rm -rf "$TARGET_DIR/.config/waybar"
+            ;;
+        xdg)
+            log_info "Removing file $TARGET_DIR/.config/mimeapps.list"
+            rm -f "$TARGET_DIR/.config/mimeapps.list"
+            ;;
+        zed)
+            log_info "Removing directory $TARGET_DIR/.config/zed"
+            rm -rf "$TARGET_DIR/.config/zed"
+            ;;
+        zsh)
+            log_info "Removing file $TARGET_DIR/.zshrc"
+            rm -f "$TARGET_DIR/.zshrc"
+            log_info "Removing file $TARGET_DIR/.zsh/config/platform.zsh"
+            rm -f "$TARGET_DIR/.zsh/config/platform.zsh"
+            ;;
+        *)
+            log_info "No explicit cleanup rules for package: $package_name"
+            ;;
+    esac
 }
 
 # Deploy a package by stowing
@@ -374,7 +449,7 @@ deploy() {
     local adopt_flag="${2:-false}"
 
     if [[ "$adopt_flag" != true ]]; then
-        prepare_package_deploy "$package_name"
+        cleanup_package "$package_name"
     fi
     
     if [[ "$adopt_flag" == true ]]; then
@@ -424,11 +499,9 @@ deploy_common_packages() {
     log_info "Deploying common packages..."
  
     # Git configuration
-    rm -f "$HOME/.gitignore"
     deploy "git"
 
     # Zsh configuration
-    rm -f "$HOME/.zshrc"
     deploy "zsh"
     touch "$HOME/.zsh/config/env.zsh"
 
@@ -445,7 +518,6 @@ deploy_common_packages() {
     deploy "ghostty"
 
     # Tmux configuration
-    rm -f "$HOME/.tmux.conf"
     deploy "tmux"
 }
 
@@ -466,7 +538,6 @@ deploy_omarchy_packages() {
     deploy "systemd" true
 
     # XDG defaults
-    rm -f "$HOME/.config/mimeapps.list"
     deploy "xdg"
 }
 

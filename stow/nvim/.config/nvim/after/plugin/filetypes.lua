@@ -16,6 +16,8 @@ vim.filetype.add {
 
 -- Map gohtml filetype to html treesitter parser
 vim.treesitter.language.register('html', 'gohtml')
+vim.treesitter.language.register('tsx', 'typescriptreact')
+vim.treesitter.language.register('tsx', 'javascriptreact')
 
 -- Ensure .markerb always uses markdown ft
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
