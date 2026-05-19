@@ -1,5 +1,37 @@
 return {
   {
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    build = ':TSUpdate',
+    lazy = false,
+    config = function()
+      local ts = require 'nvim-treesitter'
+
+      ts.setup {}
+
+      ts.install {
+        'bash',
+        'css',
+        'go',
+        'html',
+        'javascript',
+        'jsdoc',
+        'json',
+        'lua',
+        'markdown',
+        'markdown_inline',
+        'ruby',
+        'rust',
+        'sql',
+        'templ',
+        'toml',
+        'tsx',
+        'typescript',
+        'yaml',
+      }
+    end,
+  },
+  {
     'nvim-treesitter/nvim-treesitter-context',
     config = function()
       local tscontext = require 'treesitter-context'

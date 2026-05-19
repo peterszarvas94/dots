@@ -2,8 +2,6 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.editorconfig = true
 
-vim.opt.runtimepath:prepend(vim.fn.expand '~/.config/nvim/parsers')
-
 vim.opt.belloff = ''
 -- vim.opt.winblend = 20 -- 0-100, where 100 is fully transparent
 -- vim.opt.pumblend = 20 -- same for popup menus
