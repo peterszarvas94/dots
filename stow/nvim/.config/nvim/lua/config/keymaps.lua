@@ -26,7 +26,30 @@ vim.keymap.set('n', '<leader>tw', function()
 end, { desc = 'Toggle wrap', silent = true })
 
 -- tmux
-vim.keymap.set('n', '<leader>tm', ':Telescope tmux sessions<CR>', { desc = 'Tmux sessions', silent = true })
+vim.keymap.set('n', '<leader>tm', function()
+  local ok, fzf = pcall(require, 'fzf-lua')
+  if not ok then
+    return
+  end
+
+  if fzf.tmux_sessions then
+    fzf.tmux_sessions()
+    return
+  end
+
+  local sessions = vim.fn.systemlist 'tmux list-sessions -F "#{session_name}"'
+  fzf.fzf_exec(sessions, {
+    prompt = 'Tmux sessions> ',
+    actions = {
+      ['default'] = function(selected)
+        if not selected or not selected[1] then
+          return
+        end
+        vim.fn.system({ 'tmux', 'switch-client', '-t', selected[1] })
+      end,
+    },
+  })
+end, { desc = 'Tmux sessions', silent = true })
 
 -- keep selection after indent
 vim.keymap.set('v', '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })

@@ -13,7 +13,7 @@ return {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'nvim-telescope/telescope.nvim',
+      'ibhagwan/fzf-lua',
     },
     config = function()
       -- Enable LSP logging for debugging
@@ -36,7 +36,7 @@ return {
         -- LSP keymaps
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = 'Rename' })
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = 'Goto Definition' })
-        vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = bufnr, desc = 'Goto References' })
+        vim.keymap.set('n', 'gr', require('fzf-lua').lsp_references, { buffer = bufnr, desc = 'Goto References' })
         vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = 'Goto Implementation' })
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })

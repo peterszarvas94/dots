@@ -1,9 +1,10 @@
 return {
   'ThePrimeagen/harpoon',
   branch = 'harpoon2',
-  dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+  dependencies = { 'nvim-lua/plenary.nvim', 'ibhagwan/fzf-lua' },
   config = function()
     local harpoon = require 'harpoon'
+    local fzf = require 'fzf-lua'
     harpoon:setup()
 
     -- Harpoon UI configuration
@@ -15,29 +16,29 @@ return {
       height_in_lines = 12,
     }
 
-    -- Telescope integration
-    local conf = require('telescope.config').values
-    local function toggle_telescope(harpoon_files)
+    local function toggle_fzf(harpoon_files)
       local file_paths = {}
       for _, item in ipairs(harpoon_files.items) do
         table.insert(file_paths, item.value)
       end
 
-      require('telescope.pickers')
-        .new({}, {
-          prompt_title = 'Harpoon',
-          finder = require('telescope.finders').new_table {
-            results = file_paths,
-          },
-          previewer = conf.file_previewer {},
-          sorter = conf.generic_sorter {},
-        })
-        :find()
+      fzf.fzf_exec(file_paths, {
+        prompt = 'Harpoon> ',
+        previewer = 'builtin',
+        actions = {
+          ['default'] = function(selected)
+            if not selected or not selected[1] then
+              return
+            end
+            vim.cmd.edit(selected[1])
+          end,
+        },
+      })
     end
 
     -- User commands
     vim.api.nvim_create_user_command('HarpoonTelescope', function()
-      toggle_telescope(harpoon:list())
+      toggle_fzf(harpoon:list())
     end, {})
 
     vim.api.nvim_create_user_command('HarpoonToggle', function()
