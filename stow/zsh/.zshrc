@@ -42,3 +42,6 @@ fi
 
 # opencode
 export PATH=/home/peti/.opencode/bin:$PATH
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
