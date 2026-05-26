@@ -36,7 +36,10 @@ return {
     config = function()
       local tscontext = require 'treesitter-context'
       tscontext.setup {
-        enable = false,
+        mode = 'topline',
+        max_lines = 3,
+        multiline_threshold = 20,
+        separator = '-',
       }
       vim.keymap.set('n', '<leader>cx', function()
         tscontext.toggle()

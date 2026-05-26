@@ -16,3 +16,7 @@ for socket in "${sockets[@]}"; do
   [[ -S "$socket" ]] || continue
   nvim --server "$socket" --remote-send '<Cmd>SyncTheme<CR>' >/dev/null 2>&1 || true
 done
+
+# >>> omazed hook - do not edit >>>
+omazed set "$1"
+# <<< omazed hook - do not edit <<<
