@@ -1,47 +1,65 @@
-source_if_exists() {
-    local file_path="$1"
-    [[ -f "$file_path" ]] && source "$file_path"
-}
+# path
+typeset -U path
 
-source_if_exists ~/.zsh/config/env.public.zsh
-source_if_exists ~/.zsh/config/env.zsh
-source_if_exists ~/.zsh/config/docker.zsh
-source_if_exists ~/.zsh/config/platform.zsh
+source ~/.zsh/config/env.zsh
+source ~/.zsh/config/platform.zsh
 
 autoload -Uz compinit
-# compinit -i
 compinit
 
-source_if_exists ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
-source_if_exists ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source_if_exists ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
+source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-if command -v docker >/dev/null 2>&1; then
-    source <(docker completion zsh)
-fi
+source ~/.zsh/config/keybinds.zsh
+source ~/.zsh/config/aliases.zsh
+source ~/.zsh/config/prompt.zsh
 
-if command -v colima >/dev/null 2>&1; then
-    source <(colima completion zsh)
-fi
+source "$HOME/.vite-plus/env"
+source <(docker completion zsh)
+source <(colima completion zsh)
 
-source_if_exists ~/.zsh/config/keybinds.zsh
-source_if_exists ~/.zsh/config/aliases.zsh
-source_if_exists ~/.zsh/config/prompt.zsh
-source_if_exists ~/.zsh/config/ssh.zsh
-source_if_exists ~/.zsh/config/history.zsh
-source_if_exists ~/.zsh/config/zoxide.zsh
-
-if command -v mise >/dev/null 2>&1; then
-    eval "$(mise activate zsh)"
-fi
-
-
-if command -v zoxide >/dev/null 2>&1; then
-    eval "$(zoxide init zsh)"
-fi
+eval "$(mise activate zsh)"
+eval "$(zoxide init zsh)"
 
 # opencode
 export PATH=/home/peti/.opencode/bin:$PATH
 
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
+export NODE_OPTIONS="--max-old-space-size=4096"
+export EDITOR='nvim'
+export VISUAL='nvim'
+export TERM='xterm-256color'
+export COLORTERM='truecolor'
+
+unset GEM_HOME GEM_PATH
+path=(${path:#$HOME/.gem/bin})
+
+path=("$HOME/.local/bin" "$HOME/.local/share/nvim/mason/bin" $path)
+
+export GOPATH="$HOME/go"
+path=("$GOPATH/bin" $path)
+
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+export BUN_INSTALL="$HOME/.bun"
+path=("$BUN_INSTALL/bin" $path)
+
+export XDG_CONFIG_HOME="$HOME/.config"
+
+path=("$HOME/.deno/bin" $path)
+
+export FZF_DEFAULT_OPTS="--no-color"
+zstyle ':fzf-tab:*' fzf-flags $(echo $FZF_DEFAULT_OPTS)
+
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+
+export SSH_AUTH_SOCK=~/.1password/agent.sock
+
+export PATH
