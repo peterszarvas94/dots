@@ -1,7 +1,12 @@
 # neovim
 nvim() {
   local runtime_dir socket
-  runtime_dir="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+  if [[ -n "${XDG_RUNTIME_DIR:-}" && -d "$XDG_RUNTIME_DIR" ]]; then
+    runtime_dir="$XDG_RUNTIME_DIR"
+  else
+    runtime_dir="/tmp/nvim.${USER}"
+    mkdir -p "$runtime_dir"
+  fi
   socket="${runtime_dir}/nvim.$$.${RANDOM}.sock"
   command nvim --listen "$socket" "$@"
 }

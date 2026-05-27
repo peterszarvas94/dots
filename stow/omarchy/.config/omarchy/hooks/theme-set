@@ -5,7 +5,11 @@ if ! command -v nvim >/dev/null 2>&1; then
   exit 0
 fi
 
-runtime_dir="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+if [[ -n "${XDG_RUNTIME_DIR:-}" && -d "$XDG_RUNTIME_DIR" ]]; then
+  runtime_dir="$XDG_RUNTIME_DIR"
+else
+  runtime_dir="/tmp/nvim.${USER}"
+fi
 tmp_dir="/tmp/nvim.${USER}"
 
 shopt -s nullglob
