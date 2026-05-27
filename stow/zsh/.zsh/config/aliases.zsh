@@ -15,7 +15,7 @@ alias bdebug="npm run start:debug -C ~/work/gems-backend-platform/packages/app"
 alias ball="bbuild && binit && bstart"
 
 # gems frontend
-alias fbuild="npm run build -C ~/work/gems-frontend-platform"
+alias fbuild="npm run build -C ~/work/gems-frontend-platform/packages/app-center"
 alias fdev="npm run dev -C ~/work/gems-frontend-platform/packages/app-center"
 alias fpre="npm run preview -C ~/work/gems-frontend-platform/packages/app-center"
 alias genapi="npm run generate:api -C ~/work/gems-frontend-platform"

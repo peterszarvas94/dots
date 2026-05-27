@@ -20,3 +20,6 @@ source ~/.zsh/config/history.zsh
 source ~/.zsh/config/zoxide.zsh
 export PATH="/Users/szarvaspeter/.config/herd-lite/bin:$PATH"
 export PHP_INI_SCAN_DIR="/Users/szarvaspeter/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+
+# opencode
+export PATH=/Users/szarvaspeter/.opencode/bin:$PATH
