@@ -63,11 +63,11 @@ vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap 
 vim.keymap.set('n', '<C-[>', ':cprevious<CR>', { desc = 'Previous item in quickfix list', silent = true })
 vim.keymap.set('n', '<C-]>', ':cnext<CR>', { desc = 'Next item in quickfix list', silent = true })
 
--- split (M = alt or option, D = CMD on mac)
-vim.keymap.set('n', '<M-.>', '<C-w>5>', { desc = 'Resize split +5 vertically', silent = true })
-vim.keymap.set('n', '<M-,>', '<C-w>5<', { desc = 'Resize split -5 vertically', silent = true })
-vim.keymap.set('n', '<M-=>', '<C-w>+', { desc = 'Resize split +1 horizontally', silent = true })
-vim.keymap.set('n', '<M-->', '<C-w>-', { desc = 'Resize split -1 horizontally', silent = true })
+-- split resize (Alt + arrows)
+vim.keymap.set('n', '<M-Left>', '<C-w>5<', { desc = 'Resize split narrower', silent = true })
+vim.keymap.set('n', '<M-Right>', '<C-w>5>', { desc = 'Resize split wider', silent = true })
+vim.keymap.set('n', '<M-Down>', '<C-w>5+', { desc = 'Resize split taller', silent = true })
+vim.keymap.set('n', '<M-Up>', '<C-w>5-', { desc = 'Resize split shorter', silent = true })
 
 -- buffer
 vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = 'Yank buffer', silent = true })

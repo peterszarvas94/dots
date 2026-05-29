@@ -1,4 +1,28 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "system"
+  "theme": "system",
+  "model": "cursor/composer-2.5",
+  "provider": {
+    "cursor": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Cursor API via Standard Agents",
+      "options": {
+        "baseURL": "https://cursor-api.standardagents.ai/opencode/v1",
+        "apiKey": "{env:CURSOR_API_KEY}"
+      },
+      "models": {
+        "composer-2.5": {
+          "name": "Composer 2.5",
+          "cost": {
+            "input": 0.5,
+            "output": 2.5
+          },
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        }
+      }
+    }
+  }
 }
