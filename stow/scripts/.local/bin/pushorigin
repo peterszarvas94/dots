@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-branch=$(git branch --show-current)
-
-git push -u origin $branch
