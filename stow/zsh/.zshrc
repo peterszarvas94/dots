@@ -13,6 +13,7 @@ source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 source ~/.zsh/config/keybinds.zsh
 source ~/.zsh/config/aliases.zsh
+
 source ~/.zsh/config/prompt.zsh
 
 source "$HOME/.vite-plus/env"
@@ -47,6 +48,9 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 path=("$HOME/.deno/bin" $path)
 
+# opencode
+path=("$HOME/.opencode/bin" $path)
+
 export FZF_DEFAULT_OPTS="--no-color"
 zstyle ':fzf-tab:*' fzf-flags $(echo $FZF_DEFAULT_OPTS)
 
@@ -63,6 +67,3 @@ SAVEHIST=50000
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
 export PATH
-
-# opencode
-export PATH=/Users/szarvaspeter/.opencode/bin:$PATH
