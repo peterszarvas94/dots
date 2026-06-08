@@ -3,3 +3,15 @@
 [user]
 name = "Peter Szarvas"
 email = "contact@peterszarvas.hu"
+
+[ui]
+merge-editor = "nvimdiff"
+
+[merge-tools.mergiraf]
+program = "mergiraf"
+merge-args = ["merge", "$base", "$left", "$right", "-o", "$output"]
+
+[merge-tools.nvimdiff]
+program = "nvim"
+merge-args = ["-f", "-d", "$left", "$base", "$right", "$output", "-c", "wincmd l", "-c", "wincmd l", "-c", "wincmd l", "-c", "wincmd J"]
+merge-tool-edits-conflict-markers = true

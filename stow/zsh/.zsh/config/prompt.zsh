@@ -65,4 +65,4 @@ prompt_blank_line() {
 add-zsh-hook precmd prompt_blank_line
 
 PROMPT='$(prompt_path_name) $(vcs_branch_name)
-%F{green}>%f '
+%F{reset}$%f '
