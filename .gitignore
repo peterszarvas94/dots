@@ -1,4 +1,6 @@
 .DS_Store
+.jj/
+stow/jj/.config/jj/repos/
 stow/ssh/.ssh/config
 stow/zsh/.zsh/config/env.zsh
 stow/git/.config/git/work/config

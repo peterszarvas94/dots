@@ -23,7 +23,7 @@ Theme runtime setup is handled by package deploy flows (not a separate `--theme`
 
 Current packages:
 
-- `ghostty`, `git`, `hypr`, `lazygit`, `nvim`, `nvim-theme-mac`, `omarchy`, `opencode`, `scripts`
+- `ghostty`, `git`, `hypr`, `jj`, `lazygit`, `nvim`, `nvim-theme-mac`, `omarchy`, `opencode`, `scripts`
 - `ssh`, `systemd`, `tmux`, `waybar`, `xdg`, `zed`, `zsh`
 
 Each package mirrors the target path under `$HOME`.
