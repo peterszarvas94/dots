@@ -23,22 +23,22 @@ brew install \
     1password-cli
 
 # Remove
-rm -rf ~/projects/dots
+rm -rf ~/Projects/dots
 
 # Clone
-mkdir -p ~/projects
-cd projects
+mkdir -p ~/Projects
+cd Projects
 git clone https://github.com/peterszarvas94/dots.git
 git clone git@github.com:peterszarvas94/private.git
 git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git
 
 # Origin
-cd ~/projects/dots
+cd ~/Projects/dots
 git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git
 
-mkdir -p ~/work
-mkdir -p ~/projects/go
+mkdir -p ~/Work
+mkdir -p ~/Projects/go
 mkdir -p ~/youtube
 
 # SSH config for 1Password

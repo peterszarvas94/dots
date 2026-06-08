@@ -301,7 +301,7 @@ debloat_system() {
 
 # Install fonts from private repo
 install_fonts() {
-    local private_dir="$HOME/projects/private"
+    local private_dir="$HOME/Projects/private"
     
     if [[ ! -d "$private_dir" ]]; then
         log_info "Cloning private font repo..."

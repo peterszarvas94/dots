@@ -63,3 +63,6 @@ SAVEHIST=50000
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
 export PATH
+
+# opencode
+export PATH=/Users/szarvaspeter/.opencode/bin:$PATH

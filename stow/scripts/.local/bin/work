@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-backend_dir="$HOME/work/gems-backend-platform"
-frontend_dir="$HOME/work/gems-frontend-platform"
+backend_dir="$HOME/Work/gems-backend-platform"
+frontend_dir="$HOME/Work/gems-frontend-platform"
 
 if [[ -z "${TMUX:-}" ]]; then
   echo "Not in a tmux session"

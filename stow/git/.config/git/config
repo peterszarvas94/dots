@@ -39,7 +39,7 @@
   trustExitCode = false
 
 # personal
-[includeIf "gitdir:~/projects/"]
+[includeIf "gitdir:~/Projects/"]
   path = ~/.config/git/personal/config
 
 # personal
@@ -47,5 +47,5 @@
   path = ~/.config/git/personal/config
 
 # work
-[includeIf "gitdir:~/work/"]
+[includeIf "gitdir:~/Work/"]
   path = ~/.config/git/work/config
