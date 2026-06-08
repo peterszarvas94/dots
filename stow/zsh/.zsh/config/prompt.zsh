@@ -8,7 +8,7 @@ function vcs_branch_name() {
     fi
 
     [[ -n $(jj diff --summary 2>/dev/null) ]] && dirty="*"
-    echo "(jj:${name}${dirty})"
+    echo "%F{yellow}jj:${name}${dirty}%f"
     return
   fi
 
@@ -17,11 +17,36 @@ function vcs_branch_name() {
     [[ -z $name ]] && return
 
     [[ -n $(git status --porcelain 2>/dev/null) ]] && dirty="*"
-    echo "(git:${name}${dirty})"
+    echo "%F{yellow}git:${name}${dirty}%f"
+  fi
+}
+
+function prompt_path_name() {
+  local path_name prefix last
+
+  path_name=${PWD/#$HOME/\~}
+  if [[ $path_name == */* ]]; then
+    prefix=${path_name%/*}/
+    last=${path_name##*/}
+    echo "${prefix}${last}"
+  else
+    echo "${path_name}"
   fi
 }
 
 # cattpuccin
 setopt PROMPT_SUBST
-PROMPT='%F{white}%~%b%f %F{yellow}$(vcs_branch_name)%f
-'
+
+autoload -Uz add-zsh-hook
+
+prompt_blank_line() {
+  if [[ -n "$PROMPT_ALREADY_SHOWN" ]]; then
+    print
+  fi
+  PROMPT_ALREADY_SHOWN=1
+}
+
+add-zsh-hook precmd prompt_blank_line
+
+PROMPT='$(prompt_path_name) $(vcs_branch_name)
+%F{green}>%f '
