@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+show_status() {
+  local current
+  current=$(pmset -g | grep SleepDisabled | awk '{print $2}')
+  if [[ "$current" == "1" ]]; then
+    echo "off"
+  else
+    echo "on"
+  fi
+}
+
+case "${1:-}" in
+  on)
+    sudo pmset -a disablesleep 0
+    echo "lid-close-sleep: on"
+    ;;
+  off)
+    sudo pmset -a disablesleep 1
+    echo "lid-close-sleep: off"
+    ;;
+  status|"")
+    show_status
+    ;;
+  *)
+    echo "Usage: lid-close-sleep {on|off|status}"
+    exit 1
+    ;;
+esac
