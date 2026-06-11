@@ -3,21 +3,22 @@ function vcs_branch_name() {
 
   if command -v jj >/dev/null 2>&1 && jj root --ignore-working-copy >/dev/null 2>&1; then
     name=$(jj log -r @ --no-graph -T 'bookmarks' 2>/dev/null)
-    if [[ -z $name ]]; then
-      name=$(jj log -r @ --no-graph -T 'change_id.short()' 2>/dev/null)
-    fi
     name=${name//\*/}
 
     vcs_status=$(jj status 2>/dev/null)
     if [[ $vcs_status == *conflict* ]]; then
-      state="conflict"
+      state="!"
     elif [[ -n $(jj diff --summary 2>/dev/null) ]]; then
-      state="changed"
+      state="*"
     else
-      state="empty"
+      state=""
     fi
 
-    echo "%F{yellow}jj:${name}%f %F{red}${state}%f"
+    if [[ -n $name ]]; then
+      echo "%F{yellow}jj:${name}${state}%f"
+    else
+      echo "%F{yellow}jj${state}%f"
+    fi
     return
   fi
 
@@ -26,14 +27,14 @@ function vcs_branch_name() {
     [[ -z $name ]] && return
 
     if [[ -n $(git diff --name-only --diff-filter=U 2>/dev/null) ]]; then
-      state="conflict"
+      state="!"
     elif [[ -n $(git status --porcelain 2>/dev/null) ]]; then
-      state="changed"
+      state="*"
     else
-      state="clean"
+      state=""
     fi
 
-    echo "%F{yellow}git:${name}%f %F{red}${state}%f"
+    echo "%F{yellow}git:${name}${state}%f"
   fi
 }
 

@@ -5,11 +5,11 @@ source ~/.zsh/config/env.zsh
 source ~/.zsh/config/platform.zsh
 
 autoload -Uz compinit
-compinit
+compinit -C
 
 source ~/.zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
 source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 source ~/.zsh/config/keybinds.zsh
 source ~/.zsh/config/aliases.zsh
