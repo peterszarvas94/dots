@@ -43,18 +43,7 @@ return {
       vim.keymap.set('n', '<leader>sm', picker 'marks', { desc = 'Search Marks' })
       vim.keymap.set('n', '<leader>su', picker 'buffers', { desc = 'Search bUffers' })
       vim.keymap.set('n', '<leader>lr', picker 'lsp_references', { desc = 'Lsp References' })
-    end,
-  },
-  {
-    'aznhe21/actions-preview.nvim',
-    config = function()
-      require('actions-preview').setup {
-        backend = { 'fzf_lua' },
-      }
-
-      vim.keymap.set('n', '<leader>i', function()
-        require('actions-preview').code_actions()
-      end, { desc = 'Code actions / Imports', silent = true })
+      vim.keymap.set({ 'n', 'v' }, '<leader>i', picker 'lsp_code_actions', { desc = 'Code actions / Imports' })
     end,
   },
 }
