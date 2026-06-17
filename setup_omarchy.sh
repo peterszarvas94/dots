@@ -10,6 +10,7 @@ yay -S --noconfirm --needed \
     zsh \
     go \
     cmake \
+    tree-sitter \
     brave-browser \
     nodejs \
     ghostty \

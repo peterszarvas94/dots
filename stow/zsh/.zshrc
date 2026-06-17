@@ -67,3 +67,6 @@ SAVEHIST=50000
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
 export PATH
+
+# kimi-code
+export PATH="/Users/szarvaspeter/.kimi-code/bin:$PATH"

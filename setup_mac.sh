@@ -12,6 +12,7 @@ brew install \
     zsh \
     go \
     cmake \
+    tree-sitter-cli \
     brave-browser \
     node \
     ghostty \

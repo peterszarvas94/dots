@@ -27,9 +27,10 @@ On macOS, `./config --pkg=nvim` also deploys `nvim-theme-mac` and reloads the la
 
 ## Tree-sitter management
 
-This setup uses `nvim-treesitter/nvim-treesitter` on the `main` branch and installs parsers through plugin config:
+This setup uses `neovim-treesitter/nvim-treesitter` on the `main` branch (a community registry-based fork) and installs parsers through plugin config:
 
 - Spec: `stow/nvim/.config/nvim/lua/plugins/treesitter.lua`
 - Update command: `:TSUpdate`
+- Required CLI: `tree-sitter` must be installed via the system package manager (e.g. `brew install tree-sitter-cli`)
 
 The parser list is managed in `ensure_installed` and synced by Lazy during normal plugin updates.
