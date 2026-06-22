@@ -1,4 +1,32 @@
 {
+	"title_bar": {
+  "show_project_items": false,
+  "show_onboarding_banner": false,
+  "show_sign_in": false,
+  "show_user_menu": false,
+  "show_user_picture": false,
+  "show_branch_name": false
+ },
+ "status_bar": {
+  "active_language_button": false,
+  "cursor_position_button": false
+ },
+ "debugger": {
+  "button": false
+ },
+ "search": {
+  "button": false
+ },
+ "global_lsp_settings": {
+  "button": false
+ },
+ "edit_predictions": {
+		"provider": "none",
+	},
+	"git_panel": {
+		"button": false,
+  "dock": "left",
+	},
 	"icon_theme": "Catppuccin Mocha",
 	"vim_mode": true,
 	"ui_font_size": 16,
@@ -6,118 +34,105 @@
 	"theme": {
 		"mode": "system",
 		"light": "Catppuccin Latte",
-		"dark": "Catppuccin Mocha"
+		"dark": "Catppuccin Mocha",
 	},
 	"buffer_font_family": "JetBrainsMono Nerd Font",
 	"buffer_line_height": {
-		"custom": 1.8
+		"custom": 1.8,
 	},
 	"terminal": {
-		"line_height": {
-			"custom": 1.8
-		}
+		"button": false,
+  "line_height": {
+			"custom": 1.8,
+		},
 	},
-	"relative_line_numbers": true,
+	"relative_line_numbers": "enabled",
 	"soft_wrap": "editor_width",
 	"hard_tabs": true,
 	"tab_size": 2,
-	"line_height": "standard",
 	"toolbar": {
 		"breadcrumbs": true,
 		"quick_actions": false,
-		"selections_menu": false
+		"selections_menu": false,
 	},
 	"telemetry": {
 		"diagnostics": false,
-		"metrics": false
-	},
-	"gutter": {
-		"code_actions": false
+		"metrics": false,
 	},
 	"collaboration_panel": {
-		"button": false
+		"dock": "left",
+		"button": false,
 	},
 	"outline_panel": {
-		"button": false
+		"dock": "left",
+		"button": false,
 	},
 	"indent_guides": {
-		"enabled": true
+		"enabled": true,
 	},
 	"git": {
 		"inline_blame": {
-			"enabled": false
-		}
+			"enabled": false,
+		},
 	},
 	"project_panel": {
-		"indent_size": 10
+		"button": false,
+  "dock": "left",
+		"indent_size": 10,
 	},
 	"tab_bar": {
-		"show": false
+		"show_tab_bar_buttons": false,
+  "show_nav_history_buttons": false,
+  "show": false,
 	},
 	"show_edit_predictions": false,
-	"features": {
-		"edit_prediction_provider": "none"
-	},
-	"chat_panel": {
-		"button": "never"
-	},
 	"agent": {
-		"version": "2",
+		"dock": "right",
 		"enabled": false,
-		"button": false
+		"button": false,
 	},
 	"scrollbar": {
 		"diagnostics": "none",
 		"git_diff": false,
 		"search_results": false,
-		"selected_symbol": false
+		"selected_symbol": false,
 	},
 	"diagnostics": {
-		"include_warnings": false
+		"button": false,
+  "include_warnings": false,
 	},
 	"format_on_save": "on",
-	"language_servers": [
-		"typescript-language-server",
-		"!eslint",
-		"gopls",
-		"..."
-	],
+	"language_servers": ["typescript-language-server", "!eslint", "gopls", "..."],
 	"languages": {
 		"TypeScript": {
 			"code_actions_on_format": {
-				"source.organizeImports": true
+				"source.organizeImports": true,
 			},
-			"formatter": "prettier"
+			"formatter": "prettier",
 		},
 		"TSX": {
 			"code_actions_on_format": {
-				"source.organizeImports": true
+				"source.organizeImports": true,
 			},
-			"formatter": "prettier"
+			"formatter": "prettier",
 		},
 		"JavaScript": {
 			"code_actions_on_format": {
-				"source.organizeImports": true
+				"source.organizeImports": true,
 			},
-			"formatter": "prettier"
-		},
-		"JSX": {
-			"code_actions_on_format": {
-				"source.organizeImports": true
-			},
-			"formatter": "prettier"
+			"formatter": "prettier",
 		},
 		"Go": {
 			"code_actions_on_format": {
-				"source.organizeImports": true
+				"source.organizeImports": true,
 			},
-			"formatter": "language_server"
+			"formatter": "language_server",
 		},
 		"JSON": {
-			"formatter": "prettier"
+			"formatter": "prettier",
 		},
 		"JSONC": {
-			"formatter": "prettier"
-		}
-	}
+			"formatter": "prettier",
+		},
+	},
 }
