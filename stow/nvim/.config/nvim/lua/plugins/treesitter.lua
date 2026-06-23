@@ -12,6 +12,8 @@ return {
 
       ts.setup {}
 
+      vim.o.rtp = vim.fn.stdpath('data') .. '/lazy/nvim-treesitter/runtime,' .. vim.o.rtp
+
       ts.install {
         'bash',
         'css',

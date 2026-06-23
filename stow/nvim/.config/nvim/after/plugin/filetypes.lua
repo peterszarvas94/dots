@@ -19,6 +19,8 @@ vim.treesitter.language.register('html', 'gohtml')
 vim.treesitter.language.register('tsx', 'typescriptreact')
 vim.treesitter.language.register('tsx', 'javascriptreact')
 vim.treesitter.language.register('templ', 'templ')
+vim.treesitter.language.register('javascript', 'ecma')
+vim.treesitter.language.register('tsx', 'jsx')
 
 -- Ensure .markerb always uses markdown ft
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {

@@ -10,6 +10,20 @@ return {
         winopts = {
           border = 'rounded',
         },
+        keymap = {
+          fzf = {
+            true,
+            ['ctrl-a'] = 'toggle-all',
+            ['alt-a'] = false,
+          },
+        },
+        actions = {
+          files = {
+            true,
+            ['ctrl-q'] = fzf.actions.file_sel_to_qf,
+            ['alt-q'] = false,
+          },
+        },
       }
 
       local function picker(name, opts)
