@@ -141,19 +141,42 @@ return {
       write_lines(server_registry, unique_lines(keep))
     end
 
+    local function resolve_rose_pine(colorscheme, background)
+      if colorscheme == 'rose-pine' then
+        if background == 'light' then
+          return 'rose-pine-dawn'
+        else
+          return 'rose-pine-main'
+        end
+      elseif colorscheme == 'rose-pine-dawn' and background == 'dark' then
+        return 'rose-pine-main'
+      elseif (colorscheme == 'rose-pine-main' or colorscheme == 'rose-pine-moon') and background == 'light' then
+        return 'rose-pine-dawn'
+      end
+      return colorscheme
+    end
+
     local function read_theme()
       local ok, data = pcall(dofile, theme_file)
       if not ok or type(data) ~= 'table' then
         return {
           background = 'dark',
-          colorscheme = 'rose-pine',
+          colorscheme = 'rose-pine-main',
+        }
+      end
+
+      if type(data.colorscheme) ~= 'string' or data.colorscheme == '' then
+        return {
+          background = 'dark',
+          colorscheme = 'rose-pine-main',
         }
       end
 
       local background = data.background == 'light' and 'light' or 'dark'
+      local colorscheme = resolve_rose_pine(data.colorscheme, background)
       return {
         background = background,
-        colorscheme = 'rose-pine',
+        colorscheme = colorscheme,
       }
     end
 
@@ -177,7 +200,6 @@ return {
     end
 
     require('rose-pine').setup {
-      variant = 'auto',
       dark_variant = 'main',
       dim_inactive_windows = false,
       extend_background_behind_borders = true,
