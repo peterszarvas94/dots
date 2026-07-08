@@ -6,6 +6,7 @@ return {
       local fzf = require 'fzf-lua'
 
       fzf.setup {
+        ui_select = true,
         fzf_colors = true,
         winopts = {
           border = 'rounded',

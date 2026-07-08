@@ -1,14 +1,3 @@
-local function attach_organize_imports(client, bufnr)
-  vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
-    local params = {
-      command = '_typescript.organizeImports',
-      arguments = { vim.api.nvim_buf_get_name(0) },
-      title = 'Organize Imports',
-    }
-    client:exec_cmd(params)
-  end, { desc = 'Organize Imports' })
-end
-
 return {
   {
     'neovim/nvim-lspconfig',
@@ -16,9 +5,6 @@ return {
       'ibhagwan/fzf-lua',
     },
     config = function()
-      -- Enable LSP logging for debugging
-      -- vim.lsp.set_log_level('debug')
-
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
@@ -33,12 +19,10 @@ return {
       end
 
       local on_attach = function(_, bufnr)
-        -- LSP keymaps
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = 'Rename' })
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = 'Goto Definition' })
         vim.keymap.set('n', 'gr', require('fzf-lua').lsp_references, { buffer = bufnr, desc = 'Goto References' })
         vim.keymap.set('n', 'gI', vim.lsp.buf.implementation, { buffer = bufnr, desc = 'Goto Implementation' })
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
       end
 
@@ -51,9 +35,13 @@ return {
         if vim.tbl_isempty(lines) then
           return
         end
-        return vim.lsp.util.open_floating_preview(lines, 'plaintext', vim.tbl_extend('keep', config or {}, {
-          border = 'rounded',
-        }))
+        return vim.lsp.util.open_floating_preview(
+          lines,
+          'plaintext',
+          vim.tbl_extend('keep', config or {}, {
+            border = 'rounded',
+          })
+        )
       end
 
       vim.lsp.config['lua_ls'] = {
@@ -70,50 +58,37 @@ return {
         },
       }
 
-      vim.lsp.config['ts_ls'] = {
+      vim.lsp.config['tsc'] = {
         capabilities = capabilities,
-        cmd = { 'bun', 'x', 'typescript-language-server', '--stdio' },
-        on_attach = function(client, bufnr)
-          attach_organize_imports(client, bufnr)
+        cmd = { 'tsc', '--lsp', '--stdio' },
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'typescript',
+          'typescriptreact',
+        },
+        root_markers = {
+          'package-lock.json',
+          'yarn.lock',
+          'pnpm-lock.yaml',
+          'bun.lockb',
+          'bun.lock',
+          'package.json',
+          'tsconfig.json',
+          'jsconfig.json',
+          '.git',
+        },
+        on_attach = function(_, bufnr)
+          vim.keymap.set('n', '<leader>oi', function()
+            vim.lsp.buf.code_action {
+              context = { only = { 'source.organizeImports' } },
+              apply = true,
+            }
+          end, { buffer = bufnr, desc = 'Organize Imports' })
 
-          -- TypeScript specific keymaps
-          vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = 'Organize Imports' })
-
-          on_attach(client, bufnr)
+          on_attach(_, bufnr)
         end,
       }
-
-      vim.lsp.config['denols'] = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        cmd = { 'deno', 'lsp' },
-      }
-
-      -- vim.lsp.config['tsgo'] = {
-      --   capabilities = capabilities,
-      --   cmd = { 'tsgo', '--lsp', '--stdio' },
-      --   filetypes = {
-      --     'javascript',
-      --     'javascriptreact',
-      --     'javascript.jsx',
-      --     'typescript',
-      --     'typescriptreact',
-      --     'typescript.tsx',
-      --   },
-      --   root_markers = {
-      --     'tsconfig.json',
-      --     'jsconfig.json',
-      --     'package.json',
-      --     '.git',
-      --     'tsconfig.base.json',
-      --   },
-      --   on_attach = function(client, bufnr)
-      --     -- TypeScript specific keymaps
-      --     vim.keymap.set('n', '<leader>oi', ':OrganizeImports<CR>', { buffer = bufnr, desc = 'Organize Imports' })
-      --
-      --     on_attach(client, bufnr)
-      --   end,
-      -- }
 
       vim.lsp.config['gopls'] = {
         capabilities = capabilities,
@@ -180,16 +155,11 @@ return {
 
       vim.lsp.enable 'lua_ls'
 
-      local has_package_json = vim.fs.find('package.json', { upward = true, type = 'file' })[1]
-      local has_deno_json = vim.fs.find({ 'deno.json', 'deno.jsonc' }, { upward = true, type = 'file' })[1]
-      if has_package_json and not has_deno_json then
-        vim.lsp.enable 'ts_ls'
-      end
-      if has_deno_json and not has_package_json then
-        vim.lsp.enable 'denols'
+      -- installed globally with npm/mise
+      if has_executable 'tsc' then
+        vim.lsp.enable 'tsc'
       end
 
-      -- vim.lsp.enable 'tsgo'
       enable_if_available('gopls', 'gopls')
       enable_if_available('ruby_lsp', 'ruby-lsp')
       enable_if_available('templ', 'templ')
@@ -201,7 +171,6 @@ return {
       enable_if_available('eslint', 'vscode-eslint-language-server')
       enable_if_available('ols', 'ols')
 
-      -- Diagnostic configuration
       vim.diagnostic.config {
         signs = false,
         float = {
@@ -242,10 +211,7 @@ return {
     dependencies = { 'mason-org/mason.nvim' },
     opts = {
       ensure_installed = {
-        -- LSPs
-        'deno',
         'gopls',
-
         'templ',
         'yaml-language-server',
         'css-lsp',
@@ -254,10 +220,7 @@ return {
         'astro-language-server',
         'eslint-lsp',
         'ols',
-
-        -- Formatters
         'stylua',
-        -- 'prettierd',
         'yamlfmt',
         'clang-format',
       },

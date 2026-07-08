@@ -55,6 +55,12 @@ end, { desc = 'Tmux sessions', silent = true })
 vim.keymap.set('v', '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })
 vim.keymap.set('v', '>', '>gv', { desc = 'Indent right', noremap = true, silent = true })
 
+vim.keymap.set('n', 'K', function()
+  if vim.lsp.get_clients({ bufnr = 0, method = 'textDocument/hover' })[1] then
+    vim.lsp.buf.hover()
+  end
+end, { desc = 'Hover Documentation' })
+
 -- move selected lines vertically (with correct indentation)
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
