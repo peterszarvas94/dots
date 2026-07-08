@@ -25,6 +25,7 @@ return {
         'lua',
         'markdown',
         'markdown_inline',
+        'odin',
         'ruby',
         'rust',
         'sql',

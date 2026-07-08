@@ -154,6 +154,14 @@ return {
         root_markers = { 'go.work', 'go.mod', '.git' },
       }
 
+      vim.lsp.config['ols'] = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { 'ols' },
+        filetypes = { 'odin' },
+        root_markers = { 'ols.json', '.git' },
+      }
+
       vim.lsp.config['eslint'] = {
         capabilities = capabilities,
         on_attach = on_attach,
@@ -191,6 +199,7 @@ return {
       enable_if_available('bashls', 'bash-language-server')
       enable_if_available('astro', 'astro-ls')
       enable_if_available('eslint', 'vscode-eslint-language-server')
+      enable_if_available('ols', 'ols')
 
       -- Diagnostic configuration
       vim.diagnostic.config {
@@ -244,6 +253,7 @@ return {
         'bash-language-server',
         'astro-language-server',
         'eslint-lsp',
+        'ols',
 
         -- Formatters
         'stylua',

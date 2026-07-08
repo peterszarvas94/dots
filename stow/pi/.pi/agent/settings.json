@@ -1,0 +1,10 @@
+{
+  "lastChangelogVersion": "0.80.3",
+  "defaultProvider": "cursor-agent",
+  "defaultModel": "default",
+  "defaultThinkingLevel": "medium",
+  "packages": [
+    "npm:pi-cursor-agent"
+  ],
+  "theme": "rose-pine-dawn/rose-pine"
+}

@@ -405,6 +405,12 @@ cleanup_package() {
             log_info "Removing directory $TARGET_DIR/.config/opencode"
             rm -rf "$TARGET_DIR/.config/opencode"
             ;;
+        pi)
+            log_info "Removing file $TARGET_DIR/.pi/agent/settings.json"
+            rm -f "$TARGET_DIR/.pi/agent/settings.json"
+            log_info "Removing directory $TARGET_DIR/.pi/agent/themes"
+            rm -rf "$TARGET_DIR/.pi/agent/themes"
+            ;;
         scripts)
             log_info "Removing directory $TARGET_DIR/.local/bin"
             rm -rf "$TARGET_DIR/.local/bin"
@@ -517,6 +523,9 @@ deploy_common_packages() {
 
     # OpenCode configuration
     deploy "opencode"
+
+    # Pi configuration
+    deploy "pi"
 
     # Scripts
     deploy "scripts"
