@@ -137,15 +137,6 @@ return {
         root_markers = { 'ols.json', '.git' },
       }
 
-      vim.lsp.config['eslint'] = {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        cmd = { 'vscode-eslint-language-server', '--stdio' },
-        filetypes = {},
-        root_markers = { '.eslintrc', '.eslintrc.js', '.eslintrc.json', 'eslint.config.js', 'package.json' },
-        settings = {},
-      }
-
       for _, server in ipairs { 'yamlls', 'jsonls', 'cssls', 'bashls', 'astro' } do
         vim.lsp.config[server] = {
           capabilities = capabilities,
@@ -153,13 +144,8 @@ return {
         }
       end
 
-      vim.lsp.enable 'lua_ls'
-
-      -- installed globally with npm/mise
-      if has_executable 'tsc' then
-        vim.lsp.enable 'tsc'
-      end
-
+      enable_if_available('lua_ls', 'lua-language-server')
+      enable_if_available('tsc', 'tsc')
       enable_if_available('gopls', 'gopls')
       enable_if_available('ruby_lsp', 'ruby-lsp')
       enable_if_available('templ', 'templ')
@@ -168,7 +154,6 @@ return {
       enable_if_available('cssls', 'vscode-css-language-server')
       enable_if_available('bashls', 'bash-language-server')
       enable_if_available('astro', 'astro-ls')
-      enable_if_available('eslint', 'vscode-eslint-language-server')
       enable_if_available('ols', 'ols')
 
       vim.diagnostic.config {
@@ -218,7 +203,6 @@ return {
         'json-lsp',
         'bash-language-server',
         'astro-language-server',
-        'eslint-lsp',
         'ols',
         'stylua',
         'yamlfmt',
