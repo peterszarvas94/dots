@@ -84,4 +84,6 @@ rebase() {
 alias fix-droidcam="sudo rmmod v4l2loopback && sudo modprobe v4l2loopback video_nr=0 card_label=\"DroidCam\" exclusive_caps=1 && droidcam"
 
 alias oc="opencode"
-alias open="xdg-open"
+if [[ "$OSTYPE" != darwin* ]]; then
+  alias open="xdg-open"
+fi

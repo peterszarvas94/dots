@@ -383,6 +383,10 @@ cleanup_package() {
             log_info "Removing directory $TARGET_DIR/.config/lazygit"
             rm -rf "$TARGET_DIR/.config/lazygit"
             ;;
+        herdr)
+            log_info "Removing file $TARGET_DIR/.config/herdr/config.toml"
+            rm -f "$TARGET_DIR/.config/herdr/config.toml"
+            ;;
         nvim)
             log_info "Removing directory $TARGET_DIR/.config/nvim"
             rm -rf "$TARGET_DIR/.config/nvim"
@@ -493,6 +497,10 @@ deploy() {
             tmux source-file "$HOME/.tmux.conf" || true
             log_success "Tmux source-file executed"
             ;;
+        herdr)
+            herdr server reload-config || true
+            log_success "Herdr config reloaded"
+            ;;
         hypr)
             install_breezex_cursor_theme
             apply_cursor_theme
@@ -535,6 +543,9 @@ deploy_common_packages() {
 
     # Tmux configuration
     deploy "tmux"
+
+    # Herdr configuration
+    deploy "herdr"
 }
 
 # Deploy platform-specific packages for Arch Linux (omarchy)
