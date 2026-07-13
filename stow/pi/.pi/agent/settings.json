@@ -1,10 +1,17 @@
 {
-  "lastChangelogVersion": "0.80.3",
-  "defaultProvider": "cursor-agent",
+  "lastChangelogVersion": "0.80.6",
+  "defaultProvider": "cursor",
   "defaultModel": "default",
   "defaultThinkingLevel": "medium",
-  "packages": [
-    "npm:pi-cursor-agent"
+  "npmCommand": [
+    "mise",
+    "exec",
+    "node@25.9.0",
+    "--",
+    "npm"
   ],
-  "theme": "rose-pine-dawn/rose-pine"
+  "packages": [
+    "npm:pi-cursor-sdk"
+  ],
+  "theme": "rosepine-dawn/rosepine"
 }

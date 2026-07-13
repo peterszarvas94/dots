@@ -410,6 +410,8 @@ cleanup_package() {
             rm -f "$TARGET_DIR/.pi/agent/settings.json"
             log_info "Removing directory $TARGET_DIR/.pi/agent/themes"
             rm -rf "$TARGET_DIR/.pi/agent/themes"
+            log_info "Removing directory $TARGET_DIR/.pi/agent/extensions"
+            rm -rf "$TARGET_DIR/.pi/agent/extensions"
             ;;
         scripts)
             log_info "Removing directory $TARGET_DIR/.local/bin"

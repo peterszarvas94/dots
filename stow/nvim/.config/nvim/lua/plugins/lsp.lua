@@ -5,6 +5,12 @@ return {
       'ibhagwan/fzf-lua',
     },
     config = function()
+      if vim.fn.exists ':LspInfo' == 0 then
+        vim.api.nvim_create_user_command('LspInfo', 'checkhealth lsp', {
+          desc = 'Alias to `:checkhealth lsp`',
+        })
+      end
+
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
