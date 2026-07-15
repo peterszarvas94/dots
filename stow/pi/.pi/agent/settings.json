@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.80.7",
   "defaultProvider": "cursor",
-  "defaultModel": "default",
+  "defaultModel": "auto",
   "defaultThinkingLevel": "medium",
   "npmCommand": [
     "mise",
