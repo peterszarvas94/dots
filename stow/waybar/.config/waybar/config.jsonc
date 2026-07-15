@@ -44,13 +44,14 @@
 
   "cpu": {
     "interval": 5,
-    "format": "<b>CPU</b> ON ({usage}%)",
+    "format": "<b>CPU</b> {usage}%",
     "on-click": "omarchy-launch-or-focus-tui btop",
     "on-click-right": "alacritty"
   },
   "clock": {
     "format": "<b>TIME</b> {:%Y %m %d %H:%M}",
     "tooltip": false,
+    "on-click": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select",
     "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
   },
   "custom/weather": {
@@ -61,8 +62,8 @@
     "on-click": "notify-send -u low \"$(omarchy-weather-status)\""
   },
   "network": {
-    "format-wifi": "<b>NET</b> ON ({essid})",
-    "format-ethernet": "<b>NET</b> ON (ETH)",
+    "format-wifi": "<b>NET</b> {essid}",
+    "format-ethernet": "<b>NET</b> ETH",
     "format-disconnected": "<b>NET</b> OFF",
     "tooltip-format-wifi": "{essid} ({frequency} GHz)",
     "tooltip-format-ethernet": "Connected",
@@ -91,18 +92,18 @@
     "format-on": "<b>BLU</b> ON",
     "format-off": "<b>BLU</b> OFF",
     "format-disabled": "<b>BLU</b> OFF",
-    "format-connected": "<b>BLU</b> ON ({num_connections})",
+    "format-connected": "<b>BLU</b> {num_connections}",
     "format-no-controller": "<b>BLU</b> OFF",
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "omarchy-launch-bluetooth"
   },
   "pulseaudio": {
-    "format": "<b>VOL</b> ON ({volume}%)",
+    "format": "<b>VOL</b> {volume}%",
     "on-click": "omarchy-launch-audio",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
-    "format-muted": "<b>VOL</b> MUT"
+    "format-muted": "<b>VOL</b> OFF"
   },
   "custom/screenrecording-indicator": {
     "on-click": "omarchy-capture-screenrecording",

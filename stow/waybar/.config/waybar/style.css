@@ -44,8 +44,10 @@ window#waybar.top > box {
   opacity: 0.5;
 }
 
-#workspaces button.active {
-  font-weight: bold;
+#workspaces button.active,
+#workspaces button.active * {
+  background-color: @foreground;
+  color: @background;
 }
 
 #cpu,

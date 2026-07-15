@@ -48,6 +48,8 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 path=("$HOME/.deno/bin" $path)
 
+path=("$HOME/.cargo/bin" $path)
+
 # opencode
 path=("$HOME/.opencode/bin" $path)
 

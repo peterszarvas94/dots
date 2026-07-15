@@ -16,6 +16,7 @@
 
 - macOS: `stow/zsh/.zsh/mac/platform.zsh`
 - omarchy: `stow/zsh/.zsh/omarchy/platform.zsh`
+- server: `stow/zsh/.zsh/server/platform.zsh` (headless Linux without omarchy)
 
 ## Notes
 

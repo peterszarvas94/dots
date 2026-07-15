@@ -126,6 +126,10 @@ link_zsh_platform() {
             ln -nsf ~/.zsh/omarchy/platform.zsh ~/.zsh/config/platform.zsh
             log_success "Zsh omarchy configuration ready"
             ;;
+        server)
+            ln -nsf ~/.zsh/server/platform.zsh ~/.zsh/config/platform.zsh
+            log_success "Zsh server configuration ready"
+            ;;
         *)
             log_error "Cannot link zsh platform files, unsupported platform: $platform"
             return 1
@@ -490,6 +494,7 @@ deploy() {
             ;;
         zsh)
             link_zsh_platform "$PLATFORM"
+            touch "$HOME/.zsh/config/env.zsh"
             ;;
         tmux)
             tmux source-file "$HOME/.tmux.conf" || true
@@ -597,6 +602,9 @@ deploy_dotfiles() {
             deploy_common_packages
             deploy_omarchy_packages
             ;;
+        server)
+            deploy_common_packages
+            ;;
         *)
             log_error "Unknown platform: $PLATFORM"
             return 1
@@ -614,7 +622,11 @@ detect_platform() {
             echo "mac"
             ;;
         Linux)
-            echo "omarchy"
+            if command -v omarchy &>/dev/null || [[ -d "${HOME}/.local/share/omarchy" ]]; then
+                echo "omarchy"
+            else
+                echo "server"
+            fi
             ;;
         *)
             log_error "Unsupported operating system: $(uname)"
