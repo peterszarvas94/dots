@@ -4,6 +4,11 @@ typeset -U path
 source ~/.zsh/config/env.zsh
 source ~/.zsh/config/platform.zsh
 
+if [[ "${ZSH_PLATFORM:-}" == server ]]; then
+  source ~/.zsh/server/rc.zsh
+  return
+fi
+
 autoload -Uz compinit
 compinit -C
 

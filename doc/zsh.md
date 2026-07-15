@@ -18,6 +18,8 @@
 - omarchy: `stow/zsh/.zsh/omarchy/platform.zsh`
 - server: `stow/zsh/.zsh/server/platform.zsh` (headless Linux without omarchy)
 
+On server, `.zshrc` loads `stow/zsh/.zsh/server/rc.zsh` instead of the full desktop config (plugins, aliases, docker/mise/zoxide, etc.). Put `~/.machine_report.sh` on the server to show the TR-100 report on login (same as the old `~/.bashrc` hook).
+
 ## Notes
 
 - Local machine secrets/env should stay in `~/.zsh/config/env.zsh` (created by deploy, not versioned).

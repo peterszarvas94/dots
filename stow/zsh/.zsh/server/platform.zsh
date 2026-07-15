@@ -1,1 +1,1 @@
-# Minimal profile for headless Linux servers.
+export ZSH_PLATFORM=server
