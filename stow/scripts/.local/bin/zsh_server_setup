@@ -1,9 +1,21 @@
 #!/usr/bin/env bash
 
+# Zsh server setup — run from your local machine.
+# Usage: ./zsh_server_setup.sh <username> <server_ip>
+# Example: ./zsh_server_setup.sh peti bandcash
+#
+# Manual (run on the server directly):
+#   sudo apt update && sudo apt install -y zsh git stow fzf
+#   git clone https://github.com/peterszarvas94/dots.git ~/Projects/dots
+#   cd ~/Projects/dots
+#   ./zsh_server_setup.sh --remote
+#   sudo chsh -s "$(which zsh)"
+#   exec zsh
+
 set -euo pipefail
 
-DOTS_DIR="${DOTS_DIR:-$HOME/Projects/dots}"
 DOTS_REPO="${DOTS_REPO:-https://github.com/peterszarvas94/dots.git}"
+DOTS_DIR="${DOTS_DIR:-$HOME/Projects/dots}"
 SHIM_DIR="$HOME/.zsh/server/shims"
 
 log() { printf '%s\n' "$*"; }
@@ -147,7 +159,7 @@ set_login_shell() {
   sudo chsh -s "$zsh_path" "$USER"
 }
 
-main() {
+remote_setup() {
   install_packages
   ensure_dots_repo
   install_shims
@@ -155,8 +167,39 @@ main() {
   deploy_zsh
   set_login_shell
 
+  if [[ ! -x "$HOME/.machine_report.sh" ]]; then
+    log ""
+    log "Note: put TR-100 report at ~/.machine_report.sh to show it on zsh login"
+  fi
+
   log ""
   log "Done. Log out and back in, or run: exec zsh"
+}
+
+main() {
+  if [[ "${1:-}" == "--remote" ]]; then
+    remote_setup
+    return
+  fi
+
+  local username="${1:-}"
+  local server_ip="${2:-}"
+
+  if [[ -z "$username" || -z "$server_ip" ]]; then
+    die "Usage: $0 <username> <server_ip>"
+  fi
+
+  log "Setting up zsh on $username@$server_ip"
+
+  log "Testing SSH connection..."
+  ssh -o ConnectTimeout=5 "$username@$server_ip" "echo 'SSH connection successful!'"
+
+  log "Running remote zsh setup..."
+  ssh "$username@$server_ip" 'bash -s -- --remote' < "$0"
+
+  log ""
+  log "Setup complete! Connect with: ssh $username@$server_ip"
+  log "Then run: exec zsh"
 }
 
 main "$@"

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Rename hostname on a remote machine via SSH.
+# Usage: rename_machine_ssh <new_hostname> <username> <host>
+# Example: rename_machine_ssh bandcash peti bandcash.app
+#
+# Manual (on the server):
+#   rename_machine bandcash
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RENAME_SCRIPT="$SCRIPT_DIR/rename_machine"
+REMOTE_SCRIPT="/tmp/rename_machine"
+
+log() { printf '%s\n' "$*"; }
+die() { printf 'error: %s\n' "$*" >&2; exit 1; }
+
+main() {
+  local new_name="${1:-}"
+  local username="${2:-}"
+  local host="${3:-}"
+
+  if [[ -z "$new_name" || -z "$username" || -z "$host" ]]; then
+    die "Usage: $0 <new_hostname> <username> <host>"
+  fi
+
+  if [[ ! -f "$RENAME_SCRIPT" ]]; then
+    die "rename script not found: $RENAME_SCRIPT"
+  fi
+
+  log "Renaming $username@$host to $new_name"
+
+  log "Testing SSH connection..."
+  ssh -o ConnectTimeout=5 "$username@$host" "echo 'SSH connection successful!'"
+
+  log "Running remote rename..."
+  # Copy script to remote so it can re-exec via sudo (FIDO-friendly).
+  ssh -t "$username@$host" "cat > '$REMOTE_SCRIPT' && chmod +x '$REMOTE_SCRIPT' && '$REMOTE_SCRIPT' '$new_name'; rm -f '$REMOTE_SCRIPT'" < "$RENAME_SCRIPT"
+
+  log ""
+  log "Done. Connect with: ssh $username@$host"
+  log "Prompt will show the new hostname after reconnect or 'exec zsh'."
+}
+
+main "$@"

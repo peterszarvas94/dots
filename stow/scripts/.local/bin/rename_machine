@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+
+# Rename hostname on the current machine.
+# Usage: rename_machine <new_hostname>
+# Example: rename_machine bandcash
+#
+# Re-runs itself through sudo when not root (triggers FIDO/password on your TTY).
+# Called remotely by rename_machine_ssh.
+
+set -euo pipefail
+
+log() { printf '%s\n' "$*"; }
+die() { printf 'error: %s\n' "$*" >&2; exit 1; }
+
+validate_hostname() {
+  local name="$1"
+
+  if [[ -z "$name" ]]; then
+    die "hostname cannot be empty"
+  fi
+
+  if [[ ! "$name" =~ ^[a-zA-Z0-9]([a-zA-Z0-9.-]*[a-zA-Z0-9])?$ ]]; then
+    die "invalid hostname: $name (use letters, digits, dots, hyphens)"
+  fi
+}
+
+update_hosts_file() {
+  local old_name="$1"
+  local new_name="$2"
+  local hosts_file="/etc/hosts"
+
+  cp "$hosts_file" "${hosts_file}.bak"
+
+  awk -v old="$old_name" -v new="$new_name" '
+    /^[[:space:]]*#/ { print; next }
+    $1 == "127.0.0.1" {
+      if ($0 ~ old) {
+        gsub(old, new)
+        print
+        next
+      }
+      if ($0 !~ new) {
+        print $0, new
+        next
+      }
+    }
+    $1 == "127.0.1.1" {
+      if ($0 ~ old) {
+        gsub(old, new)
+        print
+        next
+      }
+      if ($2 == old || $0 ~ ("[[:space:]]" old "([[:space:]]|$)")) {
+        gsub(old, new)
+      }
+    }
+    { print }
+  ' "$hosts_file" > "${hosts_file}.tmp"
+
+  mv "${hosts_file}.tmp" "$hosts_file"
+}
+
+rename_host() {
+  local new_name="$1"
+  local old_name
+
+  validate_hostname "$new_name"
+
+  if ! command -v hostnamectl &>/dev/null; then
+    die "hostnamectl not found"
+  fi
+
+  old_name="$(hostnamectl --static 2>/dev/null || hostname -s)"
+
+  if [[ "$old_name" == "$new_name" ]]; then
+    log "Hostname is already $new_name (syncing /etc/hosts)"
+  else
+    log "Renaming $old_name -> $new_name"
+    hostnamectl set-hostname "$new_name"
+  fi
+
+  update_hosts_file "$old_name" "$new_name"
+
+  log "Done. Current hostname: $(hostnamectl --static)"
+  log "Run 'exec zsh' (or reconnect) to refresh your prompt."
+}
+
+main() {
+  local new_name="${1:-}"
+
+  if [[ -z "$new_name" || "$new_name" == "--remote" ]]; then
+    die "Usage: rename_machine <new_hostname>"
+  fi
+
+  if [[ "$EUID" -ne 0 ]]; then
+    local script="${BASH_SOURCE[0]}"
+    [[ -n "$script" && "$script" != "-s" && -f "$script" ]] || script="$0"
+    script="$(readlink -f "$script" 2>/dev/null || realpath "$script" 2>/dev/null || printf '%s' "$script")"
+    exec sudo "$script" "$@"
+  fi
+
+  rename_host "$new_name"
+}
+
+main "$@"
