@@ -10,4 +10,4 @@ fi
 IFS='|' read -r temp condition <<< "$weather"
 condition=$(tr '[:lower:]' '[:upper:]' <<< "$condition")
 
-printf '{"text":"<b>WEATHER</b> %s°C %s"}\n' "$temp" "$condition"
+printf '{"text":"<b>OUT</b> %s°C %s"}\n' "$temp" "$condition"

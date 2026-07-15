@@ -23,11 +23,11 @@ window#waybar.top > box {
 }
 
 .modules-left {
-  margin-left: 8px;
+  margin-left: 0px;
 }
 
 .modules-right {
-  margin-right: 8px;
+  margin-right: 0px;
 }
 
 #workspaces button {
@@ -58,16 +58,16 @@ window#waybar.top > box {
 #clock,
 #custom-weather {
   min-width: 12px;
-  margin: 0 7.5px;
+  margin: 0 12px;
 }
 
 
 #bluetooth {
-  margin-right: 17px;
+  margin: 0 12px;
 }
 
 #network {
-  margin-right: 13px;
+  margin: 0 12px;
 }
 
 
