@@ -13,6 +13,7 @@ stow/nvim/.config/nvim/lua/plugins/theme.lua
 stow/nvim/.config/nvim/lazy-lock.json
 /stow/nvim/.config/nvim/parsers
 stow/opencode/.config/opencode/package-lock.json
+stow/opencode/.config/opencode/plugins/
 stow/pi/.pi/agent/auth.json
 stow/pi/.pi/agent/themes/omarchy-colors.json
 stow/scripts/.local/bin/agent
