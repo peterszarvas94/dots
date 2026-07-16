@@ -2,7 +2,7 @@
   "lastChangelogVersion": "0.80.7",
   "defaultProvider": "cursor",
   "defaultModel": "composer-2.5",
-  "defaultThinkingLevel": "medium",
+  "defaultThinkingLevel": "high",
   "npmCommand": [
     "mise",
     "exec",
@@ -13,5 +13,5 @@
   "packages": [
     "npm:pi-cursor-sdk"
   ],
-  "theme": "rosepine-dawn/rosepine"
+  "theme": "omarchy-colors"
 }

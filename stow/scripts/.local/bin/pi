@@ -1,2 +1,21 @@
-#!/bin/bash
-exec npx --yes @earendil-works/pi-coding-agent "$@"
+#!/usr/bin/env bash
+set -euo pipefail
+
+if command -v omarchy-pi-theme >/dev/null 2>&1; then
+  omarchy-pi-theme || true
+fi
+
+if [[ -n "${PI_REAL:-}" && -f "${PI_REAL}" ]]; then
+  exec node "${PI_REAL}" "$@"
+fi
+
+for candidate in \
+  "${HOME}/.local/lib/node_modules/@earendil-works/pi-coding-agent/dist/cli.js" \
+  "$(npm root -g 2>/dev/null)/@earendil-works/pi-coding-agent/dist/cli.js"; do
+  if [[ -f "${candidate}" ]]; then
+    exec node "${candidate}" "$@"
+  fi
+done
+
+echo "pi: could not find pi-coding-agent" >&2
+exit 1
