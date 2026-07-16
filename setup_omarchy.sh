@@ -51,9 +51,6 @@ printf 'Host *\n\tIdentityAgent ~/.1password/agent.sock\n' > stow/ssh/.ssh/confi
 # Clone private repo for fonts
 git clone git@github.com:peterszarvas94/private.git ~/Projects/private 2>/dev/null || true
 
-# Install rose-pine-dark theme
-omarchy-theme-install https://github.com/guilhermetk/omarchy-rose-pine-dark.git
-
 ./config --pkg=all --font --debloat
 
 # 1Password

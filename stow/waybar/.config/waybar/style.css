@@ -1,4 +1,5 @@
 @import "../omarchy/current/theme/waybar.css";
+@import "../omarchy/current/theme/waybar-borders.css";
 
 * {
   background-color: @background;
@@ -19,7 +20,7 @@ window#waybar.top {
 }
 
 window#waybar.top > box {
-  border: 2px solid @foreground;
+  border: 2px solid @accent;
 }
 
 .modules-left {

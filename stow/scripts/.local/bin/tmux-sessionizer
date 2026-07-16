@@ -3,7 +3,7 @@
 # Based on ThePrimeagen's tmux-sessionizer
 
 # Select dirs
-parent_dirs=(~/Work ~/Projects ~/try)
+parent_dirs=(~/Work ~/Projects ~/src/tries)
 
 select_directory() {
     # Include parent directories themselves
