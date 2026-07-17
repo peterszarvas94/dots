@@ -64,6 +64,10 @@ return {
         },
       }
 
+      -- TypeScript 7+ built-in LSP (`tsc --lsp --stdio`). Requires `tsc` on PATH.
+      -- Install: npm install -g typescript@7
+      -- If global install hits EACCES (prefix /usr): npm install -g typescript@7 --prefix ~/.local
+      --   then: ln -sf ~/.local/lib/node_modules/typescript/bin/tsc ~/.local/bin/tsc
       vim.lsp.config['tsc'] = {
         capabilities = capabilities,
         cmd = { 'tsc', '--lsp', '--stdio' },

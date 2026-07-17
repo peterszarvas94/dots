@@ -40,7 +40,7 @@ export COLORTERM='truecolor'
 unset GEM_HOME GEM_PATH
 path=(${path:#$HOME/.gem/bin})
 
-path=("$HOME/.local/bin" "$HOME/.local/share/nvim/mason/bin" $path)
+path=("$HOME/.local/share/dots/bin" "$HOME/.local/bin" "$HOME/.local/share/nvim/mason/bin" $path)
 
 export GOPATH="$HOME/go"
 path=("$GOPATH/bin" $path)

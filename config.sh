@@ -193,7 +193,7 @@ setup_mac_theme_sync() {
         return 0
     fi
 
-    local sync_script="$HOME/.local/bin/mac-sync-nvim-theme"
+    local sync_script="$HOME/.local/share/dots/bin/mac-sync-nvim-theme"
     local agent_plist="$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
     local launchd_target="gui/$(id -u)"
 
@@ -394,8 +394,9 @@ cleanup_package() {
             rm -rf "$TARGET_DIR/.local/share/nvim/lazy"
             ;;
         nvim-theme-mac)
-            log_info "Removing file $TARGET_DIR/.local/bin/mac-sync-nvim-theme"
-            rm -f "$TARGET_DIR/.local/bin/mac-sync-nvim-theme"
+            local sync_target="$TARGET_DIR/.local/share/dots/bin/mac-sync-nvim-theme"
+            log_info "Removing file $sync_target"
+            rm -f "$sync_target"
             log_info "Removing file $TARGET_DIR/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
             rm -f "$TARGET_DIR/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
             ;;
@@ -419,8 +420,19 @@ cleanup_package() {
             rm -rf "$TARGET_DIR/.pi/agent/extensions"
             ;;
         scripts)
-            log_info "Removing directory $TARGET_DIR/.local/bin"
-            rm -rf "$TARGET_DIR/.local/bin"
+            local legacy_bin="$TARGET_DIR/.local/bin"
+            if [[ -L "$legacy_bin" ]] && readlink "$legacy_bin" | grep -q 'dots/stow/scripts/.local/bin'; then
+                log_info "Replacing legacy scripts symlink: $legacy_bin"
+                rm -f "$legacy_bin"
+                mkdir -p "$legacy_bin"
+            fi
+            local script target
+            for script in "$STOW_DIR/scripts/.local/share/dots/bin"/*; do
+                [[ -e "$script" ]] || continue
+                target="$TARGET_DIR/.local/share/dots/bin/$(basename "$script")"
+                [[ -L "$target" ]] && rm -f "$target"
+                rm -f "$TARGET_DIR/.local/bin/$(basename "$script")"
+            done
             ;;
         ssh)
             log_info "Removing file $TARGET_DIR/.ssh/config"
@@ -484,7 +496,7 @@ deploy() {
         nvim)
             link_nvim_theme "$PLATFORM"
             if [[ "$PLATFORM" == "mac" ]]; then
-                rm -f "$HOME/.local/bin/mac-sync-nvim-theme"
+                rm -f "$HOME/.local/share/dots/bin/mac-sync-nvim-theme"
                 rm -f "$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
                 deploy "nvim-theme-mac"
                 setup_mac_theme_sync

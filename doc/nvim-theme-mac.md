@@ -2,7 +2,7 @@
 
 ## Owns
 
-- `~/.local/bin/mac-sync-nvim-theme`
+- `~/.local/share/dots/bin/mac-sync-nvim-theme`
 - `~/Library/LaunchAgents/com.peterszarvas.theme-sync.plist`
 
 ## Purpose

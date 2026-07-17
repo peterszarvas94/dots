@@ -52,10 +52,7 @@ export default function (pi: ExtensionAPI) {
 		}, 150);
 	};
 
-	pi.on("session_start", async (_event, ctx) => {
-		await syncOmarchyPiTheme();
-		applyOmarchyTheme(ctx);
-
+	pi.on("session_start", (_event, ctx) => {
 		for (const watchTarget of [COLORS_TOML, THEME_NAME_FILE]) {
 			if (!fs.existsSync(watchTarget)) {
 				continue;

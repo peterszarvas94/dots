@@ -10,7 +10,7 @@ export VISUAL="${VISUAL:-nvim}"
 export TERM="${TERM:-xterm-256color}"
 export COLORTERM="${COLORTERM:-truecolor}"
 
-path=("$HOME/.local/bin" $path)
+path=("$HOME/.local/share/dots/bin" "$HOME/.local/bin" $path)
 
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
