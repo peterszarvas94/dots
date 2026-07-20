@@ -25,13 +25,13 @@ async function syncOmarchyPiTheme(): Promise<void> {
 	}
 }
 
-function applyOmarchyTheme(ctx: ExtensionContext): void {
+function applyOmarchyTheme(ctx: ExtensionContext, silent = false): void {
 	if (!ctx.hasUI) {
 		return;
 	}
 
 	const result = ctx.ui.setTheme(PI_THEME_NAME);
-	if (!result.success) {
+	if (!result.success && !silent) {
 		ctx.ui.notify(`Failed to apply Omarchy theme: ${result.error}`, "warning");
 	}
 }
@@ -52,7 +52,10 @@ export default function (pi: ExtensionAPI) {
 		}, 150);
 	};
 
-	pi.on("session_start", (_event, ctx) => {
+	pi.on("session_start", async (_event, ctx) => {
+		await syncOmarchyPiTheme();
+		applyOmarchyTheme(ctx, true);
+
 		for (const watchTarget of [COLORS_TOML, THEME_NAME_FILE]) {
 			if (!fs.existsSync(watchTarget)) {
 				continue;

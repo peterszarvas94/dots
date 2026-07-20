@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -18,7 +17,12 @@ PI_THEME_NAME = "omarchy-colors"
 PI_THEMES_DIR = Path.home() / ".pi" / "agent" / "themes"
 PI_SETTINGS = Path.home() / ".pi" / "agent" / "settings.json"
 OMARCHY_CURRENT = Path.home() / ".config" / "omarchy" / "current" / "theme" / "colors.toml"
-STALE_THEMES = ("omarchy-light.json", "omarchy-dark.json")
+STALE_THEMES = (
+    "omarchy-light.json",
+    "omarchy-dark.json",
+    "rosepine.json",
+    "rosepine-dawn.json",
+)
 
 
 def hex_to_rgb(color: str) -> tuple[int, int, int]:
@@ -213,19 +217,16 @@ def remove_stale_themes() -> None:
         stale = PI_THEMES_DIR / filename
         if stale.is_file():
             stale.unlink()
-            print(f"Removed stale {stale}")
 
 
 def main() -> int:
     if not OMARCHY_CURRENT.is_file():
-        print("omarchy-pi-theme: no colors.toml found", file=sys.stderr)
         return 1
 
     theme = build_theme(load_colors(OMARCHY_CURRENT))
     output = PI_THEMES_DIR / f"{PI_THEME_NAME}.json"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(theme, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote {output}")
 
     remove_stale_themes()
     update_settings()
