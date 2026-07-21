@@ -139,6 +139,38 @@ return {
         root_markers = { 'go.work', 'go.mod', '.git' },
       }
 
+      vim.lsp.config['clangd'] = {
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          vim.keymap.set('n', '<leader>ch', function()
+            client:request('textDocument/switchSourceHeader', { uri = vim.uri_from_bufnr(bufnr) }, function(err, result)
+              if err or not result then
+                vim.notify('No corresponding source/header file found', vim.log.levels.INFO)
+                return
+              end
+              vim.cmd.edit(vim.uri_to_fname(result))
+            end, bufnr)
+          end, { buffer = bufnr, desc = 'Switch Source/Header' })
+          on_attach(client, bufnr)
+        end,
+        cmd = {
+          'clangd',
+          '--background-index',
+          '--clang-tidy',
+          '--header-insertion=iwyu',
+          '--completion-style=detailed',
+          '--fallback-style=llvm',
+        },
+        filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
+        root_markers = {
+          'compile_commands.json',
+          'compile_flags.txt',
+          '.clangd',
+          'Makefile',
+          '.git',
+        },
+      }
+
       vim.lsp.config['ols'] = {
         capabilities = capabilities,
         on_attach = on_attach,
@@ -165,6 +197,7 @@ return {
       enable_if_available('bashls', 'bash-language-server')
       enable_if_available('astro', 'astro-ls')
       enable_if_available('ols', 'ols')
+      enable_if_available('clangd', 'clangd')
 
       vim.diagnostic.config {
         signs = false,
@@ -214,6 +247,7 @@ return {
         'bash-language-server',
         'astro-language-server',
         'ols',
+        'clangd',
         'stylua',
         'yamlfmt',
         'clang-format',
