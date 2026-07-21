@@ -110,3 +110,7 @@ o.bind("SUPER + SHIFT + N", "Restore last notification", "makoctl restore")
 o.bind("SUPER + SHIFT + T", "Cycle Rose Pine Themes", os.getenv("HOME") .. "/.local/share/dots/bin/theme")
 o.bind("SUPER + D", "Toggle screen drawing overlay", "wayscriber --daemon-toggle")
 o.bind("SUPER + SHIFT + S", "Speedtest", "omarchy-launch-tui /home/peti/.bun/bin/speedtui")
+
+-- speedtui floating window (Super+Shift+S via omarchy-launch-tui)
+-- 656x245 px = 82x15 ghostty cells (Berkeley Mono 9.5: 8px/col, 15px/row + 20px padding)
+o.window("org.omarchy.speedtui", { float = true, center = true, size = { 656, 245 } })
