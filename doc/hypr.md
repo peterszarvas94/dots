@@ -6,11 +6,11 @@
 
 ## Main files
 
-- `stow/hypr/.config/hypr/bindings.conf`
+- `stow/hypr/.config/hypr/bindings.lua`
 - `stow/hypr/.config/hypr/monitors.conf`
 - `stow/hypr/.config/hypr/looknfeel.conf`
 - `stow/hypr/.config/hypr/autostart.conf`
-- `stow/hypr/.config/hypr/input.conf`
+- `stow/hypr/.config/hypr/input.lua`
 - `stow/hypr/.config/hypr/envs.conf`
 
 ## Deploy behavior
