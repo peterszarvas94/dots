@@ -2,7 +2,7 @@
 # Place this file at ~/.config/herdr/config.toml
 
 [theme]
-name = "rose-pine"
+name = "terminal"
 auto_switch = false
 
 [keys]
