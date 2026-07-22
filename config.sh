@@ -518,8 +518,12 @@ deploy() {
             log_success "Tmux source-file executed"
             ;;
         herdr)
-            herdr server reload-config || true
-            log_success "Herdr config reloaded"
+            if command -v herdr >/dev/null 2>&1; then
+                herdr server reload-config || true
+                log_success "Herdr config reloaded"
+            else
+                log_info "Herdr not installed; skipped config reload"
+            fi
             ;;
         hypr)
             install_breezex_cursor_theme
