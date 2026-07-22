@@ -1,0 +1,17 @@
+# herdr configuration
+# Place this file at ~/.config/herdr/config.toml
+
+[theme]
+name = "rose-pine"
+auto_switch = false
+
+[keys]
+detach = "prefix+d"
+settings = "prefix+period"
+goto = "prefix+s"
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+rename_tab = "prefix+comma"
+
+[ui]
+agent_panel_sort = "spaces"

@@ -1,17 +1,10 @@
 {
-  "lastChangelogVersion": "0.80.10",
-  "defaultProvider": "cursor",
-  "defaultModel": "composer-2.5",
-  "defaultThinkingLevel": "high",
-  "npmCommand": [
-    "mise",
-    "exec",
-    "node@25.9.0",
-    "--",
-    "npm"
-  ],
+  "lastChangelogVersion": "0.81.1",
+  "defaultProvider": "cursor-agent",
+  "defaultModel": "default",
+  "defaultThinkingLevel": "medium",
   "packages": [
-    "npm:pi-cursor-sdk"
+    "npm:pi-cursor-agent"
   ],
-  "theme": "omarchy-colors"
+  "theme": "rose-pine-dawn/rose-pine"
 }

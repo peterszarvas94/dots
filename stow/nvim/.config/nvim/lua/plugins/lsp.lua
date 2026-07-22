@@ -179,6 +179,18 @@ return {
         root_markers = { 'ols.json', '.git' },
       }
 
+      vim.lsp.config['rust_analyzer'] = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          ['rust-analyzer'] = {
+            check = {
+              command = 'clippy',
+            },
+          },
+        },
+      }
+
       for _, server in ipairs { 'yamlls', 'jsonls', 'cssls', 'bashls', 'astro' } do
         vim.lsp.config[server] = {
           capabilities = capabilities,
@@ -198,6 +210,7 @@ return {
       enable_if_available('astro', 'astro-ls')
       enable_if_available('ols', 'ols')
       enable_if_available('clangd', 'clangd')
+      enable_if_available('rust_analyzer', 'rust-analyzer')
 
       vim.diagnostic.config {
         signs = false,
@@ -248,6 +261,7 @@ return {
         'astro-language-server',
         'ols',
         'clangd',
+        'rust-analyzer',
         'stylua',
         'yamlfmt',
         'clang-format',

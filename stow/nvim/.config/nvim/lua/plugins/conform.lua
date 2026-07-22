@@ -51,6 +51,7 @@ return { -- Autoformat
         astro = { 'prettierd', 'prettier' },
         yml = { 'yamlfmt' },
         go = { 'goimports' },
+        rust = { 'rustfmt' },
         odin = { 'odinfmt' },
         c = { 'clang-format' },
         xml = { 'xmlformatter' },
