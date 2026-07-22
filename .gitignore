@@ -20,3 +20,8 @@ __pycache__/
 *.bak.*
 .opencode/package-lock.json
 .opencode/node_modules/
+stow/herdr/.config/herdr/session.json
+stow/herdr/.config/herdr/herdr-client.log
+stow/herdr/.config/herdr/herdr-server.log
+stow/herdr/.config/herdr/.plugins.lock
+stow/herdr/.config/herdr/*.sock

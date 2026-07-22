@@ -388,8 +388,29 @@ cleanup_package() {
             rm -rf "$TARGET_DIR/.config/lazygit"
             ;;
         herdr)
-            log_info "Removing file $TARGET_DIR/.config/herdr/config.toml"
-            rm -f "$TARGET_DIR/.config/herdr/config.toml"
+            local herdr_dir="$TARGET_DIR/.config/herdr"
+            local stow_herdr="$STOW_DIR/herdr/.config/herdr"
+            if [[ -L "$herdr_dir" ]]; then
+                log_info "Migrating herdr from directory symlink to local runtime directory"
+                mkdir -p "${herdr_dir}.migrate"
+                for f in session.json herdr-client.log herdr-server.log .plugins.lock; do
+                    if [[ -e "$stow_herdr/$f" ]]; then
+                        mv "$stow_herdr/$f" "${herdr_dir}.migrate/"
+                    fi
+                done
+                for f in "$stow_herdr"/*.sock; do
+                    [[ -e "$f" ]] || continue
+                    mv "$f" "${herdr_dir}.migrate/" 2>/dev/null || rm -f "$f"
+                done
+                rm -f "$herdr_dir"
+                mv "${herdr_dir}.migrate" "$herdr_dir"
+            elif [[ ! -d "$herdr_dir" ]]; then
+                mkdir -p "$herdr_dir"
+            fi
+            for f in session.json herdr-client.log herdr-server.log .plugins.lock; do
+                rm -f "$stow_herdr/$f"
+            done
+            rm -f "$stow_herdr"/*.sock 2>/dev/null || true
             ;;
         nvim)
             log_info "Removing directory $TARGET_DIR/.config/nvim"
