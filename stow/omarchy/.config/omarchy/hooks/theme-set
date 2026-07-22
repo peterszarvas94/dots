@@ -19,10 +19,6 @@ if command -v nvim >/dev/null 2>&1; then
   done
 fi
 
-if command -v omarchy-pi-theme >/dev/null 2>&1; then
-  omarchy-pi-theme "${1:-}" || true
-fi
-
 # >>> omazed hook - do not edit >>>
 omazed set "$1"
 # <<< omazed hook - do not edit <<<

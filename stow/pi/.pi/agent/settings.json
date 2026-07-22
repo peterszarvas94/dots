@@ -6,5 +6,5 @@
   "packages": [
     "npm:pi-cursor-agent"
   ],
-  "theme": "rose-pine-dawn/rose-pine"
+  "theme": "terminal"
 }
