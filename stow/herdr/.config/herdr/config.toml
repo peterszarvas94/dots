@@ -10,9 +10,13 @@ auto_switch = false
 detach = "prefix+d"
 settings = "prefix+period"
 goto = "prefix+s"
-navigate_workspace_up = "k"
-navigate_workspace_down = "j"
+navigate_workspace_up = ["k", "up"]
+navigate_workspace_down = ["j", "down"]
 rename_tab = "prefix+comma"
+previous_workspace = "prefix+p"
+next_workspace = "prefix+n"
+previous_tab = ""
+next_tab = ""
 
 [ui]
 agent_panel_sort = "spaces"
