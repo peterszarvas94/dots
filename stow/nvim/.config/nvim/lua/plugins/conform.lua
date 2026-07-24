@@ -5,6 +5,7 @@ return { -- Autoformat
   'stevearc/conform.nvim',
   config = function()
     local conform = require 'conform'
+    local ts_lsp = require 'config.ts_lsp'
 
     -- LSP indent function (moved from misc.lua)
     local function lsp_indent()
@@ -24,6 +25,8 @@ return { -- Autoformat
         if vim.bo.filetype == 'ruby' then
           lsp_indent()
         end
+
+        ts_lsp.organize_imports(_bufnr)
 
         return {
           lsp_format = 'fallback',
@@ -93,6 +96,7 @@ return { -- Autoformat
         }
       end
 
+      ts_lsp.organize_imports()
       conform.format { async = false, lsp_fallback = true, range = range }
     end, { range = true })
 

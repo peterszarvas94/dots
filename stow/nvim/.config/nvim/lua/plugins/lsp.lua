@@ -90,10 +90,7 @@ return {
         },
         on_attach = function(_, bufnr)
           vim.keymap.set('n', '<leader>oi', function()
-            vim.lsp.buf.code_action {
-              context = { only = { 'source.organizeImports' } },
-              apply = true,
-            }
+            require('config.ts_lsp').organize_imports(bufnr)
           end, { buffer = bufnr, desc = 'Organize Imports' })
 
           on_attach(_, bufnr)
