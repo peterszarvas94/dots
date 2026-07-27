@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if makoctl mode | grep -q 'do-not-disturb'; then
-  echo '{"text": "<b>NTF</b> OFF", "tooltip": "Notifications silenced", "class": "active"}'
-else
-  echo '{"text": ""}'
-fi
