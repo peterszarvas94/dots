@@ -183,10 +183,6 @@ install_breezex_cursor_theme() {
     log_success "Installed cursor theme: $cursor_theme"
 }
 
-reload_waybar() {
-    omarchy-restart-app waybar 2>/dev/null && log_success "Waybar reloaded"
-}
-
 setup_mac_theme_sync() {
     if [[ "$PLATFORM" != "mac" ]]; then
         log_info "Theme setup is only needed on macOS"
@@ -473,10 +469,6 @@ cleanup_package() {
             log_info "Removing file $TARGET_DIR/.tmux.conf"
             rm -f "$TARGET_DIR/.tmux.conf"
             ;;
-        waybar)
-            log_info "Removing directory $TARGET_DIR/.config/waybar"
-            rm -rf "$TARGET_DIR/.config/waybar"
-            ;;
         xdg)
             log_info "Removing file $TARGET_DIR/.config/mimeapps.list"
             rm -f "$TARGET_DIR/.config/mimeapps.list"
@@ -551,9 +543,6 @@ deploy() {
             apply_cursor_theme
             reload_hyprland
             ;;
-        waybar)
-            reload_waybar
-            ;;
     esac
 }
 
@@ -602,9 +591,6 @@ deploy_omarchy_packages() {
 
     # Omarchy
     deploy "omarchy"
-
-    # Waybar status bar
-    deploy "waybar"
 
     # Systemd services (adopt existing files)
     deploy "systemd" true

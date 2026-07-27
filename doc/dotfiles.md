@@ -24,7 +24,7 @@ Theme runtime setup is handled by package deploy flows (not a separate `--theme`
 Current packages:
 
 - `ghostty`, `git`, `herdr`, `hypr`, `jj`, `lazygit`, `nvim`, `nvim-theme-mac`, `omarchy`, `opencode`, `pi`, `scripts`
-- `ssh`, `systemd`, `tmux`, `waybar`, `xdg`, `zed`, `zsh`
+- `ssh`, `systemd`, `tmux`, `xdg`, `zed`, `zsh`
 
 Each package mirrors the target path under `$HOME`.
 
