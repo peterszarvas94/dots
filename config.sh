@@ -118,6 +118,18 @@ unstow_dots_ghostty() {
     stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D ghostty 2>/dev/null || true
 }
 
+# Remove dotfiles nvim stow links (Omarchy manages ~/.config/nvim via omarchy-nvim)
+unstow_dots_nvim() {
+    log_info "Skipping nvim on omarchy (using Omarchy defaults)"
+    stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D nvim 2>/dev/null || true
+}
+
+# Remove dotfiles tmux stow links (Omarchy manages ~/.config/tmux/tmux.conf)
+unstow_dots_tmux() {
+    log_info "Skipping tmux on omarchy (using Omarchy defaults)"
+    stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D tmux 2>/dev/null || true
+}
+
 # Link ghostty theme files (macOS only)
 link_ghostty_theme() {
     local platform="$1"
@@ -516,9 +528,21 @@ deploy() {
     local package_name="$1"
     local adopt_flag="${2:-false}"
 
-    if [[ "$package_name" == "ghostty" && "$PLATFORM" == "omarchy" ]]; then
-        unstow_dots_ghostty
-        return 0
+    if [[ "$PLATFORM" == "omarchy" ]]; then
+        case "$package_name" in
+            ghostty)
+                unstow_dots_ghostty
+                return 0
+                ;;
+            nvim)
+                unstow_dots_nvim
+                return 0
+                ;;
+            tmux)
+                unstow_dots_tmux
+                return 0
+                ;;
+        esac
     fi
 
     if [[ "$adopt_flag" != true ]]; then
@@ -611,6 +635,8 @@ deploy_omarchy_packages() {
     log_info "Deploying Arch Linux (omarchy) specific packages..."
 
     unstow_dots_ghostty
+    unstow_dots_nvim
+    unstow_dots_tmux
 
     # Hyprland window manager
     deploy "hypr"

@@ -1,23 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
-if command -v nvim >/dev/null 2>&1; then
-  if [[ -n "${XDG_RUNTIME_DIR:-}" && -d "$XDG_RUNTIME_DIR" ]]; then
-    runtime_dir="$XDG_RUNTIME_DIR"
-  else
-    runtime_dir="/tmp/nvim.${USER}"
-  fi
-  tmp_dir="/tmp/nvim.${USER}"
-
-  shopt -s nullglob
-  sockets=("${runtime_dir}"/nvim.* "${tmp_dir}"/*)
-  shopt -u nullglob
-
-  for socket in "${sockets[@]}"; do
-    [[ -S "$socket" ]] || continue
-    nvim --server "$socket" --remote-send '<Cmd>SyncTheme<CR>' >/dev/null 2>&1 || true
-  done
-fi
 
 # >>> omazed hook - do not edit >>>
 omazed set "$1"
