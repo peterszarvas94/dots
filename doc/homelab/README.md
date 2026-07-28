@@ -2,6 +2,8 @@
 
 Services run as the `homelab` user (Docker). Public access: **Tailscale Funnel** on one hostname, multiple HTTPS ports. No pretty domain for now.
 
+OpenCode is on the development host (Tailscale VPN / Serve, not Funnel) — [../opencode-host.md](../opencode-host.md).
+
 Get your Funnel hostname with:
 
 ```bash
@@ -18,6 +20,8 @@ tailscale funnel status
 | ONLYOFFICE | `https://YOUR_FUNNEL_HOST:9443` | 9980       |
 
 ONLYOFFICE Document Server is used for in-browser editing; you normally don’t open `:9443` directly.
+
+OpenCode is not Funnel’d — [../opencode-host.md](../opencode-host.md).
 
 ## Setup order
 
@@ -53,12 +57,12 @@ sudo -u homelab docker compose -f /home/homelab/onlyoffice/docker-compose.yml --
 
 ## Later
 
-- [opencode.md](./opencode.md) — OpenCode web UI (Docker, `.env`, Funnel `:10000`) — **plan**
 - Pretty names on your own domain: front-door VPS on Tailscale — see [future-domains.md](./future-domains.md).
+- Old OpenCode Docker notes (deprecated): [opencode.md](./opencode.md).
 
 ## Rules
 
-- Host port `8080` is taken (gems Keycloak) — Nextcloud uses `8081`.
+- Host port `8080` may be taken by other stacks — Nextcloud uses `8081`.
 - Do not put Immich behind Cloudflare orange-cloud / free Tunnel (~100 MB upload limit).
 - Funnel HTTPS cert covers the MagicDNS hostname on all Funnel ports.
 - Do not commit real Funnel hostnames, domains, or passwords to this repo — use placeholders.

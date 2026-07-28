@@ -2,14 +2,15 @@
 
 One Funnel host, multiple HTTPS ports. Tailscale handles TLS.
 
+Homelab apps only. OpenCode is **not** Funnel’d — Tailscale VPN + Serve on the host: [../opencode-host.md](../opencode-host.md).
+
 | Funnel HTTPS     | Local origin            | App        |
 |------------------|-------------------------|------------|
 | `:443` (default) | `http://127.0.0.1:2283` | Immich     |
 | `:8443`          | `http://127.0.0.1:8081` | Nextcloud  |
 | `:9443`          | `http://127.0.0.1:9980` | ONLYOFFICE |
-| `:10000`         | `http://127.0.0.1:4096` | OpenCode   |
 
-Tailscale **public** Funnel only allows HTTPS ports **`443`**, **`8443`**, and **`10000`**. Other ports (e.g. `:9443`, `:10443`) may listen on the tailnet only and work when Tailscale is connected, not from the open internet.
+Tailscale **public** Funnel only allows HTTPS ports **`443`**, **`8443`**, and **`10000`**. Other ports (e.g. `:9443`) may listen on the tailnet only and work when Tailscale is connected, not from the open internet. Keep **`10000` free** (do not point it at OpenCode).
 
 ## 0. Reset (optional)
 
@@ -37,15 +38,7 @@ After ONLYOFFICE is running — see [onlyoffice.md](./onlyoffice.md):
 sudo tailscale funnel --bg --https=9443 9980
 ```
 
-## 4. OpenCode (10000 → 4096)
-
-When deployed — see [opencode.md](./opencode.md):
-
-```bash
-pkexec tailscale funnel --bg --https=10000 4096
-```
-
-## 5. Check
+## 4. Check
 
 ```bash
 tailscale funnel status
@@ -62,17 +55,13 @@ https://YOUR_FUNNEL_HOST:8443 (Funnel on)
 
 https://YOUR_FUNNEL_HOST:9443 (Funnel on)
 |-- / proxy http://127.0.0.1:9980
-
-https://YOUR_FUNNEL_HOST:10000 (Funnel on)
-|-- / proxy http://127.0.0.1:4096
 ```
 
 - Immich: `https://YOUR_FUNNEL_HOST`
 - Nextcloud: `https://YOUR_FUNNEL_HOST:8443`
 - Document server (ONLYOFFICE): tailnet `:9443` only unless you use a public allowlist port
-- OpenCode: `https://YOUR_FUNNEL_HOST:10000`
 
-## 6. Persist
+## 5. Persist
 
 `--bg` stores config in `tailscaled` (enabled on boot). After reboot:
 

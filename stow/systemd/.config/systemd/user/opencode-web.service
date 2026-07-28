@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenCode web UI
+Documentation=https://opencode.ai/docs/web/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/opencode/server.env
+ExecStart=%h/.opencode/bin/opencode web --hostname 0.0.0.0 --port ${OPENCODE_PORT}
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
