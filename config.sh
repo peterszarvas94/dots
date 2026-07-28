@@ -91,20 +91,42 @@ link_nvim_theme() {
     esac
 }
 
-# Link ghostty theme files
+# Remove stow symlinks that still point at the old ~/projects/dots layout
+repair_legacy_projects_symlinks() {
+    local search_dir link target
+    local search_dirs=(
+        "$TARGET_DIR/.config"
+        "$TARGET_DIR/.local/share/dots"
+        "$TARGET_DIR/.zsh"
+    )
+
+    for search_dir in "${search_dirs[@]}"; do
+        [[ -d "$search_dir" ]] || continue
+        while IFS= read -r -d '' link; do
+            target=$(readlink "$link" 2>/dev/null || continue)
+            if [[ "$target" == *projects/dots* ]]; then
+                log_info "Removing legacy symlink: $link -> $target"
+                rm -f "$link"
+            fi
+        done < <(find "$search_dir" -type l -print0 2>/dev/null)
+    done
+}
+
+# Remove dotfiles ghostty stow links (Omarchy manages ~/.config/ghostty)
+unstow_dots_ghostty() {
+    log_info "Skipping ghostty on omarchy (using Omarchy defaults)"
+    stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D ghostty 2>/dev/null || true
+}
+
+# Link ghostty theme files (macOS only)
 link_ghostty_theme() {
     local platform="$1"
-    
+
     case "$platform" in
         mac)
             ln -nsf ~/.config/ghostty/mac/theme.conf ~/.config/ghostty/theme.conf
             ln -nsf ~/.config/ghostty/mac/settings.conf ~/.config/ghostty/settings.conf
             log_success "Ghostty theme linked for macOS"
-            ;;
-        omarchy)
-            ln -nsf ~/.config/omarchy/current/theme/ghostty.conf ~/.config/ghostty/theme.conf
-            ln -nsf ~/.config/ghostty/omarchy/settings.conf ~/.config/ghostty/settings.conf
-            log_success "Ghostty theme linked for omarchy"
             ;;
         *)
             log_error "Cannot link ghostty theme files, unsupported platform: $platform"
@@ -462,8 +484,8 @@ cleanup_package() {
             rm -f "$TARGET_DIR/.ssh/config.example"
             ;;
         systemd)
-            log_info "Removing directory $TARGET_DIR/.config/systemd/user"
-            rm -rf "$TARGET_DIR/.config/systemd/user"
+            log_info "Removing dotfiles-managed systemd unit: colima.service"
+            rm -f "$TARGET_DIR/.config/systemd/user/colima.service"
             ;;
         tmux)
             log_info "Removing file $TARGET_DIR/.tmux.conf"
@@ -493,6 +515,11 @@ cleanup_package() {
 deploy() {
     local package_name="$1"
     local adopt_flag="${2:-false}"
+
+    if [[ "$package_name" == "ghostty" && "$PLATFORM" == "omarchy" ]]; then
+        unstow_dots_ghostty
+        return 0
+    fi
 
     if [[ "$adopt_flag" != true ]]; then
         cleanup_package "$package_name"
@@ -572,9 +599,6 @@ deploy_common_packages() {
     # Scripts
     deploy "scripts"
 
-    # Ghostty configuration
-    deploy "ghostty"
-
     # Tmux configuration
     deploy "tmux"
 
@@ -586,14 +610,16 @@ deploy_common_packages() {
 deploy_omarchy_packages() {
     log_info "Deploying Arch Linux (omarchy) specific packages..."
 
+    unstow_dots_ghostty
+
     # Hyprland window manager
     deploy "hypr"
 
     # Omarchy
     deploy "omarchy"
 
-    # Systemd services (adopt existing files)
-    deploy "systemd" true
+    # Systemd user units from dotfiles (colima.service only)
+    deploy "systemd"
 
     # XDG defaults
     deploy "xdg"
@@ -601,11 +627,15 @@ deploy_omarchy_packages() {
 
 deploy_mac_packages() {
     log_info "Deploying macOS specific packages..."
+
+    deploy "ghostty"
 }
 
 # Main deployment function
 deploy_dotfiles() {
-    log_info "Starting dotfiles deployment for platform: $PLATFORM" 
+    log_info "Starting dotfiles deployment for platform: $PLATFORM"
+
+    repair_legacy_projects_symlinks
 
     # If specific packages are requested (without "all"), deploy only those.
     if [[ ${#PKGS[@]} -gt 0 ]]; then
@@ -639,6 +669,7 @@ deploy_dotfiles() {
             ;;
         server)
             deploy_common_packages
+            deploy "ghostty"
             ;;
         *)
             log_error "Unknown platform: $PLATFORM"

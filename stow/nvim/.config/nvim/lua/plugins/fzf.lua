@@ -41,7 +41,7 @@ return {
       vim.keymap.set('n', '<leader>sr', picker 'oldfiles', { desc = 'Search Recently opened files' })
       vim.keymap.set('n', '<leader>sf', picker 'files', { desc = 'Search Files' })
       vim.keymap.set('n', '<leader>sn', picker('files', { cwd = vim.fn.stdpath 'config' }), { desc = 'Search Nvim files' })
-      vim.keymap.set('n', '<leader>sd', picker('files', { cwd = vim.fn.expand '~' .. '/projects/dots/' }), { desc = 'Search Dotfiles' })
+      vim.keymap.set('n', '<leader>sd', picker('files', { cwd = vim.fn.expand '~' .. '/Projects/dots/' }), { desc = 'Search Dotfiles' })
       vim.keymap.set('n', '<leader>sl', picker 'live_grep', { desc = 'Search by Livegrep' })
       vim.keymap.set('n', '<leader>sh', picker 'helptags', { desc = 'Search Help' })
       vim.keymap.set('n', '<leader>sw', picker 'grep_cword', { desc = 'Search current Word' })
