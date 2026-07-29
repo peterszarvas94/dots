@@ -8,8 +8,11 @@ Private keys and `known_hosts` stay **only** on the machine under `~/.ssh/` — 
 
 | Path in repo | Deploys to | Role |
 |--------------|------------|------|
-| `stow/ssh/.ssh/config` | `~/.ssh/config` | Global SSH client config |
+| `stow/ssh/.ssh/config.example` | (template, tracked) | Default client config |
+| `stow/ssh/.ssh/config` | `~/.ssh/config` | Local copy (gitignored); seeded from example |
 | `stow/zsh/.zshrc` (tail) | `~/.zshrc` | Start `ssh-agent`, `ssh-add` listed keys |
+
+`config` is gitignored. Setup / `./config --pkg=ssh` copies `config.example` → `config` when missing, then stows it.
 
 Deploy:
 
@@ -24,7 +27,7 @@ If `~/.ssh/config` already exists as a regular file (not a symlink), `stow` may 
 
 Current layout:
 
-- **`Include ~/.config/colima/ssh_config`** — Colima VM SSH entries when present.
+- **`Include ~/.config/colima/ssh_config*`** — Colima VM SSH entries when present (glob so missing file is a no-op on Mac and Linux).
 - **`Host *`** — one block for all hosts:
   - **`AddKeysToAgent yes`** — keys used for login are added to the agent when possible.
   - **`IdentitiesOnly yes`** — only offer keys listed below (and/or loaded in the agent when combined with `IdentityFile`; see below).
@@ -85,6 +88,8 @@ dump-ssh-keys --force      # overwrite existing files
 ```
 
 Uses **`op item list --categories "SSH Key"`** and **`op item get <id>`** (vault default: **Private**, override with `--vault` or `OP_SSH_VAULT`).
+
+Private keys are written in **OpenSSH** format (`ssh_formats.openssh` / `?ssh-format=openssh`). The default 1Password field value is often PKCS#8 (`BEGIN PRIVATE KEY`), which OpenSSH on **macOS and Linux** commonly rejects as `invalid format`.
 
 After export:
 
