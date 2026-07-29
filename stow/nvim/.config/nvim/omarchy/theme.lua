@@ -72,14 +72,6 @@ return vim.list_extend(vim.deepcopy(theme_plugins), {
   },
   {
     'LazyVim/LazyVim',
-    dir = vim.fn.stdpath('config') .. '/local/lazyvim-stub',
-    lazy = false,
-    priority = 1000,
-    config = function(_, opts)
-      if type(opts) == 'table' and type(opts.colorscheme) == 'string' and opts.colorscheme ~= '' then
-        pcall(vim.cmd.colorscheme, opts.colorscheme)
-      end
-    end,
     opts = {
       colorscheme = data.colorscheme,
       background = data.background,

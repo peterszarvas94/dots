@@ -1,81 +1,11 @@
--- Core Neovim keymaps (non-plugin specific)
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
 
--- unbind space
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+local map = vim.keymap.set
 
--- source
-vim.keymap.set('n', '<leader><leader>f', ':source %<CR>', { desc = 'Source File', silent = true })
-vim.keymap.set('n', '<leader><leader>l', ':.lua<CR><CR>', { desc = 'Source Line(s)', silent = true })
-vim.keymap.set('v', '<leader><leader>l', ':lua<CR><CR>', { desc = 'Source Line(s)', silent = true })
-
--- j->gj, k->gk
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-
--- diagnostics
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setqflist, { desc = 'Open diagnostics list' })
-
--- tabs
-vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'Tab New', silent = true })
-vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Tab Close', silent = true })
-vim.keymap.set('n', '<leader>tw', function()
-  vim.o.wrap = not vim.o.wrap
-end, { desc = 'Toggle wrap', silent = true })
-
--- tmux
-vim.keymap.set('n', '<leader>tm', function()
-  local ok, fzf = pcall(require, 'fzf-lua')
-  if not ok then
-    return
-  end
-
-  if fzf.tmux_sessions then
-    fzf.tmux_sessions()
-    return
-  end
-
-  local sessions = vim.fn.systemlist 'tmux list-sessions -F "#{session_name}"'
-  fzf.fzf_exec(sessions, {
-    prompt = 'Tmux sessions> ',
-    actions = {
-      ['default'] = function(selected)
-        if not selected or not selected[1] then
-          return
-        end
-        vim.fn.system({ 'tmux', 'switch-client', '-t', selected[1] })
-      end,
-    },
-  })
-end, { desc = 'Tmux sessions', silent = true })
-
--- keep selection after indent
-vim.keymap.set('v', '<', '<gv', { desc = 'Indent left', noremap = true, silent = true })
-vim.keymap.set('v', '>', '>gv', { desc = 'Indent right', noremap = true, silent = true })
-
-vim.keymap.set('n', 'K', function()
-  if vim.lsp.get_clients({ bufnr = 0, method = 'textDocument/hover' })[1] then
-    vim.lsp.buf.hover()
-  end
-end, { desc = 'Hover Documentation' })
-
--- move selected lines vertically (with correct indentation)
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up', noremap = true, silent = true })
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down', noremap = true, silent = true })
-
--- quickfix list
-vim.keymap.set('n', '<C-[>', ':cprevious<CR>', { desc = 'Previous item in quickfix list', silent = true })
-vim.keymap.set('n', '<C-]>', ':cnext<CR>', { desc = 'Next item in quickfix list', silent = true })
-
--- split resize (Alt + arrows)
-vim.keymap.set('n', '<M-Left>', '<C-w>5<', { desc = 'Resize split narrower', silent = true })
-vim.keymap.set('n', '<M-Right>', '<C-w>5>', { desc = 'Resize split wider', silent = true })
-vim.keymap.set('n', '<M-Down>', '<C-w>5+', { desc = 'Resize split taller', silent = true })
-vim.keymap.set('n', '<M-Up>', '<C-w>5-', { desc = 'Resize split shorter', silent = true })
-
--- buffer
-vim.keymap.set('n', '<leader>y', 'ggVGy', { desc = 'Yank buffer', silent = true })
-vim.keymap.set('n', '<leader>v', 'ggVG', { desc = 'Visual select buffer', silent = true })
-vim.keymap.set('n', '<leader>p', 'ggVGp', { desc = 'Paste to buffer', silent = true })
+-- Buffer-wide edit helpers (<leader>Y/D/V/P are free; lowercase <leader>d = debug, <leader>p = yanky if enabled)
+map("n", "<leader>Y", ":%y<CR>", { desc = "Yank entire buffer" })
+map("n", "<leader>D", ":%d<CR>", { desc = "Delete entire buffer" })
+map("n", "<leader>V", "ggVG", { desc = "Select entire buffer" })
+map("n", "<leader>P", "ggVGp", { desc = "Paste over entire buffer" })

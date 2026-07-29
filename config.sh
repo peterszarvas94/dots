@@ -118,18 +118,6 @@ unstow_dots_ghostty() {
     stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D ghostty 2>/dev/null || true
 }
 
-# Remove dotfiles nvim stow links (Omarchy manages ~/.config/nvim via omarchy-nvim)
-unstow_dots_nvim() {
-    log_info "Skipping nvim on omarchy (using Omarchy defaults)"
-    stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D nvim 2>/dev/null || true
-}
-
-# Remove dotfiles tmux stow links (Omarchy manages ~/.config/tmux/tmux.conf)
-unstow_dots_tmux() {
-    log_info "Skipping tmux on omarchy (using Omarchy defaults)"
-    stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D tmux 2>/dev/null || true
-}
-
 # Link ghostty theme files (macOS only)
 link_ghostty_theme() {
     local platform="$1"
@@ -450,9 +438,10 @@ cleanup_package() {
             rm -f "$stow_herdr"/*.sock 2>/dev/null || true
             ;;
         nvim)
-            log_info "Removing directory $TARGET_DIR/.config/nvim"
+            unstow_package nvim
+            log_info "Removing stow nvim config $TARGET_DIR/.config/nvim"
             rm -rf "$TARGET_DIR/.config/nvim"
-            log_info "Removing directory $TARGET_DIR/.local/share/nvim/lazy"
+            log_info "Removing lazy.nvim data (reinstall on next nvim start)"
             rm -rf "$TARGET_DIR/.local/share/nvim/lazy"
             ;;
         nvim-theme-mac)
@@ -511,7 +500,9 @@ cleanup_package() {
             rm -f "$TARGET_DIR/.config/systemd/user/colima.service"
             ;;
         tmux)
-            log_info "Removing file $TARGET_DIR/.tmux.conf"
+            unstow_package tmux
+            log_info "Removing stow tmux config"
+            rm -f "$TARGET_DIR/.config/tmux/tmux.conf"
             rm -f "$TARGET_DIR/.tmux.conf"
             ;;
         xdg)
@@ -545,14 +536,6 @@ deploy() {
                 unstow_dots_ghostty
                 return 0
                 ;;
-            nvim)
-                unstow_dots_nvim
-                return 0
-                ;;
-            tmux)
-                unstow_dots_tmux
-                return 0
-                ;;
         esac
     fi
 
@@ -574,12 +557,6 @@ deploy() {
     case "$package_name" in
         nvim)
             link_nvim_theme "$PLATFORM"
-            if [[ "$PLATFORM" == "mac" ]]; then
-                rm -f "$HOME/.local/share/dots/bin/mac-sync-nvim-theme"
-                rm -f "$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
-                deploy "nvim-theme-mac"
-                setup_mac_theme_sync
-            fi
             ;;
         ghostty)
             link_ghostty_theme "$PLATFORM"
@@ -589,8 +566,8 @@ deploy() {
             touch "$HOME/.zsh/config/env.zsh"
             ;;
         tmux)
-            tmux source-file "$HOME/.tmux.conf" || true
-            log_success "Tmux source-file executed"
+            tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null || true
+            log_success "Tmux config reloaded"
             ;;
         herdr)
             if command -v herdr >/dev/null 2>&1; then
@@ -646,8 +623,6 @@ deploy_omarchy_packages() {
     log_info "Deploying Arch Linux (omarchy) specific packages..."
 
     unstow_dots_ghostty
-    unstow_dots_nvim
-    unstow_dots_tmux
 
     # Hyprland window manager
     deploy "hypr"
