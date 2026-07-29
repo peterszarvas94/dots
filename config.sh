@@ -556,6 +556,16 @@ deploy() {
         esac
     fi
 
+    if [[ "$package_name" == "ssh" ]]; then
+        local ssh_cfg="$STOW_DIR/ssh/.ssh/config"
+        local ssh_example="$STOW_DIR/ssh/.ssh/config.example"
+        if [[ ! -f "$ssh_cfg" ]]; then
+            [[ -f "$ssh_example" ]] || { log_error "Missing $ssh_example"; return 1; }
+            log_info "Creating $ssh_cfg from config.example"
+            cp "$ssh_example" "$ssh_cfg"
+        fi
+    fi
+
     if [[ "$adopt_flag" != true ]]; then
         cleanup_package "$package_name"
     fi

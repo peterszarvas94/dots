@@ -16,7 +16,8 @@ usage() {
   cat <<'EOF'
 Usage: dump-ssh-keys [OPTIONS]
 
-Export all 1Password "SSH Key" items to ~/.ssh/<title> and ~/.ssh/<title>.pub.
+Export all 1Password "SSH Key" items to ~/.ssh/<title> and ~/.ssh/<title>.pub
+in OpenSSH format (usable by ssh/ssh-add on both macOS and Linux).
 
 Options:
   --vault VAULT   1Password vault name (default: Private, or OP_SSH_VAULT)
@@ -24,7 +25,7 @@ Options:
   --dry-run       Print actions without writing files
   -h, --help      Show this help
 
-Requires: op (signed in), jq
+Requires: op (signed in), jq, ssh-keygen
 EOF
 }
 
@@ -48,6 +49,7 @@ done
 
 command -v op >/dev/null 2>&1 || die "op not found; install 1Password CLI and run op signin"
 command -v jq >/dev/null 2>&1 || die "jq not found"
+command -v ssh-keygen >/dev/null 2>&1 || die "ssh-keygen not found"
 
 SSH_DIR="$HOME/.ssh"
 mkdir -p "$SSH_DIR"
@@ -78,8 +80,25 @@ while IFS=$'\t' read -r id title; do
   fi
 
   json="$(op item get "$id" --format json)"
-  jq -e -r '.fields[] | select(.label=="private key") | .value' <<<"$json" >"$priv"
+
+  # Prefer OpenSSH format. Default field .value is often PKCS#8
+  # (BEGIN PRIVATE KEY), which OpenSSH on macOS and many Linux builds reject.
+  if ! jq -e -r '
+    .fields[] | select(.label=="private key")
+    | .ssh_formats.openssh.value // empty
+  ' <<<"$json" >"$priv" || [[ ! -s "$priv" ]]; then
+    # Fallback for older op CLI / items without ssh_formats in JSON.
+    if ! op read "op://$VAULT/$id/private key?ssh-format=openssh" >"$priv" 2>/dev/null || [[ ! -s "$priv" ]]; then
+      jq -e -r '.fields[] | select(.label=="private key") | .value' <<<"$json" >"$priv"
+    fi
+  fi
+
   jq -e -r '.fields[] | select(.label=="public key") | .value' <<<"$json" >"$pub"
+
+  if ! ssh-keygen -y -f "$priv" >/dev/null 2>&1; then
+    rm -f "$priv" "$pub"
+    die "exported private key for $title is not usable by OpenSSH (need OpenSSH format, not PKCS#8)"
+  fi
 
   chmod 600 "$priv"
   chmod 644 "$pub"
