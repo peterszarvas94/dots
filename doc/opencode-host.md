@@ -2,17 +2,13 @@
 
 Native [OpenCode](https://opencode.ai/docs/) web UI on the development machine (full local toolchain). Homelab Docker is for media / cloud apps only — see [homelab/README.md](./homelab/README.md).
 
-**Status:** preferred deploy. Old Docker guide: [homelab/opencode.md](./homelab/opencode.md) (**deprecated**).
-
 Official refs: [Web](https://opencode.ai/docs/web/), [Server](https://opencode.ai/docs/server/), [CLI](https://opencode.ai/docs/cli/).
 
 ## Why host
 
-| | Homelab Docker (old) | Host (this doc) |
-|--|----------------------|-----------------|
-| Toolchain | Minimal image + Node bolt-on | Full Node / Go / local tools |
-| Projects | Bind-mounts into the container | Native home project dirs |
-| Cursor proxy | Inside container | Local only — do not publish |
+- Full Node / Go / local tools on the machine you develop on
+- Projects are native home dirs (no container bind-mount path quirks)
+- Cursor OAuth proxy stays on `127.0.0.1` — do not publish it
 
 If the machine sleeps or is off, remote access stops.
 
@@ -156,15 +152,6 @@ HTTP basic auth = `OPENCODE_SERVER_*` from `server.env`.
 
 Homelab **public** Funnel (Immich / Nextcloud / …): [homelab/funnel.md](./homelab/funnel.md). Do **not** Funnel OpenCode.
 
-### 8. Retire homelab Docker OpenCode
-
-```bash
-# as the homelab compose user, in the old opencode compose directory:
-docker compose down
-```
-
-If Funnel still maps `:10000` → `4096`, remove it (`tailscale funnel --https=10000 off`).
-
 ## Daily use
 
 | Client | How |
@@ -201,7 +188,7 @@ systemctl --user restart opencode-web
 
 **Service won’t start / port in use**
 
-- Old Docker still on `4096`: `docker compose down` in the old directory, then `systemctl --user restart opencode-web`.
+- Something else bound to `4096`: `ss -tlnp | grep 4096` (or `sudo lsof -i :4096`), stop that process, then `systemctl --user restart opencode-web`.
 
 **Web UI shows no agent reply; TUI / attach works**
 

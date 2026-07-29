@@ -71,7 +71,15 @@ HISTFILE=~/.zsh_history
 HISTSIZE=50000
 SAVEHIST=50000
 
-export SSH_AUTH_SOCK=~/.1password/agent.sock
+if [[ -z "${SSH_AUTH_SOCK:-}" ]] || ! ssh-add -l &>/dev/null; then
+  eval "$(ssh-agent -s)" >/dev/null
+fi
+ssh-add ~/.ssh/github    2>/dev/null
+ssh-add ~/.ssh/hetzner   2>/dev/null
+ssh-add ~/.ssh/linode    2>/dev/null
+ssh-add ~/.ssh/bandcash  2>/dev/null
+ssh-add ~/.ssh/coolify   2>/dev/null
+ssh-add ~/.ssh/scaleway  2>/dev/null
 
 export PATH
 

@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+# Export SSH keys from 1Password into ~/.ssh (private + .pub).
+# Usage: dump-ssh-keys [--vault VAULT] [--force] [--dry-run]
+
+set -euo pipefail
+
+VAULT="${OP_SSH_VAULT:-Private}"
+FORCE=false
+DRY_RUN=false
+
+log() { printf '%s\n' "$*"; }
+die() { printf 'error: %s\n' "$*" >&2; exit 1; }
+
+usage() {
+  cat <<'EOF'
+Usage: dump-ssh-keys [OPTIONS]
+
+Export all 1Password "SSH Key" items to ~/.ssh/<title> and ~/.ssh/<title>.pub.
+
+Options:
+  --vault VAULT   1Password vault name (default: Private, or OP_SSH_VAULT)
+  --force         Overwrite existing key files
+  --dry-run       Print actions without writing files
+  -h, --help      Show this help
+
+Requires: op (signed in), jq
+EOF
+}
+
+safe_name() {
+  printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]._-'
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --vault)
+      [[ $# -ge 2 ]] || die "--vault requires a value"
+      VAULT="$2"
+      shift 2
+      ;;
+    --force) FORCE=true; shift ;;
+    --dry-run) DRY_RUN=true; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) die "unknown option: $1 (try --help)" ;;
+  esac
+done
+
+command -v op >/dev/null 2>&1 || die "op not found; install 1Password CLI and run op signin"
+command -v jq >/dev/null 2>&1 || die "jq not found"
+
+SSH_DIR="$HOME/.ssh"
+mkdir -p "$SSH_DIR"
+chmod 700 "$SSH_DIR"
+
+items="$(op item list --categories "SSH Key" --vault "$VAULT" --format json)" || die "op item list failed (vault=$VAULT; signed in?)"
+
+count="$(jq 'length' <<<"$items")"
+[[ "$count" -gt 0 ]] || die "no SSH Key items in vault $VAULT"
+
+log "Exporting $count SSH key(s) from vault $VAULT -> $SSH_DIR"
+
+while IFS=$'\t' read -r id title; do
+  [[ -n "$id" && -n "$title" ]] || continue
+  base="$(safe_name "$title")"
+  [[ -n "$base" ]] || die "could not derive filename for item $id ($title)"
+
+  priv="$SSH_DIR/$base"
+  pub="$SSH_DIR/$base.pub"
+
+  if [[ "$FORCE" != true ]] && { [[ -e "$priv" ]] || [[ -e "$pub" ]]; }; then
+    die "refusing to overwrite $priv (use --force)"
+  fi
+
+  if [[ "$DRY_RUN" == true ]]; then
+    log "[dry-run] would write $priv and $pub ($title / $id)"
+    continue
+  fi
+
+  json="$(op item get "$id" --format json)"
+  jq -e -r '.fields[] | select(.label=="private key") | .value' <<<"$json" >"$priv"
+  jq -e -r '.fields[] | select(.label=="public key") | .value' <<<"$json" >"$pub"
+
+  chmod 600 "$priv"
+  chmod 644 "$pub"
+  log "wrote $base ($title)"
+done < <(jq -r '.[] | [.id, .title] | @tsv' <<<"$items")
+
+log "Done. Update ~/.ssh/config (IdentityFile) and stop using 1Password SSH agent if switching fully to files."

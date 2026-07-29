@@ -75,6 +75,11 @@ Example structure:
 stow/foo/.config/foo/
 ```
 
+## Related docs
+
+- [SSH (keys, agent, 1Password export)](./ssh.md)
+- [OpenCode on the host](./opencode-host.md)
+
 ## Notes
 
 - The `config` script auto-detects platform (`mac` or `omarchy`).

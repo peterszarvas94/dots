@@ -58,7 +58,6 @@ sudo -u homelab docker compose -f /home/homelab/onlyoffice/docker-compose.yml --
 ## Later
 
 - Pretty names on your own domain: front-door VPS on Tailscale — see [future-domains.md](./future-domains.md).
-- Old OpenCode Docker notes (deprecated): [opencode.md](./opencode.md).
 
 ## Rules
 
