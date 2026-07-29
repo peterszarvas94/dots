@@ -11,14 +11,13 @@ Private keys and `known_hosts` stay **only** on the machine under `~/.ssh/` — 
 | `stow/ssh/.ssh/config` | `~/.ssh/config` | Global SSH client config |
 | `stow/zsh/.zshrc` (tail) | `~/.zshrc` | Start `ssh-agent`, `ssh-add` listed keys |
 
-Deploy:
+Deploy (removes prior **stow-managed** paths for these packages, then links fresh):
 
 ```bash
-./config --pkg=ssh
-./config --pkg=zsh
+./config.sh --pkg=ssh,zsh,scripts
 ```
 
-If `~/.ssh/config` already exists as a regular file (not a symlink), `stow` may refuse to link it. Either remove the file and stow again, or keep the repo copy in sync manually.
+`config.sh` unstows and deletes only what those packages own (`~/.ssh/config`, `~/.ssh/config.example`, `~/.zshrc`, `~/.zsh/`, `~/.local/share/dots/bin/*`) — not private keys or `known_hosts`.
 
 ## Client config (`~/.ssh/config`)
 

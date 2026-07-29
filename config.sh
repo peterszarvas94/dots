@@ -374,6 +374,13 @@ backup_config() {
     fi
 }
 
+# Remove stow symlinks for a package (no-op if not stowed)
+unstow_package() {
+    local package_name="$1"
+    log_info "Unstowing $package_name"
+    stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D "$package_name" 2>/dev/null || true
+}
+
 # Explicit cleanup before deploying specific packages
 cleanup_package() {
     local package_name="$1"
@@ -475,24 +482,28 @@ cleanup_package() {
             rm -rf "$TARGET_DIR/.pi/agent/extensions"
             ;;
         scripts)
+            unstow_package scripts
             local legacy_bin="$TARGET_DIR/.local/bin"
             if [[ -L "$legacy_bin" ]] && readlink "$legacy_bin" | grep -q 'dots/stow/scripts/.local/bin'; then
                 log_info "Replacing legacy scripts symlink: $legacy_bin"
                 rm -f "$legacy_bin"
                 mkdir -p "$legacy_bin"
             fi
+            log_info "Removing stow scripts directory $TARGET_DIR/.local/share/dots/bin"
+            rm -rf "$TARGET_DIR/.local/share/dots/bin"
+            mkdir -p "$TARGET_DIR/.local/share/dots/bin"
             local script target
             for script in "$STOW_DIR/scripts/.local/share/dots/bin"/*; do
                 [[ -e "$script" ]] || continue
                 target="$TARGET_DIR/.local/share/dots/bin/$(basename "$script")"
-                [[ -L "$target" ]] && rm -f "$target"
+                rm -f "$target"
                 rm -f "$TARGET_DIR/.local/bin/$(basename "$script")"
             done
             ;;
         ssh)
-            log_info "Removing file $TARGET_DIR/.ssh/config"
+            unstow_package ssh
+            log_info "Removing stow ssh files under $TARGET_DIR/.ssh"
             rm -f "$TARGET_DIR/.ssh/config"
-            log_info "Removing file $TARGET_DIR/.ssh/config.example"
             rm -f "$TARGET_DIR/.ssh/config.example"
             ;;
         systemd)
@@ -512,10 +523,10 @@ cleanup_package() {
             rm -rf "$TARGET_DIR/.config/zed"
             ;;
         zsh)
-            log_info "Removing file $TARGET_DIR/.zshrc"
+            unstow_package zsh
+            log_info "Removing stow zsh files ($TARGET_DIR/.zshrc, $TARGET_DIR/.zsh/)"
             rm -f "$TARGET_DIR/.zshrc"
-            log_info "Removing file $TARGET_DIR/.zsh/config/platform.zsh"
-            rm -f "$TARGET_DIR/.zsh/config/platform.zsh"
+            rm -rf "$TARGET_DIR/.zsh"
             ;;
         *)
             log_info "No explicit cleanup rules for package: $package_name"
