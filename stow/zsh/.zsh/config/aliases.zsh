@@ -70,7 +70,16 @@ rebase() {
 
 alias fix-droidcam="sudo rmmod v4l2loopback && sudo modprobe v4l2loopback video_nr=0 card_label=\"DroidCam\" exclusive_caps=1 && droidcam"
 
-alias oc="opencode"
+oc() {
+  local directory
+  if (( $# == 0 )); then
+    opencode attach http://asimov:4096 --dir .
+    return
+  fi
+  directory="$(zoxide query -- "$@")" || return
+  [[ -d "$directory" ]] || return 1
+  opencode attach http://asimov:4096 --dir "$directory"
+}
 if [[ "$OSTYPE" != darwin* ]]; then
   alias open="xdg-open"
 fi
