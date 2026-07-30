@@ -12,6 +12,7 @@ Reference for how this repo is laid out and which files/folders are responsible 
 - `setup_omarchy.sh`: Bootstrap script for Linux/Omarchy package install + clone + initial `./config` run.
 - `install_treesitter_parsers.sh`: Legacy Tree-sitter parser install script (kept for reference).
 - `doc/`: Repository documentation (this file lives here).
+- `archive/`: **Not stowed** snapshots (e.g. pre–LazyVim Neovim). See [archive/README.md](./archive/README.md).
 - `resources/`: Extra assets like fonts, wallpapers, keyboard layout, and `mise` related files.
 - `_old/`: Archived legacy configs/scripts kept for reference.
 - `README.md`: Quick-start instructions for macOS and Omarchy setup.
@@ -78,6 +79,7 @@ stow/foo/.config/foo/
 ## Related docs
 
 - [SSH (keys, agent, 1Password export)](./ssh.md)
+- [Neovim / tmux / zsh (mac + Omarchy)](./nvim-tmux-zsh.md)
 - [OpenCode on the host](./opencode-host.md)
 
 ## Notes
