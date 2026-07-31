@@ -66,22 +66,40 @@ rename_host() {
 
   validate_hostname "$new_name"
 
-  if ! command -v hostnamectl &>/dev/null; then
-    die "hostnamectl not found"
-  fi
-
-  old_name="$(hostnamectl --static 2>/dev/null || hostname -s)"
+  case "$(uname -s)" in
+    Darwin)
+      command -v scutil &>/dev/null || die "scutil not found"
+      old_name="$(scutil --get HostName 2>/dev/null || hostname -s)"
+      ;;
+    Linux)
+      command -v hostnamectl &>/dev/null || die "hostnamectl not found"
+      old_name="$(hostnamectl --static 2>/dev/null || hostname -s)"
+      ;;
+    *)
+      die "unsupported operating system: $(uname -s)"
+      ;;
+  esac
 
   if [[ "$old_name" == "$new_name" ]]; then
     log "Hostname is already $new_name (syncing /etc/hosts)"
   else
     log "Renaming $old_name -> $new_name"
-    hostnamectl set-hostname "$new_name"
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+      scutil --set HostName "$new_name"
+      scutil --set LocalHostName "$new_name"
+      scutil --set ComputerName "$new_name"
+    else
+      hostnamectl set-hostname "$new_name"
+    fi
   fi
 
   update_hosts_file "$old_name" "$new_name"
 
-  log "Done. Current hostname: $(hostnamectl --static)"
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    log "Done. Current hostname: $(scutil --get HostName)"
+  else
+    log "Done. Current hostname: $(hostnamectl --static)"
+  fi
   log "Run 'exec zsh' (or reconnect) to refresh your prompt."
 }
 
