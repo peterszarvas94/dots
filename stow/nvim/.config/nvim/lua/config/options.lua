@@ -14,6 +14,8 @@ else
   require("config.remote_clipboard").setup()
 end
 vim.opt.relativenumber = false
+vim.opt.hlsearch = false
+vim.opt.list = false
 
 -- Keep swap files in a user-owned directory. The old directory was created as
 -- root and causes E303 when opening files.
