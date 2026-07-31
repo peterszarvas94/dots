@@ -99,6 +99,21 @@ repair_legacy_projects_symlinks() {
         "$TARGET_DIR/.local/share/dots"
         "$TARGET_DIR/.zsh"
     )
+    local home_links=(
+        "$TARGET_DIR/.zprofile"
+        "$TARGET_DIR/.zshrc"
+        "$TARGET_DIR/.zshenv"
+        "$TARGET_DIR/.zsh"
+    )
+
+    for link in "${home_links[@]}"; do
+        [[ -L "$link" ]] || continue
+        target=$(readlink "$link" 2>/dev/null) || continue
+        if [[ "$target" == *projects/dots* ]]; then
+            log_info "Removing legacy symlink: $link -> $target"
+            rm -f "$link"
+        fi
+    done
 
     for search_dir in "${search_dirs[@]}"; do
         [[ -d "$search_dir" ]] || continue
