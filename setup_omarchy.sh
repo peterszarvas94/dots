@@ -23,18 +23,13 @@ yay -S --noconfirm --needed \
 
 # Remove
 rm -rf ~/Projects/dots
-rm -rf ~/Projects/LazyVim
 
 # Clone
 mkdir -p ~/Projects
 cd Projects
 git clone https://github.com/peterszarvas94/dots.git
-git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git LazyVim
 
 # Origin
-cd ~/Projects/LazyVim
-git remote remove origin 2>/dev/null || true
-git remote add origin git@github.com:peterszarvas94/omarchy-nvim-theme-grabber.git
 cd ~/Projects/dots
 git remote remove origin 2>/dev/null || true
 git remote add origin git@github.com:peterszarvas94/dots.git

@@ -567,6 +567,10 @@ deploy() {
     case "$package_name" in
         nvim)
             link_nvim_theme "$PLATFORM"
+            if [[ "$PLATFORM" == "mac" ]]; then
+                deploy "nvim-theme-mac"
+                setup_mac_theme_sync
+            fi
             ;;
         ghostty)
             link_ghostty_theme "$PLATFORM"

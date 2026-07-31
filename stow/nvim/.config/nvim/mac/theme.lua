@@ -1,206 +1,51 @@
 return {
-  'rose-pine/neovim',
-  name = 'rose-pine',
+  "rose-pine/neovim",
+  name = "rose-pine",
   config = function()
-    local uv = vim.uv or vim.loop
-    local state = _G.__rose_pine_mac_theme_state or {}
-    _G.__rose_pine_mac_theme_state = state
-
-    local theme_file = vim.fn.expand '~/.config/omarchy/current/theme/neovim.lua'
-    local theme_dir = vim.fn.fnamemodify(theme_file, ':h')
-    local tmux_registry = vim.fn.stdpath 'state' .. '/theme-sync-tmux'
-    local server_registry = vim.fn.stdpath 'state' .. '/theme-sync-servers'
-
-    local function read_lines(path)
-      if vim.fn.filereadable(path) ~= 1 then
-        return {}
-      end
-
-      local ok, lines = pcall(vim.fn.readfile, path)
-      if not ok or type(lines) ~= 'table' then
-        return {}
-      end
-
-      return lines
-    end
-
-    local function write_lines(path, lines)
-      pcall(vim.fn.writefile, lines, path)
-    end
-
-    local function unique_lines(lines)
-      local seen = {}
-      local out = {}
-
-      for _, line in ipairs(lines) do
-        if line ~= '' and not seen[line] then
-          seen[line] = true
-          table.insert(out, line)
-        end
-      end
-
-      return out
-    end
-
-    local function register_tmux_pane()
-      local pane = vim.env.TMUX_PANE
-      if not pane or pane == '' then
-        return
-      end
-
-      local lines = read_lines(tmux_registry)
-      local found = false
-      for _, line in ipairs(lines) do
-        if line == pane then
-          found = true
-          break
-        end
-      end
-
-      if not found then
-        table.insert(lines, pane)
-      end
-
-      write_lines(tmux_registry, unique_lines(lines))
-    end
-
-    local function unregister_tmux_pane()
-      local pane = vim.env.TMUX_PANE
-      if not pane or pane == '' then
-        return
-      end
-
-      local lines = read_lines(tmux_registry)
-      local keep = {}
-
-      for _, line in ipairs(lines) do
-        if line ~= pane then
-          table.insert(keep, line)
-        end
-      end
-
-      write_lines(tmux_registry, unique_lines(keep))
-    end
-
-    local function ensure_server_name()
-      local server = vim.v.servername
-      if server and server ~= '' then
-        return server
-      end
-
-      local run_dir = vim.fn.stdpath 'run'
-      vim.fn.mkdir(run_dir, 'p')
-      local socket = run_dir .. '/theme-sync-' .. vim.fn.getpid() .. '.sock'
-      pcall(vim.fn.serverstart, socket)
-      server = vim.v.servername
-
-      if server and server ~= '' then
-        return server
-      end
-
-      return nil
-    end
-
-    local function register_theme_server()
-      local server = ensure_server_name()
-      if not server then
-        return
-      end
-
-      local lines = read_lines(server_registry)
-      local found = false
-      for _, line in ipairs(lines) do
-        if line == server then
-          found = true
-          break
-        end
-      end
-
-      if not found then
-        table.insert(lines, server)
-      end
-
-      write_lines(server_registry, unique_lines(lines))
-    end
-
-    local function unregister_theme_server()
-      local server = vim.v.servername
-      if not server or server == '' then
-        return
-      end
-
-      local lines = read_lines(server_registry)
-      local keep = {}
-
-      for _, line in ipairs(lines) do
-        if line ~= server then
-          table.insert(keep, line)
-        end
-      end
-
-      write_lines(server_registry, unique_lines(keep))
-    end
-
-    local function resolve_rose_pine(colorscheme, background)
-      if colorscheme == 'rose-pine' then
-        if background == 'light' then
-          return 'rose-pine-dawn'
-        else
-          return 'rose-pine-main'
-        end
-      elseif colorscheme == 'rose-pine-dawn' and background == 'dark' then
-        return 'rose-pine-main'
-      elseif (colorscheme == 'rose-pine-main' or colorscheme == 'rose-pine-moon') and background == 'light' then
-        return 'rose-pine-dawn'
-      end
-      return colorscheme
-    end
+    local theme_file = vim.fn.expand("~/.config/omarchy/current/theme/neovim.lua")
+    local server_registry = vim.fn.stdpath("state") .. "/theme-sync-servers"
 
     local function read_theme()
       local ok, data = pcall(dofile, theme_file)
-      if not ok or type(data) ~= 'table' then
-        return {
-          background = 'dark',
-          colorscheme = 'rose-pine-main',
-        }
-      end
-
-      if type(data.colorscheme) ~= 'string' or data.colorscheme == '' then
-        return {
-          background = 'dark',
-          colorscheme = 'rose-pine-main',
-        }
-      end
-
-      local background = data.background == 'light' and 'light' or 'dark'
-      local colorscheme = resolve_rose_pine(data.colorscheme, background)
+      local background = ok and type(data) == "table" and data.background == "light" and "light" or "dark"
       return {
         background = background,
-        colorscheme = colorscheme,
+        colorscheme = background == "light" and "rose-pine-dawn" or "rose-pine-moon",
       }
     end
 
-    local function sync_theme(force)
+    local function sync_theme()
       local theme = read_theme()
-      local changed = force
-        or state.background ~= theme.background
-        or state.colorscheme ~= theme.colorscheme
-
-      if not changed then
-        return theme, false
-      end
-
-      state.background = theme.background
-      state.colorscheme = theme.colorscheme
-
       vim.o.background = theme.background
       pcall(vim.cmd.colorscheme, theme.colorscheme)
-
-      return theme, true
+      return theme
     end
 
-    require('rose-pine').setup {
-      dark_variant = 'main',
+    local function register_server()
+      local server = vim.v.servername
+      if not server or server == "" then
+        local run_dir = vim.fn.stdpath("run")
+        vim.fn.mkdir(run_dir, "p")
+        pcall(vim.fn.serverstart, run_dir .. "/theme-sync-" .. vim.fn.getpid() .. ".sock")
+        server = vim.v.servername
+      end
+      if not server or server == "" then
+        return
+      end
+
+      vim.fn.mkdir(vim.fn.stdpath("state"), "p")
+      local servers = vim.fn.filereadable(server_registry) == 1 and vim.fn.readfile(server_registry) or {}
+      for _, existing in ipairs(servers) do
+        if existing == server then
+          return
+        end
+      end
+      table.insert(servers, server)
+      vim.fn.writefile(servers, server_registry)
+    end
+
+    require("rose-pine").setup({
+      dark_variant = "moon",
       dim_inactive_windows = false,
       extend_background_behind_borders = true,
       enable = {
@@ -213,57 +58,18 @@ return {
         italic = false,
         transparency = false,
       },
-    }
-
-    sync_theme(true)
-    register_tmux_pane()
-    register_theme_server()
-
-    pcall(vim.api.nvim_del_user_command, 'SyncTheme')
-    vim.api.nvim_create_user_command('SyncTheme', function(opts)
-      local theme, changed = sync_theme(opts.bang)
-      local status = changed and 'updated' or 'already in sync'
-      vim.notify(('Theme sync: %s/%s (%s)'):format(theme.colorscheme, theme.background, status), vim.log.levels.INFO)
-    end, {
-      bang = true,
-      desc = 'Sync Neovim theme from generated theme file (! forces reload)',
     })
 
-    if uv and uv.new_fs_event then
-      if state.watcher and not state.watcher:is_closing() then
-        state.watcher:stop()
-        state.watcher:close()
-        state.watcher = nil
-      end
+    sync_theme()
+    register_server()
 
-      local watcher = uv.new_fs_event()
-      local ok = watcher:start(theme_dir, {}, vim.schedule_wrap(function(err)
-        if err then
-          return
-        end
-        if vim.v.exiting == 0 then
-          sync_theme(false)
-        end
-      end))
-
-      if ok then
-        state.watcher = watcher
-      elseif watcher and not watcher:is_closing() then
-        watcher:close()
-      end
-    end
-
-    vim.api.nvim_create_autocmd('VimLeavePre', {
-      group = vim.api.nvim_create_augroup('RosePineMacThemeSyncCleanup', { clear = true }),
-      callback = function()
-        unregister_tmux_pane()
-        unregister_theme_server()
-        if state.watcher and not state.watcher:is_closing() then
-          state.watcher:stop()
-          state.watcher:close()
-          state.watcher = nil
-        end
-      end,
+    pcall(vim.api.nvim_del_user_command, "SyncTheme")
+    vim.api.nvim_create_user_command("SyncTheme", function()
+      local theme = sync_theme()
+      vim.notify(("Theme sync: %s/%s"):format(theme.colorscheme, theme.background), vim.log.levels.INFO)
+    end, {
+      bang = true,
+      desc = "Sync Neovim theme from macOS appearance",
     })
   end,
 }

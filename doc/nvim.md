@@ -12,12 +12,12 @@
 
 ## Platform behavior
 
-`./config` links theme files differently per platform:
+`./config` links the shared Omarchy-based configuration on both platforms and links the theme implementation differently:
 
-- macOS: `stow/nvim/.config/nvim/lua/plugins/theme.lua` uses `~/.config/omarchy/current/theme/neovim.lua`
+- macOS: Rose Pine follows the generated macOS appearance state (`rose-pine-moon`/`rose-pine-dawn`)
 - omarchy: `stow/nvim/.config/nvim/lua/plugins/theme.lua` uses `~/.config/omarchy/current/theme/neovim.lua`
 
-On macOS, `./config --pkg=nvim` also deploys `nvim-theme-mac` and reloads the launchd watcher (`dark-notify`) that keeps `~/.config/omarchy/current/theme/neovim.lua` updated from system light/dark mode.
+On macOS, `./config --pkg=nvim` also deploys `nvim-theme-mac` and reloads the launchd watcher (`dark-notify`). The watcher updates the generated state and tells running Neovim instances to switch between Moon and Dawn.
 
 ## Typical edits
 
@@ -33,4 +33,4 @@ This setup uses `neovim-treesitter/nvim-treesitter` on the `main` branch (a comm
 - Update command: `:TSUpdate`
 - Required CLI: `tree-sitter` must be installed via the system package manager (e.g. `brew install tree-sitter-cli`)
 
-The parser list is managed in `ensure_installed` and synced by Lazy during normal plugin updates.
+The parser list is managed in `treesitter.install` and synced by Lazy during normal plugin updates.

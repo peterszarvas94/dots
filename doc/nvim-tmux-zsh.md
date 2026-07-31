@@ -1,6 +1,6 @@
 # Neovim, tmux, and zsh (mac + Omarchy)
 
-macOS and Omarchy use the **same stowed** `zsh`, `nvim`, and `tmux` packages. Platform differences are limited to small shims (e.g. `~/.zsh/mac/platform.zsh` vs `~/.zsh/omarchy/platform.zsh`).
+macOS and Omarchy use the **same stowed** `zsh`, `nvim`, and `tmux` packages. Platform differences are limited to small shims (e.g. `~/.zsh/mac/platform.zsh` vs `~/.zsh/omarchy/platform.zsh`) and the Neovim theme source.
 
 ## Source of truth (not `--adopt`)
 
@@ -26,7 +26,8 @@ Re-apply dotfiles-only edits (extra tmux binds, `omarchy/theme.lua` merge, archi
 - **Theme:** `./config.sh --pkg=nvim` runs `link_nvim_theme`:
   - Omarchy → `lua/plugins/theme.lua` → `omarchy/theme.lua`
   - macOS → `lua/plugins/theme.lua` → `mac/theme.lua`
-- Omarchy-only: `lua/plugins/omarchy-theme-hotreload.lua` (system theme sync)
+- Omarchy-only: `lua/plugins/omarchy-theme-hotreload.lua` (native system theme sync)
+- macOS: `nvim-theme-mac` uses `dark-notify` to select Rose Pine Moon/Dawn.
 
 Deploy:
 
@@ -37,7 +38,7 @@ Deploy:
 ## Tmux
 
 - **Stow:** `stow/tmux/.config/tmux/tmux.conf` → `~/.config/tmux/tmux.conf`
-- **Base:** Omarchy tmux config
+- **Base:** Shared older dotfiles tmux config
 - **Dotfiles extras:** `branch`, `tmux-sessionizer`, `lazygit`, `lazydocker`, `jjui` at the bottom of the file
 - Legacy root `~/.tmux.conf` archived as [`archive/tmux-dots-root.conf`](../archive/tmux-dots-root.conf)
 

@@ -7,7 +7,7 @@
 
 ## Purpose
 
-Keep macOS light/dark appearance synced into Neovim theme state (`~/.config/omarchy/current/theme/neovim.lua`) via `dark-notify` launchd watcher.
+Keep macOS light/dark appearance synced into Neovim theme state (`~/.config/omarchy/current/theme/neovim.lua`) via a `dark-notify` launchd watcher. Neovim maps dark mode to Rose Pine Moon and light mode to Rose Pine Dawn.
 
 ## Usage
 
