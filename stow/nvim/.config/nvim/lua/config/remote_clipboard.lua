@@ -76,6 +76,14 @@ local function sync_clipboard_option()
   end)
 end
 
+local function setup_clipboard_option()
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    once = true,
+    callback = sync_clipboard_option,
+  })
+end
+
 local function setup_ssh_osc52_yank(osc52)
   if not osc52 or vim.g.omarchy_remote_clipboard_osc52 == false then
     return
@@ -107,6 +115,7 @@ function M.setup()
     and vim.fn.executable("wl-paste") == 1
 
   if not (use_osc52 or has_wayland) then
+    setup_clipboard_option()
     return
   end
 
@@ -160,11 +169,7 @@ function M.setup()
     cache_enabled = 0,
   }
 
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    once = true,
-    callback = sync_clipboard_option,
-  })
+  setup_clipboard_option()
 end
 
 return M
