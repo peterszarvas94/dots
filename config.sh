@@ -419,10 +419,6 @@ cleanup_package() {
             log_info "Removing file $TARGET_DIR/.config/hypr/monitors.conf"
             rm -f "$TARGET_DIR/.config/hypr/monitors.conf"
             ;;
-        jj)
-            log_info "Removing directory $TARGET_DIR/.config/jj"
-            rm -rf "$TARGET_DIR/.config/jj"
-            ;;
         lazygit)
             log_info "Removing directory $TARGET_DIR/.config/lazygit"
             rm -rf "$TARGET_DIR/.config/lazygit"
@@ -620,9 +616,6 @@ deploy_common_packages() {
  
     # Git configuration
     deploy "git"
-
-    # Jujutsu configuration
-    deploy "jj"
 
     # Zsh configuration
     deploy "zsh"

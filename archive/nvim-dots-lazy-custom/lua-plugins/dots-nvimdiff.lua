@@ -1,4 +1,4 @@
--- Git/jj difftool & mergetool (`nvim -d`, tool name nvimdiff)
+-- Git difftool and mergetool (`nvim -d`, tool name nvimdiff)
 
 return {
   {

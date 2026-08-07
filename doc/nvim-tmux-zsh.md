@@ -39,7 +39,7 @@ Deploy:
 
 - **Stow:** `stow/tmux/.config/tmux/tmux.conf` → `~/.config/tmux/tmux.conf`
 - **Base:** Shared older dotfiles tmux config
-- **Dotfiles extras:** `branch`, `tmux-sessionizer`, `lazygit`, `lazydocker`, `jjui` at the bottom of the file
+- **Dotfiles extras:** `branch`, `tmux-sessionizer`, `lazygit`, `lazydocker` at the bottom of the file
 - Legacy root `~/.tmux.conf` archived as [`archive/tmux-dots-root.conf`](../archive/tmux-dots-root.conf)
 
 ```bash
