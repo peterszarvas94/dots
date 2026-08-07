@@ -71,13 +71,22 @@ rebase() {
 alias fix-droidcam="sudo rmmod v4l2loopback && sudo modprobe v4l2loopback video_nr=0 card_label=\"DroidCam\" exclusive_caps=1 && droidcam"
 
 oc() {
-  local directory
+  local directory project_directory reply
   if (( $# == 0 )); then
     opencode attach http://asimov:4096 --dir .
     return
   fi
-  directory="$(zoxide query -- "$@")" || return
-  [[ -d "$directory" ]] || return 1
+  if ! directory="$(zoxide query -- "$@")"; then
+    directory="$(builtin cd -- "$1" 2>/dev/null && pwd -P)"
+  fi
+  if [[ -z "$directory" || ! -d "$directory" ]]; then
+    project_directory="$HOME/Projects/${1:t}"
+    read -q "reply?Directory '$directory' not found. Create '$project_directory'? [y/N] "
+    print
+    [[ "$reply" == [yY] ]] || return 1
+    mkdir -p "$project_directory" || return 1
+    directory="$project_directory"
+  fi
   opencode attach http://asimov:4096 --dir "$directory"
 }
 if [[ "$OSTYPE" != darwin* ]]; then

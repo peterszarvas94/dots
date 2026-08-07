@@ -45,15 +45,6 @@ local function ancestor_process_named(name)
   return false
 end
 
-local function yank_lines(regname)
-  local name = regname == "" and '"' or regname
-  local lines = vim.fn.getreg(name, 1, true)
-  if type(lines) == "string" then
-    return lines == "" and {} or { lines }
-  end
-  return lines
-end
-
 local function wrap_paste(paste_fn)
   return function()
     local result = paste_fn()
@@ -84,21 +75,20 @@ local function setup_clipboard_option()
   })
 end
 
-local function setup_ssh_osc52_yank(osc52)
+local function setup_osc52_clipboard(osc52)
   if not osc52 or vim.g.omarchy_remote_clipboard_osc52 == false then
     return
   end
 
-  vim.api.nvim_create_autocmd("TextYankPost", {
-    group = vim.api.nvim_create_augroup("OmarchyRemoteClipboard", { clear = true }),
-    callback = function(ev)
-      local lines = yank_lines(ev.regname)
-      if #lines == 0 then
-        return
-      end
-      osc52.copy("+")(lines)
-    end,
-  })
+  vim.g.clipboard = {
+    name = "OmarchyRemoteClipboard",
+    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+    paste = {
+      ["+"] = wrap_paste(osc52.paste("+")),
+      ["*"] = wrap_paste(osc52.paste("*")),
+    },
+    cache_enabled = 0,
+  }
 end
 
 function M.setup()
@@ -120,9 +110,9 @@ function M.setup()
   end
 
   if in_ssh then
-    -- Keep LazyVim's clipboard="" so `y`/`p` use the unnamed register inside
-    -- nvim. Neovim can still opt into OSC 52 when clipboard stays empty.
-    setup_ssh_osc52_yank(require("vim.ui.clipboard.osc52"))
+    -- OSC 52 is the only clipboard path that can cross the SSH boundary.
+    setup_osc52_clipboard(require("vim.ui.clipboard.osc52"))
+    setup_clipboard_option()
     return
   end
 
