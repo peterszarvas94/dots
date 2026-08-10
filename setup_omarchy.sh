@@ -12,7 +12,7 @@ yay -S --noconfirm --needed \
     cmake \
     tree-sitter \
     brave-browser \
-    nodejs \
+    nvm \
     ghostty \
     qemu-base \
     lima-bin \

@@ -14,7 +14,7 @@ brew install \
     cmake \
     tree-sitter-cli \
     brave-browser \
-    node \
+    nvm \
     ghostty \
     lima \
     colima \
@@ -22,6 +22,9 @@ brew install \
     opencode \
     dark-notify \
     1password-cli
+
+# Homebrew's nvm formula stores versions in this user-owned directory.
+mkdir -p "$HOME/.nvm"
 
 # Remove
 rm -rf ~/Projects/dots
