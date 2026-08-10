@@ -15,7 +15,7 @@ return {
         javascript = { "prettierd", "prettier", stop_after_first = true },
         javascriptreact = { "prettierd", "prettier", stop_after_first = true },
         json = { "prettierd", "prettier", stop_after_first = true },
-        markdown = { "prettierd", "prettier", stop_after_first = true },
+        markdown = { "prettierd", "prettier", "deno_fmt", stop_after_first = true },
         html = { "prettierd", "prettier", stop_after_first = true },
         templ = { "templ" },
         css = { "prettierd", "prettier", stop_after_first = true },

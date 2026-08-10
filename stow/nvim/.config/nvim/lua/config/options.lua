@@ -15,13 +15,10 @@ else
 end
 vim.opt.relativenumber = false
 vim.opt.hlsearch = false
+-- Hide [current/total] search-count messages while keeping search navigation.
 vim.opt.shortmess:append("S")
 vim.opt.list = false
 
--- Keep swap files in a user-owned directory. The old directory was created as
--- root and causes E303 when opening files.
-local swap_dir = vim.fn.stdpath("state") .. "/swap-peti"
-vim.fn.mkdir(swap_dir, "p", 448) -- 0700
-vim.opt.directory = swap_dir .. "//"
+vim.opt.swapfile = false
 
 vim.g.autoformat = true
