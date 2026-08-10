@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v herdr >/dev/null 2>&1; then
+    printf 'herdr is not installed or not on PATH\n' >&2
+    exit 1
+fi
+
+if ! command -v fzf >/dev/null 2>&1; then
+    printf 'fzf is not installed or not on PATH\n' >&2
+    exit 1
+fi
+
+if ! command -v jq >/dev/null 2>&1; then
+    printf 'jq is required to list Herdr sessions\n' >&2
+    exit 1
+fi
+
+sessions=$(herdr session list --json | jq -r '
+    if type == "array" then .[]
+    elif .sessions then .sessions[]
+    elif .result.sessions then .result.sessions[]
+    else empty
+    end | .name // empty
+')
+
+if [[ $# -gt 0 ]]; then
+    session_name="$1"
+    if ! printf '%s\n' "$sessions" | grep -Fxq -- "$session_name"; then
+        printf 'Herdr session does not exist: %s\n' "$session_name" >&2
+        exit 1
+    fi
+else
+    session_name=$(printf '%s\n' "$sessions" | fzf --prompt='Select a Herdr session: ')
+fi
+
+[[ -n "$session_name" ]] || exit 0
+
+exec herdr --session "$session_name"

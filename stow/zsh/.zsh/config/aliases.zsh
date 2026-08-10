@@ -29,6 +29,8 @@ alias zed="open -a /Applications/Zed.app -n"
 alias ta="tmux a"
 alias tk="tmux kill-server"
 
+alias hr="herdr-sessionizer"
+
 alias lgit="lazygit"
 alias ldocker="lazydocker"
 

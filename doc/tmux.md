@@ -11,7 +11,7 @@
 ## Notes
 
 - Shared macOS and Omarchy configuration based on the older dotfiles setup.
-- Includes pane navigation and popup bindings for helper tools like `tmux-sessionizer`, `lazygit`, and `lazydocker`.
+- Includes pane navigation and bindings for helper tools like `lazygit` and `lazydocker`.
 
 ## Deploy behavior
 

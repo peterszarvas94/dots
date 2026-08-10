@@ -30,9 +30,6 @@ bindkey -M vicmd -r k
 bindkey -M vicmd '^N' down-line-or-history
 bindkey -M vicmd '^P' up-line-or-history
 
-# tmux-sessionizer
-bindkey -s '^F' 'tmux-sessionizer\n'
-
 fc-nvim-widget() {
     local temp_file=$(mktemp /tmp/fc-nvim.XXXXXX)
 
