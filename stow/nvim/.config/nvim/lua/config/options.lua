@@ -15,6 +15,7 @@ else
 end
 vim.opt.relativenumber = false
 vim.opt.hlsearch = false
+vim.opt.shortmess:append("S")
 vim.opt.list = false
 
 -- Keep swap files in a user-owned directory. The old directory was created as
