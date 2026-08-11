@@ -621,9 +621,6 @@ deploy_common_packages() {
     deploy "zsh"
     touch "$HOME/.zsh/config/env.zsh"
 
-    # Neovim configuration
-    deploy "nvim"
-
     # OpenCode configuration
     deploy "opencode"
 
@@ -632,6 +629,9 @@ deploy_common_packages() {
 
     # Scripts
     deploy "scripts"
+
+    # Neovim configuration
+    deploy "nvim"
 
     # Tmux configuration
     deploy "tmux"
