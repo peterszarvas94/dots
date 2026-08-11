@@ -456,9 +456,6 @@ cleanup_package() {
             rm -rf "$TARGET_DIR/.local/share/nvim/lazy"
             ;;
         nvim-theme-mac)
-            local sync_target="$TARGET_DIR/.local/share/dots/bin/mac-sync-nvim-theme"
-            log_info "Removing file $sync_target"
-            rm -f "$sync_target"
             log_info "Removing file $TARGET_DIR/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
             rm -f "$TARGET_DIR/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
             ;;
