@@ -577,6 +577,10 @@ deploy() {
     # Automatically link theme files for specific packages
     case "$package_name" in
         nvim)
+            if [[ "$PLATFORM" == "mac" && ! -f "$TARGET_DIR/.local/share/dots/bin/mac-sync-nvim-theme" ]]; then
+                log_info "Deploying scripts dependency for macOS theme sync"
+                deploy "scripts"
+            fi
             link_nvim_theme "$PLATFORM"
             if [[ "$PLATFORM" == "mac" ]]; then
                 deploy "nvim-theme-mac"
