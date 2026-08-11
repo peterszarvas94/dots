@@ -6,6 +6,7 @@ sudo pacman -S --needed base-devel
 # Install packages
 yay -S --noconfirm --needed \
     stow \
+    fzf \
     tmux \
     zsh \
     go \

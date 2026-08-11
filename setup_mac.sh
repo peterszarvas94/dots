@@ -8,6 +8,7 @@ brew tap homebrew/cask-fonts
 brew tap cormacrelf/tap
 brew install \
     stow \
+    fzf \
     tmux \
     zsh \
     go \
