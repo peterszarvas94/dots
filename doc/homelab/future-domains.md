@@ -1,30 +1,31 @@
-# Future: pretty domains
+# Custom domains
 
-Skip for now. Goal: `photos.YOUR_DOMAIN` / `cloud.YOUR_DOMAIN` (and Office) without Funnel ports in the URL.
+The custom-domain setup is now documented in [custom-domains.md](./custom-domains.md).
+The active Nextcloud hostname is `drive.erdohat.com`.
 
 ## Architecture
 
 ```text
-Internet → VPS (public IP, Caddy + Let's Encrypt)
-              ↓ Tailscale only (private)
-         home server
+Internet → `hal` (public IP, Caddy + automatic HTTPS)
+               ↓ Tailscale only (private)
+          Asimov
            Immich    :2283
            Nextcloud :8081
            ONLYOFFICE :9980
 ```
 
-- Front-door **VPS** is public.
-- VPS joins the same **Tailscale** network as this machine.
-- Caddy on the VPS reverse-proxies **only chosen host:ports** (not the whole server).
+- `hal` is public.
+- `hal` is already joined to the same **Tailscale** network as Asimov.
+- Caddy on `hal` reverse-proxies **only chosen host:ports**.
 - DNS `A` → VPS IP (Cloudflare **DNS only** / grey cloud — not proxied).
-- Funnel can be turned off for those apps once the VPS is live.
+- Existing Funnel URLs remain rollback paths until all custom domains are tested.
 
 ## Steps (later)
 
-1. Small VPS + Tailscale.
-2. DNS: `photos` / `cloud` (and maybe `office`) → VPS.
-3. Caddy: certs + `reverse_proxy` to `http://YOUR_TAILSCALE_HOSTNAME:2283`, `:8081`, `:9980`.
-4. Update Nextcloud/ONLYOFFICE public URLs; keep Docker-internal URLs if still needed.
-5. Optionally `sudo tailscale funnel reset`.
+1. Add DNS-only records for `photos`, `drive`, `office`, and `notes` to `hal`.
+2. Configure Caddy on `hal`; it obtains and renews certificates automatically.
+3. Update Nextcloud and ONLYOFFICE public URLs; keep Docker-internal URLs.
+4. Bind ZenNotes to Asimov's Tailscale address so `hal` can reach it.
+5. Remove Funnel only after external verification.
 
 Avoid Cloudflare orange-cloud / free Tunnel for Immich (~100 MB upload limit).

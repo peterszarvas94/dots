@@ -26,14 +26,14 @@ openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | head -c 40
 sudoedit /home/homelab/nextcloud/.env
 ```
 
-Use your Funnel host **with port 8443** (no scheme):
+Use the public hostname **`drive.erdohat.com`** (no scheme):
 
 ```dotenv
 POSTGRES_PASSWORD=PUT_PASSWORD_HERE
 POSTGRES_DB=nextcloud
 POSTGRES_USER=nextcloud
-NEXTCLOUD_TRUSTED_DOMAINS=YOUR_FUNNEL_HOST:8443
-OVERWRITEHOST=YOUR_FUNNEL_HOST:8443
+NEXTCLOUD_TRUSTED_DOMAINS=drive.erdohat.com
+OVERWRITEHOST=drive.erdohat.com
 OVERWRITEPROTOCOL=https
 TZ=Europe/Budapest
 ```
@@ -125,7 +125,7 @@ sudo -u homelab docker compose -f /home/homelab/nextcloud/docker-compose.yml --e
 ```
 
 Local: `http://127.0.0.1:8081`  
-Public (after Funnel): `https://YOUR_FUNNEL_HOST:8443` — see [funnel.md](./funnel.md).
+Public: `https://drive.erdohat.com` — see [custom-domains.md](./custom-domains.md).
 
 ## 8. Finish in the browser
 

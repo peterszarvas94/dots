@@ -16,17 +16,17 @@ If the machine sleeps or is off, remote access stops.
 
 **Tailscale VPN only — no Funnel / no public URL for OpenCode.**
 
-| Access | How |
-|--------|-----|
-| On the machine | `http://127.0.0.1:4096` |
+| Access               | How                                                   |
+| -------------------- | ----------------------------------------------------- |
+| On the machine       | `http://127.0.0.1:4096`                               |
 | Phone / other device | Same Tailscale tailnet → `http://<tailscale-ip>:4096` |
 
 `<tailscale-ip>` is this host’s Tailscale IPv4 (`tailscale ip -4`). HTTP basic auth required.
 
-| What | Reachable how |
-|------|----------------|
-| OpenCode web | Tailscale → `:4096` |
-| App ↔ db on the host | `localhost` (always) |
+| What                     | Reachable how                                                                  |
+| ------------------------ | ------------------------------------------------------------------------------ |
+| OpenCode web             | Tailscale → `:4096`                                                            |
+| App ↔ db on the host     | `localhost` (always)                                                           |
 | Dev server UI from phone | Tailscale → `http://<tailscale-ip>:<dev-port>` if the app listens on `0.0.0.0` |
 
 Do **not** Funnel OpenCode or random dev ports. Do **not** expose Cursor proxy `65535`. Do not put OpenCode behind Cloudflare orange-cloud / free Tunnel.
@@ -154,12 +154,12 @@ Homelab **public** Funnel (Immich / Nextcloud / …): [homelab/funnel.md](./home
 
 ## Daily use
 
-| Client | How |
-|--------|-----|
-| Mobile / remote | Tailscale VPN → `http://<tailscale-ip>:4096` → basic auth |
-| Desktop web | `http://127.0.0.1:4096` |
-| Desktop TUI | `opencode /path/to/project` or `opencode attach http://127.0.0.1:4096` |
-| Dev app from phone | Tailscale → `http://<tailscale-ip>:<port>` (app must bind `0.0.0.0`) |
+| Client             | How                                                                    |
+| ------------------ | ---------------------------------------------------------------------- |
+| Mobile / remote    | Tailscale VPN → `http://<tailscale-ip>:4096` → basic auth              |
+| Desktop web        | `http://127.0.0.1:4096`                                                |
+| Desktop TUI        | `opencode /path/to/project` or `opencode attach http://127.0.0.1:4096` |
+| Dev app from phone | Tailscale → `http://<tailscale-ip>:<port>` (app must bind `0.0.0.0`)   |
 
 ```bash
 export OPENCODE_SERVER_USERNAME=opencode

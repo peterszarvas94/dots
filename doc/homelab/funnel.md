@@ -1,6 +1,14 @@
-# Tailscale Funnel
+# Legacy Tailscale Funnel And Serve
 
-One Funnel host, multiple HTTPS ports. Tailscale handles TLS.
+This document describes the previous direct-Funnel setup. The active public
+setup uses Caddy on `hal` with `erdohat.com` subdomains; see
+[custom-domains.md](./custom-domains.md). Keep these mappings only as rollback
+or emergency access paths.
+
+Public Funnel routes and private tailnet-only Serve routes. Tailscale handles
+TLS for both. ONLYOFFICE is public because browsers outside the tailnet need
+its editor assets while editing Nextcloud documents; JWT protects document
+requests.
 
 Homelab apps only. OpenCode is **not** Funnel’d — Tailscale VPN + Serve on the host: [../opencode-host.md](../opencode-host.md).
 
@@ -8,9 +16,12 @@ Homelab apps only. OpenCode is **not** Funnel’d — Tailscale VPN + Serve on t
 |------------------|-------------------------|------------|
 | `:443` (default) | `http://127.0.0.1:2283` | Immich     |
 | `:8443`          | `http://127.0.0.1:8081` | Nextcloud  |
-| `:9443`          | `http://127.0.0.1:9980` | ONLYOFFICE |
+| `:10000`         | `http://127.0.0.1:9980` | ONLYOFFICE |
+| `:443 /zennotes` | `http://127.0.0.1:8090` | ZenNotes   |
 
-Tailscale **public** Funnel only allows HTTPS ports **`443`**, **`8443`**, and **`10000`**. Other ports (e.g. `:9443`) may listen on the tailnet only and work when Tailscale is connected, not from the open internet. Keep **`10000` free** (do not point it at OpenCode).
+Tailscale **public** Funnel allows HTTPS ports **`443`**, **`8443`**, and
+**`10000`**. Do not use `:9443`: it may appear in Tailscale configuration but
+is not a public Funnel port. Keep `:10000` dedicated to ONLYOFFICE.
 
 ## 0. Reset (optional)
 
@@ -30,15 +41,27 @@ sudo tailscale funnel --bg 2283
 sudo tailscale funnel --bg --https=8443 8081
 ```
 
-## 3. Document server (9443 → 9980)
+## 3. Document server, public Funnel (10000 → 9980)
 
 After ONLYOFFICE is running — see [onlyoffice.md](./onlyoffice.md):
 
 ```bash
-sudo tailscale funnel --bg --https=9443 9980
+sudo tailscale serve reset
+sudo tailscale funnel --bg --https=10000 9980
 ```
 
-## 4. Check
+The `serve reset` command removes tailnet-only Serve mappings. It does not
+remove the public Funnel mappings.
+
+## 4. ZenNotes (`/zennotes` → 8090)
+
+After ZenNotes is running — see [zennotes.md](./zennotes.md):
+
+```bash
+sudo tailscale funnel --bg --https=443 --set-path=/zennotes 8090
+```
+
+## 5. Check
 
 ```bash
 tailscale funnel status
@@ -53,17 +76,21 @@ https://YOUR_FUNNEL_HOST (Funnel on)
 https://YOUR_FUNNEL_HOST:8443 (Funnel on)
 |-- / proxy http://127.0.0.1:8081
 
-https://YOUR_FUNNEL_HOST:9443 (Funnel on)
+https://YOUR_FUNNEL_HOST:10000 (Funnel on)
 |-- / proxy http://127.0.0.1:9980
+
+https://YOUR_FUNNEL_HOST (Funnel on)
+|-- /zennotes proxy http://127.0.0.1:8090
 ```
 
 - Immich: `https://YOUR_FUNNEL_HOST`
 - Nextcloud: `https://YOUR_FUNNEL_HOST:8443`
-- Document server (ONLYOFFICE): tailnet `:9443` only unless you use a public allowlist port
+- Document server (ONLYOFFICE): public `:10000` for browser-side Nextcloud editing; JWT remains enabled
+- ZenNotes: `https://YOUR_FUNNEL_HOST/zennotes/`
 
-## 5. Persist
+## 6. Persist
 
-`--bg` stores config in `tailscaled` (enabled on boot). After reboot:
+`--bg` stores Funnel and Serve config in `tailscaled` (enabled on boot). After reboot:
 
 ```bash
 tailscale funnel status

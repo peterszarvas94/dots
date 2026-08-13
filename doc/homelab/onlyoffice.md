@@ -4,14 +4,14 @@ In-browser Word/Excel/PowerPoint for Nextcloud via ONLYOFFICE Document Server.
 
 **Users:** no ONLYOFFICE accounts. Existing Nextcloud users open files from Files as usual.
 
-Funnel `:9443` → local `9980` — see [funnel.md](./funnel.md).
+Public Caddy `office.erdohat.com` → local `9980` — see [custom-domains.md](./custom-domains.md).
 
 ## Ports
 
-| Public Funnel | Local | Service |
+| Public hostname | Local | Service |
 |---------------|-------|---------|
-| `:8443` | `8081` | Nextcloud |
-| `:9443` | `9980` | ONLYOFFICE Document Server |
+| `drive.erdohat.com` | `8081` | Nextcloud |
+| `office.erdohat.com` | `9980` | ONLYOFFICE Document Server |
 
 ## Why split URLs?
 
@@ -19,7 +19,7 @@ Nextcloud in Docker should not call its own Funnel URL for server-to-server traf
 
 | Direction | URL |
 |-----------|-----|
-| Browser → Document Server | `https://YOUR_FUNNEL_HOST:9443` |
+| Browser → Document Server | `https://office.erdohat.com` |
 | Nextcloud → Document Server | `http://onlyoffice/` (container name on `nextcloud_default`) |
 | Document Server → Nextcloud | `http://nextcloud.wopi.local/` (Docker DNS alias on the Nextcloud app) |
 
@@ -94,13 +94,13 @@ Health: `curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:9980/healthch
 
 ## 6. Funnel
 
-If `:9443` already proxies to `127.0.0.1:9980`, no change. Otherwise see [funnel.md](./funnel.md).
+Caddy on `hal` proxies `office.erdohat.com` to Asimov port `9980`; see [custom-domains.md](./custom-domains.md).
 
 ## 7. Nextcloud app
 
 1. **Apps** → search **ONLYOFFICE** → enable.
 2. **Administration → ONLYOFFICE**:
-   - **Document Editing Service address:** `https://YOUR_FUNNEL_HOST:9443`
+   - **Document Editing Service address:** `https://office.erdohat.com`
    - **Secret key (JWT):** same as `JWT_SECRET` in `.env`
    - **Advanced → Document Editing Service address for internal requests:** `http://onlyoffice/`
    - **Advanced → Server address for internal requests from the document editing service:** `http://nextcloud.wopi.local/`
@@ -108,7 +108,7 @@ If `:9443` already proxies to `127.0.0.1:9980`, no change. Otherwise see [funnel
 Or via `occ` (replace placeholders):
 
 ```bash
-sudo docker exec -u www-data nextcloud_app php occ config:app:set onlyoffice DocumentServerUrl --value='https://YOUR_FUNNEL_HOST:9443'
+sudo docker exec -u www-data nextcloud_app php occ config:app:set onlyoffice DocumentServerUrl --value='https://office.erdohat.com'
 sudo docker exec -u www-data nextcloud_app php occ config:app:set onlyoffice DocumentServerInternalUrl --value='http://onlyoffice/'
 sudo docker exec -u www-data nextcloud_app php occ config:app:set onlyoffice StorageUrl --value='http://nextcloud.wopi.local/'
 sudo docker exec -u www-data nextcloud_app php occ config:app:set onlyoffice jwt_secret --value='PUT_LONG_RANDOM_SECRET_HERE'
@@ -144,7 +144,7 @@ After changing `JWT_SECRET`, update both `.env` and Nextcloud app settings, then
 
 **“Document server … failed to connect”**
 
-- Funnel `:9443` must be on and pointing at `9980`.
+- Caddy on `hal` must route `office.erdohat.com` to Asimov `:9980`.
 - JWT secret must match in `.env` and Nextcloud.
 - `onlyoffice` container must be on `nextcloud_default`: `docker inspect onlyoffice --format '{{json .NetworkSettings.Networks}}'`.
 
@@ -155,4 +155,4 @@ After changing `JWT_SECRET`, update both `.env` and Nextcloud app settings, then
 
 **Still slow**
 
-- First open over Funnel is still heavier than LAN; at home, prefer `https://YOUR_FUNNEL_HOST:8443` only for Nextcloud while document server traffic still uses `:9443` unless you add split-DNS/local URLs later.
+- The public editor uses `https://office.erdohat.com`; internal Docker callbacks continue using the Docker URLs above.

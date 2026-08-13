@@ -35,7 +35,7 @@ sudo systemctl enable --now tailscaled.service
 sudo tailscale up
 ```
 
-Public HTTPS is Funnel — see [funnel.md](./funnel.md) after Immich is running.
+Public HTTPS is `https://photos.erdohat.com` through Caddy on `hal` — see [custom-domains.md](./custom-domains.md).
 
 ## 4. Create Immich directories
 
@@ -93,7 +93,7 @@ sudo -u homelab docker compose -f /home/homelab/immich/docker-compose.yml --env-
 ```
 
 Local: `http://127.0.0.1:2283`  
-Public (after Funnel): `https://YOUR_FUNNEL_HOST`
+Public: `https://photos.erdohat.com`
 
 ## 11. Restart
 
