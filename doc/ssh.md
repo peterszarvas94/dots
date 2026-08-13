@@ -32,7 +32,8 @@ Current layout:
   - **`IdentitiesOnly yes`** — only offer keys listed below (and/or loaded in the agent when combined with `IdentityFile`; see below).
   - **`IdentityFile ~/.ssh/<name>`** — one line per globally available key file (github, hetzner, servers, etc.).
 
-The `asimov` host uses `~/.ssh/minivac_to_asimov` for connections from the Mac or another configured client. Other hosts use the global key list; the server accepts the matching public key.
+Dedicated hosts may use a per-host key under `~/.ssh/`; other hosts use the
+global key list. The server must accept the matching public key.
 
 Previously this repo used **1Password** as the only backend:
 
@@ -48,7 +49,7 @@ That breaks headless services (e.g. OpenCode web) that do not run zsh or 1Passwo
 On desktop zsh startup (see `stow/zsh/.zshrc`):
 
 1. If **`SSH_AUTH_SOCK`** is unset or **`ssh-add -l`** fails → run **`eval "$(ssh-agent -s)"`**.
-2. **`ssh-add`** each private key under `~/.ssh/` (github, minivac_to_asimov, hetzner, …).
+2. **`ssh-add`** each required private key under `~/.ssh/`.
 
 ### What `SSH_AUTH_SOCK` is
 
