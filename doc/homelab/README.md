@@ -14,6 +14,7 @@ The public application URLs are:
 | Nextcloud  | `https://drive.erdohat.com`     | 8081       |
 | ONLYOFFICE | `https://office.erdohat.com`    | 9980       |
 | ZenNotes   | `https://notes.erdohat.com`      | 8090       |
+| OpenCode   | `https://opencode.erdohat.com`  | 4096       |
 
 ONLYOFFICE is primarily a Nextcloud integration. Its public URL is needed when
 users access Nextcloud outside the tailnet because their browsers load the
@@ -21,7 +22,7 @@ document editor assets from the Document Server. The endpoint has JWT enabled;
 the public welcome page does not grant anonymous access to Nextcloud files.
 Nextcloud uses `http://onlyoffice/` for internal server-to-server requests.
 
-OpenCode is not public — [../opencode-host.md](../opencode-host.md).
+OpenCode is public through Caddy with Basic Auth — [../opencode-host.md](../opencode-host.md).
 
 ## Setup order
 
@@ -60,7 +61,7 @@ sudo -u homelab docker compose -f /home/homelab/onlyoffice/docker-compose.yml --
 
 ## Later
 
-- Legacy Funnel setup: [funnel.md](./funnel.md).
+- Tailscale Funnel is no longer used; public access is through Caddy on `hal`.
 
 ## Rules
 

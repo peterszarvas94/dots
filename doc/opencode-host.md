@@ -14,12 +14,14 @@ If the machine sleeps or is off, remote access stops.
 
 ## Access model
 
-**Tailscale VPN only — no Funnel / no public URL for OpenCode.**
+OpenCode is available through Caddy at `https://opencode.erdohat.com` with
+HTTP Basic Auth. The direct Tailscale URL remains available as a fallback.
 
 | Access               | How                                                   |
 | -------------------- | ----------------------------------------------------- |
 | On the machine       | `http://127.0.0.1:4096`                               |
 | Phone / other device | Same Tailscale tailnet → `http://<tailscale-ip>:4096` |
+| Public remote access | `https://opencode.erdohat.com` → Caddy → `:4096` |
 
 `<tailscale-ip>` is this host’s Tailscale IPv4 (`tailscale ip -4`). HTTP basic auth required.
 
@@ -29,7 +31,7 @@ If the machine sleeps or is off, remote access stops.
 | App ↔ db on the host     | `localhost` (always)                                                           |
 | Dev server UI from phone | Tailscale → `http://<tailscale-ip>:<dev-port>` if the app listens on `0.0.0.0` |
 
-Do **not** Funnel OpenCode or random dev ports. Do **not** expose Cursor proxy `65535`. Do not put OpenCode behind Cloudflare orange-cloud / free Tunnel.
+Do **not** use Tailscale Funnel for OpenCode or random dev ports. Do **not** expose Cursor proxy `65535`. Do not put OpenCode behind Cloudflare orange-cloud / free Tunnel. Keep strong Basic Auth enabled.
 
 Do **not** run `tailscale serve` on HTTPS `:443` on a host that already Funnel’s Immich there — it steals that mapping. Prefer direct `:<port>` over the tailnet IP.
 
@@ -150,7 +152,7 @@ tailscale ip -4          # on the OpenCode host
 
 HTTP basic auth = `OPENCODE_SERVER_*` from `server.env`.
 
-Homelab **public** Funnel (Immich / Nextcloud / …): [homelab/funnel.md](./homelab/funnel.md). Do **not** Funnel OpenCode.
+Homelab public Caddy domains: [homelab/custom-domains.md](./homelab/custom-domains.md).
 
 ## Daily use
 

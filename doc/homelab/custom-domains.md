@@ -14,19 +14,21 @@ Internet -> Cloudflare DNS-only records -> Caddy on hal
 | `drive.erdohat.com` | `http://ASIMOV_TAILSCALE_IP:8081` | Nextcloud |
 | `office.erdohat.com` | `http://ASIMOV_TAILSCALE_IP:9980` | ONLYOFFICE |
 | `notes.erdohat.com` | `http://ASIMOV_TAILSCALE_IP:8090` | ZenNotes |
+| `opencode.erdohat.com` | `http://ASIMOV_TAILSCALE_IP:4096` | OpenCode |
 
 Asimov service ports should remain reachable from the tailnet, not directly
 from the public internet.
 
 ## 1. DNS
 
-Create four **DNS-only** Cloudflare records pointing to `hal`'s public IPv4:
+Create five **DNS-only** Cloudflare records pointing to `hal`'s public IPv4:
 
 ```text
 photos   A     HAL_PUBLIC_IPV4
 drive    A     HAL_PUBLIC_IPV4
 office   A     HAL_PUBLIC_IPV4
 notes    A     HAL_PUBLIC_IPV4
+opencode A     HAL_PUBLIC_IPV4
 ```
 
 Add `AAAA` records only if IPv6 is configured and tested on `hal`. Keep all
@@ -42,6 +44,7 @@ tailscale ip -4
 curl -sS -o /dev/null -w 'nextcloud=%{http_code}\n' http://ASIMOV_TAILSCALE_IP:8081/status.php
 curl -sS -o /dev/null -w 'onlyoffice=%{http_code}\n' http://ASIMOV_TAILSCALE_IP:9980/welcome/
 curl -sS -o /dev/null -w 'zennotes=%{http_code}\n' http://ASIMOV_TAILSCALE_IP:8090/
+curl -sS -o /dev/null -w 'opencode=%{http_code}\n' http://ASIMOV_TAILSCALE_IP:4096/
 ```
 
 ZenNotes must publish port `8090` on Asimov's Tailscale address, not only on
@@ -112,6 +115,10 @@ notes.erdohat.com {
         }
     }
 }
+
+opencode.erdohat.com {
+    reverse_proxy http://ASIMOV_TAILSCALE_IP:4096
+}
 ```
 
 Validate and start Caddy:
@@ -161,6 +168,10 @@ https://notes.erdohat.com
 
 Do not use a `/zennotes` base path when it has its own hostname.
 
+OpenCode's existing Basic Auth must remain enabled before exposing this route.
+Keep the strong password in `~/.config/opencode/server.env`; never commit or
+paste that file or password.
+
 ## 6. Verify externally
 
 From a device with Tailscale disabled:
@@ -170,8 +181,9 @@ curl -I https://photos.erdohat.com
 curl -I https://drive.erdohat.com/status.php
 curl -I https://office.erdohat.com/welcome/
 curl -I https://notes.erdohat.com
+curl -I https://opencode.erdohat.com
 ```
 
 Test Immich uploads, Nextcloud login and WebDAV, ONLYOFFICE editing and save
-callbacks, and ZenNotes browser/phone access. Keep existing Funnel URLs until
-all four custom domains work.
+callbacks, ZenNotes browser/phone access, and OpenCode Basic Auth. Do not
+re-enable Tailscale Funnel; Caddy on `hal` is the public entry point.
