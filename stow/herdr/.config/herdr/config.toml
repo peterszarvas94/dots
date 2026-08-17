@@ -41,10 +41,10 @@ focus_pane_right = "ctrl+alt+right"
 resize_mode = ["prefix+ctrl+left", "prefix+ctrl+down", "prefix+ctrl+up", "prefix+ctrl+right"]
 
 # Like resize-pane on C-M-S-arrows
-resize_pane_left = "ctrl+alt+shift+left"
-resize_pane_down = "ctrl+alt+shift+down"
-resize_pane_up = "ctrl+alt+shift+up"
-resize_pane_right = "ctrl+alt+shift+right"
+# resize_pane_left = "ctrl+alt+shift+left" # unsupported on macOS Herdr 0.8.0
+# resize_pane_down = "ctrl+alt+shift+down" # unsupported on macOS Herdr 0.8.0
+# resize_pane_up = "ctrl+alt+shift+up" # unsupported on macOS Herdr 0.8.0
+# resize_pane_right = "ctrl+alt+shift+right" # unsupported on macOS Herdr 0.8.0
 
 # No tmux equivalent; herdr's default prefix+shift+p is taken by previous session
 rename_pane = "prefix+shift+o"
@@ -58,8 +58,8 @@ previous_tab = ["prefix+p", "alt+left"]
 next_tab = ["prefix+n", "alt+right"]
 
 # Like swap-window -t -1/+1 on M-S-Left/Right
-move_tab_previous = "alt+shift+left"
-move_tab_next = "alt+shift+right"
+# move_tab_previous = "alt+shift+left" # unsupported on macOS Herdr 0.8.0
+# move_tab_next = "alt+shift+right" # unsupported on macOS Herdr 0.8.0
 
 # Sessions -> workspaces
 new_workspace = "prefix+shift+c"
@@ -73,10 +73,10 @@ accent = "blue"
 
 # tmux drew single-line dividers between adjacent panes and no outer frame
 pane_gaps = false
-pane_outer_borders = false
+# pane_outer_borders = false # unsupported on macOS Herdr 0.8.0
 
 # tmux had no scrollbar column beside its panes
-pane_scrollbars = false
+# pane_scrollbars = false # unsupported on macOS Herdr 0.8.0
 
 # kill-window and kill-session never asked
 confirm_close = false
@@ -88,9 +88,9 @@ prompt_new_tab_name = false
 mouse_capture = true
 
 # status-right had the zoom flag followed by #h
-tab_bar_right = [{ type = "zoom" }, { type = "hostname" }]
+# tab_bar_right = [{ type = "zoom" }, { type = "hostname" }] # unsupported on macOS Herdr 0.8.0
 
 # set -g set-titles on / set -g set-titles-string '#h:#W', where tmux's #W was
 # the basename of the pane cwd. This is what Hyprland shows in the group bar,
 # and it resolves on the server so remote sessions name the remote host.
-window_title = "{hostname}: {workspace}"
+# window_title = "{hostname}: {workspace}" # unsupported on macOS Herdr 0.8.0

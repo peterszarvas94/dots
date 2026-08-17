@@ -554,8 +554,12 @@ deploy() {
             reload_hyprland
             ;;
         herdr)
-            if command -v herdr >/dev/null 2>&1 && herdr status server >/dev/null 2>&1; then
-                herdr server reload-config && log_success "Reloaded Herdr configuration"
+            if command -v herdr >/dev/null 2>&1; then
+                local herdr_status
+                herdr_status="$(herdr status server 2>/dev/null || true)"
+                if [[ "$herdr_status" == *"running"* && "$herdr_status" != *"not running"* ]]; then
+                    herdr server reload-config && log_success "Reloaded Herdr configuration"
+                fi
             fi
             ;;
     esac
