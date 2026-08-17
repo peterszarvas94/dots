@@ -107,6 +107,8 @@ prepare_nvim_overlay() {
     local nvim_dir="$TARGET_DIR/.config/nvim"
     local path
 
+    rm -f "$nvim_dir/lua/plugins/theme.lua"
+
     local paths=(lua/config/options.lua lua/config/keymaps.lua)
     if [[ "$PLATFORM" == "mac" ]]; then
         paths+=(lua/plugins/all-themes.lua lua/plugins/omarchy-theme-hotreload.lua)
@@ -412,6 +414,11 @@ cleanup_package() {
             ;;
         nvim)
             unstow_package nvim
+            if [[ "$PLATFORM" == "mac" ]]; then
+                log_info "Removing previous macOS Neovim config"
+                rm -rf "$TARGET_DIR/.config/nvim"
+                rm -rf "$TARGET_DIR/.local/share/lazyvim-starter"
+            fi
             ;;
         omarchy)
             # Stow links these as symlinks into the repo — use rm -f, never rm -rf.
@@ -505,13 +512,13 @@ deploy() {
         fi
     fi
 
+    if [[ "$adopt_flag" != true ]]; then
+        cleanup_package "$package_name"
+    fi
+
     if [[ "$package_name" == "nvim" ]]; then
         ensure_nvim_base
         prepare_nvim_overlay
-    fi
-
-    if [[ "$adopt_flag" != true ]]; then
-        cleanup_package "$package_name"
     fi
     
     if [[ "$adopt_flag" == true ]]; then
