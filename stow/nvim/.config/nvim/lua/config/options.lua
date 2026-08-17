@@ -22,3 +22,4 @@ vim.opt.list = false
 vim.opt.swapfile = false
 
 vim.g.autoformat = true
+vim.g.lazyvim_explorer = "neo-tree"
