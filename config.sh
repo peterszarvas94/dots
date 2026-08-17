@@ -465,6 +465,8 @@ cleanup_package() {
             rm -f "$TARGET_DIR/.config/omarchy/hooks"
             log_info "Removing stow symlink $TARGET_DIR/.config/omarchy/branding"
             rm -f "$TARGET_DIR/.config/omarchy/branding"
+            log_info "Removing stow symlink $TARGET_DIR/.config/ghostty/config"
+            rm -f "$TARGET_DIR/.config/ghostty/config"
             ;;
         opencode)
             log_info "Removing directory $TARGET_DIR/.config/opencode"
