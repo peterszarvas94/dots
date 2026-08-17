@@ -11,7 +11,7 @@ if vim.fn.has("macunix") == 1 then
     end,
   })
 else
-  require("config.remote_clipboard").setup()
+  -- require("config.remote_clipboard").setup()
 end
 vim.opt.relativenumber = false
 vim.opt.hlsearch = false

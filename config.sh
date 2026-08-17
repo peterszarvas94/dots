@@ -423,31 +423,6 @@ cleanup_package() {
             log_info "Removing directory $TARGET_DIR/.config/lazygit"
             rm -rf "$TARGET_DIR/.config/lazygit"
             ;;
-        herdr)
-            local herdr_dir="$TARGET_DIR/.config/herdr"
-            local stow_herdr="$STOW_DIR/herdr/.config/herdr"
-            if [[ -L "$herdr_dir" ]]; then
-                log_info "Migrating herdr from directory symlink to local runtime directory"
-                mkdir -p "${herdr_dir}.migrate"
-                for f in session.json herdr-client.log herdr-server.log .plugins.lock; do
-                    if [[ -e "$stow_herdr/$f" ]]; then
-                        mv "$stow_herdr/$f" "${herdr_dir}.migrate/"
-                    fi
-                done
-                for f in "$stow_herdr"/*.sock; do
-                    [[ -e "$f" ]] || continue
-                    mv "$f" "${herdr_dir}.migrate/" 2>/dev/null || rm -f "$f"
-                done
-                rm -f "$herdr_dir"
-                mv "${herdr_dir}.migrate" "$herdr_dir"
-            elif [[ ! -d "$herdr_dir" ]]; then
-                mkdir -p "$herdr_dir"
-            fi
-            for f in session.json herdr-client.log herdr-server.log .plugins.lock; do
-                rm -f "$stow_herdr/$f"
-            done
-            rm -f "$stow_herdr"/*.sock 2>/dev/null || true
-            ;;
         nvim)
             unstow_package nvim
             log_info "Removing stow nvim config $TARGET_DIR/.config/nvim"
@@ -465,8 +440,6 @@ cleanup_package() {
             rm -f "$TARGET_DIR/.config/omarchy/hooks"
             log_info "Removing stow symlink $TARGET_DIR/.config/omarchy/branding"
             rm -f "$TARGET_DIR/.config/omarchy/branding"
-            log_info "Removing stow symlink $TARGET_DIR/.config/ghostty/config"
-            rm -f "$TARGET_DIR/.config/ghostty/config"
             ;;
         opencode)
             log_info "Removing directory $TARGET_DIR/.config/opencode"
@@ -508,12 +481,6 @@ cleanup_package() {
         systemd)
             log_info "Removing dotfiles-managed systemd unit: colima.service"
             rm -f "$TARGET_DIR/.config/systemd/user/colima.service"
-            ;;
-        tmux)
-            unstow_package tmux
-            log_info "Removing stow tmux config"
-            rm -f "$TARGET_DIR/.config/tmux/tmux.conf"
-            rm -f "$TARGET_DIR/.tmux.conf"
             ;;
         xdg)
             log_info "Removing file $TARGET_DIR/.config/mimeapps.list"
@@ -593,18 +560,6 @@ deploy() {
             link_zsh_platform "$PLATFORM"
             touch "$HOME/.zsh/config/env.zsh"
             ;;
-        tmux)
-            tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null || true
-            log_success "Tmux config reloaded"
-            ;;
-        herdr)
-            if command -v herdr >/dev/null 2>&1; then
-                herdr server reload-config || true
-                log_success "Herdr config reloaded"
-            else
-                log_info "Herdr not installed; skipped config reload"
-            fi
-            ;;
         hypr)
             install_breezex_cursor_theme
             apply_cursor_theme
@@ -636,11 +591,6 @@ deploy_common_packages() {
     # Neovim configuration
     deploy "nvim"
 
-    # Tmux configuration
-    deploy "tmux"
-
-    # Herdr configuration
-    deploy "herdr"
 }
 
 # Deploy platform-specific packages for Arch Linux (omarchy)

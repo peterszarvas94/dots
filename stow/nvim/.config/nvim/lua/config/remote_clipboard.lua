@@ -1,9 +1,9 @@
 -- Clipboard for sessions whose yanks may need to reach another machine:
--- every copy is emitted as OSC 52 (inside tmux/herdr this can rebroadcast to
--- every attached client, local or SSH). Paste prefers the local Wayland
--- clipboard when one is available, so content copied in other apps remains
--- pasteable; without a display, paste is an OSC 52 query that the terminal
--- answers.
+-- every copy is emitted as OSC 52 (inside tmux this becomes a tmux buffer,
+-- rebroadcast to every attached client, local or SSH). Paste prefers the
+-- local Wayland clipboard when one is available, so content copied in other
+-- apps remains pasteable; without a display, paste is an OSC 52 query that
+-- tmux (or the terminal) answers.
 local M = {}
 
 local function proc_lines(pid, file)
@@ -34,92 +34,28 @@ local function ancestor_process_named(name)
       return true
     end
 
-    local cmdline = table.concat(proc_lines(ppid, "cmdline"), "\0")
-    if cmdline:find(name, 1, true) then
-      return true
-    end
-
     pid = ppid
   end
 
   return false
 end
 
-local function wrap_paste(paste_fn)
-  return function()
-    local result = paste_fn()
-    if type(result) ~= "table" then
-      return {}
-    end
-    return result
-  end
-end
-
-local function sync_clipboard_option()
-  if vim.fn.has("clipboard") ~= 1 then
-    return
-  end
-
-  -- LazyVim clears clipboard during startup and restores it on VeryLazy; run
-  -- after that so normal `y` uses the + register (system clipboard).
-  vim.schedule(function()
-    vim.opt.clipboard = "unnamedplus"
-  end)
-end
-
-local function setup_clipboard_option()
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    once = true,
-    callback = sync_clipboard_option,
-  })
-end
-
-local function setup_osc52_clipboard(osc52)
-  if not osc52 or vim.g.omarchy_remote_clipboard_osc52 == false then
-    return
-  end
-
-  vim.g.clipboard = {
-    name = "OmarchyRemoteClipboard",
-    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
-    paste = {
-      ["+"] = wrap_paste(osc52.paste("+")),
-      ["*"] = wrap_paste(osc52.paste("*")),
-    },
-    cache_enabled = 0,
-  }
-end
-
 function M.setup()
   local in_tmux = vim.env.TMUX ~= nil
   local in_ssh = vim.env.SSH_TTY ~= nil or vim.env.SSH_CONNECTION ~= nil
   local in_herdr = vim.env.HERDR_PANE_ID ~= nil or ancestor_process_named("herdr")
-  local use_osc52 = in_tmux or in_ssh or in_herdr
 
-  -- WAYLAND_DISPLAY is often still set over SSH; wl-paste then fails and
-  -- unnamedplus paste hits an empty + register (E353).
-  local has_wayland = not in_ssh
-    and vim.env.WAYLAND_DISPLAY ~= nil
+  if not (in_tmux or in_ssh or in_herdr) then
+    return
+  end
+
+  local osc52 = require("vim.ui.clipboard.osc52")
+  local has_wayland = vim.env.WAYLAND_DISPLAY ~= nil
     and vim.fn.executable("wl-copy") == 1
     and vim.fn.executable("wl-paste") == 1
 
-  if not (use_osc52 or has_wayland) then
-    setup_clipboard_option()
-    return
-  end
-
-  if in_ssh then
-    -- OSC 52 is the only clipboard path that can cross the SSH boundary.
-    setup_osc52_clipboard(require("vim.ui.clipboard.osc52"))
-    setup_clipboard_option()
-    return
-  end
-
-  local osc52 = use_osc52 and require("vim.ui.clipboard.osc52") or nil
-
   local function copy(register)
-    local emit = osc52 and osc52.copy(register)
+    local emit = osc52.copy(register)
 
     return function(lines)
       if has_wayland then
@@ -130,7 +66,7 @@ function M.setup()
         vim.fn.system(cmd, lines)
       end
 
-      if emit and vim.g.omarchy_remote_clipboard_osc52 ~= false then
+      if vim.g.omarchy_remote_clipboard_osc52 ~= false then
         emit(lines)
       end
     end
@@ -138,7 +74,7 @@ function M.setup()
 
   local function paste(register)
     if not has_wayland then
-      return wrap_paste(osc52.paste(register))
+      return osc52.paste(register)
     end
 
     return function()
@@ -155,11 +91,9 @@ function M.setup()
   vim.g.clipboard = {
     name = "OmarchyRemoteClipboard",
     copy = { ["+"] = copy("+"), ["*"] = copy("*") },
-    paste = { ["+"] = wrap_paste(paste("+")), ["*"] = wrap_paste(paste("*")) },
+    paste = { ["+"] = paste("+"), ["*"] = paste("*") },
     cache_enabled = 0,
   }
-
-  setup_clipboard_option()
 end
 
 return M

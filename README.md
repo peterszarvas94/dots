@@ -34,4 +34,4 @@ wget -qO- "https://raw.githubusercontent.com/peterszarvas94/dots/master/setup_om
 
 # Documentation
 
-Check `doc/` folder
+Documentation is available through the global `dots` skill at `~/.agents/skills/dots/doc/`.
