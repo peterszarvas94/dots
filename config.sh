@@ -76,6 +76,10 @@ ensure_nvim_base() {
     fi
 
     if [[ -f "$nvim_dir/init.lua" ]]; then
+        if [[ "$PLATFORM" == "omarchy" ]]; then
+            cp "/usr/share/omarchy-nvim/config/lua/plugins/all-themes.lua" "$nvim_dir/lua/plugins/all-themes.lua"
+            cp "/usr/share/omarchy-nvim/config/lua/plugins/omarchy-theme-hotreload.lua" "$nvim_dir/lua/plugins/omarchy-theme-hotreload.lua"
+        fi
         return 0
     fi
 
@@ -103,11 +107,25 @@ prepare_nvim_overlay() {
     local nvim_dir="$TARGET_DIR/.config/nvim"
     local path
 
-    for path in lua/config/options.lua lua/config/keymaps.lua lua/plugins/all-themes.lua lua/plugins/omarchy-theme-hotreload.lua; do
+    local paths=(lua/config/options.lua lua/config/keymaps.lua)
+    if [[ "$PLATFORM" == "mac" ]]; then
+        paths+=(lua/plugins/all-themes.lua lua/plugins/omarchy-theme-hotreload.lua)
+    fi
+
+    for path in "${paths[@]}"; do
         if [[ -f "$nvim_dir/$path" && ! -L "$nvim_dir/$path" ]]; then
             rm -f "$nvim_dir/$path"
         fi
     done
+}
+
+link_nvim_platform_theme() {
+    [[ "$PLATFORM" == "omarchy" ]] || return 0
+
+    local theme_link="$TARGET_DIR/.config/nvim/lua/plugins/theme.lua"
+    mkdir -p "$(dirname "$theme_link")"
+    rm -f "$theme_link"
+    ln -sfn "../../../../.local/state/omarchy/current/theme/neovim.lua" "$theme_link"
 }
 
 # Remove stow symlinks that still point at the old ~/projects/dots layout
@@ -509,6 +527,7 @@ deploy() {
     # Package-specific post-deployment actions
     case "$package_name" in
         nvim)
+            link_nvim_platform_theme
             ;;
         ghostty)
             link_ghostty_theme "$PLATFORM"
