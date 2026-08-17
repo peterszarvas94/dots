@@ -9,7 +9,6 @@ brew tap cormacrelf/tap
 brew install \
     stow \
     fzf \
-    tmux \
     zsh \
     go \
     cmake \
@@ -22,6 +21,9 @@ brew install \
     bun-bin \
     opencode \
     1password-cli
+
+# Install Herdr
+curl -fsSL https://herdr.dev/install.sh | sh
 
 # Homebrew's nvm formula stores versions in this user-owned directory.
 mkdir -p "$HOME/.nvm"

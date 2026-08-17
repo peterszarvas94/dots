@@ -412,6 +412,11 @@ cleanup_package() {
             log_info "Removing directory $TARGET_DIR/.config/lazygit"
             rm -rf "$TARGET_DIR/.config/lazygit"
             ;;
+        herdr)
+            unstow_package herdr
+            log_info "Removing Herdr config"
+            rm -f "$TARGET_DIR/.config/herdr/config.toml"
+            ;;
         nvim)
             unstow_package nvim
             if [[ "$PLATFORM" == "mac" ]]; then
@@ -548,6 +553,11 @@ deploy() {
             apply_cursor_theme
             reload_hyprland
             ;;
+        herdr)
+            if command -v herdr >/dev/null 2>&1 && herdr status server >/dev/null 2>&1; then
+                herdr server reload-config && log_success "Reloaded Herdr configuration"
+            fi
+            ;;
     esac
 }
 
@@ -564,6 +574,9 @@ deploy_common_packages() {
 
     # OpenCode configuration
     deploy "opencode"
+
+    # Herdr configuration
+    deploy "herdr"
 
     # Pi configuration
     deploy "pi"

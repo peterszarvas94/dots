@@ -7,7 +7,6 @@ sudo pacman -S --needed base-devel
 yay -S --noconfirm --needed \
     stow \
     fzf \
-    tmux \
     zsh \
     go \
     cmake \
