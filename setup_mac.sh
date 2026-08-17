@@ -21,7 +21,6 @@ brew install \
     colima \
     bun-bin \
     opencode \
-    dark-notify \
     1password-cli
 
 # Homebrew's nvm formula stores versions in this user-owned directory.
@@ -35,7 +34,6 @@ mkdir -p ~/Projects
 cd Projects
 git clone https://github.com/peterszarvas94/dots.git
 git clone git@github.com:peterszarvas94/private.git
-git clone https://github.com/peterszarvas94/omarchy-nvim-theme-grabber.git
 
 # Origin
 cd ~/Projects/dots

@@ -66,29 +66,48 @@ Examples:
 EOF
 }
 
-# Link nvim theme files
-link_nvim_theme() {
-    local platform="$1"
-    local plugins_dir="$HOME/.config/nvim/lua/plugins"
+# Keep the LazyVim base outside the dots repository.
+ensure_nvim_base() {
+    local nvim_dir="$TARGET_DIR/.config/nvim"
+    local base_dir
 
-    mkdir -p "$plugins_dir"
+    if [[ -L "$nvim_dir" ]]; then
+        rm -f "$nvim_dir"
+    fi
 
-    case "$platform" in
-        mac)
-            ln -nsf ~/.config/nvim/mac/theme.lua "$plugins_dir/theme.lua"
-            ln -nsf ~/.config/nvim/mac/theme-preload.lua "$plugins_dir/omarchy-theme-preload.lua"
-            log_success "Neovim theme linked for macOS"
-            ;;
-        omarchy)
-            ln -nsf ~/.config/nvim/omarchy/theme.lua "$plugins_dir/theme.lua"
-            ln -nsf ~/.config/nvim/omarchy/theme-preload.lua "$plugins_dir/omarchy-theme-preload.lua"
-            log_success "Neovim theme linked for omarchy"
-            ;;
-        *)
-            log_error "Cannot link nvim theme files, unsupported platform: $platform"
-            return 1
-            ;;
-    esac
+    if [[ -f "$nvim_dir/init.lua" ]]; then
+        return 0
+    fi
+
+    if [[ "$PLATFORM" == "omarchy" && -f "/usr/share/omarchy-nvim/config/init.lua" ]]; then
+        base_dir="/usr/share/omarchy-nvim/config"
+    elif [[ "$PLATFORM" == "mac" ]]; then
+        base_dir="$TARGET_DIR/.local/share/lazyvim-starter"
+        if [[ ! -f "$base_dir/init.lua" ]]; then
+            log_info "Cloning stock LazyVim starter"
+            rm -rf "$base_dir"
+            mkdir -p "$(dirname "$base_dir")"
+            git clone https://github.com/LazyVim/starter.git "$base_dir"
+        fi
+    else
+        log_error "No stock Neovim base found for platform: $PLATFORM"
+        return 1
+    fi
+
+    mkdir -p "$nvim_dir"
+    cp -a "$base_dir"/. "$nvim_dir"/
+    log_success "Installed external Neovim base from $base_dir"
+}
+
+prepare_nvim_overlay() {
+    local nvim_dir="$TARGET_DIR/.config/nvim"
+    local path
+
+    for path in lua/config/options.lua lua/config/keymaps.lua lua/plugins/all-themes.lua lua/plugins/omarchy-theme-hotreload.lua; do
+        if [[ -f "$nvim_dir/$path" && ! -L "$nvim_dir/$path" ]]; then
+            rm -f "$nvim_dir/$path"
+        fi
+    done
 }
 
 # Remove stow symlinks that still point at the old ~/projects/dots layout
@@ -220,61 +239,11 @@ install_breezex_cursor_theme() {
     log_success "Installed cursor theme: $cursor_theme"
 }
 
-setup_mac_theme_sync() {
-    if [[ "$PLATFORM" != "mac" ]]; then
-        log_info "Theme setup is only needed on macOS"
-        return 0
-    fi
-
-    local sync_script="$HOME/.local/share/dots/bin/mac-sync-nvim-theme"
-    local agent_plist="$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
-    local launchd_target="gui/$(id -u)"
-
-    mkdir -p "$HOME/.config/omarchy/current/theme"
-    mkdir -p "$HOME/Library/LaunchAgents"
-
-    if [[ ! -f "$sync_script" ]]; then
-        log_error "Missing theme sync script: $sync_script"
-        log_info "Run ./config --pkg=scripts first"
-        return 1
-    fi
-
-    bash "$sync_script" --apply
-    log_success "Initial macOS theme files generated"
-
-    if ! command -v dark-notify >/dev/null 2>&1; then
-        log_warning "dark-notify not found. Install it with: brew install cormacrelf/tap/dark-notify"
-        return 0
-    fi
-
-    if [[ ! -f "$agent_plist" ]]; then
-        log_error "Missing launch agent: $agent_plist"
-        log_info "Run ./config --pkg=nvim-theme-mac first"
-        return 1
-    fi
-
-    launchctl bootout "$launchd_target" "$agent_plist" 2>/dev/null || true
-    launchctl bootstrap "$launchd_target" "$agent_plist"
-    launchctl kickstart -k "$launchd_target/com.peterszarvas.theme-sync"
-    log_success "macOS theme watcher loaded"
-}
-
 # Start and enable systemd services
 start_services() {
     case "$PLATFORM" in
         mac)
             log_info "Starting macOS services..."
-
-            local launchd_target="gui/$(id -u)"
-            local agent_plist="$HOME/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
-
-            if [[ -f "$agent_plist" ]]; then
-                launchctl bootout "$launchd_target" "$agent_plist" 2>/dev/null || true
-                launchctl bootstrap "$launchd_target" "$agent_plist" && log_success "Loaded launchd agent: com.peterszarvas.theme-sync" || log_warning "Failed to load launchd agent"
-                launchctl kickstart -k "$launchd_target/com.peterszarvas.theme-sync" && log_success "Restarted launchd agent: com.peterszarvas.theme-sync" || log_warning "Failed to restart launchd agent"
-            else
-                log_warning "LaunchAgent not found: $agent_plist (deploy nvim-theme-mac first)"
-            fi
 
             if command -v colima >/dev/null 2>&1; then
                 colima start 2>/dev/null && log_success "Colima started" || log_warning "Failed to start Colima"
@@ -425,14 +394,6 @@ cleanup_package() {
             ;;
         nvim)
             unstow_package nvim
-            log_info "Removing stow nvim config $TARGET_DIR/.config/nvim"
-            rm -rf "$TARGET_DIR/.config/nvim"
-            log_info "Removing lazy.nvim data (reinstall on next nvim start)"
-            rm -rf "$TARGET_DIR/.local/share/nvim/lazy"
-            ;;
-        nvim-theme-mac)
-            log_info "Removing file $TARGET_DIR/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
-            rm -f "$TARGET_DIR/Library/LaunchAgents/com.peterszarvas.theme-sync.plist"
             ;;
         omarchy)
             # Stow links these as symlinks into the repo — use rm -f, never rm -rf.
@@ -526,6 +487,11 @@ deploy() {
         fi
     fi
 
+    if [[ "$package_name" == "nvim" ]]; then
+        ensure_nvim_base
+        prepare_nvim_overlay
+    fi
+
     if [[ "$adopt_flag" != true ]]; then
         cleanup_package "$package_name"
     fi
@@ -540,18 +506,9 @@ deploy() {
         log_success "Deployed $package_name"
     fi
     
-    # Automatically link theme files for specific packages
+    # Package-specific post-deployment actions
     case "$package_name" in
         nvim)
-            if [[ "$PLATFORM" == "mac" && ! -f "$TARGET_DIR/.local/share/dots/bin/mac-sync-nvim-theme" ]]; then
-                log_info "Deploying scripts dependency for macOS theme sync"
-                deploy "scripts"
-            fi
-            link_nvim_theme "$PLATFORM"
-            if [[ "$PLATFORM" == "mac" ]]; then
-                deploy "nvim-theme-mac"
-                setup_mac_theme_sync
-            fi
             ;;
         ghostty)
             link_ghostty_theme "$PLATFORM"

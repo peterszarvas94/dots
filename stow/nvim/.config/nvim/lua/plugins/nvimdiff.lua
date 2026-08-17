@@ -37,7 +37,7 @@ return {
         -- obtain / put: use built-in do and dp in diff windows
       end
 
-      vim.api.nvim_create_autocmd({ "DiffEnter", "WinEnter" }, {
+      vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
         group = group,
         callback = function()
           setup_diff_window()

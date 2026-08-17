@@ -1,4 +1,0 @@
-# Placeholder directory for a local LazyVim plugin root.
-#
-# omarchy/theme.lua points LazyVim/LazyVim here so lazy.nvim does not fetch
-# a second LazyVim copy; opts.colorscheme is applied in theme.lua config.
