@@ -17,12 +17,7 @@ if ! command -v jq >/dev/null 2>&1; then
     exit 1
 fi
 
-herdr_target=()
-if [[ $(hostname -s) != asimov ]]; then
-    herdr_target=(--remote peti@asimov)
-fi
-
-sessions=$(herdr "${herdr_target[@]}" session list --json | jq -r '
+sessions=$(herdr session list --json | jq -r '
     if type == "array" then .[]
     elif .sessions then .sessions[]
     elif .result.sessions then .result.sessions[]
@@ -42,4 +37,4 @@ fi
 
 [[ -n "$session_name" ]] || exit 0
 
-exec herdr "${herdr_target[@]}" --session "$session_name"
+exec herdr --session "$session_name"
