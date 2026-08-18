@@ -6,6 +6,12 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      diagnostics = {
+        signs = false,
+      },
+      inlay_hints = {
+        enabled = false,
+      },
       servers = {
         tsc = {
           mason = false,

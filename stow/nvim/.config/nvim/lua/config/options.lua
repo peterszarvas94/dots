@@ -19,7 +19,23 @@ vim.opt.hlsearch = false
 vim.opt.shortmess:append("S")
 vim.opt.list = false
 
+-- Keep Markdown source visible instead of concealing its formatting markers.
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "markdown.mdx" },
+  callback = function()
+    vim.opt_local.conceallevel = 0
+  end,
+})
+
 vim.opt.swapfile = false
 
 vim.g.autoformat = true
 vim.g.lazyvim_explorer = "neo-tree"
+
+-- Do not show diagnostic icons in the signcolumn.
+vim.diagnostic.config {
+  signs = false,
+  float = {
+    border = "rounded",
+  },
+}

@@ -49,3 +49,4 @@ x-scheme-handler/postman=Postman.desktop
 inode/directory=org.gnome.Nautilus.desktop
 x-scheme-handler/aether=aether-protocol-handler.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+x-scheme-handler/codex=chatgpt.desktop

@@ -548,6 +548,9 @@ deploy() {
             link_zsh_platform "$PLATFORM"
             touch "$HOME/.zsh/config/env.zsh"
             ;;
+        tmux)
+            tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null || true
+            ;;
         hypr)
             install_breezex_cursor_theme
             apply_cursor_theme
@@ -587,6 +590,9 @@ deploy_common_packages() {
 
     # Scripts
     deploy "scripts"
+
+    # Tmux configuration
+    deploy "tmux"
 
     # Neovim configuration
     deploy "nvim"

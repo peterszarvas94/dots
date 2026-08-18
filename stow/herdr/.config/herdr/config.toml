@@ -27,24 +27,18 @@ detach = "prefix+d"
 copy_mode = "prefix+["
 
 # Panes
-split_horizontal = ["prefix+h", "alt+enter"]
-split_vertical = ["prefix+v", "alt+shift+enter"]
-close_pane = ["prefix+x", "alt+esc"]
+split_horizontal = "prefix+h"
+split_vertical = "prefix+v"
+close_pane = "prefix+x"
 zoom = "prefix+z"
 last_pane = "prefix+;"
 
-focus_pane_left = "ctrl+alt+left"
-focus_pane_down = "ctrl+alt+down"
-focus_pane_up = "ctrl+alt+up"
-focus_pane_right = "ctrl+alt+right"
+focus_pane_left = ""
+focus_pane_down = ""
+focus_pane_up = ""
+focus_pane_right = ""
 
 resize_mode = ["prefix+ctrl+left", "prefix+ctrl+down", "prefix+ctrl+up", "prefix+ctrl+right"]
-
-# Like resize-pane on C-M-S-arrows
-# resize_pane_left = "ctrl+alt+shift+left" # unsupported on macOS Herdr 0.8.0
-# resize_pane_down = "ctrl+alt+shift+down" # unsupported on macOS Herdr 0.8.0
-# resize_pane_up = "ctrl+alt+shift+up" # unsupported on macOS Herdr 0.8.0
-# resize_pane_right = "ctrl+alt+shift+right" # unsupported on macOS Herdr 0.8.0
 
 # No tmux equivalent; herdr's default prefix+shift+p is taken by previous session
 rename_pane = "prefix+shift+o"
@@ -53,20 +47,16 @@ rename_pane = "prefix+shift+o"
 new_tab = "prefix+c"
 rename_tab = "prefix+r"
 close_tab = "prefix+k"
-switch_tab = ["prefix+1..9", "alt+1..9"]
-previous_tab = ["prefix+p", "alt+left"]
-next_tab = ["prefix+n", "alt+right"]
-
-# Like swap-window -t -1/+1 on M-S-Left/Right
-# move_tab_previous = "alt+shift+left" # unsupported on macOS Herdr 0.8.0
-# move_tab_next = "alt+shift+right" # unsupported on macOS Herdr 0.8.0
+switch_tab = "prefix+1..9"
+previous_tab = "prefix+p"
+next_tab = "prefix+n"
 
 # Sessions -> workspaces
 new_workspace = "prefix+shift+c"
 rename_workspace = "prefix+shift+r"
 close_workspace = "prefix+shift+k"
-previous_workspace = ["prefix+shift+p", "alt+up"]
-next_workspace = ["prefix+shift+n", "alt+down"]
+previous_workspace = "prefix+shift+p"
+next_workspace = "prefix+shift+n"
 
 [ui]
 accent = "blue"
