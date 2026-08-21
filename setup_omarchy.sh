@@ -45,10 +45,7 @@ if [[ ! -f stow/ssh/.ssh/config ]]; then
   cp stow/ssh/.ssh/config.example stow/ssh/.ssh/config
 fi
 
-# Clone private repo for fonts
-git clone git@github.com:peterszarvas94/private.git ~/Projects/private 2>/dev/null || true
-
-./config.sh --pkg=all --font --debloat
+./config.sh --pkg=all --debloat
 
 # 1Password
 echo ""
