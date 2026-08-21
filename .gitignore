@@ -1,6 +1,5 @@
 .DS_Store
 .jj/
-stow/ssh/.ssh/config
 stow/zsh/.zsh/config/env.zsh
 stow/git/.config/git/work/config
 stow/ghostty/.config/ghostty/settings.conf

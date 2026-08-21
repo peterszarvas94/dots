@@ -19,7 +19,8 @@ yay -S --noconfirm --needed \
     colima-bin \
     bun-bin \
     opencode \
-    1password-cli
+    1password-cli \
+    github-cli
 
 zsh_path="$(command -v zsh)"
 current_shell="$(getent passwd "$USER" | cut -d: -f7)"
@@ -52,6 +53,3 @@ mkdir -p ~/youtube
 echo ""
 echo "Login to 1Password:"
 echo "  op signin"
-echo ""
-echo "After SSH access is ready, run:"
-echo "  setup-github-ssh"
