@@ -109,7 +109,7 @@ prepare_nvim_overlay() {
 
     rm -f "$nvim_dir/lua/plugins/theme.lua"
 
-    local paths=(lua/config/options.lua lua/config/keymaps.lua)
+    local paths=(lua/config/options.lua lua/config/keymaps.lua lua/config/autocmds.lua)
     if [[ "$PLATFORM" == "mac" ]]; then
         paths+=(lua/plugins/all-themes.lua lua/plugins/omarchy-theme-hotreload.lua)
     fi
