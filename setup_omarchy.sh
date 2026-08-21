@@ -26,7 +26,7 @@ rm -rf ~/Projects/dots
 
 # Clone
 mkdir -p ~/Projects
-cd Projects
+cd ~/Projects
 git clone https://github.com/peterszarvas94/dots.git
 
 # Origin
@@ -48,7 +48,7 @@ fi
 # Clone private repo for fonts
 git clone git@github.com:peterszarvas94/private.git ~/Projects/private 2>/dev/null || true
 
-./config --pkg=all --font --debloat
+./config.sh --pkg=all --font --debloat
 
 # 1Password
 echo ""
