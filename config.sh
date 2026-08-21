@@ -426,11 +426,11 @@ cleanup_package() {
             fi
             ;;
         omarchy)
-            # Stow links these as symlinks into the repo — use rm -f, never rm -rf.
-            log_info "Removing stow symlink $TARGET_DIR/.config/omarchy/hooks"
-            rm -f "$TARGET_DIR/.config/omarchy/hooks"
-            log_info "Removing stow symlink $TARGET_DIR/.config/omarchy/branding"
-            rm -f "$TARGET_DIR/.config/omarchy/branding"
+            unstow_package omarchy
+            log_info "Removing existing Omarchy hooks"
+            rm -rf "$TARGET_DIR/.config/omarchy/hooks"
+            log_info "Removing existing Omarchy branding"
+            rm -rf "$TARGET_DIR/.config/omarchy/branding"
             ;;
         opencode)
             log_info "Removing directory $TARGET_DIR/.config/opencode"
