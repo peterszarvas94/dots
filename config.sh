@@ -473,6 +473,11 @@ cleanup_package() {
             log_info "Removing dotfiles-managed systemd unit: colima.service"
             rm -f "$TARGET_DIR/.config/systemd/user/colima.service"
             ;;
+        tmux)
+            unstow_package tmux
+            log_info "Removing Omarchy tmux config"
+            rm -f "$TARGET_DIR/.config/tmux/tmux.conf"
+            ;;
         xdg)
             log_info "Removing file $TARGET_DIR/.config/mimeapps.list"
             rm -f "$TARGET_DIR/.config/mimeapps.list"
