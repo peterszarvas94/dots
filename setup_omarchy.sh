@@ -51,3 +51,6 @@ fi
 echo ""
 echo "Login to 1Password:"
 echo "  op signin"
+echo ""
+echo "After SSH access is ready, run:"
+echo "  setup-github-ssh"

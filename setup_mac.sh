@@ -35,7 +35,6 @@ rm -rf ~/Projects/dots
 mkdir -p ~/Projects
 cd Projects
 git clone https://github.com/peterszarvas94/dots.git
-git clone git@github.com:peterszarvas94/private.git
 
 # Origin
 cd ~/Projects/dots
@@ -53,7 +52,7 @@ if [[ ! -f stow/ssh/.ssh/config ]]; then
 fi
 
 # Config packages
-./config --pkg=all --font
+./config.sh --pkg=all
 
 # 1Password
 echo ""

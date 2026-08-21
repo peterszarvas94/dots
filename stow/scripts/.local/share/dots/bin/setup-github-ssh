@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+key_file="$HOME/.ssh/github"
+public_key="$key_file.pub"
+ssh_config="$HOME/.ssh/config"
+github_keys_url="https://github.com/settings/keys"
+
+mkdir -p "$HOME/.ssh"
+chmod 700 "$HOME/.ssh"
+
+if [[ -e "$key_file" || -e "$public_key" ]]; then
+  printf 'GitHub key already exists: %s\n' "$key_file" >&2
+  printf 'Remove it first if you want to generate a new key.\n' >&2
+  exit 1
+fi
+
+ssh-keygen -t ed25519 -f "$key_file" -C "${USER}@$(hostname)-github"
+chmod 600 "$key_file"
+chmod 644 "$public_key"
+
+if [[ ! -f "$ssh_config" ]]; then
+  touch "$ssh_config"
+  chmod 600 "$ssh_config"
+fi
+
+if ! grep -q '^Host github\.com$' "$ssh_config"; then
+  cat >> "$ssh_config" <<'EOF'
+
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/github
+  IdentityAgent none
+  IdentitiesOnly yes
+  ForwardAgent no
+EOF
+fi
+
+if command -v wl-copy >/dev/null 2>&1; then
+  wl-copy < "$public_key"
+  printf 'Public key copied to the clipboard.\n'
+elif command -v xclip >/dev/null 2>&1; then
+  xclip -selection clipboard < "$public_key"
+  printf 'Public key copied to the clipboard.\n'
+fi
+
+printf '\nAdd this key to GitHub:\n%s\n\n' "$github_keys_url"
+cat "$public_key"
+printf '\n'
+
+if command -v xdg-open >/dev/null 2>&1; then
+  xdg-open "$github_keys_url" >/dev/null 2>&1 &
+fi
+
+read -r -p 'Press Enter after adding the key to GitHub... ' _
+
+set +e
+ssh -T git@github.com
+ssh_status=$?
+set -e
+
+if [[ $ssh_status -gt 1 ]]; then
+  printf 'GitHub SSH authentication failed. Check the key and try again.\n' >&2
+  exit "$ssh_status"
+fi
+
+printf 'GitHub SSH authentication succeeded.\n'
