@@ -46,12 +46,6 @@ mkdir -p ~/Work
 mkdir -p ~/Projects/go
 mkdir -p ~/youtube
 
-# SSH config is gitignored; seed from example on first run
-mkdir -p stow/ssh/.ssh
-if [[ ! -f stow/ssh/.ssh/config ]]; then
-  cp stow/ssh/.ssh/config.example stow/ssh/.ssh/config
-fi
-
 ./config.sh --pkg=all --debloat
 
 # 1Password

@@ -360,6 +360,15 @@ unstow_package() {
     stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D "$package_name" 2>/dev/null || true
 }
 
+is_managed_ssh_link() {
+    local path="$1"
+    local target
+
+    [[ -L "$path" ]] || return 1
+    target="$(readlink "$path")"
+    [[ "$target" == "$STOW_DIR/ssh/.ssh/"* || "$target" == */stow/ssh/.ssh/* ]]
+}
+
 # Explicit cleanup before deploying specific packages
 cleanup_package() {
     local package_name="$1"
@@ -452,9 +461,12 @@ cleanup_package() {
             ;;
         ssh)
             unstow_package ssh
-            log_info "Removing stow ssh files under $TARGET_DIR/.ssh"
-            rm -f "$TARGET_DIR/.ssh/config"
-            rm -f "$TARGET_DIR/.ssh/config.example"
+            for ssh_file in config config.example; do
+                if is_managed_ssh_link "$TARGET_DIR/.ssh/$ssh_file"; then
+                    log_info "Removing managed SSH link $TARGET_DIR/.ssh/$ssh_file"
+                    rm -f "$TARGET_DIR/.ssh/$ssh_file"
+                fi
+            done
             ;;
         systemd)
             log_info "Removing dotfiles-managed systemd unit: colima.service"
@@ -502,6 +514,10 @@ deploy() {
     if [[ "$package_name" == "ssh" ]]; then
         local ssh_cfg="$STOW_DIR/ssh/.ssh/config"
         local ssh_example="$STOW_DIR/ssh/.ssh/config.example"
+        if [[ -e "$TARGET_DIR/.ssh/config" || -L "$TARGET_DIR/.ssh/config" ]] && ! is_managed_ssh_link "$TARGET_DIR/.ssh/config"; then
+            log_warning "Preserving existing user SSH config: $TARGET_DIR/.ssh/config"
+            return 0
+        fi
         if [[ ! -f "$ssh_cfg" ]]; then
             [[ -f "$ssh_example" ]] || { log_error "Missing $ssh_example"; return 1; }
             log_info "Creating $ssh_cfg from config.example"

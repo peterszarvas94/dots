@@ -26,7 +26,6 @@ source ~/.zsh/config/aliases.zsh
 
 source ~/.zsh/config/prompt.zsh
 
-source "$HOME/.vite-plus/env"
 source <(docker completion zsh)
 source <(colima completion zsh)
 
