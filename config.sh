@@ -163,10 +163,26 @@ repair_legacy_projects_symlinks() {
     done
 }
 
+# Ensure Omarchy's Ghostty config uses Zsh without replacing its managed defaults.
+ensure_omarchy_ghostty_shell() {
+    local config="$TARGET_DIR/.config/ghostty/config"
+
+    [[ -f "$config" ]] || return 0
+
+    if grep -q '^command[[:space:]]*=' "$config"; then
+        sed -i 's|^command[[:space:]]*=.*|command = /bin/zsh|' "$config"
+    else
+        printf '\ncommand = /bin/zsh\n' >> "$config"
+    fi
+
+    log_success "Ghostty configured to launch Zsh"
+}
+
 # Remove dotfiles ghostty stow links (Omarchy manages ~/.config/ghostty)
 unstow_dots_ghostty() {
     log_info "Skipping ghostty on omarchy (using Omarchy defaults)"
     stow --dir="$STOW_DIR" --target="$TARGET_DIR" -D ghostty 2>/dev/null || true
+    ensure_omarchy_ghostty_shell
 }
 
 # Link ghostty theme files (macOS only)

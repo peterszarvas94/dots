@@ -21,6 +21,13 @@ yay -S --noconfirm --needed \
     opencode \
     1password-cli
 
+zsh_path="$(command -v zsh)"
+current_shell="$(getent passwd "$USER" | cut -d: -f7)"
+if [[ "$current_shell" != "$zsh_path" ]]; then
+    echo "Changing login shell to $zsh_path"
+    chsh -s "$zsh_path"
+fi
+
 # Remove
 rm -rf ~/Projects/dots
 
