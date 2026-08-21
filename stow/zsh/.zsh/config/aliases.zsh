@@ -1,16 +1,17 @@
 alias v="nvim"
 
 # gems backend 
-alias bdown="docker compose --project-directory ~/Work/gems-backend-platform down "
-alias bup="docker compose --project-directory ~/Work/gems-backend-platform up -d"
+alias bcompose="docker compose --project-directory ~/Work/gems-backend-platform -f docker-compose.yml -f docker-compose.local.yml"
+alias bdown="bcompose down"
+alias bup="bcompose up -d"
 alias bdok="bdown && bup"
 alias bbuild="npm run build -C ~/Work/gems-backend-platform"
 alias bgen="npm run generate:mig -C ~/Work/gems-backend-platform/packages/database"
 alias bmig="npm run migrate -C ~/Work/gems-backend-platform/packages/database"
 alias binit="npm run init-development -C ~/Work/gems-backend-platform/packages/database"
-alias bstart="npm run start -C ~/Work/gems-backend-platform/packages/app"
-alias bdev="npm run start:dev -C ~/Work/gems-backend-platform/packages/app"
-alias bdebug="npm run start:debug -C ~/Work/gems-backend-platform/packages/app"
+alias bstart="CONFIG_FILE=./config.local.yaml npm run start -C ~/Work/gems-backend-platform/packages/app"
+alias bdev="CONFIG_FILE=./config.local.yaml npm run start:dev -C ~/Work/gems-backend-platform/packages/app"
+alias bdebug="CONFIG_FILE=./config.local.yaml npm run start:debug -C ~/Work/gems-backend-platform/packages/app"
 alias ball="bbuild && binit && bstart"
 
 # gems frontend
