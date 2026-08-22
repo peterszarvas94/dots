@@ -10,4 +10,4 @@ o.bind("SUPER + SHIFT + ALT + N", "Open notification history", "omarchy-shell no
 o.bind("SUPER + CTRL + ALT + P", "Healthy Pomodoro", "omarchy-shell shell toggle peti.pomodoro")
 
 -- Plugin Manager: open the installed plugin browser.
-o.bind("SUPER + CTRL + ALT + M", "Plugin Manager", "omarchy-shell shell summon io.github.peterszarvas94.plugin-manager '{}'")
+o.bind("SUPER + CTRL + SHIFT + M", "Plugin Manager", "omarchy-shell shell summon io.github.peterszarvas94.plugin-manager '{}'")
