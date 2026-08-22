@@ -28,6 +28,7 @@ alias zed="open -a /Applications/Zed.app -n"
 
 # tmux
 alias ta="tmux a"
+alias ts="tmux-sessionizer"
 alias tk="tmux kill-server"
 
 

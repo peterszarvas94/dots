@@ -3,13 +3,16 @@
 # Based on ThePrimeagen's tmux-sessionizer
 
 # Select dirs
-parent_dirs=(~/Work ~/Projects ~/src/tries)
+parent_dirs=(~/Work ~/Projects ~/src/tries ~/.config/omarchy/plugins)
 
 select_directory() {
-    # Include parent directories themselves
-    printf '%s\n' "${parent_dirs[@]}"
-    # Include children of parent directories
-    find "${parent_dirs[@]}" -maxdepth 1 -mindepth 1 -type d ! -name go
+    for parent_dir in "${parent_dirs[@]}"; do
+        [[ -d $parent_dir ]] || continue
+        # Include parent directories themselves
+        printf '%s\n' "$parent_dir"
+        # Include visible children of parent directories
+        find "$parent_dir" -maxdepth 1 -mindepth 1 -type d ! -name go ! -name '.*'
+    done
 }
 
 # Capture before fzf takes over the tty
