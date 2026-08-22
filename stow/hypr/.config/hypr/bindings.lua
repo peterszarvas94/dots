@@ -8,3 +8,6 @@ o.bind("SUPER + SHIFT + ALT + N", "Open notification history", "omarchy-shell no
 
 -- Healthy Pomodoro: focus, movement, posture, and screen-rest prompts.
 o.bind("SUPER + CTRL + ALT + P", "Healthy Pomodoro", "omarchy-shell shell toggle peti.pomodoro")
+
+-- Plugin Manager: open the installed plugin browser.
+o.bind("SUPER + CTRL + ALT + M", "Plugin Manager", "omarchy-shell shell summon io.github.peterszarvas94.plugin-manager '{}'")
