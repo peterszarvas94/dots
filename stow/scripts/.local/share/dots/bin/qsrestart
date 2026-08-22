@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v hyprctl >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
+  printf 'qsrestart: hyprctl and jq are required\n' >&2
+  exit 1
+fi
+
+runtime_dir="${XDG_RUNTIME_DIR:-/run/user/$UID}"
+lock_file="$runtime_dir/qsrestart.lock"
+exec 9>"$lock_file"
+if ! flock -n 9; then
+  printf 'qsrestart: a shell restart is already in progress\n' >&2
+  exit 0
+fi
+
+instances=$(hyprctl instances -j)
+signature=$(jq -er '.[0].instance // empty' <<<"$instances") || {
+  printf 'qsrestart: no active Hyprland instance found\n' >&2
+  exit 1
+}
+wayland_display=$(jq -er '.[0].wl_socket // empty' <<<"$instances") || {
+  printf 'qsrestart: no Wayland socket found for the active Hyprland instance\n' >&2
+  exit 1
+}
+
+export HYPRLAND_INSTANCE_SIGNATURE="$signature"
+export WAYLAND_DISPLAY="$wayland_display"
+
+exec omarchy restart shell
