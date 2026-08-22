@@ -15,22 +15,33 @@ select_directory() {
     done
 }
 
-# Capture before fzf takes over the tty
-client_tty=$(tmux display-message -p '#{client_tty}' 2>/dev/null)
-
 path="${1:-$(select_directory | fzf --prompt='Select a directory: ')}"
 
 [[ -z $path ]] && exit 0
+path=$(realpath -e -- "$path") || exit 1
+[[ -d $path ]] || exit 1
 
 # Convert the directory name to a tmux-safe session name
-session_name=$(basename "$path" | tr . _)
+session_name=$(basename "$path" | tr . _ | sed 's/[^[:alnum:]_-]/_/g')
 
-if [[ -z $client_tty ]]; then
-    # Not attached to a tmux client (even if $TMUX is set)
+# A basename is readable, but it is not unique. Do not attach to an old
+# session for a different project with the same directory name.
+if tmux has-session -t="$session_name" 2>/dev/null; then
+    existing_path=$(tmux display-message -p -t "$session_name" '#{session_path}')
+    if [[ $existing_path != "$path" ]]; then
+        path_hash=$(printf '%s' "$path" | sha256sum | cut -c1-8)
+        session_name="${session_name}_${path_hash}"
+    fi
+fi
+
+if [[ -z ${TMUX:-} ]] || ! tmux display-message -p >/dev/null 2>&1; then
+    # Not attached to a live tmux client.
     tmux new-session -A -s "$session_name" -c "$path"
 else
     if ! tmux has-session -t="$session_name" 2>/dev/null; then
         tmux new-session -d -s "$session_name" -c "$path"
     fi
-    tmux switch-client -c "$client_tty" -t "$session_name"
+    # Let tmux resolve the client running this command. Explicitly targeting a
+    # captured /dev/pts path can switch a different client in multi-window use.
+    tmux switch-client -t "$session_name"
 fi
